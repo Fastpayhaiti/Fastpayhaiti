@@ -2,64 +2,40 @@
 <html>
 <head>
 <title>Netflix Plans</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-
-body{
-font-family:Arial;
-background:#f4f4f4;
-text-align:center;
-padding:30px;
-}
-
-.plan{
-background:white;
-padding:20px;
-margin:15px auto;
-border-radius:15px;
-max-width:320px;
-}
-
-button{
-background:#ff4d3d;
-color:white;
-border:none;
-padding:12px 20px;
-border-radius:10px;
-font-size:16px;
-}
-
-a{
-text-decoration:none;
-}
-
+body{font-family:Arial,sans-serif;background:#f4f4f4;text-align:center;padding:30px;margin:0;}
+.container{max-width:420px;margin:auto;}
+.back{display:inline-block;margin-bottom:20px;color:#ff4d3d;text-decoration:none;font-weight:bold;}
+.plan{background:white;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+h1{color:#111827;}
+p{color:#666;}
+a{text-decoration:none;}
+button{background:#ff4d3d;color:white;border:none;padding:12px 20px;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;}
 </style>
-
 </head>
-
 <body>
-
-<a href="index.html">← Back Home</a>
-
+<div class="container">
+<a href="index.html" class="back">← Back Home</a>
 <h1>Netflix Plans</h1>
 
 <div class="plan">
 <h2>Netflix Basic</h2>
 <p>$5</p>
-<a href="order.html"><button>Buy Now</button></a>
+<a href="order.html?service=netflix"><button>Buy Now</button></a>
 </div>
 
 <div class="plan">
 <h2>Netflix Standard</h2>
 <p>$10</p>
-<a href="order.html"><button>Buy Now</button></a>
+<a href="order.html?service=netflix"><button>Buy Now</button></a>
 </div>
 
 <div class="plan">
 <h2>Netflix Premium</h2>
 <p>$15</p>
-<a href="order.html"><button>Buy Now</button></a>
+<a href="order.html?service=netflix"><button>Buy Now</button></a>
 </div>
-
+</div>
 </body>
 </html>
