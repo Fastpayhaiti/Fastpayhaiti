@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Wallet</title>
+<style>
+body{
+font-family:Arial;
+background:#eef2f7;
+padding:30px;
+text-align:center;
+}
+.balance-card{
+background:linear-gradient(135deg,#ff4d3d,#ff8a5c);
+color:white;
+padding:25px;
+border-radius:20px;
+max-width:360px;
+margin:0 auto 20px;
+box-shadow:0 10px 25px rgba(255,90,61,0.25);
+}
+.balance{
+font-size:38px;
+font-weight:bold;
+margin-top:10px;
+}
+.actions{
+max-width:360px;
+margin:0 auto;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+}
+button{
+background:white;
+border:none;
+padding:14px;
+border-radius:12px;
+font-size:16px;
+font-weight:bold;
+box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+.history{
+background:white;
+padding:20px;
+margin:25px auto 0;
+border-radius:16px;
+max-width:360px;
+box-shadow:0 4px 10px rgba(0,0,0,0.08);
+text-align:left;
+}
+.tx{
+padding:12px 0;
+border-bottom:1px solid #eee;
+}
+.tx:last-child{
+border-bottom:none;
+}
+</style>
+</head>
+<body>
+
+<h1>FastPay Wallet</h1>
+
+<div class="balance-card">
+  <div>Solde disponib</div>
+  <div class="balance">0 HTG</div>
+</div>
+
+<div class="actions">
+  <button>Depoze</button>
+  <button>Retire</button>
+  <button>Transfere</button>
+  <button>Demande</button>
+</div>
+
+<div class="history">
+  <h2>Dènye tranzaksyon</h2>
+
+  <div class="tx">
+    <strong>Depo MonCash</strong><br>
+    <small>+0 HTG</small>
+  </div>
+
+  <div class="tx">
+    <strong>Transfè kliyan</strong><br>
+    <small>-0 HTG</small>
+  </div>
+
+  <div class="tx">
+    <strong>Retrè wallet</strong><br>
+    <small>-0 HTG</small>
+  </div>
+</div>
+
+</body>
+  </html>
