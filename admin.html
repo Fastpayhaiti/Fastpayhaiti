@@ -83,6 +83,27 @@
       color:#c2410c;
     }
 
+    .deposit-item{
+      padding:14px 0;
+      border-bottom:1px solid #eee;
+    }
+
+    .deposit-item:last-child{
+      border-bottom:none;
+    }
+
+    .deposit-title{
+      font-weight:bold;
+      color:#111827;
+      font-size:16px;
+    }
+
+    .deposit-sub{
+      color:#6b7280;
+      font-size:14px;
+      margin-top:4px;
+    }
+
     .btn{
       display:block;
       width:100%;
@@ -115,14 +136,19 @@
 
   <div class="header">
     <h1>Admin Dashboard</h1>
-    <p>Jere lòd kliyan yo sou FastPay.</p>
+    <p>Jere lòd kliyan yo ak demann depo yo sou FastPay.</p>
   </div>
 
   <div class="box">
     <h2>Dènye lòd</h2>
     <div id="orderBox" class="empty">Pa gen lòd disponib pou kounye a.</div>
-    <button class="btn btn-primary" onclick="loadOrder()">Refresh Order</button>
-    <button class="btn btn-secondary" onclick="clearOrder()">Clear Last Order</button>
+  </div>
+
+  <div class="box">
+    <h2>Deposit Requests</h2>
+    <div id="depositBox" class="empty">Pa gen demann depo pou kounye a.</div>
+    <button class="btn btn-primary" onclick="loadAllData()">Refresh Dashboard</button>
+    <button class="btn btn-secondary" onclick="clearAllData()">Clear Deposit Requests</button>
   </div>
 </div>
 
@@ -151,13 +177,45 @@
       '<div class="row"><span class="status">Status: ' + (order.status || 'Pending Review') + '</span></div>';
   }
 
-  function clearOrder(){
-    localStorage.removeItem("fastpay_last_order");
-    loadOrder();
+  function loadDeposits(){
+    const deposits = JSON.parse(localStorage.getItem("fastpay_deposits")) || [];
+    const depositBox = document.getElementById("depositBox");
+
+    if(deposits.length === 0){
+      depositBox.className = "empty";
+      depositBox.innerHTML = "Pa gen demann depo pou kounye a.";
+      return;
+    }
+
+    depositBox.className = "";
+    depositBox.innerHTML = "";
+
+    deposits.forEach(function(deposit){
+      depositBox.innerHTML +=
+        '<div class="deposit-item">' +
+        '<div class="deposit-title">' + deposit.clientName + ' - ' + deposit.amount + ' HTG</div>' +
+        '<div class="deposit-sub"><strong>Method:</strong> ' + deposit.method + '</div>' +
+        '<div class="deposit-sub"><strong>Bank:</strong> ' + deposit.bank + '</div>' +
+        '<div class="deposit-sub"><strong>Currency:</strong> ' + deposit.currency + '</div>' +
+        '<div class="deposit-sub"><strong>Details:</strong> ' + deposit.details + '</div>' +
+        '<div class="deposit-sub"><strong>Date:</strong> ' + deposit.date + '</div>' +
+        '<div class="deposit-sub"><span class="status">Status: ' + deposit.status + '</span></div>' +
+        '</div>';
+    });
   }
 
-  window.onload = loadOrder;
+  function loadAllData(){
+    loadOrder();
+    loadDeposits();
+  }
+
+  function clearAllData(){
+    localStorage.removeItem("fastpay_deposits");
+    loadAllData();
+  }
+
+  window.onload = loadAllData;
 </script>
 
 </body>
-  </html>
+</html>
