@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FastPay Withdraw</title>
+<style>
+*{
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+margin:0;
+background:#eef2f7;
+padding:20px;
+}
+
+.container{
+max-width:430px;
+margin:auto;
+}
+
+.back{
+display:inline-block;
+margin-bottom:18px;
+color:#ff4d3d;
+text-decoration:none;
+font-weight:bold;
+}
+
+.header{
+background:white;
+padding:20px;
+border-radius:18px;
+box-shadow:0 4px 14px rgba(0,0,0,0.08);
+margin-bottom:18px;
+}
+
+.header h1{
+margin:0 0 8px 0;
+color:#111827;
+font-size:28px;
+}
+
+.header p{
+margin:0;
+color:#6b7280;
+}
+
+.section{
+background:white;
+padding:18px;
+border-radius:18px;
+box-shadow:0 4px 14px rgba(0,0,0,0.08);
+margin-bottom:18px;
+}
+
+.section h2{
+margin:0 0 16px 0;
+font-size:22px;
+color:#111827;
+}
+
+.method-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+}
+
+.method-box{
+border:2px solid #e5e7eb;
+border-radius:18px;
+padding:18px 10px;
+text-align:center;
+cursor:pointer;
+background:#fff;
+}
+
+.method-box.active{
+border-color:#ff4d3d;
+background:#fff5f2;
+}
+
+.method-icon{
+font-size:28px;
+margin-bottom:10px;
+}
+
+.method-title{
+font-size:16px;
+font-weight:bold;
+color:#111827;
+}
+
+.method-sub{
+font-size:13px;
+color:#16a34a;
+margin-top:6px;
+}
+
+.bank-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+}
+
+.bank-box{
+border:2px solid #e5e7eb;
+border-radius:18px;
+padding:16px 10px;
+text-align:center;
+cursor:pointer;
+background:#fff;
+}
+
+.bank-box.active{
+border-color:#ff4d3d;
+background:#fff5f2;
+}
+
+.bank-logo{
+font-size:15px;
+font-weight:bold;
+margin-bottom:10px;
+color:#111827;
+}
+
+.bank-name{
+font-size:16px;
+color:#111827;
+}
+
+label{
+display:block;
+margin-bottom:8px;
+font-weight:bold;
+color:#111827;
+}
+
+select,input,textarea{
+width:100%;
+padding:14px;
+border:1px solid #d1d5db;
+border-radius:14px;
+font-size:16px;
+background:white;
+}
+
+.submit-btn{
+width:100%;
+padding:16px;
+background:#ff4d3d;
+color:white;
+border:none;
+border-radius:16px;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+margin-top:18px;
+}
+
+.success-box{
+display:none;
+background:#ecfdf3;
+color:#166534;
+padding:16px;
+border-radius:16px;
+font-weight:bold;
+margin-top:16px;
+}
+
+.note{
+margin-top:14px;
+font-size:14px;
+color:#6b7280;
+background:#f8fafc;
+padding:14px;
+border-radius:14px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<a href="index.html" class="back">← Back Home</a>
+
+<div class="header">
+<h1>Retire lajan</h1>
+<p>Chwazi metòd retrè ou epi voye demann lan.</p>
+</div>
+
+<div class="section">
+<h2>Méthode de retrait</h2>
+
+<div class="method-grid">
+<div class="method-box active" id="method-bank" onclick="selectMethod('Banque')">
+<div class="method-icon">🏦</div>
+<div class="method-title">Banque</div>
+</div>
+
+<div class="method-box" id="method-digital" onclick="selectMethod('Digital')">
+<div class="method-icon">💲</div>
+<div class="method-title">Digital</div>
+</div>
+
+<div class="method-box" id="method-wallet" onclick="selectMethod('Wallet')">
+<div class="method-icon">👛</div>
+<div class="method-title">Wallet</div>
+<div class="method-sub">FastPay</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>Service / Banque</h2>
+
+<div class="bank-grid">
+<div class="bank-box active" id="bank-1" onclick="selectBank('Bank 1')">
+<div class="bank-logo">LOGO BANK</div>
+<div class="bank-name">Bank 1</div>
+</div>
+
+<div class="bank-box" id="bank-2" onclick="selectBank('Bank 2')">
+<div class="bank-logo">LOGO BANK</div>
+<div class="bank-name">Bank 2</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<label>Devise du compte</label>
+<select id="currency">
+<option>HTG - Gourde haïtienne</option>
+<option>USD - US Dollar</option>
+</select>
+
+<label style="margin-top:16px;">Nom du compte</label>
+<input type="text" id="accountName" placeholder="Antre non kont lan">
+
+<label style="margin-top:16px;">Numéro de compte</label>
+<input type="text" id="accountNumber" placeholder="Antre nimewo kont lan">
+
+<label style="margin-top:16px;">Type de compte</label>
+<select id="accountType">
+<option>Épargnes</option>
+<option>Chèque</option>
+</select>
+
+<label style="margin-top:16px;">Montant</label>
+<input type="number" id="withdrawAmount" placeholder="HTG 0">
+
+<label style="margin-top:16px;">Nom kliyan</label>
+<input type="text" id="clientName" placeholder="Antre non kliyan an">
+
+<label style="margin-top:16px;">Détails</label>
+<textarea id="withdrawDetails" rows="4" placeholder="Mete detay sou retrè a"></textarea>
+
+<button class="submit-btn" onclick="submitWithdraw()">Confirmer le retrait</button>
+
+<div class="success-box" id="successBox">
+Demann retrè a soumèt avèk siksè.
+</div>
+
+<div class="note">
+Aprè admin verifye demann lan, retrè a ap trete selon metòd ou chwazi a.
+</div>
+</div>
+
+</div>
+
+<script>
+let selectedMethod = "Banque";
+let selectedBank = "Bank 1";
+
+function selectMethod(method){
+  selectedMethod = method;
+
+  document.getElementById("method-bank").classList.remove("active");
+  document.getElementById("method-digital").classList.remove("active");
+  document.getElementById("method-wallet").classList.remove("active");
+
+  if(method === "Banque") document.getElementById("method-bank").classList.add("active");
+  if(method === "Digital") document.getElementById("method-digital").classList.add("active");
+  if(method === "Wallet") document.getElementById("method-wallet").classList.add("active");
+}
+
+function selectBank(bank){
+  selectedBank = bank;
+
+  document.getElementById("bank-1").classList.remove("active");
+  document.getElementById("bank-2").classList.remove("active");
+
+  if(bank === "Bank 1"){
+    document.getElementById("bank-1").classList.add("active");
+  }
+
+  if(bank === "Bank 2"){
+    document.getElementById("bank-2").classList.add("active");
+  }
+}
+
+function submitWithdraw(){
+  const amount = document.getElementById("withdrawAmount").value;
+  const clientName = document.getElementById("clientName").value;
+  const details = document.getElementById("withdrawDetails").value;
+  const currency = document.getElementById("currency").value;
+  const accountName = document.getElementById("accountName").value;
+  const accountNumber = document.getElementById("accountNumber").value;
+  const accountType = document.getElementById("accountType").value;
+
+  if(!amount || amount <= 0){
+    alert("Tanpri antre yon montan ki valab.");
+    return;
+  }
+
+  if(!clientName){
+    alert("Tanpri antre non kliyan an.");
+    return;
+  }
+
+  if(!accountName){
+    alert("Tanpri antre non kont lan.");
+    return;
+  }
+
+  if(!accountNumber){
+    alert("Tanpri antre nimewo kont lan.");
+    return;
+  }
+
+  const withdrawData = {
+    type: "Withdraw Request",
+    method: selectedMethod,
+    bank: selectedBank,
+    currency: currency,
+    accountName: accountName,
+    accountNumber: accountNumber,
+    accountType: accountType,
+    amount: amount,
+    clientName: clientName,
+    details: details,
+    status: "Pending Verification",
+    date: new Date().toLocaleString()
+  };
+
+  localStorage.setItem("fastpay_last_withdraw", JSON.stringify(withdrawData));
+
+  let withdrawList = JSON.parse(localStorage.getItem("fastpay_withdraws")) || [];
+  withdrawList.unshift(withdrawData);
+  localStorage.setItem("fastpay_withdraws", JSON.stringify(withdrawList));
+
+  document.getElementById("successBox").style.display = "block";
+}
+</script>
+
+</body>
+  </html>
