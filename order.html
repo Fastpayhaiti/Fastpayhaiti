@@ -94,14 +94,64 @@
       font-weight:bold;
       text-align:center;
     }
+
+    .confirm-box{
+      display:none;
+      background:white;
+      padding:20px;
+      border-radius:18px;
+      box-shadow:0 4px 14px rgba(0,0,0,0.08);
+    }
+
+    .status{
+      display:inline-block;
+      margin-top:10px;
+      background:#fff7ed;
+      color:#c2410c;
+      padding:8px 14px;
+      border-radius:999px;
+      font-size:14px;
+      font-weight:bold;
+    }
+
+    .order-details{
+      margin-top:18px;
+      text-align:left;
+      background:#f9fafb;
+      padding:16px;
+      border-radius:12px;
+    }
+
+    .order-details p{
+      margin:8px 0;
+      color:#111827;
+    }
+
+    .btn-link{
+      display:block;
+      margin-top:12px;
+      width:100%;
+      padding:14px;
+      background:#ff4d3d;
+      color:white;
+      text-decoration:none;
+      border-radius:12px;
+      font-size:16px;
+      font-weight:bold;
+      text-align:center;
+    }
+
+    .btn-secondary{
+      background:#111827;
+    }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <a href="index.html" class="back">← Back Home</a>
+  <div id="checkoutCard" class="card">
+    <a href="index.html" class="back">← Back Home</a>
 
-  <div class="card">
     <h1>Checkout</h1>
     <p>Ranpli enfòmasyon yo pou konfime lòd ou.</p>
 
@@ -139,8 +189,23 @@
     </form>
 
     <div class="success" id="successMessage">
-      Payment request saved successfully. Nou resevwa lòd ou a.
+      Payment request saved successfully.
     </div>
+  </div>
+
+  <div id="confirmScreen" class="confirm-box">
+    <a href="index.html" class="back">← Back Home</a>
+
+    <h1>Order Confirmed</h1>
+    <p>Nou resevwa demann ou a avèk siksè.</p>
+
+    <div class="status">Status: Pending Review</div>
+
+    <div class="order-details" id="orderDetails"></div>
+
+    <a href="index.html" class="btn-link">Back Home</a>
+    <a href="card.html" class="btn-link" id="cardBtn" style="display:none;">View Virtual Card Page</a>
+    <a href="wallet.html" class="btn-link" id="walletBtn" style="display:none;">View Wallet</a>
   </div>
 </div>
 
@@ -150,15 +215,47 @@
 
   window.onload = function () {
     const serviceField = document.getElementById("service");
+    const amountField = document.getElementById("amount");
 
-    if(serviceParam === "netflix") serviceField.value = "Netflix";
-    if(serviceParam === "primevideo") serviceField.value = "Prime Video";
-    if(serviceParam === "giftcards") serviceField.value = "Gift Card";
-    if(serviceParam === "topup") serviceField.value = "Top Up";
-    if(serviceParam === "card") serviceField.value = "Virtual Card";
-    if(serviceParam === "deposit") serviceField.value = "Wallet Deposit";
-    if(serviceParam === "withdraw") serviceField.value = "Wallet Withdraw";
-    if(serviceParam === "transfer") serviceField.value = "Wallet Transfer";
+    if(serviceParam === "netflix"){
+      serviceField.value = "Netflix";
+      amountField.value = "Netflix Plan";
+    }
+
+    if(serviceParam === "primevideo"){
+      serviceField.value = "Prime Video";
+      amountField.value = "Prime Video Plan";
+    }
+
+    if(serviceParam === "giftcards"){
+      serviceField.value = "Gift Card";
+      amountField.value = "Gift Card Amount";
+    }
+
+    if(serviceParam === "topup"){
+      serviceField.value = "Top Up";
+      amountField.value = "Top Up Amount";
+    }
+
+    if(serviceParam === "card"){
+      serviceField.value = "Virtual Card";
+      amountField.value = "$5";
+    }
+
+    if(serviceParam === "deposit"){
+      serviceField.value = "Wallet Deposit";
+      amountField.value = "500 HTG";
+    }
+
+    if(serviceParam === "withdraw"){
+      serviceField.value = "Wallet Withdraw";
+      amountField.value = "500 HTG";
+    }
+
+    if(serviceParam === "transfer"){
+      serviceField.value = "Wallet Transfer";
+      amountField.value = "500 HTG";
+    }
   };
 
   document.getElementById("checkoutForm").addEventListener("submit", function(e){
@@ -170,12 +267,16 @@
     const amount = document.getElementById("amount").value;
     const details = document.getElementById("details").value;
 
+    const orderId = "FP-" + Math.floor(Math.random() * 90000 + 10000);
+
     const orderData = {
       fullname,
       whatsapp,
       service,
       amount,
       details,
+      orderId,
+      status: "Pending Review",
       date: new Date().toLocaleString()
     };
 
@@ -189,6 +290,26 @@
       "<strong>Details:</strong> " + details;
 
     document.getElementById("successMessage").style.display = "block";
+
+    document.getElementById("checkoutCard").style.display = "none";
+    document.getElementById("confirmScreen").style.display = "block";
+
+    document.getElementById("orderDetails").innerHTML =
+      "<p><strong>Order ID:</strong> " + orderId + "</p>" +
+      "<p><strong>Client:</strong> " + fullname + "</p>" +
+      "<p><strong>WhatsApp:</strong> " + whatsapp + "</p>" +
+      "<p><strong>Service:</strong> " + service + "</p>" +
+      "<p><strong>Plan / Amount:</strong> " + amount + "</p>" +
+      "<p><strong>Status:</strong> Pending Review</p>" +
+      "<p><strong>Date:</strong> " + orderData.date + "</p>";
+
+    if(service === "Virtual Card"){
+      document.getElementById("cardBtn").style.display = "block";
+    }
+
+    if(service === "Wallet Deposit" || service === "Wallet Withdraw" || service === "Wallet Transfer"){
+      document.getElementById("walletBtn").style.display = "block";
+    }
   });
 </script>
 
