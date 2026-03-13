@@ -84,17 +84,6 @@
       font-size:14px;
     }
 
-    .success{
-      display:none;
-      margin-top:20px;
-      background:#ecfdf3;
-      color:#166534;
-      padding:16px;
-      border-radius:12px;
-      font-weight:bold;
-      text-align:center;
-    }
-
     .confirm-box{
       display:none;
       background:white;
@@ -187,10 +176,6 @@
 
       <button type="submit">Confirm Payment</button>
     </form>
-
-    <div class="success" id="successMessage">
-      Payment request saved successfully.
-    </div>
   </div>
 
   <div id="confirmScreen" class="confirm-box">
@@ -204,8 +189,7 @@
     <div class="order-details" id="orderDetails"></div>
 
     <a href="index.html" class="btn-link">Back Home</a>
-    <a href="card.html" class="btn-link" id="cardBtn" style="display:none;">View Virtual Card Page</a>
-    <a href="wallet.html" class="btn-link" id="walletBtn" style="display:none;">View Wallet</a>
+    <a href="dashboard.html" class="btn-link btn-secondary">Go To My Dashboard</a>
   </div>
 </div>
 
@@ -213,9 +197,22 @@
   const params = new URLSearchParams(window.location.search);
   const serviceParam = params.get("service");
 
+  function getStoredTransactions() {
+    return JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
+  }
+
+  function saveStoredTransactions(transactions) {
+    localStorage.setItem("fastpay_transactions", JSON.stringify(transactions));
+  }
+
   window.onload = function () {
     const serviceField = document.getElementById("service");
     const amountField = document.getElementById("amount");
+
+    const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
+    if(savedUser){
+      document.getElementById("fullname").value = savedUser.fullname || "";
+    }
 
     if(serviceParam === "netflix"){
       serviceField.value = "Netflix";
@@ -244,17 +241,17 @@
 
     if(serviceParam === "deposit"){
       serviceField.value = "Wallet Deposit";
-      amountField.value = "500 HTG";
+      amountField.value = "500";
     }
 
     if(serviceParam === "withdraw"){
       serviceField.value = "Wallet Withdraw";
-      amountField.value = "500 HTG";
+      amountField.value = "500";
     }
 
     if(serviceParam === "transfer"){
       serviceField.value = "Wallet Transfer";
-      amountField.value = "500 HTG";
+      amountField.value = "500";
     }
   };
 
@@ -282,14 +279,34 @@
 
     localStorage.setItem("fastpay_last_order", JSON.stringify(orderData));
 
-    document.getElementById("summaryBox").innerHTML =
-      "<strong>Service:</strong> " + service + "<br>" +
-      "<strong>Client:</strong> " + fullname + "<br>" +
-      "<strong>WhatsApp:</strong> " + whatsapp + "<br>" +
-      "<strong>Plan/Montan:</strong> " + amount + "<br>" +
-      "<strong>Details:</strong> " + details;
+    let balance = parseInt(localStorage.getItem("fastpay_balance")) || 0;
+    const numericAmount = parseInt(amount) || 0;
 
-    document.getElementById("successMessage").style.display = "block";
+    if(service === "Wallet Deposit" && numericAmount > 0){
+      balance += numericAmount;
+      localStorage.setItem("fastpay_balance", balance);
+    }
+
+    if(service === "Wallet Withdraw" && numericAmount > 0){
+      balance -= numericAmount;
+      if(balance < 0){ balance = 0; }
+      localStorage.setItem("fastpay_balance", balance);
+    }
+
+    if(service === "Wallet Transfer" && numericAmount > 0){
+      balance -= numericAmount;
+      if(balance < 0){ balance = 0; }
+      localStorage.setItem("fastpay_balance", balance);
+    }
+
+    const transactions = getStoredTransactions();
+    transactions.unshift({
+      service: service,
+      amount: amount,
+      date: orderData.date,
+      orderId: orderId
+    });
+    saveStoredTransactions(transactions);
 
     document.getElementById("checkoutCard").style.display = "none";
     document.getElementById("confirmScreen").style.display = "block";
@@ -301,15 +318,8 @@
       "<p><strong>Service:</strong> " + service + "</p>" +
       "<p><strong>Plan / Amount:</strong> " + amount + "</p>" +
       "<p><strong>Status:</strong> Pending Review</p>" +
-      "<p><strong>Date:</strong> " + orderData.date + "</p>";
-
-    if(service === "Virtual Card"){
-      document.getElementById("cardBtn").style.display = "block";
-    }
-
-    if(service === "Wallet Deposit" || service === "Wallet Withdraw" || service === "Wallet Transfer"){
-      document.getElementById("walletBtn").style.display = "block";
-    }
+      "<p><strong>Date:</strong> " + orderData.date + "</p>" +
+      "<p><strong>Updated Balance:</strong> " + balance + " HTG</p>";
   });
 </script>
 
