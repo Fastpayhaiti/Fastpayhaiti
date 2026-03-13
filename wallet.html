@@ -2,75 +2,113 @@
 <html>
 <head>
 <title>Wallet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body{
-font-family:Arial;
+font-family:Arial,sans-serif;
 background:#eef2f7;
-padding:30px;
-text-align:center;
+padding:20px;
+margin:0;
 }
+
+.container{
+max-width:420px;
+margin:auto;
+}
+
+.back{
+display:inline-block;
+margin-bottom:20px;
+color:#ff4d3d;
+text-decoration:none;
+font-weight:bold;
+}
+
 .balance-card{
 background:linear-gradient(135deg,#ff4d3d,#ff8a5c);
 color:white;
 padding:25px;
-border-radius:20px;
-max-width:360px;
-margin:0 auto 20px;
+border-radius:22px;
 box-shadow:0 10px 25px rgba(255,90,61,0.25);
+margin-bottom:20px;
 }
+
+.balance-title{
+font-size:18px;
+opacity:0.95;
+}
+
 .balance{
-font-size:38px;
+font-size:42px;
 font-weight:bold;
 margin-top:10px;
 }
+
 .actions{
-max-width:360px;
-margin:0 auto;
 display:grid;
 grid-template-columns:repeat(2,1fr);
 gap:12px;
+margin-bottom:20px;
 }
-button{
+
+a{
+text-decoration:none;
+}
+
+.action-btn{
 background:white;
 border:none;
 padding:14px;
-border-radius:12px;
+border-radius:14px;
 font-size:16px;
 font-weight:bold;
 box-shadow:0 4px 10px rgba(0,0,0,0.08);
+color:#111;
+text-align:center;
+display:block;
 }
+
 .history{
 background:white;
 padding:20px;
-margin:25px auto 0;
-border-radius:16px;
-max-width:360px;
+border-radius:18px;
 box-shadow:0 4px 10px rgba(0,0,0,0.08);
-text-align:left;
 }
+
+.history h2{
+margin-top:0;
+font-size:24px;
+}
+
 .tx{
 padding:12px 0;
 border-bottom:1px solid #eee;
 }
+
 .tx:last-child{
 border-bottom:none;
+}
+
+.tx small{
+color:#777;
 }
 </style>
 </head>
 <body>
 
-<h1>FastPay Wallet</h1>
+<div class="container">
+<a href="index.html" class="back">← Back Home</a>
 
 <div class="balance-card">
-  <div>Solde disponib</div>
+  <div class="balance-title">Solde disponib</div>
   <div class="balance">0 HTG</div>
 </div>
 
 <div class="actions">
-  <button>Depoze</button>
-  <button>Retire</button>
-  <button>Transfere</button>
-  <button>Demande</button>
+  <a href="order.html" class="action-btn">Depoze</a>
+  <a href="order.html" class="action-btn">Retire</a>
+  <a href="order.html" class="action-btn">Transfere</a>
+  <a href="order.html" class="action-btn">Demande</a>
 </div>
 
 <div class="history">
@@ -91,6 +129,7 @@ border-bottom:none;
     <small>-0 HTG</small>
   </div>
 </div>
+</div>
 
 </body>
-  </html>
+</html>
