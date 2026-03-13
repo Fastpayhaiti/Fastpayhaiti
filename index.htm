@@ -3,301 +3,222 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FastPay</title>
+
+<title>FastPay Haiti</title>
+
 <style>
-*{
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
 
 body{
 margin:0;
-background:#eef2f7;
+font-family:Arial;
+background:#f2f4f7;
+}
+
+.container{
+max-width:430px;
+margin:auto;
 padding:20px;
 }
 
-.app{
-max-width:430px;
-margin:auto;
-}
-
-.topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:20px;
-}
-
 .logo{
-font-size:30px;
+font-size:28px;
 font-weight:bold;
-color:#ff5a3d;
-}
-
-.profile{
-width:44px;
-height:44px;
-border-radius:14px;
-background:linear-gradient(135deg,#ff5a3d,#ff7a59);
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-font-weight:bold;
-font-size:18px;
-}
-
-.auth-buttons{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-margin-bottom:18px;
-}
-
-.auth-btn{
-display:block;
-text-align:center;
-padding:12px;
-border-radius:12px;
-font-weight:bold;
-text-decoration:none;
-}
-
-.login-btn{
-background:#111827;
-color:white;
-}
-
-.register-btn{
-background:#ff4d3d;
-color:white;
+color:#ff4d3d;
+margin-bottom:20px;
 }
 
 .balance-card{
 background:linear-gradient(135deg,#ff4d3d,#ff8a5c);
 color:white;
-border-radius:28px;
-padding:24px;
-box-shadow:0 12px 30px rgba(255,90,61,0.25);
+padding:25px;
+border-radius:20px;
 margin-bottom:20px;
 }
 
-.balance-card h2{
-margin:0;
-font-size:18px;
-font-weight:normal;
+.balance-title{
+opacity:0.9;
+font-size:16px;
 }
 
-.balance{
-font-size:42px;
+.balance-amount{
+font-size:40px;
 font-weight:bold;
-margin:12px 0 22px;
+margin-top:8px;
 }
 
 .actions{
 display:grid;
-grid-template-columns:repeat(2,1fr);
+grid-template-columns:1fr 1fr;
 gap:12px;
-}
-
-a{
-text-decoration:none;
+margin-top:20px;
 }
 
 .action-btn{
-background:rgba(255,255,255,0.18);
-border:none;
-color:white;
-padding:16px;
-border-radius:18px;
-font-size:16px;
-font-weight:bold;
+background:rgba(255,255,255,0.25);
+padding:15px;
 text-align:center;
-display:block;
+border-radius:12px;
+color:white;
+text-decoration:none;
+font-weight:bold;
 }
 
 .section-title{
-font-size:28px;
+font-size:26px;
 font-weight:bold;
-margin:18px 0 14px;
-color:#111827;
+margin:20px 0;
 }
 
 .services{
 display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:14px;
-margin-bottom:20px;
+grid-template-columns:1fr 1fr;
+gap:16px;
 }
 
-.service-box{
+.service{
 background:white;
-border-radius:22px;
 padding:18px;
-box-shadow:0 4px 14px rgba(0,0,0,0.05);
-min-height:120px;
-color:#111;
-}
-
-.service-box h3{
-margin:0 0 10px 0;
-font-size:19px;
-}
-
-.service-box p{
-margin:0;
-color:#666;
-font-size:14px;
-line-height:1.4;
-}
-
-.admin-btn{
-display:block;
-margin-top:20px;
-background:#111827;
-color:white;
-padding:16px;
 border-radius:18px;
-font-weight:bold;
-text-align:center;
+box-shadow:0 4px 10px rgba(0,0,0,0.08);
+text-decoration:none;
+color:black;
 }
 
-.welcome{
-background:#ecfdf3;
-color:#166534;
-padding:12px;
-border-radius:12px;
+.service-title{
 font-weight:bold;
-margin-bottom:18px;
-display:none;
-line-height:1.6;
+font-size:18px;
+margin-bottom:6px;
 }
 
-.logout-btn{
-margin-top:10px;
-padding:10px 14px;
-border:none;
+.service-desc{
+font-size:14px;
+color:#6b7280;
+}
+
+.admin{
+margin-top:30px;
 background:#111827;
 color:white;
-border-radius:8px;
+padding:18px;
+text-align:center;
+border-radius:18px;
+text-decoration:none;
+display:block;
 font-weight:bold;
-cursor:pointer;
+font-size:18px;
 }
+
 </style>
+
 </head>
+
 <body>
 
-<div class="app">
+<div class="container">
 
-<div class="topbar">
-<div class="logo">FastPay</div>
-<div class="profile">L</div>
-</div>
-
-<div class="welcome" id="welcomeBox"></div>
-
-<div class="auth-buttons">
-<a href="login.html" class="auth-btn login-btn">Login</a>
-<a href="register.html" class="auth-btn register-btn">Register</a>
+<div class="logo">
+FastPay
 </div>
 
 <div class="balance-card">
-<h2>Solde disponib</h2>
-<div class="balance">0 HTG</div>
+
+<div class="balance-title">
+Solde disponib
+</div>
+
+<div class="balance-amount">
+0 HTG
+</div>
 
 <div class="actions">
-<a href="order.html?service=deposit" class="action-btn">Depoze</a>
-<a href="order.html?service=withdraw" class="action-btn">Retire</a>
-<a href="order.html?service=transfer" class="action-btn">Transfere</a>
-<a href="order.html?service=deposit" class="action-btn">Demande</a>
-</div>
+
+<a href="deposit.html" class="action-btn">
+Depoze
+</a>
+
+<a href="withdraw.html" class="action-btn">
+Retire
+</a>
+
+<a href="transfer.html" class="action-btn">
+Transfere
+</a>
+
+<a href="order.html" class="action-btn">
+Demande
+</a>
+
 </div>
 
-<div class="section-title">Sèvis yo</div>
+</div>
+
+<div class="section-title">
+Sèvis yo
+</div>
 
 <div class="services">
-<a href="card.html" class="service-box">
-<h3>Virtual Card</h3>
-<p>Kreye kat vityèl pou peye sou entènèt.</p>
+
+<a href="order.html?service=virtual-card" class="service">
+<div class="service-title">
+Virtual Card
+</div>
+<div class="service-desc">
+Kreye kat vityèl pou peye sou entènèt.
+</div>
 </a>
 
-<a href="netflix.html" class="service-box">
-<h3>Netflix</h3>
-<p>Achte oswa renouvle plan Netflix.</p>
+<a href="order.html?service=netflix" class="service">
+<div class="service-title">
+Netflix
+</div>
+<div class="service-desc">
+Achte oswa renouvle plan Netflix.
+</div>
 </a>
 
-<a href="primevideo.html" class="service-box">
-<h3>Prime Video</h3>
-<p>Peye abònman Prime Video.</p>
+<a href="order.html?service=prime-video" class="service">
+<div class="service-title">
+Prime Video
+</div>
+<div class="service-desc">
+Peye abònman Prime Video.
+</div>
 </a>
 
-<a href="giftcards.html" class="service-box">
-<h3>Gift Cards</h3>
-<p>Apple, Amazon, Steam ak plis.</p>
+<a href="order.html?service=gift-card" class="service">
+<div class="service-title">
+Gift Cards
+</div>
+<div class="service-desc">
+Apple, Amazon, Steam ak plis.
+</div>
 </a>
 
-<a href="topup.html" class="service-box">
-<h3>Top Up</h3>
-<p>Recharge mobil ak gaming.</p>
+<a href="order.html?service=topup" class="service">
+<div class="service-title">
+Top Up
+</div>
+<div class="service-desc">
+Recharge mobil ak gaming.
+</div>
 </a>
 
-<a href="wallet.html" class="service-box">
-<h3>Wallet</h3>
-<p>Jere balans ak tranzaksyon.</p>
+<a href="wallet.html" class="service">
+<div class="service-title">
+Wallet
+</div>
+<div class="service-desc">
+Jere balans ak tranzaksyon.
+</div>
 </a>
+
 </div>
 
-<a href="admin.html" class="admin-btn">Admin Dashboard</a>
+<a href="admin.html" class="admin">
+Admin Dashboard
+</a>
 
 </div>
-
-<script>
-const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
-const loggedIn = localStorage.getItem("fastpay_logged_in");
-const welcomeBox = document.getElementById("welcomeBox");
-
-if(savedUser && loggedIn === "true"){
-  welcomeBox.style.display = "block";
-  welcomeBox.innerHTML =
-    "Byenvini, " + savedUser.fullname + "!" +
-    '<br><button class="logout-btn" onclick="logout()">Logout</button>';
-}
-
-function logout(){
-  localStorage.removeItem("fastpay_logged_in");
-  window.location.href = "index.html";
-}
-</script>
 
 </body>
 </html>
-<div class="section-title">Dashboard</div>
-
-<a href="dashboard.html" style="
-display:block;
-background:#ff4d3d;
-color:white;
-padding:16px;
-border-radius:18px;
-font-weight:bold;
-text-align:center;
-margin-bottom:12px;
-text-decoration:none;
-font-size:16px;
-">
-My Dashboard
-</a>
-
-<a href="admin.html" style="
-display:block;
-background:#111827;
-color:white;
-padding:16px;
-border-radius:18px;
-font-weight:bold;
-text-align:center;
-text-decoration:none;
-font-size:16px;
-">
-Admin Dashboard
-</a>
