@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FastPay Dashboard</title>
+<title>FastPay</title>
 <style>
 *{
 box-sizing:border-box;
@@ -16,28 +16,20 @@ background:#eef2f7;
 padding:20px;
 }
 
-.container{
+.app{
 max-width:430px;
 margin:auto;
 }
 
-.back{
-display:inline-block;
-margin-bottom:20px;
-color:#ff4d3d;
-text-decoration:none;
-font-weight:bold;
-}
-
-.header{
+.topbar{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:18px;
+margin-bottom:20px;
 }
 
 .logo{
-font-size:28px;
+font-size:30px;
 font-weight:bold;
 color:#ff5a3d;
 }
@@ -55,205 +47,252 @@ font-weight:bold;
 font-size:18px;
 }
 
-.welcome{
-background:white;
-padding:18px;
-border-radius:18px;
-box-shadow:0 4px 14px rgba(0,0,0,0.08);
+.auth-buttons{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
 margin-bottom:18px;
 }
 
-.welcome h2{
-margin:0 0 8px 0;
-color:#111827;
+.auth-btn{
+display:block;
+text-align:center;
+padding:12px;
+border-radius:12px;
+font-weight:bold;
+text-decoration:none;
 }
 
-.welcome p{
-margin:0;
-color:#6b7280;
+.login-btn{
+background:#111827;
+color:white;
+}
+
+.register-btn{
+background:#ff4d3d;
+color:white;
 }
 
 .balance-card{
 background:linear-gradient(135deg,#ff4d3d,#ff8a5c);
 color:white;
-border-radius:24px;
-padding:22px;
+border-radius:28px;
+padding:24px;
 box-shadow:0 12px 30px rgba(255,90,61,0.25);
-margin-bottom:18px;
+margin-bottom:20px;
 }
 
-.balance-title{
-font-size:17px;
-opacity:0.95;
+.balance-card h2{
+margin:0;
+font-size:18px;
+font-weight:normal;
 }
 
 .balance{
-font-size:40px;
+font-size:42px;
 font-weight:bold;
-margin-top:8px;
+margin:12px 0 22px;
 }
 
-.section{
-background:white;
-padding:18px;
-border-radius:18px;
-box-shadow:0 4px 14px rgba(0,0,0,0.08);
-margin-bottom:18px;
+.actions{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
 }
 
-.section h3{
-margin-top:0;
-font-size:22px;
-color:#111827;
+a{
+text-decoration:none;
 }
 
-.virtual-card{
-background:linear-gradient(135deg,#111,#333);
+.action-btn{
+background:rgba(255,255,255,0.18);
+border:none;
 color:white;
+padding:16px;
 border-radius:18px;
-padding:18px;
-height:180px;
-display:flex;
-flex-direction:column;
-justify-content:space-between;
-position:relative;
-box-shadow:0 10px 25px rgba(0,0,0,0.25);
-}
-
-.card-chip{
-width:42px;
-height:30px;
-background:gold;
-border-radius:6px;
-}
-
-.card-number{
-font-size:20px;
-letter-spacing:2px;
-}
-
-.card-name{
-font-weight:bold;
 font-size:16px;
-}
-
-.card-exp{
-font-size:14px;
-opacity:0.85;
-}
-
-.card-logo{
-position:absolute;
-right:18px;
-bottom:18px;
 font-weight:bold;
-font-size:18px;
-opacity:0.85;
+text-align:center;
+display:block;
 }
 
-.tx{
-padding:12px 0;
-border-bottom:1px solid #eee;
-}
-
-.tx:last-child{
-border-bottom:none;
-}
-
-.tx-name{
+.section-title{
+font-size:28px;
 font-weight:bold;
+margin:18px 0 14px;
 color:#111827;
 }
 
-.tx-sub{
-font-size:13px;
-color:#6b7280;
-margin-top:4px;
+.services{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;
+margin-bottom:20px;
 }
 
-.tx-amount{
+.service-box{
+background:white;
+border-radius:22px;
+padding:18px;
+box-shadow:0 4px 14px rgba(0,0,0,0.05);
+min-height:120px;
+color:#111;
+}
+
+.service-box h3{
+margin:0 0 10px 0;
+font-size:19px;
+}
+
+.service-box p{
+margin:0;
+color:#666;
+font-size:14px;
+line-height:1.4;
+}
+
+.dashboard-section{
+margin-top:20px;
+}
+
+.main-btn{
+display:block;
+margin-bottom:12px;
+padding:16px;
+border-radius:18px;
 font-weight:bold;
-color:#ff5a3d;
-margin-top:4px;
+text-align:center;
+font-size:16px;
+color:white;
 }
 
-.empty{
-color:#6b7280;
-font-size:15px;
+.dashboard-btn{
+background:#ff4d3d;
+}
+
+.admin-btn{
+background:#111827;
+}
+
+.welcome{
+background:#ecfdf3;
+color:#166534;
+padding:12px;
+border-radius:12px;
+font-weight:bold;
+margin-bottom:18px;
+display:none;
+line-height:1.6;
+}
+
+.logout-btn{
+margin-top:10px;
+padding:10px 14px;
+border:none;
+background:#111827;
+color:white;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
 }
 </style>
 </head>
 <body>
 
-<div class="container">
+<div class="app">
 
-<a href="index.html" class="back">← Back Home</a>
-
-<div class="header">
+<div class="topbar">
 <div class="logo">FastPay</div>
 <div class="profile" id="profileLetter">L</div>
 </div>
 
-<div class="welcome">
-<h2 id="welcomeName">Byenvini</h2>
-<p>Men espas pèsonèl FastPay ou.</p>
+<div class="welcome" id="welcomeBox"></div>
+
+<div class="auth-buttons">
+<a href="login.html" class="auth-btn login-btn">Login</a>
+<a href="register.html" class="auth-btn register-btn">Register</a>
 </div>
 
 <div class="balance-card">
-<div class="balance-title">Solde disponib</div>
-<div class="balance" id="userBalance">0 HTG</div>
+<h2>Solde disponib</h2>
+<div class="balance" id="homeBalance">0 HTG</div>
+
+<div class="actions">
+<a href="order.html?service=deposit" class="action-btn">Depoze</a>
+<a href="order.html?service=withdraw" class="action-btn">Retire</a>
+<a href="order.html?service=transfer" class="action-btn">Transfere</a>
+<a href="order.html?service=deposit" class="action-btn">Demande</a>
+</div>
 </div>
 
-<div class="section">
+<div class="section-title">Sèvis yo</div>
+
+<div class="services">
+<a href="card.html" class="service-box">
 <h3>Virtual Card</h3>
-<div class="virtual-card">
-<div class="card-chip"></div>
-<div class="card-number">**** **** **** 4587</div>
-<div class="card-name" id="cardName">LUCKYSTORE</div>
-<div class="card-exp">12/29</div>
-<div class="card-logo">VISA</div>
-</div>
+<p>Kreye kat vityèl pou peye sou entènèt.</p>
+</a>
+
+<a href="netflix.html" class="service-box">
+<h3>Netflix</h3>
+<p>Achte oswa renouvle plan Netflix.</p>
+</a>
+
+<a href="primevideo.html" class="service-box">
+<h3>Prime Video</h3>
+<p>Peye abònman Prime Video.</p>
+</a>
+
+<a href="giftcards.html" class="service-box">
+<h3>Gift Cards</h3>
+<p>Apple, Amazon, Steam ak plis.</p>
+</a>
+
+<a href="topup.html" class="service-box">
+<h3>Top Up</h3>
+<p>Recharge mobil ak gaming.</p>
+</a>
+
+<a href="wallet.html" class="service-box">
+<h3>Wallet</h3>
+<p>Jere balans ak tranzaksyon.</p>
+</a>
 </div>
 
-<div class="section">
-<h3>Transaction History</h3>
-<div id="txBox" class="empty">Pa gen tranzaksyon pou kounye a.</div>
+<div class="dashboard-section">
+<a href="dashboard.html" class="main-btn dashboard-btn">My Dashboard</a>
+<a href="admin.html" class="main-btn admin-btn">Admin Dashboard</a>
 </div>
 
 </div>
 
 <script>
 const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
-const transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
+const loggedIn = localStorage.getItem("fastpay_logged_in");
+const welcomeBox = document.getElementById("welcomeBox");
+const profileLetter = document.getElementById("profileLetter");
+const homeBalance = document.getElementById("homeBalance");
+
+const storedBalance = localStorage.getItem("fastpay_balance");
+if(storedBalance){
+  homeBalance.innerHTML = storedBalance + " HTG";
+}
 
 if(savedUser){
-  document.getElementById("welcomeName").innerHTML = "Byenvini, " + savedUser.fullname;
-  document.getElementById("cardName").innerHTML = savedUser.fullname.toUpperCase();
-
   const firstLetter = savedUser.fullname.charAt(0).toUpperCase();
-  document.getElementById("profileLetter").innerHTML = firstLetter;
+  profileLetter.innerHTML = firstLetter;
 }
 
-const userBalance = localStorage.getItem("fastpay_balance");
-if(userBalance){
-  document.getElementById("userBalance").innerHTML = userBalance + " HTG";
+if(savedUser && loggedIn === "true"){
+  welcomeBox.style.display = "block";
+  welcomeBox.innerHTML =
+    "Byenvini, " + savedUser.fullname + "!" +
+    '<br><button class="logout-btn" onclick="logout()">Logout</button>';
 }
 
-const txBox = document.getElementById("txBox");
-
-if(transactions.length > 0){
-  txBox.className = "";
-  txBox.innerHTML = "";
-
-  transactions.forEach(function(tx){
-    txBox.innerHTML +=
-      '<div class="tx">' +
-      '<div class="tx-name">' + tx.service + '</div>' +
-      '<div class="tx-sub">Order ID: ' + (tx.orderId || 'N/A') + '</div>' +
-      '<div class="tx-sub">' + tx.date + '</div>' +
-      '<div class="tx-amount">' + tx.amount + '</div>' +
-      '</div>';
-  });
+function logout(){
+  localStorage.removeItem("fastpay_logged_in");
+  window.location.href = "index.html";
 }
 </script>
 
