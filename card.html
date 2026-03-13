@@ -9,18 +9,15 @@
 box-sizing:border-box;
 font-family:Arial,sans-serif;
 }
-
 body{
 margin:0;
 background:#eef2f7;
 padding:20px;
 }
-
 .container{
 max-width:430px;
 margin:auto;
 }
-
 .back{
 display:inline-block;
 margin-bottom:18px;
@@ -28,20 +25,17 @@ color:#ff4d3d;
 text-decoration:none;
 font-weight:bold;
 }
-
 .topbar{
 display:flex;
 justify-content:space-between;
 align-items:center;
 margin-bottom:18px;
 }
-
 .logo{
 font-size:28px;
 font-weight:bold;
 color:#ff5a3d;
 }
-
 .profile{
 width:44px;
 height:44px;
@@ -54,7 +48,6 @@ justify-content:center;
 font-weight:bold;
 font-size:18px;
 }
-
 .card-box{
 background:white;
 padding:22px;
@@ -62,7 +55,6 @@ border-radius:22px;
 box-shadow:0 4px 14px rgba(0,0,0,0.08);
 margin-bottom:18px;
 }
-
 .icon-wrap{
 width:90px;
 height:90px;
@@ -75,7 +67,6 @@ margin:0 auto 20px;
 font-size:42px;
 color:#ff7a59;
 }
-
 .title{
 text-align:center;
 font-size:24px;
@@ -83,7 +74,6 @@ font-weight:bold;
 color:#111827;
 margin-bottom:12px;
 }
-
 .desc{
 text-align:center;
 font-size:16px;
@@ -91,27 +81,23 @@ color:#6b7280;
 line-height:1.6;
 margin-bottom:20px;
 }
-
 .info-box{
 background:#f8fafc;
 padding:18px;
 border-radius:16px;
 margin-bottom:20px;
 }
-
 .info-box h3{
 margin:0 0 12px 0;
 font-size:22px;
 color:#111827;
 }
-
 .info-box p{
 margin:10px 0;
 color:#4b5563;
 font-size:15px;
 line-height:1.5;
 }
-
 .price-box{
 background:#fff7ed;
 padding:16px;
@@ -119,33 +105,28 @@ border-radius:16px;
 margin-bottom:20px;
 text-align:center;
 }
-
 .price-label{
 font-size:15px;
 color:#9a3412;
 margin-bottom:8px;
 }
-
 .price-amount{
 font-size:34px;
 font-weight:bold;
 color:#c2410c;
 }
-
 .section-title{
 font-size:22px;
 font-weight:bold;
 color:#111827;
 margin:0 0 14px 0;
 }
-
 .methods{
 display:grid;
 grid-template-columns:repeat(3,1fr);
 gap:12px;
 margin-bottom:20px;
 }
-
 .method{
 background:#fff;
 border:2px solid #e5e7eb;
@@ -153,24 +134,20 @@ border-radius:18px;
 padding:16px 10px;
 text-align:center;
 }
-
 .method-icon{
 font-size:28px;
 margin-bottom:10px;
 }
-
 .method-title{
 font-size:15px;
 font-weight:bold;
 color:#111827;
 }
-
 .method-sub{
 font-size:12px;
 color:#16a34a;
 margin-top:6px;
 }
-
 .balance-box{
 background:#f9fafb;
 padding:16px;
@@ -178,19 +155,16 @@ border-radius:16px;
 margin-bottom:20px;
 text-align:center;
 }
-
 .balance-label{
 font-size:14px;
 color:#6b7280;
 margin-bottom:8px;
 }
-
 .balance-amount{
 font-size:28px;
 font-weight:bold;
 color:#111827;
 }
-
 .alert{
 padding:16px;
 border-radius:16px;
@@ -198,19 +172,16 @@ font-weight:bold;
 text-align:center;
 margin-bottom:14px;
 }
-
 .alert-danger{
 background:#e5e7eb;
 color:#ffffff;
 font-size:16px;
 }
-
 .alert-success{
 background:#ecfdf3;
 color:#166534;
 font-size:16px;
 }
-
 .btn{
 display:block;
 width:100%;
@@ -223,18 +194,15 @@ text-align:center;
 text-decoration:none;
 cursor:pointer;
 }
-
 .btn-primary{
 background:#ff4d3d;
 color:white;
 }
-
 .btn-secondary{
 background:#111827;
 color:white;
 margin-top:12px;
 }
-
 .note{
 margin-top:16px;
 background:#f8fafc;
@@ -249,7 +217,6 @@ line-height:1.5;
 <body>
 
 <div class="container">
-
 <a href="index.html" class="back">← Back Home</a>
 
 <div class="topbar">
@@ -258,7 +225,6 @@ line-height:1.5;
 </div>
 
 <div class="card-box">
-
 <div class="icon-wrap">💳</div>
 
 <div class="title">Carte Vityèl</div>
@@ -309,12 +275,10 @@ Jwenn kat vityèl Visa oswa Mastercard pou acha sou entènèt ak sèvis dijital.
 <a href="deposit.html" class="btn btn-secondary">Rechaje wallet la</a>
 
 <div class="note">
-Kliyan ka peye ak bank, digital, oswa dirèkteman ak balans FastPay li.  
+Kliyan ka peye ak bank, digital, oswa dirèkteman ak balans FastPay li.
 Si balans wallet la rive sou 1500 HTG oswa plis, li ka kontinye kreye kat la.
 </div>
-
 </div>
-
 </div>
 
 <script>
@@ -330,10 +294,45 @@ if(savedUser && savedUser.fullname){
 let balance = parseInt(localStorage.getItem("fastpay_balance")) || 0;
 walletBalanceEl.innerHTML = balance + " HTG";
 
+function createVirtualCard(){
+  let currentBalance = parseInt(localStorage.getItem("fastpay_balance")) || 0;
+
+  if(currentBalance < 1500){
+    alert("Solde insuffisant.");
+    return;
+  }
+
+  currentBalance -= 1500;
+  localStorage.setItem("fastpay_balance", currentBalance);
+
+  const cardData = {
+    active: true,
+    number: "**** **** **** 4587",
+    name: savedUser && savedUser.fullname ? savedUser.fullname.toUpperCase() : "FASTPAY USER",
+    exp: "12/29",
+    brand: "VISA",
+    createdAt: new Date().toLocaleString()
+  };
+
+  localStorage.setItem("fastpay_virtual_card", JSON.stringify(cardData));
+
+  let transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
+  transactions.unshift({
+    service: "Virtual Card Creation",
+    amount: "-1500 HTG",
+    date: new Date().toLocaleString(),
+    orderId: "CARD-" + Math.floor(Math.random() * 90000 + 10000)
+  });
+  localStorage.setItem("fastpay_transactions", JSON.stringify(transactions));
+
+  alert("Kat vityèl la kreye avèk siksè.");
+  window.location.href = "dashboard.html";
+}
+
 if(balance >= 1500){
   statusArea.innerHTML = `
     <div class="alert alert-success">Solde ase. Ou ka kreye kat la kounye a.</div>
-    <a href="order.html?service=card" class="btn btn-primary">Créer ma carte virtuelle</a>
+    <button class="btn btn-primary" onclick="createVirtualCard()">Créer ma carte virtuelle</button>
   `;
 }else{
   statusArea.innerHTML = `
