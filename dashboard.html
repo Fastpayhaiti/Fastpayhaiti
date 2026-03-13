@@ -216,7 +216,7 @@ font-size:15px;
 </div>
 
 <div class="section">
-<h3>Dènye tranzaksyon</h3>
+<h3>Transaction History</h3>
 <div id="txBox" class="empty">Pa gen tranzaksyon pou kounye a.</div>
 </div>
 
@@ -224,7 +224,7 @@ font-size:15px;
 
 <script>
 const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
-const savedOrder = JSON.parse(localStorage.getItem("fastpay_last_order"));
+const transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
 
 if(savedUser){
   document.getElementById("welcomeName").innerHTML = "Byenvini, " + savedUser.fullname;
@@ -239,17 +239,23 @@ if(userBalance){
   document.getElementById("userBalance").innerHTML = userBalance + " HTG";
 }
 
-if(savedOrder){
-  document.getElementById("txBox").className = "";
-  document.getElementById("txBox").innerHTML =
-    '<div class="tx">' +
-    '<div class="tx-name">' + savedOrder.service + '</div>' +
-    '<div class="tx-sub">Order ID: ' + (savedOrder.orderId || 'N/A') + '</div>' +
-    '<div class="tx-sub">' + savedOrder.date + '</div>' +
-    '<div class="tx-amount">' + savedOrder.amount + '</div>' +
-    '</div>';
+const txBox = document.getElementById("txBox");
+
+if(transactions.length > 0){
+  txBox.className = "";
+  txBox.innerHTML = "";
+
+  transactions.forEach(function(tx){
+    txBox.innerHTML +=
+      '<div class="tx">' +
+      '<div class="tx-name">' + tx.service + '</div>' +
+      '<div class="tx-sub">Order ID: ' + (tx.orderId || 'N/A') + '</div>' +
+      '<div class="tx-sub">' + tx.date + '</div>' +
+      '<div class="tx-amount">' + tx.amount + '</div>' +
+      '</div>';
+  });
 }
 </script>
 
 </body>
-  </html>
+</html>
