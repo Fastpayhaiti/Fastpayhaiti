@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FastPay Admin</title>
+  <style>
+    *{
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
+
+    body{
+      margin:0;
+      background:#eef2f7;
+      padding:20px;
+    }
+
+    .container{
+      max-width:430px;
+      margin:auto;
+    }
+
+    .back{
+      display:inline-block;
+      margin-bottom:20px;
+      color:#ff4d3d;
+      text-decoration:none;
+      font-weight:bold;
+    }
+
+    .header{
+      background:linear-gradient(135deg,#ff4d3d,#ff8a5c);
+      color:white;
+      padding:22px;
+      border-radius:20px;
+      margin-bottom:20px;
+      box-shadow:0 10px 25px rgba(255,90,61,0.25);
+    }
+
+    .header h1{
+      margin:0;
+      font-size:28px;
+    }
+
+    .header p{
+      margin:8px 0 0;
+      opacity:0.95;
+    }
+
+    .box{
+      background:white;
+      border-radius:18px;
+      padding:18px;
+      box-shadow:0 4px 14px rgba(0,0,0,0.08);
+      margin-bottom:16px;
+    }
+
+    .box h2{
+      margin-top:0;
+      font-size:22px;
+      color:#111827;
+    }
+
+    .empty{
+      color:#6b7280;
+      font-size:15px;
+    }
+
+    .row{
+      margin:10px 0;
+      color:#111827;
+      line-height:1.5;
+    }
+
+    .status{
+      display:inline-block;
+      padding:8px 14px;
+      border-radius:999px;
+      font-size:14px;
+      font-weight:bold;
+      background:#fff7ed;
+      color:#c2410c;
+    }
+
+    .btn{
+      display:block;
+      width:100%;
+      text-align:center;
+      padding:14px;
+      border:none;
+      border-radius:12px;
+      text-decoration:none;
+      font-size:16px;
+      font-weight:bold;
+      cursor:pointer;
+      margin-top:12px;
+    }
+
+    .btn-primary{
+      background:#ff4d3d;
+      color:white;
+    }
+
+    .btn-secondary{
+      background:#111827;
+      color:white;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <a href="index.html" class="back">← Back Home</a>
+
+  <div class="header">
+    <h1>Admin Dashboard</h1>
+    <p>Jere lòd kliyan yo sou FastPay.</p>
+  </div>
+
+  <div class="box">
+    <h2>Dènye lòd</h2>
+    <div id="orderBox" class="empty">Pa gen lòd disponib pou kounye a.</div>
+    <button class="btn btn-primary" onclick="loadOrder()">Refresh Order</button>
+    <button class="btn btn-secondary" onclick="clearOrder()">Clear Last Order</button>
+  </div>
+</div>
+
+<script>
+  function loadOrder(){
+    const savedOrder = localStorage.getItem("fastpay_last_order");
+    const orderBox = document.getElementById("orderBox");
+
+    if(!savedOrder){
+      orderBox.className = "empty";
+      orderBox.innerHTML = "Pa gen lòd disponib pou kounye a.";
+      return;
+    }
+
+    const order = JSON.parse(savedOrder);
+
+    orderBox.className = "";
+    orderBox.innerHTML =
+      '<div class="row"><strong>Order ID:</strong> ' + (order.orderId || 'N/A') + '</div>' +
+      '<div class="row"><strong>Client:</strong> ' + order.fullname + '</div>' +
+      '<div class="row"><strong>WhatsApp:</strong> ' + order.whatsapp + '</div>' +
+      '<div class="row"><strong>Service:</strong> ' + order.service + '</div>' +
+      '<div class="row"><strong>Plan / Amount:</strong> ' + order.amount + '</div>' +
+      '<div class="row"><strong>Details:</strong> ' + order.details + '</div>' +
+      '<div class="row"><strong>Date:</strong> ' + order.date + '</div>' +
+      '<div class="row"><span class="status">Status: ' + (order.status || 'Pending Review') + '</span></div>';
+  }
+
+  function clearOrder(){
+    localStorage.removeItem("fastpay_last_order");
+    loadOrder();
+  }
+
+  window.onload = loadOrder;
+</script>
+
+</body>
+  </html>
