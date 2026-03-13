@@ -1,63 +1,93 @@
 <!DOCTYPE html>
-<html lang="ht">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login - FastPay</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-*{box-sizing:border-box;font-family:Arial,sans-serif;}
-body{margin:0;background:#eef2f7;padding:20px;}
-.container{max-width:420px;margin:auto;}
-.card{background:white;padding:22px;border-radius:18px;box-shadow:0 4px 14px rgba(0,0,0,0.08);}
-h1{margin-top:0;color:#111827;}
-p{color:#6b7280;}
-label{display:block;margin-top:14px;margin-bottom:6px;font-weight:bold;color:#222;}
-input{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-size:16px;}
-button{margin-top:18px;width:100%;padding:14px;background:#ff4d3d;color:white;border:none;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;}
-.link{display:block;text-align:center;margin-top:14px;color:#ff4d3d;text-decoration:none;font-weight:bold;}
-.back{display:inline-block;margin-bottom:20px;color:#ff4d3d;text-decoration:none;font-weight:bold;}
-.error{display:none;margin-top:14px;background:#fef2f2;color:#b91c1c;padding:12px;border-radius:12px;font-weight:bold;text-align:center;}
+body{
+font-family:Arial;
+background:#f4f6fb;
+padding:20px;
+}
+
+.box{
+max-width:400px;
+margin:auto;
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+input{
+width:100%;
+padding:12px;
+margin-top:10px;
+margin-bottom:15px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+button{
+width:100%;
+padding:14px;
+background:#ff4d3d;
+color:white;
+border:none;
+border-radius:10px;
+font-size:16px;
+font-weight:bold;
+}
+
+a{
+display:block;
+margin-top:15px;
+text-align:center;
+}
 </style>
 </head>
+
 <body>
-<div class="container">
-<a href="index.html" class="back">← Back Home</a>
-<div class="card">
-<h1>Login</h1>
-<p>Konekte sou kont FastPay ou.</p>
 
-<form id="loginForm">
-<label>Email Address</label>
-<input type="email" id="email" placeholder="Antre imel ou" required>
+<div class="box">
 
-<label>Password</label>
-<input type="password" id="password" placeholder="Antre modpas ou" required>
+<h2>Login</h2>
 
-<button type="submit">Login</button>
-</form>
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
 
-<div class="error" id="errorMsg">Email oswa modpas pa kòrèk.</div>
+<button onclick="login()">Login</button>
 
-<a href="register.html" class="link">Create new account</a>
-</div>
+<a href="register.html">Create account</a>
+
 </div>
 
 <script>
-document.getElementById("loginForm").addEventListener("submit", function(e){
-  e.preventDefault();
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+function login(){
 
-  const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
+const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
 
-  if(savedUser && savedUser.email === email && savedUser.password === password){
-    localStorage.setItem("fastpay_logged_in", "true");
-    window.location.href = "index.html";
-  } else {
-    document.getElementById("errorMsg").style.display = "block";
-  }
-});
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+
+if(savedUser && savedUser.email === email && savedUser.password === password){
+
+localStorage.setItem("fastpay_logged_in","true");
+
+alert("Login successful");
+
+window.location.href="index.html";
+
+}else{
+
+alert("Login incorrect");
+
+}
+
+}
+
 </script>
+
 </body>
 </html>
