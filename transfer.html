@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FastPay Transfer</title>
+<style>
+*{
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+margin:0;
+background:#eef2f7;
+padding:20px;
+}
+
+.container{
+max-width:430px;
+margin:auto;
+}
+
+.back{
+display:inline-block;
+margin-bottom:18px;
+color:#ff4d3d;
+text-decoration:none;
+font-weight:bold;
+}
+
+.header{
+background:white;
+padding:20px;
+border-radius:18px;
+box-shadow:0 4px 14px rgba(0,0,0,0.08);
+margin-bottom:18px;
+}
+
+.header h1{
+margin:0 0 8px 0;
+color:#111827;
+font-size:28px;
+}
+
+.header p{
+margin:0;
+color:#6b7280;
+}
+
+.section{
+background:white;
+padding:18px;
+border-radius:18px;
+box-shadow:0 4px 14px rgba(0,0,0,0.08);
+margin-bottom:18px;
+}
+
+.section h2{
+margin:0 0 16px 0;
+font-size:22px;
+color:#111827;
+}
+
+label{
+display:block;
+margin-bottom:8px;
+font-weight:bold;
+color:#111827;
+}
+
+select,input,textarea{
+width:100%;
+padding:14px;
+border:1px solid #d1d5db;
+border-radius:14px;
+font-size:16px;
+background:white;
+}
+
+.submit-btn{
+width:100%;
+padding:16px;
+background:#ff4d3d;
+color:white;
+border:none;
+border-radius:16px;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+margin-top:18px;
+}
+
+.success-box{
+display:none;
+background:#ecfdf3;
+color:#166534;
+padding:16px;
+border-radius:16px;
+font-weight:bold;
+margin-top:16px;
+}
+
+.note{
+margin-top:14px;
+font-size:14px;
+color:#6b7280;
+background:#f8fafc;
+padding:14px;
+border-radius:14px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<a href="index.html" class="back">← Back Home</a>
+
+<div class="header">
+<h1>Transfere lajan</h1>
+<p>Ranpli enfòmasyon yo pou voye lajan bay yon lòt kliyan oswa kont.</p>
+</div>
+
+<div class="section">
+<h2>Enfòmasyon transfè</h2>
+
+<label>Type transfè</label>
+<select id="transferType">
+<option>FastPay to FastPay</option>
+<option>Bank Transfer</option>
+<option>Digital Transfer</option>
+</select>
+
+<label style="margin-top:16px;">Nom moun k ap resevwa a</label>
+<input type="text" id="receiverName" placeholder="Antre non moun nan">
+
+<label style="margin-top:16px;">Email oswa ID moun nan</label>
+<input type="text" id="receiverId" placeholder="Antre email oswa ID moun nan">
+
+<label style="margin-top:16px;">Devise</label>
+<select id="currency">
+<option>HTG - Gourde haïtienne</option>
+<option>USD - US Dollar</option>
+</select>
+
+<label style="margin-top:16px;">Montant</label>
+<input type="number" id="transferAmount" placeholder="HTG 0">
+
+<label style="margin-top:16px;">Nom kliyan</label>
+<input type="text" id="clientName" placeholder="Antre non kliyan an">
+
+<label style="margin-top:16px;">Détails</label>
+<textarea id="transferDetails" rows="4" placeholder="Mete detay sou transfè a"></textarea>
+
+<button class="submit-btn" onclick="submitTransfer()">Confirmer le transfert</button>
+
+<div class="success-box" id="successBox">
+Demann transfè a soumèt avèk siksè.
+</div>
+
+<div class="note">
+Aprè verifikasyon an, transfè a ap antre nan istorik kliyan an.
+</div>
+</div>
+
+</div>
+
+<script>
+function submitTransfer(){
+  const transferType = document.getElementById("transferType").value;
+  const receiverName = document.getElementById("receiverName").value;
+  const receiverId = document.getElementById("receiverId").value;
+  const currency = document.getElementById("currency").value;
+  const amount = document.getElementById("transferAmount").value;
+  const clientName = document.getElementById("clientName").value;
+  const details = document.getElementById("transferDetails").value;
+
+  if(!amount || amount <= 0){
+    alert("Tanpri antre yon montan ki valab.");
+    return;
+  }
+
+  if(!clientName){
+    alert("Tanpri antre non kliyan an.");
+    return;
+  }
+
+  if(!receiverName){
+    alert("Tanpri antre non moun k ap resevwa a.");
+    return;
+  }
+
+  if(!receiverId){
+    alert("Tanpri antre email oswa ID moun k ap resevwa a.");
+    return;
+  }
+
+  const transferData = {
+    type: "Transfer Request",
+    transferType: transferType,
+    receiverName: receiverName,
+    receiverId: receiverId,
+    currency: currency,
+    amount: amount,
+    clientName: clientName,
+    details: details,
+    status: "Pending Verification",
+    date: new Date().toLocaleString()
+  };
+
+  localStorage.setItem("fastpay_last_transfer", JSON.stringify(transferData));
+
+  let transferList = JSON.parse(localStorage.getItem("fastpay_transfers")) || [];
+  transferList.unshift(transferData);
+  localStorage.setItem("fastpay_transfers", JSON.stringify(transferList));
+
+  document.getElementById("successBox").style.display = "block";
+}
+</script>
+
+</body>
+</html>
