@@ -5,215 +5,219 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FastPay-Haiti</title>
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
+    *{
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
     }
 
-    body {
-      margin: 0;
-      background: #eef2f7;
-      padding: 20px;
+    body{
+      margin:0;
+      background:#eef2f7;
+      padding:20px;
     }
 
-    .app {
-      max-width: 430px;
-      margin: auto;
+    .app{
+      max-width:430px;
+      margin:auto;
     }
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:20px;
     }
 
-    .logo {
-      font-size: 30px;
-      font-weight: bold;
-      color: #ff5a3d;
+    .logo{
+      font-size:30px;
+      font-weight:bold;
+      color:#ff5a3d;
     }
 
-    .profile {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #ff5a3d, #ff7a59);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 18px;
+    .profile{
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      background:linear-gradient(135deg,#ff5a3d,#ff7a59);
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+      font-size:18px;
     }
 
-    .balance-card {
-      background: linear-gradient(135deg, #ff4d3d, #ff8a5c);
-      color: white;
-      border-radius: 28px;
-      padding: 24px;
-      box-shadow: 0 12px 30px rgba(255, 90, 61, 0.25);
-      margin-bottom: 20px;
+    .balance-card{
+      background:linear-gradient(135deg,#ff4d3d,#ff8a5c);
+      color:white;
+      border-radius:28px;
+      padding:24px;
+      box-shadow:0 12px 30px rgba(255,90,61,0.25);
+      margin-bottom:20px;
     }
 
-    .balance-card h2 {
-      margin: 0;
-      font-size: 18px;
-      font-weight: normal;
+    .balance-card h2{
+      margin:0;
+      font-size:18px;
+      font-weight:normal;
     }
 
-    .balance {
-      font-size: 42px;
-      font-weight: bold;
-      margin: 12px 0 22px;
+    .balance{
+      font-size:42px;
+      font-weight:bold;
+      margin:12px 0 22px;
     }
 
-    .actions {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+    .actions{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
     }
 
-    .action-btn {
-      background: rgba(255,255,255,0.18);
-      border: none;
-      color: white;
-      padding: 16px;
-      border-radius: 18px;
-      font-size: 16px;
-      font-weight: bold;
+    .action-btn{
+      background:rgba(255,255,255,0.18);
+      border:none;
+      color:white;
+      padding:16px;
+      border-radius:18px;
+      font-size:16px;
+      font-weight:bold;
+      cursor:pointer;
     }
 
-    .section-title {
-      font-size: 28px;
-      font-weight: bold;
-      margin: 18px 0 14px;
-      color: #111827;
+    .section-title{
+      font-size:28px;
+      font-weight:bold;
+      margin:18px 0 14px;
+      color:#111827;
     }
 
-    .services {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      margin-bottom: 20px;
+    .services{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+      margin-bottom:20px;
     }
 
-    .service-box {
-      background: white;
-      border-radius: 22px;
-      padding: 18px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
-      min-height: 120px;
+    .service-box{
+      text-decoration:none;
+      color:inherit;
+      display:block;
+      background:white;
+      border-radius:22px;
+      padding:18px;
+      box-shadow:0 4px 14px rgba(0,0,0,0.05);
+      min-height:120px;
     }
 
-    .service-box h3 {
-      margin: 0 0 10px 0;
-      font-size: 19px;
-      color: #222;
+    .service-box h3{
+      margin:0 0 10px 0;
+      font-size:19px;
+      color:#222;
     }
 
-    .service-box p {
-      margin: 0;
-      color: #666;
-      font-size: 14px;
-      line-height: 1.4;
+    .service-box p{
+      margin:0;
+      color:#666;
+      font-size:14px;
+      line-height:1.4;
     }
 
-    .card-virtual {
-      margin-bottom: 20px;
+    .card-virtual{
+      margin-bottom:20px;
     }
 
-    .card-virtual h3 {
-      margin: 0 0 12px 0;
-      font-size: 22px;
-      color: #111827;
+    .card-virtual h3{
+      margin:0 0 12px 0;
+      font-size:22px;
+      color:#111827;
     }
 
-    .virtual-card {
-      background: linear-gradient(135deg, #111, #333);
-      color: white;
-      border-radius: 20px;
-      padding: 20px;
-      height: 180px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      position: relative;
+    .virtual-card{
+      background:linear-gradient(135deg,#111,#333);
+      color:white;
+      border-radius:20px;
+      padding:20px;
+      height:180px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      box-shadow:0 10px 25px rgba(0,0,0,0.3);
+      position:relative;
     }
 
-    .card-chip {
-      width: 42px;
-      height: 32px;
-      background: gold;
-      border-radius: 6px;
+    .card-chip{
+      width:42px;
+      height:32px;
+      background:gold;
+      border-radius:6px;
     }
 
-    .card-number {
-      font-size: 20px;
-      letter-spacing: 2px;
+    .card-number{
+      font-size:20px;
+      letter-spacing:2px;
     }
 
-    .card-name {
-      font-weight: bold;
-      font-size: 16px;
+    .card-name{
+      font-weight:bold;
+      font-size:16px;
     }
 
-    .card-exp {
-      font-size: 14px;
-      opacity: 0.8;
+    .card-exp{
+      font-size:14px;
+      opacity:0.8;
     }
 
-    .card-logo {
-      position: absolute;
-      right: 20px;
-      bottom: 20px;
-      font-weight: bold;
-      font-size: 18px;
-      opacity: 0.85;
-      color: white;
+    .card-logo{
+      position:absolute;
+      right:20px;
+      bottom:20px;
+      font-weight:bold;
+      font-size:18px;
+      opacity:0.85;
+      color:white;
     }
 
-    .transactions {
-      background: white;
-      border-radius: 24px;
-      padding: 20px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
-      margin-bottom: 20px;
+    .transactions{
+      background:white;
+      border-radius:24px;
+      padding:20px;
+      box-shadow:0 4px 14px rgba(0,0,0,0.05);
+      margin-bottom:20px;
     }
 
-    .transactions h3 {
-      margin-top: 0;
-      font-size: 24px;
-      color: #222;
+    .transactions h3{
+      margin-top:0;
+      font-size:24px;
+      color:#222;
     }
 
-    .tx {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 0;
-      border-bottom: 1px solid #eee;
+    .tx{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:14px 0;
+      border-bottom:1px solid #eee;
     }
 
-    .tx:last-child {
-      border-bottom: none;
+    .tx:last-child{
+      border-bottom:none;
     }
 
-    .tx-name {
-      font-weight: bold;
-      color: #222;
+    .tx-name{
+      font-weight:bold;
+      color:#222;
     }
 
-    .tx-date {
-      font-size: 13px;
-      color: #777;
-      margin-top: 4px;
+    .tx-date{
+      font-size:13px;
+      color:#777;
+      margin-top:4px;
     }
 
-    .tx-amount {
-      font-weight: bold;
-      color: #ff5a3d;
+    .tx-amount{
+      font-weight:bold;
+      color:#ff5a3d;
     }
   </style>
 </head>
@@ -239,35 +243,35 @@
     <div class="section-title">Sèvis yo</div>
 
     <div class="services">
-      <div class="service-box">
+      <a href="wallet.html" class="service-box">
         <h3>Wallet</h3>
         <p>Jere balans ou, depoze, transfere ak retire lajan fasil.</p>
-      </div>
+      </a>
 
-      <div class="service-box">
+      <a href="card.html" class="service-box">
         <h3>Virtual Card</h3>
         <p>Kreye ak jere kat vityèl ou pou peye sou entènèt.</p>
-      </div>
+      </a>
 
-      <div class="service-box">
+      <a href="netflix.html" class="service-box">
         <h3>Netflix</h3>
         <p>Achte oswa renouvle plan Netflix rapid sou FastPay.</p>
-      </div>
+      </a>
 
-      <div class="service-box">
+      <a href="primevideo.html" class="service-box">
         <h3>Prime Video</h3>
         <p>Peye abònman Prime Video ak lòt sèvis streaming.</p>
-      </div>
+      </a>
 
-      <div class="service-box">
+      <a href="giftcards.html" class="service-box">
         <h3>Gift Cards</h3>
         <p>Apple, Google Play, Amazon, Steam, PlayStation ak plis ankò.</p>
-      </div>
+      </a>
 
-      <div class="service-box">
+      <a href="topup.html" class="service-box">
         <h3>Top Up</h3>
         <p>Recharge mobil, gaming top up ak lòt sèvis dijital.</p>
-      </div>
+      </a>
     </div>
 
     <div class="card-virtual">
