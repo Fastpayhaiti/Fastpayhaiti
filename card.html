@@ -1,46 +1,347 @@
 <!DOCTYPE html>
-<html>
+<html lang="ht">
 <head>
-<title>Virtual Card</title>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FastPay Virtual Card</title>
 <style>
-body{font-family:Arial,sans-serif;background:#f4f4f4;text-align:center;padding:30px;margin:0;}
-.container{max-width:420px;margin:auto;}
-.back{display:inline-block;margin-bottom:20px;color:#ff4d3d;text-decoration:none;font-weight:bold;}
-.card{width:320px;height:190px;margin:20px auto;border-radius:18px;background:linear-gradient(135deg,#111,#333);color:white;padding:20px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 10px 25px rgba(0,0,0,0.3);position:relative;text-align:left;}
-.chip{width:42px;height:32px;background:gold;border-radius:6px;}
-.number{font-size:20px;letter-spacing:2px;}
-.name{font-weight:bold;font-size:16px;}
-.exp{font-size:14px;opacity:0.8;}
-.logo{position:absolute;right:20px;bottom:20px;font-size:18px;font-weight:bold;opacity:0.85;}
-a{text-decoration:none;}
-.btn{margin-top:20px;padding:12px 20px;background:#ff4d3d;border:none;color:white;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;display:inline-block;}
-.box{background:white;padding:18px;border-radius:16px;box-shadow:0 4px 10px rgba(0,0,0,0.08);margin-top:20px;text-align:left;}
-.box h3{margin-top:0;}
+*{
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+margin:0;
+background:#eef2f7;
+padding:20px;
+}
+
+.container{
+max-width:430px;
+margin:auto;
+}
+
+.back{
+display:inline-block;
+margin-bottom:18px;
+color:#ff4d3d;
+text-decoration:none;
+font-weight:bold;
+}
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+color:#ff5a3d;
+}
+
+.profile{
+width:44px;
+height:44px;
+border-radius:14px;
+background:linear-gradient(135deg,#ff5a3d,#ff7a59);
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+font-size:18px;
+}
+
+.card-box{
+background:white;
+padding:22px;
+border-radius:22px;
+box-shadow:0 4px 14px rgba(0,0,0,0.08);
+margin-bottom:18px;
+}
+
+.icon-wrap{
+width:90px;
+height:90px;
+border-radius:50%;
+background:#fff4eb;
+display:flex;
+align-items:center;
+justify-content:center;
+margin:0 auto 20px;
+font-size:42px;
+color:#ff7a59;
+}
+
+.title{
+text-align:center;
+font-size:24px;
+font-weight:bold;
+color:#111827;
+margin-bottom:12px;
+}
+
+.desc{
+text-align:center;
+font-size:16px;
+color:#6b7280;
+line-height:1.6;
+margin-bottom:20px;
+}
+
+.info-box{
+background:#f8fafc;
+padding:18px;
+border-radius:16px;
+margin-bottom:20px;
+}
+
+.info-box h3{
+margin:0 0 12px 0;
+font-size:22px;
+color:#111827;
+}
+
+.info-box p{
+margin:10px 0;
+color:#4b5563;
+font-size:15px;
+line-height:1.5;
+}
+
+.price-box{
+background:#fff7ed;
+padding:16px;
+border-radius:16px;
+margin-bottom:20px;
+text-align:center;
+}
+
+.price-label{
+font-size:15px;
+color:#9a3412;
+margin-bottom:8px;
+}
+
+.price-amount{
+font-size:34px;
+font-weight:bold;
+color:#c2410c;
+}
+
+.section-title{
+font-size:22px;
+font-weight:bold;
+color:#111827;
+margin:0 0 14px 0;
+}
+
+.methods{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+margin-bottom:20px;
+}
+
+.method{
+background:#fff;
+border:2px solid #e5e7eb;
+border-radius:18px;
+padding:16px 10px;
+text-align:center;
+}
+
+.method-icon{
+font-size:28px;
+margin-bottom:10px;
+}
+
+.method-title{
+font-size:15px;
+font-weight:bold;
+color:#111827;
+}
+
+.method-sub{
+font-size:12px;
+color:#16a34a;
+margin-top:6px;
+}
+
+.balance-box{
+background:#f9fafb;
+padding:16px;
+border-radius:16px;
+margin-bottom:20px;
+text-align:center;
+}
+
+.balance-label{
+font-size:14px;
+color:#6b7280;
+margin-bottom:8px;
+}
+
+.balance-amount{
+font-size:28px;
+font-weight:bold;
+color:#111827;
+}
+
+.alert{
+padding:16px;
+border-radius:16px;
+font-weight:bold;
+text-align:center;
+margin-bottom:14px;
+}
+
+.alert-danger{
+background:#e5e7eb;
+color:#ffffff;
+font-size:16px;
+}
+
+.alert-success{
+background:#ecfdf3;
+color:#166534;
+font-size:16px;
+}
+
+.btn{
+display:block;
+width:100%;
+padding:16px;
+border:none;
+border-radius:16px;
+font-size:18px;
+font-weight:bold;
+text-align:center;
+text-decoration:none;
+cursor:pointer;
+}
+
+.btn-primary{
+background:#ff4d3d;
+color:white;
+}
+
+.btn-secondary{
+background:#111827;
+color:white;
+margin-top:12px;
+}
+
+.note{
+margin-top:16px;
+background:#f8fafc;
+padding:14px;
+border-radius:14px;
+font-size:14px;
+color:#6b7280;
+line-height:1.5;
+}
 </style>
 </head>
 <body>
+
 <div class="container">
+
 <a href="index.html" class="back">← Back Home</a>
-<h1>Your Virtual Card</h1>
 
-<div class="card">
-<div class="chip"></div>
-<div class="number">**** **** **** 4587</div>
-<div class="name">LUCKYSTORE</div>
-<div class="exp">12/29</div>
-<div class="logo">VISA</div>
+<div class="topbar">
+<div class="logo">FastPay</div>
+<div class="profile" id="profileLetter">L</div>
 </div>
 
-<a href="order.html?service=card" class="btn">Create New Card</a>
+<div class="card-box">
 
-<div class="box">
-<h3>Card Services</h3>
-<p>• Create Virtual Card</p>
-<p>• Fund Card</p>
-<p>• Freeze / Unfreeze</p>
-<p>• Check Card Status</p>
+<div class="icon-wrap">💳</div>
+
+<div class="title">Carte Vityèl</div>
+
+<div class="desc">
+Jwenn kat vityèl Visa oswa Mastercard pou acha sou entènèt ak sèvis dijital.
+</div>
+
+<div class="info-box">
+<h3>Sa kliyan an bezwen:</h3>
+<p>- Pyès idantite valab (Kat oswa Paspò)</p>
+<p>- Enfòmasyon pèsonèl</p>
+<p>- <strong>1500 HTG</strong> frè kreyasyon</p>
+</div>
+
+<div class="price-box">
+<div class="price-label">Pri kreyasyon kat la</div>
+<div class="price-amount">1500 HTG</div>
+</div>
+
+<h3 class="section-title">Mwayen peman</h3>
+
+<div class="methods">
+<div class="method">
+<div class="method-icon">🏦</div>
+<div class="method-title">Bank</div>
+</div>
+
+<div class="method">
+<div class="method-icon">💲</div>
+<div class="method-title">Digital</div>
+</div>
+
+<div class="method">
+<div class="method-icon">👛</div>
+<div class="method-title">Wallet</div>
+<div class="method-sub">FastPay</div>
 </div>
 </div>
+
+<div class="balance-box">
+<div class="balance-label">Solde wallet aktyèl</div>
+<div class="balance-amount" id="walletBalance">0 HTG</div>
+</div>
+
+<div id="statusArea"></div>
+
+<a href="deposit.html" class="btn btn-secondary">Rechaje wallet la</a>
+
+<div class="note">
+Kliyan ka peye ak bank, digital, oswa dirèkteman ak balans FastPay li.  
+Si balans wallet la rive sou 1500 HTG oswa plis, li ka kontinye kreye kat la.
+</div>
+
+</div>
+
+</div>
+
+<script>
+const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
+const profileLetter = document.getElementById("profileLetter");
+const statusArea = document.getElementById("statusArea");
+const walletBalanceEl = document.getElementById("walletBalance");
+
+if(savedUser && savedUser.fullname){
+  profileLetter.innerHTML = savedUser.fullname.charAt(0).toUpperCase();
+}
+
+let balance = parseInt(localStorage.getItem("fastpay_balance")) || 0;
+walletBalanceEl.innerHTML = balance + " HTG";
+
+if(balance >= 1500){
+  statusArea.innerHTML = `
+    <div class="alert alert-success">Solde ase. Ou ka kreye kat la kounye a.</div>
+    <a href="order.html?service=card" class="btn btn-primary">Créer ma carte virtuelle</a>
+  `;
+}else{
+  statusArea.innerHTML = `
+    <div class="alert alert-danger">Solde insuffisant (1500 HTG requis)</div>
+    <a href="deposit.html" class="btn btn-primary">Ajoute lajan pou kontinye</a>
+  `;
+}
+</script>
+
 </body>
 </html>
