@@ -17,7 +17,7 @@
     }
 
     .app {
-      max-width: 420px;
+      max-width: 430px;
       margin: auto;
     }
 
@@ -29,21 +29,22 @@
     }
 
     .logo {
-      font-size: 28px;
+      font-size: 30px;
       font-weight: bold;
       color: #ff5a3d;
     }
 
     .profile {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
       background: linear-gradient(135deg, #ff5a3d, #ff7a59);
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: bold;
+      font-size: 18px;
     }
 
     .balance-card {
@@ -81,11 +82,41 @@
       border-radius: 18px;
       font-size: 16px;
       font-weight: bold;
-      cursor: pointer;
     }
 
-    .action-btn:hover {
-      opacity: 0.9;
+    .section-title {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 18px 0 14px;
+      color: #111827;
+    }
+
+    .services {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .service-box {
+      background: white;
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+      min-height: 120px;
+    }
+
+    .service-box h3 {
+      margin: 0 0 10px 0;
+      font-size: 19px;
+      color: #222;
+    }
+
+    .service-box p {
+      margin: 0;
+      color: #666;
+      font-size: 14px;
+      line-height: 1.4;
     }
 
     .card-virtual {
@@ -143,39 +174,12 @@
       color: white;
     }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      margin-bottom: 20px;
-    }
-
-    .stat-box {
-      background: white;
-      border-radius: 22px;
-      padding: 18px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
-    }
-
-    .stat-box h3 {
-      margin: 0;
-      font-size: 15px;
-      color: #666;
-      font-weight: normal;
-    }
-
-    .stat-box p {
-      margin: 10px 0 0;
-      font-size: 28px;
-      font-weight: bold;
-      color: #222;
-    }
-
     .transactions {
       background: white;
       border-radius: 24px;
       padding: 20px;
       box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
     }
 
     .transactions h3 {
@@ -211,12 +215,6 @@
       font-weight: bold;
       color: #ff5a3d;
     }
-
-    .empty {
-      color: #6b7280;
-      font-size: 14px;
-      margin-top: 10px;
-    }
   </style>
 </head>
 <body>
@@ -228,13 +226,47 @@
 
     <div class="balance-card">
       <h2>Solde disponib</h2>
-      <div class="balance" id="balance">0 HTG</div>
+      <div class="balance">0 HTG</div>
 
       <div class="actions">
-        <button class="action-btn" onclick="transfere()">Transfere</button>
-        <button class="action-btn" onclick="depose()">Depoze</button>
-        <button class="action-btn" onclick="retire()">Retire</button>
-        <button class="action-btn" onclick="demande()">Demande</button>
+        <button class="action-btn">Transfere</button>
+        <button class="action-btn">Depoze</button>
+        <button class="action-btn">Retire</button>
+        <button class="action-btn">Demande</button>
+      </div>
+    </div>
+
+    <div class="section-title">Sèvis yo</div>
+
+    <div class="services">
+      <div class="service-box">
+        <h3>Wallet</h3>
+        <p>Jere balans ou, depoze, transfere ak retire lajan fasil.</p>
+      </div>
+
+      <div class="service-box">
+        <h3>Virtual Card</h3>
+        <p>Kreye ak jere kat vityèl ou pou peye sou entènèt.</p>
+      </div>
+
+      <div class="service-box">
+        <h3>Netflix</h3>
+        <p>Achte oswa renouvle plan Netflix rapid sou FastPay.</p>
+      </div>
+
+      <div class="service-box">
+        <h3>Prime Video</h3>
+        <p>Peye abònman Prime Video ak lòt sèvis streaming.</p>
+      </div>
+
+      <div class="service-box">
+        <h3>Gift Cards</h3>
+        <p>Apple, Google Play, Amazon, Steam, PlayStation ak plis ankò.</p>
+      </div>
+
+      <div class="service-box">
+        <h3>Top Up</h3>
+        <p>Recharge mobil, gaming top up ak lòt sèvis dijital.</p>
       </div>
     </div>
 
@@ -249,141 +281,33 @@
       </div>
     </div>
 
-    <div class="stats">
-      <div class="stat-box">
-        <h3>Total voye</h3>
-        <p id="sentStat">0 HTG</p>
-      </div>
-      <div class="stat-box">
-        <h3>Total retire</h3>
-        <p id="withdrawStat">0 HTG</p>
-      </div>
-      <div class="stat-box">
-        <h3>Aktivite mansyèl</h3>
-        <p id="monthlyStat">0 HTG</p>
-      </div>
-      <div class="stat-box">
-        <h3>Kat aktif</h3>
-        <p>1</p>
-      </div>
-    </div>
-
     <div class="transactions">
       <h3>Dènye tranzaksyon</h3>
-      <div id="txList">
-        <div class="empty">Pa gen nouvo tranzaksyon pou kounye a.</div>
+
+      <div class="tx">
+        <div>
+          <div class="tx-name">Depo MonCash</div>
+          <div class="tx-date">Jodi a • 10:14 AM</div>
+        </div>
+        <div class="tx-amount">+0 HTG</div>
+      </div>
+
+      <div class="tx">
+        <div>
+          <div class="tx-name">Acha Netflix</div>
+          <div class="tx-date">Jodi a • 09:02 AM</div>
+        </div>
+        <div class="tx-amount">-0 HTG</div>
+      </div>
+
+      <div class="tx">
+        <div>
+          <div class="tx-name">Gift Card Apple</div>
+          <div class="tx-date">Yè • 07:31 PM</div>
+        </div>
+        <div class="tx-amount">-0 HTG</div>
       </div>
     </div>
   </div>
-
-  <script>
-    let solde = 0;
-    let totalVoye = 0;
-    let totalRetire = 0;
-    let aktivite = 0;
-
-    function updateUI() {
-      document.getElementById("balance").innerText = solde + " HTG";
-      document.getElementById("sentStat").innerText = totalVoye + " HTG";
-      document.getElementById("withdrawStat").innerText = totalRetire + " HTG";
-      document.getElementById("monthlyStat").innerText = aktivite + " HTG";
-    }
-
-    function addTransaction(name, amountText) {
-      const txList = document.getElementById("txList");
-      const empty = txList.querySelector(".empty");
-      if (empty) empty.remove();
-
-      const tx = document.createElement("div");
-      tx.className = "tx";
-
-      const left = document.createElement("div");
-      const txName = document.createElement("div");
-      txName.className = "tx-name";
-      txName.innerText = name;
-
-      const txDate = document.createElement("div");
-      txDate.className = "tx-date";
-      txDate.innerText = "Jodi a • " + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-      left.appendChild(txName);
-      left.appendChild(txDate);
-
-      const right = document.createElement("div");
-      right.className = "tx-amount";
-      right.innerText = amountText;
-
-      tx.appendChild(left);
-      tx.appendChild(right);
-
-      txList.prepend(tx);
-    }
-
-    function depose() {
-      let amount = prompt("Konbyen HTG ou vle depoze?");
-      amount = parseInt(amount);
-
-      if (isNaN(amount) || amount <= 0) {
-        alert("Tanpri mete yon montan ki valab.");
-        return;
-      }
-
-      solde += amount;
-      aktivite += amount;
-      updateUI();
-      addTransaction("Depo MonCash", "+" + amount + " HTG");
-      alert("Depo fèt avèk siksè.");
-    }
-
-    function retire() {
-      let amount = prompt("Konbyen HTG ou vle retire?");
-      amount = parseInt(amount);
-
-      if (isNaN(amount) || amount <= 0) {
-        alert("Tanpri mete yon montan ki valab.");
-        return;
-      }
-
-      if (amount > solde) {
-        alert("Balans ou pa sifi.");
-        return;
-      }
-
-      solde -= amount;
-      totalRetire += amount;
-      aktivite += amount;
-      updateUI();
-      addTransaction("Retrè wallet", "-" + amount + " HTG");
-      alert("Retrè fèt avèk siksè.");
-    }
-
-    function transfere() {
-      let amount = prompt("Konbyen HTG ou vle transfere?");
-      amount = parseInt(amount);
-
-      if (isNaN(amount) || amount <= 0) {
-        alert("Tanpri mete yon montan ki valab.");
-        return;
-      }
-
-      if (amount > solde) {
-        alert("Balans ou pa sifi pou transfè sa.");
-        return;
-      }
-
-      solde -= amount;
-      totalVoye += amount;
-      aktivite += amount;
-      updateUI();
-      addTransaction("Transfè kliyan", "-" + amount + " HTG");
-      alert("Transfè fèt avèk siksè.");
-    }
-
-    function demande() {
-      alert("Fonksyon demande ap vini nan pwochen vèsyon an.");
-    }
-
-    updateUI();
-  </script>
 </body>
 </html>
