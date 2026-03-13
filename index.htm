@@ -197,8 +197,8 @@ cursor:pointer;
 <div class="welcome" id="welcomeBox"></div>
 
 <div class="auth-buttons">
-<a href="/Fastpayhaiti/login.html" class="auth-btn login-btn">Login</a>
-<a href="/Fastpayhaiti/register.html" class="auth-btn register-btn">Register</a>
+<a href="login.html" class="auth-btn login-btn">Login</a>
+<a href="register.html" class="auth-btn register-btn">Register</a>
 </div>
 
 <div class="balance-card">
@@ -206,55 +206,54 @@ cursor:pointer;
 <div class="balance">0 HTG</div>
 
 <div class="actions">
-<a href="/Fastpayhaiti/order.html?service=deposit" class="action-btn">Depoze</a>
-<a href="/Fastpayhaiti/order.html?service=withdraw" class="action-btn">Retire</a>
-<a href="/Fastpayhaiti/order.html?service=transfer" class="action-btn">Transfere</a>
-<a href="/Fastpayhaiti/order.html?service=deposit" class="action-btn">Demande</a>
+<a href="order.html?service=deposit" class="action-btn">Depoze</a>
+<a href="order.html?service=withdraw" class="action-btn">Retire</a>
+<a href="order.html?service=transfer" class="action-btn">Transfere</a>
+<a href="order.html?service=deposit" class="action-btn">Demande</a>
 </div>
 </div>
 
 <div class="section-title">Sèvis yo</div>
 
 <div class="services">
-<a href="/Fastpayhaiti/card.html" class="service-box">
+<a href="card.html" class="service-box">
 <h3>Virtual Card</h3>
 <p>Kreye kat vityèl pou peye sou entènèt.</p>
 </a>
 
-<a href="/Fastpayhaiti/netflix.html" class="service-box">
+<a href="netflix.html" class="service-box">
 <h3>Netflix</h3>
 <p>Achte oswa renouvle plan Netflix.</p>
 </a>
 
-<a href="/Fastpayhaiti/primevideo.html" class="service-box">
+<a href="primevideo.html" class="service-box">
 <h3>Prime Video</h3>
 <p>Peye abònman Prime Video.</p>
 </a>
 
-<a href="/Fastpayhaiti/giftcards.html" class="service-box">
+<a href="giftcards.html" class="service-box">
 <h3>Gift Cards</h3>
 <p>Apple, Amazon, Steam ak plis.</p>
 </a>
 
-<a href="/Fastpayhaiti/topup.html" class="service-box">
+<a href="topup.html" class="service-box">
 <h3>Top Up</h3>
 <p>Recharge mobil ak gaming.</p>
 </a>
 
-<a href="/Fastpayhaiti/wallet.html" class="service-box">
+<a href="wallet.html" class="service-box">
 <h3>Wallet</h3>
 <p>Jere balans ak tranzaksyon.</p>
 </a>
 </div>
 
-<a href="/Fastpayhaiti/admin.html" class="admin-btn">Admin Dashboard</a>
+<a href="admin.html" class="admin-btn">Admin Dashboard</a>
 
 </div>
 
 <script>
 const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
 const loggedIn = localStorage.getItem("fastpay_logged_in");
-
 const welcomeBox = document.getElementById("welcomeBox");
 
 if(savedUser && loggedIn === "true"){
@@ -266,7 +265,7 @@ if(savedUser && loggedIn === "true"){
 
 function logout(){
   localStorage.removeItem("fastpay_logged_in");
-  window.location.href = "/Fastpayhaiti/index.html";
+  window.location.href = "index.html";
 }
 </script>
 
