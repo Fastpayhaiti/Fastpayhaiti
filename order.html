@@ -106,6 +106,8 @@ border-radius:10px;
         <option>Top Up</option>
         <option>Virtual Card</option>
         <option>Wallet Deposit</option>
+        <option>Wallet Withdraw</option>
+        <option>Wallet Transfer</option>
       </select>
 
       <label>Plan / Amount</label>
@@ -124,6 +126,24 @@ border-radius:10px;
 </div>
 
 <script>
+const params = new URLSearchParams(window.location.search);
+const serviceParam = params.get("service");
+
+window.onload = function(){
+  const serviceField = document.getElementById("service");
+
+  if(serviceParam){
+    if(serviceParam === "netflix") serviceField.value = "Netflix";
+    if(serviceParam === "primevideo") serviceField.value = "Prime Video";
+    if(serviceParam === "giftcards") serviceField.value = "Gift Card";
+    if(serviceParam === "topup") serviceField.value = "Top Up";
+    if(serviceParam === "card") serviceField.value = "Virtual Card";
+    if(serviceParam === "deposit") serviceField.value = "Wallet Deposit";
+    if(serviceParam === "withdraw") serviceField.value = "Wallet Withdraw";
+    if(serviceParam === "transfer") serviceField.value = "Wallet Transfer";
+  }
+}
+
 function sendOrder(event){
   event.preventDefault();
 
