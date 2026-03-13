@@ -2,52 +2,90 @@
 <html>
 <head>
 <title>Top Up</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body{
-font-family:Arial;
+font-family:Arial,sans-serif;
 background:#f4f4f4;
 padding:30px;
 text-align:center;
+margin:0;
 }
+
+.container{
+max-width:420px;
+margin:auto;
+}
+
+.back{
+display:inline-block;
+margin-bottom:20px;
+color:#ff4d3d;
+text-decoration:none;
+font-weight:bold;
+}
+
 .box{
 background:white;
 padding:20px;
-margin:15px auto;
-border-radius:12px;
-max-width:340px;
+margin:15px 0;
+border-radius:15px;
 box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
+
+h1{
+color:#111827;
+}
+
+h2{
+margin-bottom:8px;
+}
+
+p{
+color:#666;
+}
+
+a{
+text-decoration:none;
+}
+
 button{
 background:#ff4d3d;
 color:white;
 border:none;
 padding:12px 20px;
-border-radius:8px;
+border-radius:10px;
 font-size:16px;
+font-weight:bold;
+cursor:pointer;
 }
 </style>
 </head>
 <body>
+
+<div class="container">
+<a href="index.html" class="back">← Back Home</a>
 
 <h1>Top Up Services</h1>
 
 <div class="box">
 <h2>Mobile Recharge</h2>
 <p>Recharge phone credit quickly.</p>
-<button>Recharge Now</button>
+<a href="order.html"><button>Recharge Now</button></a>
 </div>
 
 <div class="box">
 <h2>Gaming Top Up</h2>
 <p>Free Fire, PUBG, PlayStation and more.</p>
-<button>Top Up Now</button>
+<a href="order.html"><button>Top Up Now</button></a>
 </div>
 
 <div class="box">
 <h2>International Top Up</h2>
 <p>Send mobile credit worldwide.</p>
-<button>Send Top Up</button>
+<a href="order.html"><button>Send Top Up</button></a>
+</div>
 </div>
 
 </body>
-  </html>
+</html>
