@@ -1,50 +1,223 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>FastPay-Haiti</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body{
-font-family:Arial;
-background:#f2f2f2;
-text-align:center;
-padding:40px;
-}
-.card{
-background:white;
-padding:30px;
-border-radius:15px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-}
-h1{
-color:#ff4d4d;
-}
-button{
-background:#ff4d4d;
-color:white;
-border:none;
-padding:15px 25px;
-border-radius:10px;
-font-size:16px;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FastPay-Haïti</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #eef2f7;
+      padding: 20px;
+    }
+
+    .app {
+      max-width: 420px;
+      margin: auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #ff5a3d;
+    }
+
+    .profile {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #ff5a3d, #ff7a59);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .balance-card {
+      background: linear-gradient(135deg, #ff4d3d, #ff8a5c);
+      color: white;
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: 0 12px 30px rgba(255, 90, 61, 0.25);
+      margin-bottom: 20px;
+    }
+
+    .balance-card h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: normal;
+    }
+
+    .balance {
+      font-size: 42px;
+      font-weight: bold;
+      margin: 12px 0 22px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .action-btn {
+      background: rgba(255,255,255,0.18);
+      border: none;
+      color: white;
+      padding: 16px;
+      border-radius: 18px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .stat-box {
+      background: white;
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+    }
+
+    .stat-box h3 {
+      margin: 0;
+      font-size: 15px;
+      color: #666;
+      font-weight: normal;
+    }
+
+    .stat-box p {
+      margin: 10px 0 0;
+      font-size: 28px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    .transactions {
+      background: white;
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+    }
+
+    .transactions h3 {
+      margin-top: 0;
+      font-size: 24px;
+      color: #222;
+    }
+
+    .tx {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .tx:last-child {
+      border-bottom: none;
+    }
+
+    .tx-name {
+      font-weight: bold;
+      color: #222;
+    }
+
+    .tx-date {
+      font-size: 13px;
+      color: #777;
+      margin-top: 4px;
+    }
+
+    .tx-amount {
+      font-weight: bold;
+      color: #ff5a3d;
+    }
+  </style>
 </head>
-
 <body>
+  <div class="app">
+    <div class="topbar">
+      <div class="logo">FastPay</div>
+      <div class="profile">L</div>
+    </div>
 
-<div class="card">
+    <div class="balance-card">
+      <h2>Solde disponib</h2>
+      <div class="balance">0 HTG</div>
 
-<h1>FastPay-Haiti</h1>
+      <div class="actions">
+        <button class="action-btn">Transfere</button>
+        <button class="action-btn">Depoze</button>
+        <button class="action-btn">Retire</button>
+        <button class="action-btn">Demande</button>
+      </div>
+    </div>
 
-<p>Wallet digital pou depo, retrè ak transfè.</p>
+    <div class="stats">
+      <div class="stat-box">
+        <h3>Total voye</h3>
+        <p>0 HTG</p>
+      </div>
+      <div class="stat-box">
+        <h3>Total retire</h3>
+        <p>0 HTG</p>
+      </div>
+      <div class="stat-box">
+        <h3>Aktivite mansyèl</h3>
+        <p>0 HTG</p>
+      </div>
+      <div class="stat-box">
+        <h3>Kat aktif</h3>
+        <p>0</p>
+      </div>
+    </div>
 
-<h2>Solde: 0 HTG</h2>
+    <div class="transactions">
+      <h3>Dènye tranzaksyon</h3>
 
-<button>Transfere</button>
-<button>Depoze</button>
-<button>Retire</button>
+      <div class="tx">
+        <div>
+          <div class="tx-name">Depo MonCash</div>
+          <div class="tx-date">Jodi a • 10:14 AM</div>
+        </div>
+        <div class="tx-amount">+0 HTG</div>
+      </div>
 
-</div>
+      <div class="tx">
+        <div>
+          <div class="tx-name">Retrè wallet</div>
+          <div class="tx-date">Jodi a • 09:02 AM</div>
+        </div>
+        <div class="tx-amount">-0 HTG</div>
+      </div>
 
+      <div class="tx">
+        <div>
+          <div class="tx-name">Transfè kliyan</div>
+          <div class="tx-date">Yè • 07:31 PM</div>
+        </div>
+        <div class="tx-amount">-0 HTG</div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
