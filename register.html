@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register - FastPay</title>
+<style>
+*{box-sizing:border-box;font-family:Arial,sans-serif;}
+body{margin:0;background:#eef2f7;padding:20px;}
+.container{max-width:420px;margin:auto;}
+.card{background:white;padding:22px;border-radius:18px;box-shadow:0 4px 14px rgba(0,0,0,0.08);}
+h1{margin-top:0;color:#111827;}
+p{color:#6b7280;}
+label{display:block;margin-top:14px;margin-bottom:6px;font-weight:bold;color:#222;}
+input{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-size:16px;}
+button{margin-top:18px;width:100%;padding:14px;background:#ff4d3d;color:white;border:none;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;}
+.link{display:block;text-align:center;margin-top:14px;color:#ff4d3d;text-decoration:none;font-weight:bold;}
+.back{display:inline-block;margin-bottom:20px;color:#ff4d3d;text-decoration:none;font-weight:bold;}
+.success{display:none;margin-top:14px;background:#ecfdf3;color:#166534;padding:12px;border-radius:12px;font-weight:bold;text-align:center;}
+</style>
+</head>
+<body>
+<div class="container">
+<a href="index.html" class="back">← Back Home</a>
+<div class="card">
+<h1>Create Account</h1>
+<p>Kreye kont FastPay ou an.</p>
+
+<form id="registerForm">
+<label>Full Name</label>
+<input type="text" id="fullname" placeholder="Antre non ou" required>
+
+<label>Email Address</label>
+<input type="email" id="email" placeholder="Antre imel ou" required>
+
+<label>Password</label>
+<input type="password" id="password" placeholder="Antre modpas ou" required>
+
+<button type="submit">Create Account</button>
+</form>
+
+<div class="success" id="successMsg">Kont lan kreye avèk siksè.</div>
+
+<a href="login.html" class="link">Already have an account? Login</a>
+</div>
+</div>
+
+<script>
+document.getElementById("registerForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const fullname = document.getElementById("fullname").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const user = { fullname, email, password };
+  localStorage.setItem("fastpay_user", JSON.stringify(user));
+
+  document.getElementById("successMsg").style.display = "block";
+
+  setTimeout(() => {
+    window.location.href = "login.html";
+  }, 1200);
+});
+</script>
+</body>
+</html>
