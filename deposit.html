@@ -260,14 +260,14 @@ border-radius:14px;
 <h2>Banque</h2>
 
 <div class="bank-grid">
-<div class="bank-box active" id="bank-sogebank" onclick="selectBank('Sogebank')">
-<div class="bank-logo">GROUPE SOGEBANK</div>
-<div class="bank-name">Sogebank</div>
+<div class="bank-box active" id="bank-1" onclick="selectBank('Bank 1')">
+<div class="bank-logo">LOGO BANK</div>
+<div class="bank-name">Bank 1</div>
 </div>
 
-<div class="bank-box" id="bank-capital" onclick="selectBank('Capital Bank')">
-<div class="bank-logo">CAPITAL BANK</div>
-<div class="bank-name">Capital Bank</div>
+<div class="bank-box" id="bank-2" onclick="selectBank('Bank 2')">
+<div class="bank-logo">LOGO BANK</div>
+<div class="bank-name">Bank 2</div>
 </div>
 </div>
 </div>
@@ -282,22 +282,22 @@ border-radius:14px;
 
 <div class="section">
 <div class="account-card">
-<div class="account-title" id="accountTitle">Sogebank (HTG)</div>
-<div class="account-sub" id="accountSub">Compte en gourdes</div>
+<div class="account-title" id="accountTitle">Bank 1 (HTG)</div>
+<div class="account-sub" id="accountSub">Ranpli enfòmasyon pa w pita</div>
 
 <div class="info-row">
 <div class="info-label">Numéro:</div>
-<div class="info-value" id="accountNumber">2101029078</div>
+<div class="info-value" id="accountNumber">XXXXXXXXXX</div>
 </div>
 
 <div class="info-row">
 <div class="info-label">Type:</div>
-<div class="info-value" id="accountType">Épargne</div>
+<div class="info-value" id="accountType">Compte</div>
 </div>
 
 <div class="info-row">
 <div class="info-label">Nom:</div>
-<div class="info-value" id="accountName">Jean Sylvio David</div>
+<div class="info-value" id="accountName">NON PWOPRIYETÈ A</div>
 </div>
 
 <div class="info-row">
@@ -324,7 +324,7 @@ Demann depo a soumèt avèk siksè.
 </div>
 
 <div class="note">
-Aprè admin verifye depo a, balans kliyan an ap mete ajou sou dashboard la.
+Ranplase enfòmasyon kont modèl yo ak pwòp kont ou lè ou pare.
 </div>
 </div>
 
@@ -332,7 +332,7 @@ Aprè admin verifye depo a, balans kliyan an ap mete ajou sou dashboard la.
 
 <script>
 let selectedMethod = "Banque";
-let selectedBank = "Sogebank";
+let selectedBank = "Bank 1";
 
 function selectMethod(method){
   selectedMethod = method;
@@ -349,26 +349,26 @@ function selectMethod(method){
 function selectBank(bank){
   selectedBank = bank;
 
-  document.getElementById("bank-sogebank").classList.remove("active");
-  document.getElementById("bank-capital").classList.remove("active");
+  document.getElementById("bank-1").classList.remove("active");
+  document.getElementById("bank-2").classList.remove("active");
 
-  if(bank === "Sogebank"){
-    document.getElementById("bank-sogebank").classList.add("active");
-    document.getElementById("accountTitle").innerHTML = "Sogebank (HTG)";
-    document.getElementById("accountSub").innerHTML = "Compte en gourdes";
-    document.getElementById("accountNumber").innerHTML = "2101029078";
-    document.getElementById("accountType").innerHTML = "Épargne";
-    document.getElementById("accountName").innerHTML = "Jean Sylvio David";
+  if(bank === "Bank 1"){
+    document.getElementById("bank-1").classList.add("active");
+    document.getElementById("accountTitle").innerHTML = "Bank 1 (HTG)";
+    document.getElementById("accountSub").innerHTML = "Ranpli enfòmasyon pa w pita";
+    document.getElementById("accountNumber").innerHTML = "XXXXXXXXXX";
+    document.getElementById("accountType").innerHTML = "Compte";
+    document.getElementById("accountName").innerHTML = "NON PWOPRIYETÈ A";
     document.getElementById("accountCurrency").innerHTML = "HTG";
   }
 
-  if(bank === "Capital Bank"){
-    document.getElementById("bank-capital").classList.add("active");
-    document.getElementById("accountTitle").innerHTML = "Capital Bank (HTG)";
-    document.getElementById("accountSub").innerHTML = "Compte en gourdes";
-    document.getElementById("accountNumber").innerHTML = "1234567890";
-    document.getElementById("accountType").innerHTML = "Chèque";
-    document.getElementById("accountName").innerHTML = "FastPay Haiti";
+  if(bank === "Bank 2"){
+    document.getElementById("bank-2").classList.add("active");
+    document.getElementById("accountTitle").innerHTML = "Bank 2 (HTG)";
+    document.getElementById("accountSub").innerHTML = "Ranpli enfòmasyon pa w pita";
+    document.getElementById("accountNumber").innerHTML = "XXXXXXXXXX";
+    document.getElementById("accountType").innerHTML = "Compte";
+    document.getElementById("accountName").innerHTML = "NON PWOPRIYETÈ A";
     document.getElementById("accountCurrency").innerHTML = "HTG";
   }
 }
