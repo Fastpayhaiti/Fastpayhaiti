@@ -2,27 +2,50 @@
 <html>
 <head>
 <title>Virtual Card</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-
 body{
-font-family:Arial;
+font-family:Arial,sans-serif;
 background:#f4f4f4;
 text-align:center;
-padding:40px;
+padding:30px;
+margin:0;
+}
+
+.container{
+max-width:420px;
+margin:auto;
+}
+
+.back{
+display:inline-block;
+margin-bottom:20px;
+color:#ff4d3d;
+text-decoration:none;
+font-weight:bold;
 }
 
 .card{
 width:320px;
-height:180px;
-margin:auto;
-border-radius:15px;
+height:190px;
+margin:20px auto;
+border-radius:18px;
 background:linear-gradient(135deg,#111,#333);
 color:white;
 padding:20px;
 display:flex;
 flex-direction:column;
 justify-content:space-between;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+position:relative;
+text-align:left;
+}
+
+.chip{
+width:42px;
+height:32px;
+background:gold;
+border-radius:6px;
 }
 
 .number{
@@ -32,6 +55,25 @@ letter-spacing:2px;
 
 .name{
 font-weight:bold;
+font-size:16px;
+}
+
+.exp{
+font-size:14px;
+opacity:0.8;
+}
+
+.logo{
+position:absolute;
+right:20px;
+bottom:20px;
+font-size:18px;
+font-weight:bold;
+opacity:0.85;
+}
+
+a{
+text-decoration:none;
 }
 
 button{
@@ -40,31 +82,30 @@ padding:12px 20px;
 background:#ff4d3d;
 border:none;
 color:white;
-border-radius:8px;
+border-radius:10px;
 font-size:16px;
+font-weight:bold;
+cursor:pointer;
 }
-
 </style>
-
 </head>
-
 <body>
+
+<div class="container">
+<a href="index.html" class="back">← Back Home</a>
 
 <h1>Your Virtual Card</h1>
 
 <div class="card">
-
+<div class="chip"></div>
 <div class="number">**** **** **** 4587</div>
-
 <div class="name">LUCKYSTORE</div>
-
-<div>12/29</div>
-
+<div class="exp">12/29</div>
+<div class="logo">VISA</div>
 </div>
 
-<br>
-
-<button>Create New Card</button>
+<a href="order.html"><button>Create New Card</button></a>
+</div>
 
 </body>
 </html>
