@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FastPay Card Dashboard</title>
+<title>FastPay Card Dashboard v2</title>
 <style>
 *{
   box-sizing:border-box;
@@ -68,7 +68,7 @@ body{
 
 .hero h1{
   margin:0 0 10px 0;
-  font-size:30px;
+  font-size:28px;
   line-height:1.2;
 }
 
@@ -190,6 +190,11 @@ body{
   color:#1d4ed8;
 }
 
+.status-rejected{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
 .info-row{
   padding:10px 0;
   border-bottom:1px solid #eee;
@@ -255,11 +260,12 @@ body{
   padding:18px;
   box-shadow:0 8px 18px rgba(0,0,0,0.06);
   color:#6b7280;
+  margin-bottom:18px;
 }
 
 .notice{
   display:none;
-  margin-top:14px;
+  margin-bottom:16px;
   background:#ecfdf3;
   color:#166534;
   border-radius:14px;
@@ -272,6 +278,38 @@ body{
   background:#fee2e2;
   color:#991b1b;
 }
+
+.tx-item{
+  padding:12px 0;
+  border-bottom:1px solid #eee;
+}
+
+.tx-item:last-child{
+  border-bottom:none;
+}
+
+.tx-top{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+}
+
+.tx-name{
+  font-weight:bold;
+  font-size:15px;
+}
+
+.tx-amount{
+  font-weight:bold;
+  font-size:15px;
+}
+
+.tx-date{
+  color:#6b7280;
+  font-size:13px;
+  margin-top:4px;
+}
 </style>
 </head>
 <body>
@@ -282,12 +320,14 @@ body{
 
 <div class="topbar">
   <div class="logo">FastPay</div>
-  <div class="profile" id="profileLetter">L</div>
+  <div class="profile" id="profileLetter">U</div>
 </div>
+
+<div id="noticeBox" class="notice"></div>
 
 <div class="hero">
   <h1>Card Dashboard</h1>
-  <p>Jere kat FastPay ou a, wè estati li, balans li, epi kontwole aksyon prensipal yo.</p>
+  <p>Jere kat FastPay ou a, wè estati li, rechaje li, epi kontwole aksyon prensipal yo.</p>
 </div>
 
 <div id="cardArea"></div>
@@ -351,27 +391,104 @@ body{
     <button class="btn btn-orange" onclick="loadCard()">Load Card</button>
     <a href="create-card.html" class="btn btn-dark">Create New Card</a>
   </div>
+</div>
 
-  <div id="noticeBox" class="notice"></div>
+<div class="section">
+  <h2>Dènye mouvman kat la</h2>
+  <div id="cardTxBox" class="empty">Pa gen mouvman kat pou kounye a.</div>
 </div>
 
 </div>
 
+<script src="app.js"></script>
 <script>
-const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
-let walletBalance = parseInt(localStorage.getItem("fastpay_balance") || "0");
-let virtualCard = JSON.parse(localStorage.getItem("fastpay_virtual_card") || "null");
-const cardRequests = JSON.parse(localStorage.getItem("fastpay_card_requests")) || [];
+function showNotice(message, isError = false){
+  const box = document.getElementById("noticeBox");
+  box.style.display = "block";
+  box.className = isError ? "notice error" : "notice";
+  box.innerHTML = message;
+}
 
-if(savedUser && savedUser.fullname){
-  document.getElementById("profileLetter").innerHTML = savedUser.fullname.charAt(0).toUpperCase();
+function getStatusClass(status){
+  const value = String(status || "").toLowerCase();
+
+  if(value.includes("active") || value.includes("approved")){
+    return "status-active";
+  }
+  if(value.includes("frozen")){
+    return "status-frozen";
+  }
+  if(value.includes("reject")){
+    return "status-rejected";
+  }
+  return "status-pending";
+}
+
+const currentUser = FastPayV2.getCurrentUser();
+
+if(!currentUser){
+  showNotice("Ou pa konekte. Tanpri login anvan.", true);
+  setTimeout(() => {
+    window.location.href = "login.html";
+  }, 1200);
+}
+
+if(currentUser){
+  document.getElementById("profileLetter").innerHTML = currentUser.fullname.charAt(0).toUpperCase();
+}
+
+function getAllRequestsForUser(){
+  const requests = FastPayV2.getCardRequests() || [];
+  return requests.filter(item => item.userId === currentUser.id);
 }
 
 function getLatestCardRequest(){
-  if(cardRequests.length > 0){
-    return cardRequests[0];
+  const requests = getAllRequestsForUser();
+  if(requests.length > 0){
+    return requests[0];
   }
   return null;
+}
+
+function getStoredCard(){
+  const allCards = FastPayDB.get("fp_cards", []);
+  return allCards.find(card => card.userId === currentUser.id) || null;
+}
+
+function saveUserCard(cardData){
+  let allCards = FastPayDB.get("fp_cards", []);
+  const existingIndex = allCards.findIndex(card => card.userId === currentUser.id);
+
+  if(existingIndex >= 0){
+    allCards[existingIndex] = cardData;
+  } else {
+    allCards.unshift(cardData);
+  }
+
+  FastPayDB.set("fp_cards", allCards);
+}
+
+function createCardFromApprovedRequest(request){
+  const existing = getStoredCard();
+  if(existing) return existing;
+
+  const cardData = {
+    id: FastPayV2.generateId("CARD"),
+    userId: currentUser.id,
+    number: "**** **** **** " + Math.floor(Math.random() * 9000 + 1000),
+    name: (request.fullname || currentUser.fullname || "FASTPAY USER").toUpperCase(),
+    exp: "12/29",
+    cvv: "392",
+    brand: (request.network || "Visa").toUpperCase(),
+    status: "Active",
+    balance: 0,
+    cardType: request.cardType || "Virtual",
+    currency: request.currency || "USD",
+    createdAt: request.date || new Date().toLocaleString()
+  };
+
+  saveUserCard(cardData);
+  return cardData;
 }
 
 function buildPendingCard(request){
@@ -383,7 +500,9 @@ function buildPendingCard(request){
         <div><strong>Card Type:</strong> ${request.cardType || 'N/A'}</div>
         <div><strong>Network:</strong> ${request.network || 'N/A'}</div>
         <div><strong>Amount:</strong> ${request.amount || 'N/A'}</div>
-        <div><strong>Status:</strong> <span class="status status-pending">${request.status || 'Pending'}</span></div>
+        <div style="margin-top:8px;">
+          <span class="status ${getStatusClass(request.status)}">${request.status || 'Pending'}</span>
+        </div>
       </div>
     </div>
   `;
@@ -404,12 +523,51 @@ function buildActiveCard(card){
   `;
 }
 
+function updateSummary(card, latestRequest){
+  document.getElementById("walletBalance").innerHTML = (currentUser.balance || 0) + " HTG";
+
+  if(card){
+    document.getElementById("cardBalance").innerHTML = (card.balance || 0) + " HTG";
+    document.getElementById("cardStatusText").innerHTML = card.status || "Active";
+    document.getElementById("cardNetworkText").innerHTML = card.brand || "Visa";
+    document.getElementById("infoCardType").innerHTML = card.cardType || "Virtual";
+    document.getElementById("infoCardHolder").innerHTML = card.name || currentUser.fullname;
+    document.getElementById("infoCurrency").innerHTML = card.currency || "USD";
+    document.getElementById("infoCreatedAt").innerHTML = card.createdAt || "N/A";
+    return;
+  }
+
+  if(latestRequest){
+    document.getElementById("cardBalance").innerHTML = "0 HTG";
+    document.getElementById("cardStatusText").innerHTML = latestRequest.status || "Pending";
+    document.getElementById("cardNetworkText").innerHTML = latestRequest.network || "N/A";
+    document.getElementById("infoCardType").innerHTML = latestRequest.cardType || "N/A";
+    document.getElementById("infoCardHolder").innerHTML = latestRequest.fullname || currentUser.fullname;
+    document.getElementById("infoCurrency").innerHTML = latestRequest.currency || "N/A";
+    document.getElementById("infoCreatedAt").innerHTML = latestRequest.date || "N/A";
+    return;
+  }
+
+  document.getElementById("cardBalance").innerHTML = "0 HTG";
+  document.getElementById("cardStatusText").innerHTML = "No Card";
+  document.getElementById("cardNetworkText").innerHTML = "N/A";
+  document.getElementById("infoCardType").innerHTML = "N/A";
+  document.getElementById("infoCardHolder").innerHTML = currentUser.fullname || "N/A";
+  document.getElementById("infoCurrency").innerHTML = "N/A";
+  document.getElementById("infoCreatedAt").innerHTML = "N/A";
+}
+
 function renderCard(){
   const cardArea = document.getElementById("cardArea");
   const latestRequest = getLatestCardRequest();
+  let card = getStoredCard();
 
-  if(virtualCard){
-    cardArea.innerHTML = buildActiveCard(virtualCard);
+  if(!card && latestRequest && String(latestRequest.status).toLowerCase() === "approved"){
+    card = createCardFromApprovedRequest(latestRequest);
+  }
+
+  if(card){
+    cardArea.innerHTML = buildActiveCard(card);
   } else if(latestRequest){
     cardArea.innerHTML = buildPendingCard(latestRequest);
   } else {
@@ -422,113 +580,63 @@ function renderCard(){
     `;
   }
 
-  updateSummary();
-}
-
-function updateSummary(){
-  const latestRequest = getLatestCardRequest();
-
-  document.getElementById("walletBalance").innerHTML = walletBalance + " HTG";
-
-  if(virtualCard){
-    document.getElementById("cardBalance").innerHTML = (virtualCard.balance || 0) + " HTG";
-    document.getElementById("cardStatusText").innerHTML = virtualCard.status || "Active";
-    document.getElementById("cardNetworkText").innerHTML = virtualCard.brand || "Visa";
-    document.getElementById("infoCardType").innerHTML = virtualCard.cardType || "Virtual Card";
-    document.getElementById("infoCardHolder").innerHTML = virtualCard.name || "FASTPAY USER";
-    document.getElementById("infoCurrency").innerHTML = virtualCard.currency || "HTG";
-    document.getElementById("infoCreatedAt").innerHTML = virtualCard.createdAt || "N/A";
-    return;
-  }
-
-  if(latestRequest){
-    document.getElementById("cardBalance").innerHTML = "0 HTG";
-    document.getElementById("cardStatusText").innerHTML = latestRequest.status || "Pending";
-    document.getElementById("cardNetworkText").innerHTML = latestRequest.network || "N/A";
-    document.getElementById("infoCardType").innerHTML = latestRequest.cardType || "N/A";
-    document.getElementById("infoCardHolder").innerHTML = latestRequest.fullName || "N/A";
-    document.getElementById("infoCurrency").innerHTML = latestRequest.currency || "N/A";
-    document.getElementById("infoCreatedAt").innerHTML = latestRequest.date || "N/A";
-    return;
-  }
-
-  document.getElementById("cardBalance").innerHTML = "0 HTG";
-  document.getElementById("cardStatusText").innerHTML = "No Card";
-  document.getElementById("cardNetworkText").innerHTML = "N/A";
-  document.getElementById("infoCardType").innerHTML = "N/A";
-  document.getElementById("infoCardHolder").innerHTML = "N/A";
-  document.getElementById("infoCurrency").innerHTML = "N/A";
-  document.getElementById("infoCreatedAt").innerHTML = "N/A";
-}
-
-function showNotice(message, isError = false){
-  const box = document.getElementById("noticeBox");
-  box.style.display = "block";
-  box.className = isError ? "notice error" : "notice";
-  box.innerHTML = message;
-}
-
-function ensureCardExists(){
-  if(!virtualCard){
-    const latestRequest = getLatestCardRequest();
-
-    if(latestRequest && latestRequest.status === "Approved"){
-      virtualCard = {
-        active: true,
-        number: "**** **** **** 4587",
-        name: (latestRequest.fullName || "FASTPAY USER").toUpperCase(),
-        exp: "12/29",
-        cvv: "392",
-        brand: (latestRequest.network || "Visa").toUpperCase(),
-        status: "Active",
-        balance: 0,
-        cardType: latestRequest.cardType || "Virtual Card",
-        currency: latestRequest.currency || "HTG",
-        createdAt: latestRequest.date || new Date().toLocaleString()
-      };
-      localStorage.setItem("fastpay_virtual_card", JSON.stringify(virtualCard));
-    }
-  }
+  updateSummary(card, latestRequest);
+  renderCardTransactions();
 }
 
 function freezeCard(){
-  ensureCardExists();
+  const card = getStoredCard();
 
-  if(!virtualCard){
+  if(!card){
     showNotice("Ou poko gen kat aktif pou freeze.", true);
     return;
   }
 
-  virtualCard.status = "Frozen";
-  localStorage.setItem("fastpay_virtual_card", JSON.stringify(virtualCard));
+  card.status = "Frozen";
+  saveUserCard(card);
+
+  FastPayV2.addNotification({
+    userId: currentUser.id,
+    title: "Card frozen",
+    text: "Kat ou a freeze avèk siksè.",
+    type: "warning"
+  });
+
   renderCard();
   showNotice("Kat la freeze avèk siksè.");
 }
 
 function unfreezeCard(){
-  ensureCardExists();
+  const card = getStoredCard();
 
-  if(!virtualCard){
+  if(!card){
     showNotice("Ou poko gen kat aktif pou unfreeze.", true);
     return;
   }
 
-  virtualCard.status = "Active";
-  localStorage.setItem("fastpay_virtual_card", JSON.stringify(virtualCard));
+  card.status = "Active";
+  saveUserCard(card);
+
+  FastPayV2.addNotification({
+    userId: currentUser.id,
+    title: "Card activated",
+    text: "Kat ou a aktive ankò avèk siksè.",
+    type: "success"
+  });
+
   renderCard();
   showNotice("Kat la aktive ankò avèk siksè.");
 }
 
 function loadCard(){
-  ensureCardExists();
+  const card = getStoredCard();
 
-  if(!virtualCard){
+  if(!card){
     showNotice("Ou poko gen kat aktif pou rechaje.", true);
     return;
   }
 
   const amountText = prompt("Antre montan ou vle mete sou kat la (HTG):");
-
   if(amountText === null) return;
 
   const amount = parseInt(amountText);
@@ -538,33 +646,66 @@ function loadCard(){
     return;
   }
 
-  walletBalance = parseInt(localStorage.getItem("fastpay_balance") || "0");
+  const debit = FastPayV2.subtractBalance(currentUser.id, amount);
 
-  if(walletBalance < amount){
+  if(!debit.success){
     showNotice("Wallet ou pa gen ase balans pou rechaje kat la.", true);
     return;
   }
 
-  walletBalance -= amount;
-  localStorage.setItem("fastpay_balance", walletBalance);
+  card.balance = parseInt(card.balance || 0) + amount;
+  saveUserCard(card);
 
-  virtualCard.balance = parseInt(virtualCard.balance || 0) + amount;
-  localStorage.setItem("fastpay_virtual_card", JSON.stringify(virtualCard));
-
-  let transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
-  transactions.unshift({
-    service: "Load Card - " + (virtualCard.brand || "CARD"),
+  FastPayV2.addTransaction({
+    userId: currentUser.id,
+    service: "Load Card - " + (card.brand || "CARD"),
     amount: "-" + amount + " HTG",
-    date: new Date().toLocaleString(),
-    orderId: "LOAD-" + Math.floor(Math.random() * 90000 + 10000)
+    type: "card-load",
+    status: "completed",
+    meta: {
+      cardId: card.id
+    }
   });
-  localStorage.setItem("fastpay_transactions", JSON.stringify(transactions));
+
+  FastPayV2.addNotification({
+    userId: currentUser.id,
+    title: "Card loaded",
+    text: "Kat ou a rechaje avèk " + amount + " HTG.",
+    type: "success"
+  });
 
   renderCard();
   showNotice("Kat la rechaje avèk siksè ak " + amount + " HTG.");
 }
 
-ensureCardExists();
+function renderCardTransactions(){
+  const box = document.getElementById("cardTxBox");
+  const allTx = FastPayV2.getUserTransactions(currentUser.id) || [];
+  const cardTx = allTx.filter(tx => tx.type === "card-load" || tx.type === "card-request");
+
+  if(cardTx.length === 0){
+    box.innerHTML = "Pa gen mouvman kat pou kounye a.";
+    return;
+  }
+
+  box.className = "";
+  box.innerHTML = "";
+
+  cardTx.slice(0,6).forEach(function(tx){
+    box.innerHTML += `
+      <div class="tx-item">
+        <div class="tx-top">
+          <div>
+            <div class="tx-name">${tx.service || 'Card transaction'}</div>
+            <div class="tx-date">${tx.date || ''}</div>
+          </div>
+          <div class="tx-amount">${tx.amount || '0'}</div>
+        </div>
+      </div>
+    `;
+  });
+}
+
 renderCard();
 </script>
 
