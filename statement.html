@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FastPay Statement</title>
+<title>FastPay Statement v2</title>
 <style>
 *{
   box-sizing:border-box;
@@ -68,7 +68,7 @@ body{
 
 .hero h1{
   margin:0 0 10px 0;
-  font-size:30px;
+  font-size:28px;
   line-height:1.2;
 }
 
@@ -116,73 +116,76 @@ body{
   color:#111827;
 }
 
-.statement-item{
+.tx-item{
   padding:12px 0;
   border-bottom:1px solid #eee;
 }
 
-.statement-item:last-child{
+.tx-item:last-child{
   border-bottom:none;
 }
 
-.statement-top{
+.tx-top{
   display:flex;
   justify-content:space-between;
   gap:12px;
   align-items:flex-start;
 }
 
-.statement-name{
+.tx-name{
   font-weight:bold;
   font-size:15px;
 }
 
-.statement-amount{
+.tx-amount{
   font-weight:bold;
   font-size:15px;
   text-align:right;
 }
 
-.statement-date{
+.tx-amount.in{
+  color:#047857;
+}
+
+.tx-amount.out{
+  color:#dc2626;
+}
+
+.tx-date{
   color:#6b7280;
   font-size:13px;
   margin-top:4px;
 }
 
-.statement-sub{
-  color:#6b7280;
-  font-size:13px;
-  margin-top:4px;
-  line-height:1.45;
+.tx-sub{
+  color:#4b5563;
+  font-size:14px;
+  margin-top:6px;
+  line-height:1.5;
 }
 
 .badge{
   display:inline-block;
-  margin-top:6px;
+  margin-top:8px;
   border-radius:999px;
   padding:5px 10px;
   font-size:12px;
   font-weight:bold;
 }
 
-.badge-green{
+.badge-success{
   background:#ecfdf3;
   color:#166534;
 }
 
-.badge-orange{
+.badge-warning{
   background:#fff7ed;
   color:#c2410c;
 }
 
-.badge-blue{
+.badge-info{
   background:#eff6ff;
   color:#1d4ed8;
-}
-
-.empty{
-  color:#6b7280;
-  font-size:14px;
 }
 
 .main-btn{
@@ -190,11 +193,13 @@ body{
   width:100%;
   text-align:center;
   padding:15px;
+  border:none;
   border-radius:16px;
   text-decoration:none;
   font-weight:bold;
   font-size:16px;
   margin-top:12px;
+  cursor:pointer;
 }
 
 .orange-btn{
@@ -206,6 +211,25 @@ body{
   background:#111827;
   color:white;
 }
+
+.empty{
+  color:#6b7280;
+  font-size:14px;
+}
+
+.notice{
+  display:none;
+  padding:14px;
+  border-radius:14px;
+  font-weight:bold;
+  line-height:1.5;
+  margin-bottom:14px;
+}
+
+.notice.error{
+  background:#fee2e2;
+  color:#991b1b;
+}
 </style>
 </head>
 <body>
@@ -216,16 +240,18 @@ body{
 
 <div class="topbar">
   <div class="logo">FastPay</div>
-  <div class="profile" id="profileLetter">L</div>
+  <div class="profile" id="profileLetter">U</div>
 </div>
+
+<div id="noticeBox" class="notice error"></div>
 
 <div class="hero">
   <h1>Wallet Statement</h1>
-  <p>Tout mouvman finans ou yo nan yon sèl paj: depo, retrè, transfè, ak acha sèvis.</p>
+  <p>Gade tout mouvman finans ou yo, antre ak sòti, nan yon sèl espas.</p>
 </div>
 
 <div class="section">
-  <h2>Rezime</h2>
+  <h2>Rezime Statement</h2>
 
   <div class="stat-grid">
     <div class="stat-box">
@@ -234,198 +260,123 @@ body{
     </div>
 
     <div class="stat-box">
-      <div class="stat-title">Total Mouvman</div>
-      <div class="stat-value" id="totalEntries">0</div>
+      <div class="stat-title">Total Tranzaksyon</div>
+      <div class="stat-value" id="totalTransactions">0</div>
     </div>
 
     <div class="stat-box">
-      <div class="stat-title">Dènye Aktivite</div>
-      <div class="stat-value" id="lastEntry">Pa gen</div>
+      <div class="stat-title">Total Antre</div>
+      <div class="stat-value" id="totalIn">0 HTG</div>
     </div>
 
     <div class="stat-box">
-      <div class="stat-title">Dènye Dat</div>
-      <div class="stat-value" id="lastDate">N/A</div>
+      <div class="stat-title">Total Sòti</div>
+      <div class="stat-value" id="totalOut">0 HTG</div>
     </div>
   </div>
 </div>
 
 <div class="section">
-  <h2>Tout mouvman yo</h2>
-  <div id="statementBox" class="empty">Pa gen mouvman pou kounye a.</div>
+  <h2>Dènye mouvman yo</h2>
+  <div id="statementBox" class="empty">Pa gen tranzaksyon pou kounye a.</div>
 
-  <a href="dashboard.html" class="main-btn orange-btn">Ale sou Dashboard</a>
-  <a href="wallet.html" class="main-btn dark-btn">Retounen sou Wallet</a>
+  <a href="deposit.html" class="main-btn orange-btn">Nouvo Deposit</a>
+  <a href="transfer.html" class="main-btn dark-btn">Nouvo Transfer</a>
+  <a href="dashboard.html" class="main-btn dark-btn">Retounen sou Dashboard</a>
 </div>
 
 </div>
 
+<script src="app.js"></script>
 <script>
-const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
-const deposits = JSON.parse(localStorage.getItem("fastpay_deposits")) || [];
-const withdraws = JSON.parse(localStorage.getItem("fastpay_withdraws")) || [];
-const transfers = JSON.parse(localStorage.getItem("fastpay_transfers")) || [];
-const transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
-const topups = JSON.parse(localStorage.getItem("fastpay_topups")) || [];
-const socialOrders = JSON.parse(localStorage.getItem("fastpay_social_orders")) || [];
-const rechargeCards = JSON.parse(localStorage.getItem("fastpay_recharge_cards")) || [];
-const cardRequests = JSON.parse(localStorage.getItem("fastpay_card_requests")) || [];
-const walletBalance = localStorage.getItem("fastpay_balance") || 0;
-
-if(savedUser && savedUser.fullname){
-  document.getElementById("profileLetter").innerHTML =
-    savedUser.fullname.charAt(0).toUpperCase();
+function showError(message){
+  const box = document.getElementById("noticeBox");
+  box.style.display = "block";
+  box.innerHTML = message;
 }
 
-document.getElementById("walletBalance").innerHTML = walletBalance + " HTG";
-
-function normalizeEntries(){
-  let all = [];
-
-  deposits.forEach(item => {
-    all.push({
-      title: item.bank || "Deposit",
-      amount: item.amount || "0",
-      date: item.date || "",
-      type: "Deposit",
-      sub: "Method: " + (item.method || "N/A"),
-      status: item.status || "Pending Verification",
-      badge: "green"
-    });
-  });
-
-  withdraws.forEach(item => {
-    all.push({
-      title: item.bank || item.method || "Withdraw",
-      amount: item.amount || "0",
-      date: item.date || "",
-      type: "Withdraw",
-      sub: "Method: " + (item.method || "N/A"),
-      status: item.status || "Pending Verification",
-      badge: "orange"
-    });
-  });
-
-  transfers.forEach(item => {
-    all.push({
-      title: item.receiverName || "Transfer",
-      amount: item.amount || "0",
-      date: item.date || "",
-      type: "Transfer",
-      sub: "To: " + (item.receiverId || "N/A"),
-      status: item.status || "Pending Verification",
-      badge: "blue"
-    });
-  });
-
-  transactions.forEach(item => {
-    all.push({
-      title: item.service || "Transaction",
-      amount: item.amount || "0",
-      date: item.date || "",
-      type: "Wallet Transaction",
-      sub: "Order ID: " + (item.orderId || "N/A"),
-      status: "Completed",
-      badge: "green"
-    });
-  });
-
-  topups.forEach(item => {
-    all.push({
-      title: item.operator || "Top Up",
-      amount: item.amount || "0",
-      date: item.date || "",
-      type: "Top Up",
-      sub: "Phone: " + (item.phoneNumber || "N/A"),
-      status: item.status || "Pending Payment Verification",
-      badge: "orange"
-    });
-  });
-
-  socialOrders.forEach(item => {
-    all.push({
-      title: item.service || "Social Media Order",
-      amount: item.amount || "0",
-      date: item.date || "",
-      type: "Social Media",
-      sub: "Platform: " + (item.platform || "N/A"),
-      status: item.status || "Pending Review",
-      badge: "blue"
-    });
-  });
-
-  rechargeCards.forEach(item => {
-    all.push({
-      title: item.service || "Recharge Card",
-      amount: item.amount || "0",
-      date: item.date || "",
-      type: "Recharge Card",
-      sub: "Account: " + (item.accountName || "N/A"),
-      status: item.status || "Pending Verification",
-      badge: "orange"
-    });
-  });
-
-  cardRequests.forEach(item => {
-    all.push({
-      title: item.cardType || "Virtual Card",
-      amount: item.amount || "1500 HTG",
-      date: item.date || "",
-      type: "Card Request",
-      sub: "Payment: " + (item.paymentMethod || "N/A"),
-      status: item.status || "Pending Payment Verification",
-      badge: "blue"
-    });
-  });
-
-  return all.sort((a, b) => new Date(b.date) - new Date(a.date));
+function getAmountNumber(amountText){
+  if(!amountText) return 0;
+  const cleaned = String(amountText).replace(/[^\d-]/g, "");
+  const num = parseInt(cleaned || "0");
+  return isNaN(num) ? 0 : num;
 }
 
-const allEntries = normalizeEntries();
+function getBadgeClass(status){
+  const value = String(status || "").toLowerCase();
 
-document.getElementById("totalEntries").innerHTML = allEntries.length;
-
-if(allEntries.length > 0){
-  document.getElementById("lastEntry").innerHTML = allEntries[0].title || "Wi";
-  document.getElementById("lastDate").innerHTML = allEntries[0].date || "N/A";
-}
-
-function getBadgeClass(type){
-  if(type === "green") return "badge-green";
-  if(type === "blue") return "badge-blue";
-  return "badge-orange";
-}
-
-function loadStatement(){
-  const box = document.getElementById("statementBox");
-
-  if(allEntries.length === 0){
-    box.innerHTML = "Pa gen mouvman pou kounye a.";
-    return;
+  if(value.includes("complete") || value.includes("approved") || value.includes("paid")){
+    return "badge-success";
   }
 
-  box.innerHTML = "";
+  if(value.includes("pending")){
+    return "badge-warning";
+  }
 
-  allEntries.forEach(item => {
-    box.innerHTML += `
-      <div class="statement-item">
-        <div class="statement-top">
-          <div>
-            <div class="statement-name">${item.title}</div>
-            <div class="statement-date">${item.date}</div>
-          </div>
-          <div class="statement-amount">${item.amount}</div>
-        </div>
-
-        <div class="statement-sub"><strong>Type:</strong> ${item.type}</div>
-        <div class="statement-sub">${item.sub}</div>
-        <div class="badge ${getBadgeClass(item.badge)}">${item.status}</div>
-      </div>
-    `;
-  });
+  return "badge-info";
 }
 
-loadStatement();
+const currentUser = FastPayV2.getCurrentUser();
+
+if(!currentUser){
+  showError("Ou pa konekte. Tanpri login anvan.");
+  setTimeout(() => {
+    window.location.href = "login.html";
+  }, 1200);
+} else {
+  document.getElementById("profileLetter").innerHTML = currentUser.fullname.charAt(0).toUpperCase();
+  document.getElementById("walletBalance").innerHTML = (currentUser.balance || 0) + " HTG";
+
+  const userTransactions = FastPayV2.getUserTransactions(currentUser.id);
+
+  document.getElementById("totalTransactions").innerHTML = userTransactions.length;
+
+  let totalIn = 0;
+  let totalOut = 0;
+
+  userTransactions.forEach(function(tx){
+    const amount = getAmountNumber(tx.amount);
+
+    if(String(tx.amount).trim().startsWith("-")){
+      totalOut += Math.abs(amount);
+    } else {
+      totalIn += Math.abs(amount);
+    }
+  });
+
+  document.getElementById("totalIn").innerHTML = totalIn + " HTG";
+  document.getElementById("totalOut").innerHTML = totalOut + " HTG";
+
+  const box = document.getElementById("statementBox");
+
+  if(userTransactions.length === 0){
+    box.innerHTML = "Pa gen tranzaksyon pou kounye a.";
+  } else {
+    box.className = "";
+    box.innerHTML = "";
+
+    userTransactions.forEach(function(tx){
+      const isOut = String(tx.amount).trim().startsWith("-");
+      const amountClass = isOut ? "out" : "in";
+
+      box.innerHTML += `
+        <div class="tx-item">
+          <div class="tx-top">
+            <div>
+              <div class="tx-name">${tx.service || "Transaction"}</div>
+              <div class="tx-date">${tx.date || ""}</div>
+            </div>
+            <div class="tx-amount ${amountClass}">${tx.amount || "0"}</div>
+          </div>
+
+          <div class="tx-sub"><strong>Type:</strong> ${tx.type || "general"}</div>
+          <div class="tx-sub"><strong>Order ID:</strong> ${(tx.meta && tx.meta.orderId) || tx.orderId || "N/A"}</div>
+          <div class="badge ${getBadgeClass(tx.status)}">${tx.status || "completed"}</div>
+        </div>
+      `;
+    });
+  }
+}
 </script>
 
 </body>
