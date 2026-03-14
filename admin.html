@@ -14,6 +14,7 @@
       margin:0;
       background:#eef2f7;
       padding:20px;
+      color:#111827;
     }
 
     .container{
@@ -33,31 +34,32 @@
       background:linear-gradient(135deg,#ff4d3d,#ff8a5c);
       color:white;
       padding:22px;
-      border-radius:20px;
+      border-radius:22px;
       margin-bottom:20px;
       box-shadow:0 10px 25px rgba(255,90,61,0.25);
     }
 
     .header h1{
       margin:0;
-      font-size:28px;
+      font-size:30px;
     }
 
     .header p{
       margin:8px 0 0;
-      opacity:0.95;
+      opacity:0.96;
+      line-height:1.5;
     }
 
     .box{
       background:white;
-      border-radius:18px;
+      border-radius:20px;
       padding:18px;
       box-shadow:0 4px 14px rgba(0,0,0,0.08);
       margin-bottom:16px;
     }
 
     .box h2{
-      margin-top:0;
+      margin:0 0 14px 0;
       font-size:22px;
       color:#111827;
     }
@@ -77,31 +79,33 @@
       display:inline-block;
       padding:8px 14px;
       border-radius:999px;
-      font-size:14px;
+      font-size:13px;
       font-weight:bold;
       background:#fff7ed;
       color:#c2410c;
+      margin-top:8px;
     }
 
-    .deposit-item{
+    .item{
       padding:14px 0;
       border-bottom:1px solid #eee;
     }
 
-    .deposit-item:last-child{
+    .item:last-child{
       border-bottom:none;
     }
 
-    .deposit-title{
+    .item-title{
       font-weight:bold;
       color:#111827;
       font-size:16px;
     }
 
-    .deposit-sub{
+    .item-sub{
       color:#6b7280;
       font-size:14px;
       margin-top:4px;
+      line-height:1.45;
     }
 
     .btn{
@@ -110,7 +114,7 @@
       text-align:center;
       padding:14px;
       border:none;
-      border-radius:12px;
+      border-radius:14px;
       text-decoration:none;
       font-size:16px;
       font-weight:bold;
@@ -127,6 +131,11 @@
       background:#111827;
       color:white;
     }
+
+    .btn-danger{
+      background:#991b1b;
+      color:white;
+    }
   </style>
 </head>
 <body>
@@ -136,28 +145,54 @@
 
   <div class="header">
     <h1>Admin Dashboard</h1>
-    <p>Jere lòd kliyan yo ak demann depo yo sou FastPay.</p>
+    <p>Jere tout demann kliyan yo sou FastPay nan yon sèl kote.</p>
   </div>
 
   <div class="box">
-    <h2>Dènye lòd</h2>
+    <h2>Dènye Order</h2>
     <div id="orderBox" class="empty">Pa gen lòd disponib pou kounye a.</div>
   </div>
 
   <div class="box">
     <h2>Deposit Requests</h2>
     <div id="depositBox" class="empty">Pa gen demann depo pou kounye a.</div>
-    <button class="btn btn-primary" onclick="loadAllData()">Refresh Dashboard</button>
-    <button class="btn btn-secondary" onclick="clearAllData()">Clear Deposit Requests</button>
   </div>
+
+  <div class="box">
+    <h2>Withdraw Requests</h2>
+    <div id="withdrawBox" class="empty">Pa gen demann retrè pou kounye a.</div>
+  </div>
+
+  <div class="box">
+    <h2>Transfer Requests</h2>
+    <div id="transferBox" class="empty">Pa gen demann transfè pou kounye a.</div>
+  </div>
+
+  <div class="box">
+    <h2>Virtual Card Requests</h2>
+    <div id="cardRequestBox" class="empty">Pa gen demann kat pou kounye a.</div>
+  </div>
+
+  <div class="box">
+    <h2>Recharge Card Requests</h2>
+    <div id="rechargeCardBox" class="empty">Pa gen recharge carte pou kounye a.</div>
+  </div>
+
+  <div class="box">
+    <h2>Social Media Orders</h2>
+    <div id="socialMediaBox" class="empty">Pa gen lòd social media pou kounye a.</div>
+  </div>
+
+  <button class="btn btn-primary" onclick="loadAllData()">Refresh Dashboard</button>
+  <button class="btn btn-secondary" onclick="clearRequests()">Clear Requests</button>
 </div>
 
 <script>
-  function loadOrder(){
+  function renderSingleLastOrder() {
     const savedOrder = localStorage.getItem("fastpay_last_order");
     const orderBox = document.getElementById("orderBox");
 
-    if(!savedOrder){
+    if (!savedOrder) {
       orderBox.className = "empty";
       orderBox.innerHTML = "Pa gen lòd disponib pou kounye a.";
       return;
@@ -168,49 +203,190 @@
     orderBox.className = "";
     orderBox.innerHTML =
       '<div class="row"><strong>Order ID:</strong> ' + (order.orderId || 'N/A') + '</div>' +
-      '<div class="row"><strong>Client:</strong> ' + order.fullname + '</div>' +
-      '<div class="row"><strong>WhatsApp:</strong> ' + order.whatsapp + '</div>' +
-      '<div class="row"><strong>Service:</strong> ' + order.service + '</div>' +
-      '<div class="row"><strong>Plan / Amount:</strong> ' + order.amount + '</div>' +
-      '<div class="row"><strong>Details:</strong> ' + order.details + '</div>' +
-      '<div class="row"><strong>Date:</strong> ' + order.date + '</div>' +
+      '<div class="row"><strong>Client:</strong> ' + (order.fullname || 'N/A') + '</div>' +
+      '<div class="row"><strong>WhatsApp:</strong> ' + (order.whatsapp || 'N/A') + '</div>' +
+      '<div class="row"><strong>Service:</strong> ' + (order.service || 'N/A') + '</div>' +
+      '<div class="row"><strong>Plan / Amount:</strong> ' + (order.amount || 'N/A') + '</div>' +
+      '<div class="row"><strong>Details:</strong> ' + (order.details || 'N/A') + '</div>' +
+      '<div class="row"><strong>Date:</strong> ' + (order.date || 'N/A') + '</div>' +
       '<div class="row"><span class="status">Status: ' + (order.status || 'Pending Review') + '</span></div>';
   }
 
-  function loadDeposits(){
-    const deposits = JSON.parse(localStorage.getItem("fastpay_deposits")) || [];
-    const depositBox = document.getElementById("depositBox");
+  function renderList(boxId, dataList, type) {
+    const box = document.getElementById(boxId);
 
-    if(deposits.length === 0){
-      depositBox.className = "empty";
-      depositBox.innerHTML = "Pa gen demann depo pou kounye a.";
+    if (!dataList || dataList.length === 0) {
+      box.className = "empty";
+      box.innerHTML = getEmptyMessage(type);
       return;
     }
 
-    depositBox.className = "";
-    depositBox.innerHTML = "";
+    box.className = "";
+    box.innerHTML = "";
 
-    deposits.forEach(function(deposit){
-      depositBox.innerHTML +=
-        '<div class="deposit-item">' +
-        '<div class="deposit-title">' + deposit.clientName + ' - ' + deposit.amount + ' HTG</div>' +
-        '<div class="deposit-sub"><strong>Method:</strong> ' + deposit.method + '</div>' +
-        '<div class="deposit-sub"><strong>Bank:</strong> ' + deposit.bank + '</div>' +
-        '<div class="deposit-sub"><strong>Currency:</strong> ' + deposit.currency + '</div>' +
-        '<div class="deposit-sub"><strong>Details:</strong> ' + deposit.details + '</div>' +
-        '<div class="deposit-sub"><strong>Date:</strong> ' + deposit.date + '</div>' +
-        '<div class="deposit-sub"><span class="status">Status: ' + deposit.status + '</span></div>' +
-        '</div>';
+    dataList.forEach(function(item) {
+      box.innerHTML += buildItemCard(item, type);
     });
   }
 
-  function loadAllData(){
-    loadOrder();
-    loadDeposits();
+  function getEmptyMessage(type) {
+    if (type === "deposit") return "Pa gen demann depo pou kounye a.";
+    if (type === "withdraw") return "Pa gen demann retrè pou kounye a.";
+    if (type === "transfer") return "Pa gen demann transfè pou kounye a.";
+    if (type === "card") return "Pa gen demann kat pou kounye a.";
+    if (type === "recharge") return "Pa gen recharge carte pou kounye a.";
+    if (type === "social") return "Pa gen lòd social media pou kounye a.";
+    return "Pa gen done pou kounye a.";
   }
 
-  function clearAllData(){
+  function buildItemCard(item, type) {
+    if (type === "deposit") {
+      return `
+        <div class="item">
+          <div class="item-title">${item.clientName || 'Client'} - ${item.amount || '0'} </div>
+          <div class="item-sub"><strong>Method:</strong> ${item.method || 'N/A'}</div>
+          <div class="item-sub"><strong>Bank:</strong> ${item.bank || 'N/A'}</div>
+          <div class="item-sub"><strong>Currency:</strong> ${item.currency || 'N/A'}</div>
+          <div class="item-sub"><strong>Details:</strong> ${item.details || 'N/A'}</div>
+          <div class="item-sub"><strong>Date:</strong> ${item.date || 'N/A'}</div>
+          <span class="status">Status: ${item.status || 'Pending Verification'}</span>
+        </div>
+      `;
+    }
+
+    if (type === "withdraw") {
+      return `
+        <div class="item">
+          <div class="item-title">${item.clientName || 'Client'} - ${item.amount || '0'}</div>
+          <div class="item-sub"><strong>Method:</strong> ${item.method || 'N/A'}</div>
+          <div class="item-sub"><strong>Bank/Service:</strong> ${item.bank || 'N/A'}</div>
+          <div class="item-sub"><strong>Account Name:</strong> ${item.accountName || 'N/A'}</div>
+          <div class="item-sub"><strong>Account Number:</strong> ${item.accountNumber || 'N/A'}</div>
+          <div class="item-sub"><strong>Account Type:</strong> ${item.accountType || 'N/A'}</div>
+          <div class="item-sub"><strong>Currency:</strong> ${item.currency || 'N/A'}</div>
+          <div class="item-sub"><strong>Details:</strong> ${item.details || 'N/A'}</div>
+          <div class="item-sub"><strong>Date:</strong> ${item.date || 'N/A'}</div>
+          <span class="status">Status: ${item.status || 'Pending Verification'}</span>
+        </div>
+      `;
+    }
+
+    if (type === "transfer") {
+      return `
+        <div class="item">
+          <div class="item-title">${item.clientName || 'Client'} - ${item.amount || '0'}</div>
+          <div class="item-sub"><strong>Transfer Type:</strong> ${item.transferType || 'N/A'}</div>
+          <div class="item-sub"><strong>Receiver:</strong> ${item.receiverName || 'N/A'}</div>
+          <div class="item-sub"><strong>Receiver ID:</strong> ${item.receiverId || 'N/A'}</div>
+          <div class="item-sub"><strong>Currency:</strong> ${item.currency || 'N/A'}</div>
+          <div class="item-sub"><strong>Details:</strong> ${item.details || 'N/A'}</div>
+          <div class="item-sub"><strong>Date:</strong> ${item.date || 'N/A'}</div>
+          <span class="status">Status: ${item.status || 'Pending Verification'}</span>
+        </div>
+      `;
+    }
+
+    if (type === "card") {
+      return `
+        <div class="item">
+          <div class="item-title">${item.fullName || 'Client'} - ${item.cardType || 'Virtual Card'}</div>
+          <div class="item-sub"><strong>Email:</strong> ${item.email || 'N/A'}</div>
+          <div class="item-sub"><strong>WhatsApp:</strong> ${item.whatsapp || 'N/A'}</div>
+          <div class="item-sub"><strong>DOB:</strong> ${item.dob || 'N/A'}</div>
+          <div class="item-sub"><strong>Address:</strong> ${item.address || 'N/A'}</div>
+          <div class="item-sub"><strong>ID Type:</strong> ${item.idType || 'N/A'}</div>
+          <div class="item-sub"><strong>ID Number:</strong> ${item.idNumber || 'N/A'}</div>
+          <div class="item-sub"><strong>Payment Method:</strong> ${item.paymentMethod || 'N/A'}</div>
+          <div class="item-sub"><strong>Amount:</strong> ${item.amount || '1500 HTG'}</div>
+          <div class="item-sub"><strong>Note:</strong> ${item.note || 'N/A'}</div>
+          <div class="item-sub"><strong>Date:</strong> ${item.date || 'N/A'}</div>
+          <span class="status">Status: ${item.status || 'Pending Payment Verification'}</span>
+        </div>
+      `;
+    }
+
+    if (type === "recharge") {
+      return `
+        <div class="item">
+          <div class="item-title">${item.service || 'Recharge Carte'} - ${item.amount || '0'}</div>
+          <div class="item-sub"><strong>Client:</strong> ${item.clientName || 'N/A'}</div>
+          <div class="item-sub"><strong>WhatsApp:</strong> ${item.whatsapp || 'N/A'}</div>
+          <div class="item-sub"><strong>Email:</strong> ${item.email || 'N/A'}</div>
+          <div class="item-sub"><strong>Payment Method:</strong> ${item.paymentMethod || 'N/A'}</div>
+          <div class="item-sub"><strong>Date:</strong> ${item.date || 'N/A'}</div>
+          <span class="status">Status: ${item.status || 'Pending Verification'}</span>
+        </div>
+      `;
+    }
+
+    if (type === "social") {
+      return `
+        <div class="item">
+          <div class="item-title">${item.service || 'Social Media Order'} - ${item.amount || '0'}</div>
+          <div class="item-sub"><strong>Client:</strong> ${item.fullname || item.clientName || 'N/A'}</div>
+          <div class="item-sub"><strong>WhatsApp:</strong> ${item.whatsapp || 'N/A'}</div>
+          <div class="item-sub"><strong>Details:</strong> ${item.details || 'N/A'}</div>
+          <div class="item-sub"><strong>Order ID:</strong> ${item.orderId || 'N/A'}</div>
+          <div class="item-sub"><strong>Date:</strong> ${item.date || 'N/A'}</div>
+          <span class="status">Status: ${item.status || 'Pending Review'}</span>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="item">
+        <div class="item-title">No data</div>
+      </div>
+    `;
+  }
+
+  function getSocialMediaOrders() {
+    const orders = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
+    const lastOrder = JSON.parse(localStorage.getItem("fastpay_last_order") || "null");
+
+    let socialOrders = [];
+
+    if (lastOrder && lastOrder.service && String(lastOrder.service).includes("social")) {
+      socialOrders.push(lastOrder);
+    }
+
+    orders.forEach(function(tx) {
+      if (tx.service && String(tx.service).toLowerCase().includes("social")) {
+        socialOrders.push(tx);
+      }
+    });
+
+    return socialOrders;
+  }
+
+  function getRechargeCardRequests() {
+    return JSON.parse(localStorage.getItem("fastpay_recharge_cards")) || [];
+  }
+
+  function loadAllData() {
+    renderSingleLastOrder();
+
+    const deposits = JSON.parse(localStorage.getItem("fastpay_deposits")) || [];
+    const withdraws = JSON.parse(localStorage.getItem("fastpay_withdraws")) || [];
+    const transfers = JSON.parse(localStorage.getItem("fastpay_transfers")) || [];
+    const cardRequests = JSON.parse(localStorage.getItem("fastpay_card_requests")) || [];
+    const rechargeCards = getRechargeCardRequests();
+    const socialOrders = getSocialMediaOrders();
+
+    renderList("depositBox", deposits, "deposit");
+    renderList("withdrawBox", withdraws, "withdraw");
+    renderList("transferBox", transfers, "transfer");
+    renderList("cardRequestBox", cardRequests, "card");
+    renderList("rechargeCardBox", rechargeCards, "recharge");
+    renderList("socialMediaBox", socialOrders, "social");
+  }
+
+  function clearRequests() {
     localStorage.removeItem("fastpay_deposits");
+    localStorage.removeItem("fastpay_withdraws");
+    localStorage.removeItem("fastpay_transfers");
+    localStorage.removeItem("fastpay_card_requests");
+    localStorage.removeItem("fastpay_recharge_cards");
     loadAllData();
   }
 
