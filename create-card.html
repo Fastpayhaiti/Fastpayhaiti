@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Create Card - FastPay</title>
+<title>FastPay Create Card v2</title>
 <style>
 *{
   box-sizing:border-box;
@@ -68,7 +68,7 @@ body{
 
 .hero h1{
   margin:0 0 10px 0;
-  font-size:30px;
+  font-size:28px;
   line-height:1.2;
 }
 
@@ -109,7 +109,7 @@ input, select, textarea{
   margin-bottom:16px;
 }
 
-.card-options{
+.option-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:12px;
@@ -210,15 +210,23 @@ input, select, textarea{
   color:white;
 }
 
-.success-box{
+.notice{
   display:none;
+  padding:14px;
+  border-radius:14px;
+  font-weight:bold;
+  line-height:1.5;
+  margin-bottom:14px;
+}
+
+.notice.success{
   background:#ecfdf3;
   color:#166534;
-  padding:16px;
-  border-radius:16px;
-  font-weight:bold;
-  margin-top:16px;
-  line-height:1.5;
+}
+
+.notice.error{
+  background:#fee2e2;
+  color:#991b1b;
 }
 </style>
 </head>
@@ -226,32 +234,34 @@ input, select, textarea{
 
 <div class="container">
 
-<a href="index.html" class="back">← Back Home</a>
+<a href="dashboard.html" class="back">← Back Dashboard</a>
 
 <div class="topbar">
   <div class="logo">FastPay</div>
-  <div class="profile" id="profileLetter">L</div>
+  <div class="profile" id="profileLetter">U</div>
 </div>
 
 <div class="hero">
   <h1>Create New Card</h1>
-  <p>Ranpli enfòmasyon yo pou mande yon nouvo kat vityèl FastPay.</p>
+  <p>Mande nouvo kat FastPay ou a fasil, epi chwazi opsyon ki pi bon pou ou.</p>
 </div>
 
 <div class="section">
-  <h2>Enfòmasyon kliyan</h2>
+  <h2>Card Request Form</h2>
+
+  <div id="noticeBox" class="notice"></div>
 
   <label>Non konplè</label>
-  <input type="text" id="fullName" placeholder="Antre non kliyan an">
+  <input type="text" id="fullname" placeholder="Antre non konplè ou">
 
   <label>Email</label>
-  <input type="email" id="email" placeholder="Antre imel kliyan an">
+  <input type="email" id="email" placeholder="Antre email ou">
 
-  <label>WhatsApp</label>
-  <input type="text" id="whatsapp" placeholder="Eg: 50942778505">
+  <label>Nimewo telefòn / WhatsApp</label>
+  <input type="text" id="phone" placeholder="Eg: 50942778505">
 
   <label>Adrès</label>
-  <input type="text" id="address" placeholder="Antre adrès kliyan an">
+  <input type="text" id="address" placeholder="Antre adrès ou">
 
   <label>Dat nesans</label>
   <input type="date" id="dob">
@@ -271,26 +281,26 @@ input, select, textarea{
   <h2>Opsyon kat la</h2>
 
   <label>Kalite kat</label>
-  <div class="card-options">
-    <div class="option-card active" id="virtualCardOption" onclick="selectCardKind('Virtual')">
-      <div class="option-title">Virtual Card</div>
-      <div class="option-sub">Pi vit ak pi fasil</div>
+  <div class="option-grid">
+    <div class="option-card active" id="virtualOption" onclick="selectCardType('Virtual')">
+      <div class="option-title">Virtual</div>
+      <div class="option-sub">Pi rapid ak senp</div>
     </div>
 
-    <div class="option-card" id="premiumCardOption" onclick="selectCardKind('Premium')">
-      <div class="option-title">Premium Card</div>
+    <div class="option-card" id="premiumOption" onclick="selectCardType('Premium')">
+      <div class="option-title">Premium</div>
       <div class="option-sub">Pi gwo limit</div>
     </div>
   </div>
 
   <label>Rezo kat la</label>
-  <div class="card-options">
+  <div class="option-grid">
     <div class="option-card active" id="visaOption" onclick="selectNetwork('Visa')">
       <div class="option-title">Visa</div>
       <div class="option-sub">Global payments</div>
     </div>
 
-    <div class="option-card" id="mastercardOption" onclick="selectNetwork('Mastercard')">
+    <div class="option-card" id="masterOption" onclick="selectNetwork('Mastercard')">
       <div class="option-title">Mastercard</div>
       <div class="option-sub">Secure checkout</div>
     </div>
@@ -344,44 +354,54 @@ input, select, textarea{
   </div>
 
   <button class="main-btn orange-btn" onclick="submitCardRequest()">Confirmer la demande</button>
-  <a href="wallet.html" class="main-btn dark-btn">Ale sou Wallet</a>
-
-  <div class="success-box" id="successBox"></div>
+  <a href="card-dashboard.html" class="main-btn dark-btn">Ale sou Card Dashboard</a>
 </div>
 
 </div>
 
+<script src="app.js"></script>
 <script>
-const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
-const walletBalance = parseInt(localStorage.getItem("fastpay_balance") || "0");
-
-let selectedCardKind = "Virtual";
+let selectedCardType = "Virtual";
 let selectedNetwork = "Visa";
 let selectedPrice = 1500;
 
-if(savedUser && savedUser.fullname){
-  document.getElementById("profileLetter").innerHTML = savedUser.fullname.charAt(0).toUpperCase();
-  document.getElementById("fullName").value = savedUser.fullname || "";
-  document.getElementById("email").value = savedUser.email || "";
+function showNotice(message, type){
+  const box = document.getElementById("noticeBox");
+  box.style.display = "block";
+  box.className = "notice " + type;
+  box.innerHTML = message;
 }
 
-document.getElementById("summaryWallet").innerHTML = walletBalance + " HTG";
+const currentUser = FastPayV2.getCurrentUser();
 
-function selectCardKind(kind){
-  selectedCardKind = kind;
+if(!currentUser){
+  showNotice("Ou pa konekte. Tanpri login anvan.", "error");
+  setTimeout(() => {
+    window.location.href = "login.html";
+  }, 1200);
+} else {
+  document.getElementById("profileLetter").innerHTML = currentUser.fullname.charAt(0).toUpperCase();
+  document.getElementById("fullname").value = currentUser.fullname || "";
+  document.getElementById("email").value = currentUser.email || "";
+  document.getElementById("phone").value = currentUser.phone || "";
+  document.getElementById("summaryWallet").innerHTML = (currentUser.balance || 0) + " HTG";
+}
 
-  document.getElementById("virtualCardOption").classList.remove("active");
-  document.getElementById("premiumCardOption").classList.remove("active");
+function selectCardType(type){
+  selectedCardType = type;
 
-  if(kind === "Virtual"){
-    document.getElementById("virtualCardOption").classList.add("active");
+  document.getElementById("virtualOption").classList.remove("active");
+  document.getElementById("premiumOption").classList.remove("active");
+
+  if(type === "Virtual"){
+    document.getElementById("virtualOption").classList.add("active");
     selectedPrice = 1500;
   } else {
-    document.getElementById("premiumCardOption").classList.add("active");
+    document.getElementById("premiumOption").classList.add("active");
     selectedPrice = 3000;
   }
 
-  document.getElementById("summaryCardType").innerHTML = selectedCardKind;
+  document.getElementById("summaryCardType").innerHTML = selectedCardType;
   document.getElementById("summaryPrice").innerHTML = selectedPrice + " HTG";
   updateWalletState();
 }
@@ -390,23 +410,25 @@ function selectNetwork(network){
   selectedNetwork = network;
 
   document.getElementById("visaOption").classList.remove("active");
-  document.getElementById("mastercardOption").classList.remove("active");
+  document.getElementById("masterOption").classList.remove("active");
 
   if(network === "Visa"){
     document.getElementById("visaOption").classList.add("active");
   } else {
-    document.getElementById("mastercardOption").classList.add("active");
+    document.getElementById("masterOption").classList.add("active");
   }
 
   document.getElementById("summaryNetwork").innerHTML = selectedNetwork;
 }
 
 function updateWalletState(){
+  if(!currentUser) return;
+
   const paymentMethod = document.getElementById("paymentMethod").value;
   const box = document.getElementById("walletStateBox");
 
   if(paymentMethod === "Wallet"){
-    if(walletBalance >= selectedPrice){
+    if((currentUser.balance || 0) >= selectedPrice){
       box.className = "wallet-box";
       box.innerHTML = "Wallet ou gen ase balans pou peman sa a.";
     } else {
@@ -420,9 +442,14 @@ function updateWalletState(){
 }
 
 function submitCardRequest(){
-  const fullName = document.getElementById("fullName").value.trim();
+  if(!currentUser){
+    showNotice("Ou pa konekte.", "error");
+    return;
+  }
+
+  const fullname = document.getElementById("fullname").value.trim();
   const email = document.getElementById("email").value.trim();
-  const whatsapp = document.getElementById("whatsapp").value.trim();
+  const phone = document.getElementById("phone").value.trim();
   const address = document.getElementById("address").value.trim();
   const dob = document.getElementById("dob").value;
   const idType = document.getElementById("idType").value;
@@ -431,74 +458,64 @@ function submitCardRequest(){
   const paymentMethod = document.getElementById("paymentMethod").value;
   const note = document.getElementById("note").value.trim();
 
-  if(!fullName || !email || !whatsapp || !address || !dob || !idNumber){
-    alert("Tanpri ranpli tout enfòmasyon enpòtan yo.");
+  if(!fullname || !email || !phone || !address || !dob || !idNumber){
+    showNotice("Tanpri ranpli tout enfòmasyon enpòtan yo.", "error");
     return;
   }
 
-  let status = "Pending Payment Verification";
-  let currentWallet = parseInt(localStorage.getItem("fastpay_balance") || "0");
-
   if(paymentMethod === "Wallet"){
-    if(currentWallet < selectedPrice){
-      alert("Wallet ou pa gen ase balans pou kreye kat la.");
+    const debit = FastPayV2.subtractBalance(currentUser.id, selectedPrice);
+
+    if(!debit.success){
+      showNotice("Wallet ou pa gen ase balans pou kreye kat la.", "error");
       return;
     }
 
-    currentWallet -= selectedPrice;
-    localStorage.setItem("fastpay_balance", currentWallet);
-
-    let transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
-    const txId = "CARDREQ-" + Math.floor(Math.random() * 90000 + 10000);
-
-    transactions.unshift({
-      service: "Card Request - " + selectedCardKind + " " + selectedNetwork,
+    FastPayV2.addTransaction({
+      userId: currentUser.id,
+      service: "Card Request - " + selectedCardType + " " + selectedNetwork,
       amount: "-" + selectedPrice + " HTG",
-      date: new Date().toLocaleString(),
-      orderId: txId
+      type: "card-request",
+      status: "paid",
+      meta: {
+        paymentMethod: "Wallet"
+      }
     });
-
-    localStorage.setItem("fastpay_transactions", JSON.stringify(transactions));
-    status = "Paid with Wallet";
   }
 
-  const cardRequest = {
-    type: "Virtual Card Request",
-    fullName: fullName,
+  FastPayV2.createCardRequest({
+    userId: currentUser.id,
+    fullname: fullname,
     email: email,
-    whatsapp: whatsapp,
+    phone: phone,
     address: address,
     dob: dob,
     idType: idType,
     idNumber: idNumber,
-    cardType: selectedCardKind + " Card",
     network: selectedNetwork,
+    cardType: selectedCardType,
     currency: currency,
     paymentMethod: paymentMethod,
     amount: selectedPrice + " HTG",
-    note: note,
-    status: status,
-    date: new Date().toLocaleString()
-  };
+    note: note
+  });
 
-  localStorage.setItem("fastpay_last_card_request", JSON.stringify(cardRequest));
+  FastPayV2.addNotification({
+    userId: currentUser.id,
+    title: "Card request submitted",
+    text: "Nou resevwa demann kat ou a pou " + selectedCardType + " " + selectedNetwork + ".",
+    type: "info"
+  });
 
-  let cardRequests = JSON.parse(localStorage.getItem("fastpay_card_requests")) || [];
-  cardRequests.unshift(cardRequest);
-  localStorage.setItem("fastpay_card_requests", JSON.stringify(cardRequests));
+  showNotice("Demann kat la anrejistre avèk siksè.", "success");
 
-  const successBox = document.getElementById("successBox");
-  successBox.style.display = "block";
-
-  if(paymentMethod === "Wallet"){
-    successBox.innerHTML = "Demann kat la anrejistre avèk siksè. Wallet la debite, epi admin ap verifye aktivasyon an.";
-  } else {
-    successBox.innerHTML = "Demann kat la anrejistre avèk siksè. Admin ap verifye peman an avan kat la aktive.";
-  }
+  setTimeout(() => {
+    window.location.href = "card-dashboard.html";
+  }, 1000);
 }
 
 updateWalletState();
 </script>
 
 </body>
-  </html>
+        </html>
