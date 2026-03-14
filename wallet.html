@@ -1,448 +1,498 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FastPay Wallet v2</title>
-<style>
-*{
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FastPay Professional Wallet</title>
+  <style>
+    *{
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
 
-body{
-  margin:0;
-  background:#eef2f7;
-  padding:20px;
-  color:#111827;
-}
+    body{
+      margin:0;
+      background:#eef2f7;
+      padding:20px;
+      color:#111827;
+    }
 
-.container{
-  max-width:430px;
-  margin:auto;
-}
+    .container{
+      max-width:430px;
+      margin:auto;
+    }
 
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:18px;
+    }
 
-.logo{
-  font-size:30px;
-  font-weight:bold;
-  color:#ff5a3d;
-}
+    .left-top{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
 
-.profile{
-  width:46px;
-  height:46px;
-  border-radius:14px;
-  background:linear-gradient(135deg,#ff5a3d,#ff7a59);
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  font-size:18px;
-  box-shadow:0 6px 16px rgba(255,90,61,0.25);
-}
+    .back-btn{
+      width:44px;
+      height:44px;
+      border:none;
+      border-radius:14px;
+      background:#111827;
+      color:white;
+      font-size:20px;
+      text-decoration:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
 
-.back{
-  display:inline-block;
-  margin-bottom:16px;
-  color:#ff4d3d;
-  text-decoration:none;
-  font-weight:bold;
-}
+    .logo{
+      font-size:28px;
+      font-weight:bold;
+      color:#ff5a3d;
+    }
 
-.hero{
-  background:linear-gradient(135deg,#047857,#10b981);
-  color:white;
-  border-radius:26px;
-  padding:24px;
-  margin-bottom:18px;
-  box-shadow:0 12px 28px rgba(16,185,129,0.22);
-}
+    .profile{
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      background:linear-gradient(135deg,#ff5a3d,#ff7a59);
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+      font-size:18px;
+      box-shadow:0 6px 16px rgba(255,90,61,0.25);
+    }
 
-.hero h1{
-  margin:0 0 10px 0;
-  font-size:28px;
-  line-height:1.2;
-}
+    .hero{
+      background:linear-gradient(135deg,#047857,#10b981);
+      color:white;
+      border-radius:26px;
+      padding:22px;
+      margin-bottom:18px;
+      box-shadow:0 12px 28px rgba(16,185,129,0.22);
+    }
 
-.hero p{
-  margin:0;
-  font-size:15px;
-  line-height:1.6;
-  opacity:0.98;
-}
+    .hero h1{
+      margin:0 0 8px 0;
+      font-size:28px;
+    }
 
-.balance-card{
-  background:linear-gradient(135deg,#111827,#374151);
-  color:white;
-  border-radius:24px;
-  padding:22px;
-  box-shadow:0 12px 28px rgba(17,24,39,0.22);
-  margin-bottom:18px;
-}
+    .hero p{
+      margin:0;
+      font-size:14px;
+      line-height:1.6;
+      opacity:0.96;
+    }
 
-.balance-label{
-  font-size:16px;
-  opacity:0.95;
-}
+    .notice{
+      display:none;
+      margin-bottom:16px;
+      border-radius:14px;
+      padding:14px;
+      font-weight:bold;
+      line-height:1.5;
+    }
 
-.balance-amount{
-  font-size:42px;
-  font-weight:bold;
-  margin-top:10px;
-}
+    .notice.ok{
+      background:#ecfdf3;
+      color:#166534;
+    }
 
-.balance-sub{
-  margin-top:8px;
-  font-size:14px;
-  opacity:0.9;
-}
+    .notice.err{
+      background:#fee2e2;
+      color:#991b1b;
+    }
 
-.quick-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-  margin-top:20px;
-}
+    .wallet-card{
+      background:linear-gradient(135deg,#111827,#374151);
+      color:white;
+      border-radius:26px;
+      padding:22px;
+      box-shadow:0 16px 35px rgba(17,24,39,0.26);
+      margin-bottom:18px;
+      position:relative;
+      overflow:hidden;
+    }
 
-.quick-btn{
-  background:rgba(255,255,255,0.15);
-  color:white;
-  padding:14px;
-  border-radius:18px;
-  text-align:center;
-  font-weight:bold;
-  text-decoration:none;
-  display:block;
-}
+    .wallet-card::after{
+      content:"";
+      position:absolute;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.06);
+      top:-40px;
+      right:-50px;
+    }
 
-.section{
-  background:white;
-  border-radius:22px;
-  padding:18px;
-  box-shadow:0 8px 18px rgba(0,0,0,0.06);
-  margin-bottom:18px;
-}
+    .wallet-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      position:relative;
+      z-index:2;
+    }
 
-.section h2{
-  margin:0 0 14px 0;
-  font-size:22px;
-}
+    .wallet-title{
+      font-size:14px;
+      opacity:0.86;
+    }
 
-.stat-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-}
+    .wallet-badge{
+      background:rgba(255,255,255,0.15);
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:bold;
+    }
 
-.stat-box{
-  background:#f8fafc;
-  border-radius:16px;
-  padding:14px;
-}
+    .wallet-balance{
+      margin-top:18px;
+      font-size:42px;
+      font-weight:bold;
+      position:relative;
+      z-index:2;
+    }
 
-.stat-title{
-  color:#6b7280;
-  font-size:13px;
-  margin-bottom:6px;
-}
+    .wallet-sub{
+      margin-top:6px;
+      font-size:14px;
+      opacity:0.9;
+      position:relative;
+      z-index:2;
+      word-break:break-word;
+    }
 
-.stat-value{
-  font-size:20px;
-  font-weight:bold;
-  color:#111827;
-}
+    .quick-actions{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+      margin-top:18px;
+      position:relative;
+      z-index:2;
+    }
 
-.row-between{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-}
+    .quick-btn{
+      display:block;
+      text-align:center;
+      padding:14px;
+      border-radius:16px;
+      text-decoration:none;
+      font-weight:bold;
+      font-size:15px;
+      color:white;
+      background:rgba(255,255,255,0.14);
+    }
 
-.badge{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-width:24px;
-  height:24px;
-  padding:0 8px;
-  border-radius:999px;
-  background:#ef4444;
-  color:white;
-  font-size:12px;
-  font-weight:bold;
-}
+    .section{
+      background:white;
+      border-radius:22px;
+      padding:18px;
+      box-shadow:0 8px 18px rgba(0,0,0,0.06);
+      margin-bottom:18px;
+    }
 
-.tx-item{
-  padding:12px 0;
-  border-bottom:1px solid #eee;
-}
+    .section h2{
+      margin:0 0 14px 0;
+      font-size:22px;
+    }
 
-.tx-item:last-child{
-  border-bottom:none;
-}
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
 
-.tx-top{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  align-items:flex-start;
-}
+    .stat-box{
+      background:#f8fafc;
+      border-radius:16px;
+      padding:14px;
+      position:relative;
+    }
 
-.tx-name{
-  font-weight:bold;
-  font-size:15px;
-}
+    .stat-title{
+      color:#6b7280;
+      font-size:13px;
+      margin-bottom:6px;
+    }
 
-.tx-amount{
-  font-weight:bold;
-  font-size:15px;
-  text-align:right;
-}
+    .stat-value{
+      font-size:20px;
+      font-weight:bold;
+      color:#111827;
+    }
 
-.tx-date{
-  color:#6b7280;
-  font-size:13px;
-  margin-top:4px;
-}
+    .badge{
+      position:absolute;
+      top:10px;
+      right:10px;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      min-width:22px;
+      height:22px;
+      padding:0 7px;
+      border-radius:999px;
+      background:#ef4444;
+      color:white;
+      font-size:11px;
+      font-weight:bold;
+    }
 
-.note-item{
-  padding:12px 0;
-  border-bottom:1px solid #eee;
-}
+    .tx-item,
+    .note-item{
+      padding:12px 0;
+      border-bottom:1px solid #eee;
+    }
 
-.note-item:last-child{
-  border-bottom:none;
-}
+    .tx-item:last-child,
+    .note-item:last-child{
+      border-bottom:none;
+    }
 
-.note-title{
-  font-weight:bold;
-  font-size:15px;
-}
+    .tx-top{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+    }
 
-.note-text{
-  color:#4b5563;
-  font-size:14px;
-  margin-top:6px;
-  line-height:1.5;
-}
+    .tx-name,
+    .note-title{
+      font-weight:bold;
+      font-size:15px;
+    }
 
-.note-date{
-  color:#6b7280;
-  font-size:13px;
-  margin-top:6px;
-}
+    .tx-amount{
+      font-weight:bold;
+      font-size:15px;
+      text-align:right;
+    }
 
-.main-btn{
-  display:block;
-  width:100%;
-  text-align:center;
-  padding:15px;
-  border:none;
-  border-radius:16px;
-  text-decoration:none;
-  font-weight:bold;
-  font-size:16px;
-  margin-top:12px;
-  cursor:pointer;
-}
+    .tx-date,
+    .note-date{
+      color:#6b7280;
+      font-size:13px;
+      margin-top:4px;
+    }
 
-.orange-btn{
-  background:#ff4d3d;
-  color:white;
-}
+    .note-text{
+      color:#4b5563;
+      font-size:14px;
+      margin-top:6px;
+      line-height:1.5;
+    }
 
-.dark-btn{
-  background:#111827;
-  color:white;
-}
+    .toolbar{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:14px;
+    }
 
-.empty{
-  color:#6b7280;
-  font-size:14px;
-}
+    .btn{
+      display:block;
+      width:100%;
+      text-align:center;
+      padding:14px;
+      border:none;
+      border-radius:16px;
+      text-decoration:none;
+      font-weight:bold;
+      font-size:15px;
+      cursor:pointer;
+      color:white;
+    }
 
-.notice{
-  display:none;
-  padding:14px;
-  border-radius:14px;
-  font-weight:bold;
-  line-height:1.5;
-  margin-bottom:14px;
-}
+    .btn-orange{
+      background:#ff4d3d;
+    }
 
-.notice.error{
-  background:#fee2e2;
-  color:#991b1b;
-}
-</style>
+    .btn-dark{
+      background:#111827;
+    }
+
+    .empty{
+      color:#6b7280;
+      font-size:14px;
+    }
+  </style>
 </head>
 <body>
 
 <div class="container">
 
-<a href="dashboard.html" class="back">← Back Dashboard</a>
-
-<div class="topbar">
-  <div class="logo">FastPay</div>
-  <div class="profile" id="profileLetter">U</div>
-</div>
-
-<div id="noticeBox" class="notice error"></div>
-
-<div class="hero">
-  <h1 id="walletWelcome">My Wallet</h1>
-  <p>Jere lajan ou, wè mouvman ou, epi swiv aktivite kont ou fasil.</p>
-</div>
-
-<div class="balance-card">
-  <div class="balance-label">Available Balance</div>
-  <div class="balance-amount" id="walletBalance">0 HTG</div>
-  <div class="balance-sub" id="walletOwner">FastPay Wallet</div>
-
-  <div class="quick-grid">
-    <a href="deposit.html" class="quick-btn">Depoze</a>
-    <a href="withdraw.html" class="quick-btn">Retire</a>
-    <a href="transfer.html" class="quick-btn">Transfere</a>
-    <a href="topup.html" class="quick-btn">Top Up</a>
+  <div class="topbar">
+    <div class="left-top">
+      <a href="dashboard.html" class="back-btn">←</a>
+      <div class="logo">FastPay</div>
+    </div>
+    <div class="profile" id="profileLetter">U</div>
   </div>
-</div>
 
-<div class="section">
-  <h2>Rezime Wallet</h2>
+  <div id="noticeBox" class="notice"></div>
 
-  <div class="stat-grid">
-    <div class="stat-box">
-      <div class="stat-title">Total Tranzaksyon</div>
-      <div class="stat-value" id="totalTransactions">0</div>
+  <div class="hero">
+    <h1>Professional Wallet</h1>
+    <p>Jere tout lajan ou, tranzaksyon ou, ak notifikasyon ou yo nan yon sèl espas pwofesyonèl.</p>
+  </div>
+
+  <div class="wallet-card">
+    <div class="wallet-top">
+      <div>
+        <div class="wallet-title">Available Balance</div>
+      </div>
+      <div class="wallet-badge">Digital Wallet</div>
     </div>
 
-    <div class="stat-box">
-      <div class="stat-title">Notifikasyon</div>
-      <div class="row-between">
+    <div class="wallet-balance" id="walletBalance">0 HTG</div>
+    <div class="wallet-sub" id="walletOwner">FastPay Wallet</div>
+
+    <div class="quick-actions">
+      <a href="deposit.html" class="quick-btn">Deposit</a>
+      <a href="withdraw.html" class="quick-btn">Withdraw</a>
+      <a href="transfer.html" class="quick-btn">Transfer</a>
+      <a href="statement.html" class="quick-btn">Statement</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Wallet Overview</h2>
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-title">Transactions</div>
+        <div class="stat-value" id="totalTransactions">0</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="badge" id="notificationBadge">0</div>
+        <div class="stat-title">Notifications</div>
         <div class="stat-value" id="totalNotifications">0</div>
-        <div class="badge" id="notificationBadge" style="display:none;">0</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-title">Latest Transaction</div>
+        <div class="stat-value" id="latestTransaction">Pa gen</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-title">Status</div>
+        <div class="stat-value" id="walletStatus">Active</div>
       </div>
     </div>
+  </div>
 
-    <div class="stat-box">
-      <div class="stat-title">Dènye Tranzaksyon</div>
-      <div class="stat-value" id="lastTransaction">Pa gen</div>
-    </div>
+  <div class="section">
+    <h2>Recent Transactions</h2>
+    <div id="transactionsBox" class="empty">Pa gen tranzaksyon pou kounye a.</div>
 
-    <div class="stat-box">
-      <div class="stat-title">Kont Status</div>
-      <div class="stat-value" id="walletStatus">Active</div>
+    <div class="toolbar">
+      <a href="statement.html" class="btn btn-dark">Statement</a>
+      <a href="transfer-history.html" class="btn btn-orange">Transfer History</a>
     </div>
   </div>
-</div>
 
-<div class="section">
-  <h2>Dènye Tranzaksyon</h2>
-  <div id="transactionsBox" class="empty">Pa gen tranzaksyon pou kounye a.</div>
+  <div class="section">
+    <h2>Recent Notifications</h2>
+    <div id="notificationsBox" class="empty">Pa gen notifikasyon pou kounye a.</div>
 
-  <a href="statement.html" class="main-btn dark-btn">Wallet Statement</a>
-</div>
+    <div class="toolbar">
+      <a href="notification.html" class="btn btn-orange">All Notifications</a>
+      <a href="deposit-history.html" class="btn btn-dark">Deposit History</a>
+    </div>
 
-<div class="section">
-  <h2>Dènye Notifications</h2>
-  <div id="notificationsBox" class="empty">Pa gen notifikasyon pou kounye a.</div>
-
-  <a href="notification.html" class="main-btn orange-btn">Wè tout Notifications</a>
-  <a href="deposit-history.html" class="main-btn dark-btn">Deposit History</a>
-  <a href="withdraw-history.html" class="main-btn dark-btn">Withdraw History</a>
-  <a href="transfer-history.html" class="main-btn dark-btn">Transfer History</a>
-</div>
+    <div class="toolbar">
+      <a href="withdraw-history.html" class="btn btn-dark">Withdraw History</a>
+      <a href="card-dashboard.html" class="btn btn-dark">My Card</a>
+    </div>
+  </div>
 
 </div>
 
 <script src="app.js"></script>
 <script>
-function showError(message){
-  const box = document.getElementById("noticeBox");
-  box.style.display = "block";
-  box.innerHTML = message;
-}
-
-const currentUser = FastPayV2.getCurrentUser();
-
-if(!currentUser){
-  showError("Ou pa konekte. Tanpri login anvan.");
-  setTimeout(() => {
-    window.location.href = "login.html";
-  }, 1200);
-} else {
-  document.getElementById("walletWelcome").innerHTML = currentUser.fullname + " Wallet";
-  document.getElementById("profileLetter").innerHTML = currentUser.fullname.charAt(0).toUpperCase();
-  document.getElementById("walletBalance").innerHTML = (currentUser.balance || 0) + " HTG";
-  document.getElementById("walletOwner").innerHTML = currentUser.email || "FastPay Wallet";
-  document.getElementById("walletStatus").innerHTML = currentUser.status || "Active";
-
-  const userTransactions = FastPayV2.getUserTransactions(currentUser.id);
-  const userNotifications = FastPayV2.getUserNotifications(currentUser.id);
-  const unreadCount = FastPayV2.getUnreadCount(currentUser.id);
-
-  document.getElementById("totalTransactions").innerHTML = userTransactions.length;
-  document.getElementById("totalNotifications").innerHTML = userNotifications.length;
-
-  if(userTransactions.length > 0){
-    document.getElementById("lastTransaction").innerHTML = userTransactions[0].service || "Wi";
+  function showNotice(message, isError = false){
+    const box = document.getElementById("noticeBox");
+    box.style.display = "block";
+    box.className = isError ? "notice err" : "notice ok";
+    box.innerHTML = message;
   }
 
-  const badge = document.getElementById("notificationBadge");
-  if(unreadCount > 0){
-    badge.style.display = "inline-flex";
-    badge.innerHTML = unreadCount;
-  } else {
-    badge.style.display = "none";
+  const currentUser = FastPayV2.getCurrentUser();
+
+  if(!currentUser){
+    showNotice("Ou pa konekte. Tanpri login anvan.", true);
+    setTimeout(() => {
+      window.location.href = "login.html";
+    }, 1200);
   }
 
-  const txBox = document.getElementById("transactionsBox");
+  if(currentUser){
+    document.getElementById("profileLetter").innerHTML = currentUser.fullname.charAt(0).toUpperCase();
 
-  if(userTransactions.length === 0){
-    txBox.innerHTML = "Pa gen tranzaksyon pou kounye a.";
-  } else {
-    txBox.innerHTML = "";
-    userTransactions.slice(0,6).forEach(function(tx){
-      txBox.innerHTML += `
-        <div class="tx-item">
-          <div class="tx-top">
-            <div>
-              <div class="tx-name">${tx.service || 'Transaction'}</div>
-              <div class="tx-date">${tx.date || ''}</div>
+    document.getElementById("walletBalance").innerHTML = (currentUser.balance || 0) + " HTG";
+    document.getElementById("walletOwner").innerHTML = currentUser.email || "FastPay Wallet";
+    document.getElementById("walletStatus").innerHTML = currentUser.status || "Active";
+
+    const userTransactions = FastPayV2.getUserTransactions(currentUser.id) || [];
+    const userNotifications = FastPayV2.getUserNotifications(currentUser.id) || [];
+    const unreadCount = FastPayV2.getUnreadCount(currentUser.id) || 0;
+
+    document.getElementById("totalTransactions").innerHTML = userTransactions.length;
+    document.getElementById("totalNotifications").innerHTML = userNotifications.length;
+
+    if(userTransactions.length > 0){
+      document.getElementById("latestTransaction").innerHTML = userTransactions[0].service || "Wi";
+    }
+
+    const badge = document.getElementById("notificationBadge");
+    if(unreadCount > 0){
+      badge.style.display = "inline-flex";
+      badge.innerHTML = unreadCount;
+    }
+
+    const txBox = document.getElementById("transactionsBox");
+    if(userTransactions.length === 0){
+      txBox.innerHTML = "Pa gen tranzaksyon pou kounye a.";
+    } else {
+      txBox.innerHTML = "";
+      userTransactions.slice(0,6).forEach(function(tx){
+        txBox.innerHTML += `
+          <div class="tx-item">
+            <div class="tx-top">
+              <div>
+                <div class="tx-name">${tx.service || "Transaction"}</div>
+                <div class="tx-date">${tx.date || ""}</div>
+              </div>
+              <div class="tx-amount">${tx.amount || "0"}</div>
             </div>
-            <div class="tx-amount">${tx.amount || '0'}</div>
           </div>
-        </div>
-      `;
-    });
-  }
+        `;
+      });
+    }
 
-  const noteBox = document.getElementById("notificationsBox");
-
-  if(userNotifications.length === 0){
-    noteBox.innerHTML = "Pa gen notifikasyon pou kounye a.";
-  } else {
-    noteBox.innerHTML = "";
-    userNotifications.slice(0,5).forEach(function(note){
-      noteBox.innerHTML += `
-        <div class="note-item">
-          <div class="note-title">${note.title || 'Nouvo alèt'}</div>
-          <div class="note-text">${note.text || ''}</div>
-          <div class="note-date">${note.date || ''}</div>
-        </div>
-      `;
-    });
+    const noteBox = document.getElementById("notificationsBox");
+    if(userNotifications.length === 0){
+      noteBox.innerHTML = "Pa gen notifikasyon pou kounye a.";
+    } else {
+      noteBox.innerHTML = "";
+      userNotifications.slice(0,5).forEach(function(note){
+        noteBox.innerHTML += `
+          <div class="note-item">
+            <div class="note-title">${note.title || "Nouvo alèt"}</div>
+            <div class="note-text">${note.text || ""}</div>
+            <div class="note-date">${note.date || ""}</div>
+          </div>
+        `;
+      });
+    }
   }
-}
 </script>
 
 </body>
