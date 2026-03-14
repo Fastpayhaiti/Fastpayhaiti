@@ -208,6 +208,38 @@ body{
   background:#111827;
   color:white;
 }
+
+.notify-btn{
+  display:block;
+  width:100%;
+  text-align:center;
+  padding:15px;
+  border-radius:16px;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:16px;
+  margin-top:12px;
+  background:#111827;
+  color:white;
+  position:relative;
+}
+
+.notify-badge{
+  position:absolute;
+  top:-8px;
+  right:14px;
+  min-width:24px;
+  height:24px;
+  padding:0 7px;
+  border-radius:999px;
+  background:#ef4444;
+  color:white;
+  font-size:12px;
+  font-weight:bold;
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
 </style>
 </head>
 <body>
@@ -269,6 +301,15 @@ body{
   <h2>Sèvis dènye yo</h2>
   <div id="recentOrdersBox" class="empty">Pa gen aktivite sèvis pou kounye a.</div>
 
+  <a href="notification.html" class="notify-btn">
+    🔔 Notifications
+    <span id="notificationBadge" class="notify-badge">0</span>
+  </a>
+
+  <a href="statement.html" class="main-btn dark-btn">Wallet Statement</a>
+  <a href="deposit-history.html" class="main-btn dark-btn">Deposit History</a>
+  <a href="withdraw-history.html" class="main-btn dark-btn">Withdraw History</a>
+  <a href="transfer-history.html" class="main-btn dark-btn">Transfer History</a>
   <a href="dashboard.html" class="main-btn orange-btn">Ale sou Dashboard</a>
   <a href="admin.html" class="main-btn dark-btn">Admin Dashboard</a>
 </div>
@@ -375,9 +416,48 @@ function loadRecentOrders(){
   });
 }
 
+function getFastPayNotifications() {
+  const deposits = JSON.parse(localStorage.getItem("fastpay_deposits")) || [];
+  const withdraws = JSON.parse(localStorage.getItem("fastpay_withdraws")) || [];
+  const transfers = JSON.parse(localStorage.getItem("fastpay_transfers")) || [];
+  const topups = JSON.parse(localStorage.getItem("fastpay_topups")) || [];
+  const socialOrders = JSON.parse(localStorage.getItem("fastpay_social_orders")) || [];
+  const rechargeCards = JSON.parse(localStorage.getItem("fastpay_recharge_cards")) || [];
+  const cardRequests = JSON.parse(localStorage.getItem("fastpay_card_requests")) || [];
+  const transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
+
+  let notices = [];
+  deposits.forEach(item => notices.push(item));
+  withdraws.forEach(item => notices.push(item));
+  transfers.forEach(item => notices.push(item));
+  topups.forEach(item => notices.push(item));
+  socialOrders.forEach(item => notices.push(item));
+  rechargeCards.forEach(item => notices.push(item));
+  cardRequests.forEach(item => notices.push(item));
+  transactions.forEach(item => notices.push(item));
+
+  return notices;
+}
+
+function updateNotificationBadge() {
+  const badge = document.getElementById("notificationBadge");
+  if (!badge) return;
+
+  const notices = getFastPayNotifications();
+  const total = notices.length;
+
+  if (total > 0) {
+    badge.style.display = "inline-flex";
+    badge.innerHTML = total;
+  } else {
+    badge.style.display = "none";
+  }
+}
+
 loadTransactions();
 loadRecentOrders();
+updateNotificationBadge();
 </script>
 
 </body>
-  </html>
+</html>
