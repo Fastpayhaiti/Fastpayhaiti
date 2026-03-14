@@ -1,554 +1,755 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FastPay Admin Cards v2</title>
-<style>
-*{
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FastPay Professional Admin Cards</title>
+  <style>
+    *{
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
 
-body{
-  margin:0;
-  background:#eef2f7;
-  padding:20px;
-  color:#111827;
-}
+    body{
+      margin:0;
+      background:#eef2f7;
+      padding:20px;
+      color:#111827;
+    }
 
-.container{
-  max-width:430px;
-  margin:auto;
-}
+    .container{
+      max-width:430px;
+      margin:auto;
+    }
 
-.back{
-  display:inline-block;
-  margin-bottom:20px;
-  color:#ff4d3d;
-  text-decoration:none;
-  font-weight:bold;
-}
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:18px;
+    }
 
-.header{
-  background:linear-gradient(135deg,#111827,#374151);
-  color:white;
-  padding:22px;
-  border-radius:22px;
-  margin-bottom:20px;
-  box-shadow:0 10px 25px rgba(17,24,39,0.22);
-}
+    .left-top{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
 
-.header h1{
-  margin:0;
-  font-size:30px;
-}
+    .back-btn{
+      width:44px;
+      height:44px;
+      border:none;
+      border-radius:14px;
+      background:#111827;
+      color:white;
+      font-size:20px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+    }
 
-.header p{
-  margin:8px 0 0;
-  opacity:0.96;
-  line-height:1.5;
-}
+    .logo{
+      font-size:28px;
+      font-weight:bold;
+      color:#ff5a3d;
+    }
 
-.notice{
-  display:none;
-  background:#ecfdf3;
-  color:#166534;
-  padding:14px;
-  border-radius:14px;
-  font-weight:bold;
-  margin-bottom:16px;
-  line-height:1.5;
-}
+    .admin-badge{
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      background:linear-gradient(135deg,#111827,#374151);
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+      font-size:18px;
+      box-shadow:0 6px 16px rgba(17,24,39,0.22);
+    }
 
-.notice.error{
-  background:#fee2e2;
-  color:#991b1b;
-}
+    .hero{
+      background:linear-gradient(135deg,#111827,#374151);
+      color:white;
+      border-radius:26px;
+      padding:22px;
+      margin-bottom:18px;
+      box-shadow:0 12px 28px rgba(17,24,39,0.22);
+    }
 
-.box{
-  background:white;
-  border-radius:20px;
-  padding:18px;
-  box-shadow:0 4px 14px rgba(0,0,0,0.08);
-  margin-bottom:16px;
-}
+    .hero h1{
+      margin:0 0 8px 0;
+      font-size:28px;
+    }
 
-.box h2{
-  margin:0 0 14px 0;
-  font-size:22px;
-  color:#111827;
-}
+    .hero p{
+      margin:0;
+      font-size:14px;
+      opacity:0.96;
+      line-height:1.6;
+    }
 
-.empty{
-  color:#6b7280;
-  font-size:15px;
-}
+    .notice{
+      display:none;
+      margin-bottom:16px;
+      border-radius:14px;
+      padding:14px;
+      font-weight:bold;
+      line-height:1.5;
+    }
 
-.item{
-  padding:14px 0;
-  border-bottom:1px solid #eee;
-}
+    .notice.ok{
+      background:#ecfdf3;
+      color:#166534;
+    }
 
-.item:last-child{
-  border-bottom:none;
-}
+    .notice.err{
+      background:#fee2e2;
+      color:#991b1b;
+    }
 
-.item-title{
-  font-weight:bold;
-  color:#111827;
-  font-size:16px;
-}
+    .section{
+      background:white;
+      border-radius:22px;
+      padding:18px;
+      box-shadow:0 8px 18px rgba(0,0,0,0.06);
+      margin-bottom:18px;
+    }
 
-.item-sub{
-  color:#6b7280;
-  font-size:14px;
-  margin-top:4px;
-  line-height:1.45;
-}
+    .section h2{
+      margin:0 0 14px 0;
+      font-size:22px;
+    }
 
-.status{
-  display:inline-block;
-  padding:8px 14px;
-  border-radius:999px;
-  font-size:13px;
-  font-weight:bold;
-  margin-top:8px;
-}
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
 
-.status-pending{
-  background:#fff7ed;
-  color:#c2410c;
-}
+    .stat-box{
+      background:#f8fafc;
+      border-radius:16px;
+      padding:14px;
+    }
 
-.status-approved{
-  background:#ecfdf3;
-  color:#166534;
-}
+    .stat-title{
+      color:#6b7280;
+      font-size:13px;
+      margin-bottom:6px;
+    }
 
-.status-rejected{
-  background:#fee2e2;
-  color:#991b1b;
-}
+    .stat-value{
+      font-size:22px;
+      font-weight:bold;
+      color:#111827;
+    }
 
-.status-frozen{
-  background:#eff6ff;
-  color:#1d4ed8;
-}
+    .card-item{
+      background:#f8fafc;
+      border-radius:18px;
+      padding:14px;
+      margin-bottom:12px;
+    }
 
-.action-row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:12px;
-}
+    .card-item:last-child{
+      margin-bottom:0;
+    }
 
-.action-row-3{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:10px;
-  margin-top:12px;
-}
+    .item-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+      margin-bottom:10px;
+    }
 
-.mini-btn{
-  border:none;
-  border-radius:12px;
-  padding:10px 12px;
-  font-weight:bold;
-  cursor:pointer;
-  font-size:14px;
-}
+    .item-title{
+      font-size:16px;
+      font-weight:bold;
+      color:#111827;
+    }
 
-.approve-btn{
-  background:#10b981;
-  color:white;
-}
+    .item-sub{
+      color:#6b7280;
+      font-size:13px;
+      margin-top:4px;
+      line-height:1.5;
+    }
 
-.reject-btn{
-  background:#ef4444;
-  color:white;
-}
+    .status-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:bold;
+      white-space:nowrap;
+    }
 
-.freeze-btn{
-  background:#1d4ed8;
-  color:white;
-}
+    .status-active{
+      background:#dcfce7;
+      color:#166534;
+    }
 
-.activate-btn{
-  background:#047857;
-  color:white;
-}
+    .status-frozen{
+      background:#dbeafe;
+      color:#1d4ed8;
+    }
 
-.load-btn{
-  background:#ff4d3d;
-  color:white;
-}
+    .status-pending{
+      background:#ffedd5;
+      color:#c2410c;
+    }
 
-.btn{
-  display:block;
-  width:100%;
-  text-align:center;
-  padding:14px;
-  border:none;
-  border-radius:14px;
-  text-decoration:none;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
-  margin-top:12px;
-}
+    .status-rejected{
+      background:#fee2e2;
+      color:#991b1b;
+    }
 
-.btn-primary{
-  background:#ff4d3d;
-  color:white;
-}
+    .info-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
 
-.btn-secondary{
-  background:#111827;
-  color:white;
-}
-</style>
+    .info-box{
+      background:white;
+      border-radius:14px;
+      padding:12px;
+    }
+
+    .info-label{
+      font-size:11px;
+      color:#6b7280;
+      text-transform:uppercase;
+      letter-spacing:0.6px;
+      margin-bottom:5px;
+    }
+
+    .info-value{
+      font-size:14px;
+      font-weight:bold;
+      color:#111827;
+      word-break:break-word;
+    }
+
+    .actions-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .actions-3{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .btn{
+      border:none;
+      border-radius:14px;
+      padding:12px;
+      font-size:14px;
+      font-weight:bold;
+      cursor:pointer;
+      color:white;
+      text-align:center;
+      text-decoration:none;
+      display:block;
+    }
+
+    .btn-green{
+      background:#10b981;
+    }
+
+    .btn-red{
+      background:#ef4444;
+    }
+
+    .btn-blue{
+      background:#2563eb;
+    }
+
+    .btn-orange{
+      background:#ff4d3d;
+    }
+
+    .btn-dark{
+      background:#111827;
+    }
+
+    .toolbar{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .empty{
+      color:#6b7280;
+      font-size:14px;
+    }
+  </style>
 </head>
 <body>
 
 <div class="container">
-  <a href="admin.html" class="back">← Back Admin</a>
 
-  <div class="header">
-    <h1>Admin Cards v2</h1>
-    <p>Apwouve, rejte, aktive, bloke, epi jere kat kliyan yo nan FastPay v2.</p>
+  <div class="topbar">
+    <div class="left-top">
+      <a href="admin.html" class="back-btn">←</a>
+      <div class="logo">FastPay</div>
+    </div>
+    <div class="admin-badge">A</div>
   </div>
 
   <div id="noticeBox" class="notice"></div>
 
-  <div class="box">
-    <h2>Card Requests v2</h2>
+  <div class="hero">
+    <h1>Admin Cards Pro</h1>
+    <p>Jere tout demann kat yo, aktive kat kliyan yo, bloke yo, epi kontwole balans ak estati yo nan yon sèl dashboard pwofesyonèl.</p>
+  </div>
+
+  <div class="section">
+    <h2>Cards Overview</h2>
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-title">Card Requests</div>
+        <div class="stat-value" id="totalRequests">0</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-title">Active Cards</div>
+        <div class="stat-value" id="totalCards">0</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-title">Frozen Cards</div>
+        <div class="stat-value" id="frozenCards">0</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-title">Approved Requests</div>
+        <div class="stat-value" id="approvedRequests">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Card Requests</h2>
     <div id="requestBox" class="empty">Pa gen demann kat pou kounye a.</div>
   </div>
 
-  <div class="box">
+  <div class="section">
     <h2>User Cards</h2>
     <div id="cardsBox" class="empty">Pa gen kat aktif pou kounye a.</div>
   </div>
 
-  <button class="btn btn-primary" onclick="loadAll()">Refresh Cards</button>
-  <button class="btn btn-secondary" onclick="clearCardRequests()">Clear Card Requests</button>
+  <div class="section">
+    <h2>Quick Admin Tools</h2>
+    <div class="toolbar">
+      <button class="btn btn-orange" onclick="loadAll()">Refresh</button>
+      <button class="btn btn-dark" onclick="clearCardRequests()">Clear Requests</button>
+    </div>
+  </div>
+
 </div>
 
 <script src="app.js"></script>
 <script>
-function showNotice(message, isError = false){
-  const box = document.getElementById("noticeBox");
-  box.style.display = "block";
-  box.className = isError ? "notice error" : "notice";
-  box.innerHTML = message;
-}
-
-function getStatusClass(status){
-  const value = String(status || "").toLowerCase();
-
-  if(value.includes("approved") || value.includes("active") || value.includes("paid")){
-    return "status-approved";
-  }
-  if(value.includes("rejected")){
-    return "status-rejected";
-  }
-  if(value.includes("frozen")){
-    return "status-frozen";
-  }
-  return "status-pending";
-}
-
-function getUsers(){
-  return FastPayDB.get("fp_users", []);
-}
-
-function getRequests(){
-  return FastPayDB.get("fp_card_requests_v2", []);
-}
-
-function saveRequests(requests){
-  FastPayDB.set("fp_card_requests_v2", requests);
-}
-
-function getCards(){
-  return FastPayDB.get("fp_cards", []);
-}
-
-function saveCards(cards){
-  FastPayDB.set("fp_cards", cards);
-}
-
-function getUserById(userId){
-  const users = getUsers();
-  return users.find(u => u.id === userId) || null;
-}
-
-function createCardForUser(request){
-  let cards = getCards();
-  const existing = cards.find(card => card.userId === request.userId);
-
-  if(existing){
-    return existing;
+  function showNotice(message, isError = false){
+    const box = document.getElementById("noticeBox");
+    box.style.display = "block";
+    box.className = isError ? "notice err" : "notice ok";
+    box.innerHTML = message;
   }
 
-  const cardData = {
-    id: FastPayV2.generateId("CARD"),
-    userId: request.userId,
-    number: "**** **** **** " + Math.floor(Math.random() * 9000 + 1000),
-    name: (request.fullname || "FASTPAY USER").toUpperCase(),
-    exp: "12/29",
-    cvv: "392",
-    brand: (request.network || "Visa").toUpperCase(),
-    status: "Active",
-    balance: 0,
-    cardType: request.cardType || "Virtual",
-    currency: request.currency || "USD",
-    createdAt: new Date().toLocaleString()
-  };
-
-  cards.unshift(cardData);
-  saveCards(cards);
-  return cardData;
-}
-
-function approveRequest(index){
-  let requests = getRequests();
-
-  if(!requests[index]){
-    showNotice("Demann nan pa jwenn.", true);
-    return;
+  function getStatusClass(status){
+    const value = String(status || "").toLowerCase();
+    if(value.includes("approved") || value.includes("active") || value.includes("paid")) return "status-active";
+    if(value.includes("frozen")) return "status-frozen";
+    if(value.includes("rejected")) return "status-rejected";
+    return "status-pending";
   }
 
-  requests[index].status = "Approved";
-  saveRequests(requests);
+  function getUsers(){
+    return FastPayDB.get("fp_users", []);
+  }
 
-  const createdCard = createCardForUser(requests[index]);
+  function getRequests(){
+    return FastPayDB.get("fp_card_requests_v2", []);
+  }
 
-  FastPayV2.addNotification({
-    userId: requests[index].userId,
-    title: "Card approved",
-    text: "Demann kat ou a apwouve. Kat ou a deja aktif.",
-    type: "success"
-  });
+  function saveRequests(requests){
+    FastPayDB.set("fp_card_requests_v2", requests);
+  }
 
-  FastPayV2.addTransaction({
-    userId: requests[index].userId,
-    service: "Card Approved - " + (createdCard.brand || "CARD"),
-    amount: "0 HTG",
-    type: "card-approved",
-    status: "approved",
-    meta: {
-      cardId: createdCard.id,
-      requestId: requests[index].id
+  function getCards(){
+    return FastPayDB.get("fp_cards", []);
+  }
+
+  function saveCards(cards){
+    FastPayDB.set("fp_cards", cards);
+  }
+
+  function getUserById(userId){
+    const users = getUsers();
+    return users.find(u => u.id === userId) || null;
+  }
+
+  function createCardForUser(request){
+    let cards = getCards();
+    const existing = cards.find(card => card.userId === request.userId);
+
+    if(existing){
+      return existing;
     }
-  });
 
-  loadAll();
-  showNotice("Demann kat la apwouve avèk siksè.");
-}
+    const cardData = {
+      id: FastPayV2.generateId("CARD"),
+      userId: request.userId,
+      number: "**** **** **** " + Math.floor(Math.random() * 9000 + 1000),
+      realNumber: "458712349876" + Math.floor(Math.random() * 9000 + 1000),
+      name: (request.fullname || "FASTPAY USER").toUpperCase(),
+      exp: "12/29",
+      cvv: "392",
+      brand: (request.network || "Visa").toUpperCase(),
+      status: "Active",
+      balance: 0,
+      cardType: request.cardType || "Virtual",
+      currency: request.currency || "USD",
+      createdAt: new Date().toLocaleString(),
+      dailyLimit: 25000,
+      monthlyLimit: 150000
+    };
 
-function rejectRequest(index){
-  let requests = getRequests();
-
-  if(!requests[index]){
-    showNotice("Demann nan pa jwenn.", true);
-    return;
+    cards.unshift(cardData);
+    saveCards(cards);
+    return cardData;
   }
 
-  requests[index].status = "Rejected";
-  saveRequests(requests);
+  function approveRequest(index){
+    let requests = getRequests();
 
-  FastPayV2.addNotification({
-    userId: requests[index].userId,
-    title: "Card rejected",
-    text: "Demann kat ou a rejte. Tcheke detay yo epi eseye ankò.",
-    type: "warning"
-  });
-
-  loadAll();
-  showNotice("Demann kat la rejte.");
-}
-
-function freezeCard(cardId){
-  let cards = getCards();
-  const index = cards.findIndex(card => card.id === cardId);
-
-  if(index === -1){
-    showNotice("Kat la pa jwenn.", true);
-    return;
-  }
-
-  cards[index].status = "Frozen";
-  saveCards(cards);
-
-  FastPayV2.addNotification({
-    userId: cards[index].userId,
-    title: "Card frozen",
-    text: "Admin lan freeze kat ou a.",
-    type: "warning"
-  });
-
-  loadAll();
-  showNotice("Kat la freeze avèk siksè.");
-}
-
-function activateCard(cardId){
-  let cards = getCards();
-  const index = cards.findIndex(card => card.id === cardId);
-
-  if(index === -1){
-    showNotice("Kat la pa jwenn.", true);
-    return;
-  }
-
-  cards[index].status = "Active";
-  saveCards(cards);
-
-  FastPayV2.addNotification({
-    userId: cards[index].userId,
-    title: "Card activated",
-    text: "Kat ou a aktive ankò pa admin lan.",
-    type: "success"
-  });
-
-  loadAll();
-  showNotice("Kat la aktive avèk siksè.");
-}
-
-function loadCardBalance(cardId){
-  let cards = getCards();
-  const index = cards.findIndex(card => card.id === cardId);
-
-  if(index === -1){
-    showNotice("Kat la pa jwenn.", true);
-    return;
-  }
-
-  const amountText = prompt("Antre montan pou mete sou kat la (HTG):");
-  if(amountText === null) return;
-
-  const amount = parseInt(amountText);
-  if(!amount || amount <= 0){
-    showNotice("Montan an pa valab.", true);
-    return;
-  }
-
-  cards[index].balance = parseInt(cards[index].balance || 0) + amount;
-  saveCards(cards);
-
-  FastPayV2.addNotification({
-    userId: cards[index].userId,
-    title: "Card loaded",
-    text: "Admin lan ajoute " + amount + " HTG sou kat ou a.",
-    type: "success"
-  });
-
-  FastPayV2.addTransaction({
-    userId: cards[index].userId,
-    service: "Admin Card Load - " + (cards[index].brand || "CARD"),
-    amount: "+" + amount + " HTG",
-    type: "card-load-admin",
-    status: "completed",
-    meta: {
-      cardId: cards[index].id
+    if(!requests[index]){
+      showNotice("Demann nan pa jwenn.", true);
+      return;
     }
-  });
 
-  loadAll();
-  showNotice("Kat la rechaje avèk siksè ak " + amount + " HTG.");
-}
+    requests[index].status = "Approved";
+    saveRequests(requests);
 
-function renderRequests(){
-  const box = document.getElementById("requestBox");
-  const requests = getRequests();
+    const createdCard = createCardForUser(requests[index]);
 
-  if(requests.length === 0){
-    box.className = "empty";
-    box.innerHTML = "Pa gen demann kat pou kounye a.";
-    return;
+    FastPayV2.addNotification({
+      userId: requests[index].userId,
+      title: "Card approved",
+      text: "Demann kat ou a apwouve. Kat ou a deja aktif.",
+      type: "success"
+    });
+
+    FastPayV2.addTransaction({
+      userId: requests[index].userId,
+      service: "Card Approved - " + (createdCard.brand || "CARD"),
+      amount: "0 HTG",
+      type: "card-approved",
+      status: "approved",
+      meta: {
+        cardId: createdCard.id,
+        requestId: requests[index].id
+      }
+    });
+
+    loadAll();
+    showNotice("Demann kat la apwouve avèk siksè.");
   }
 
-  box.className = "";
-  box.innerHTML = "";
+  function rejectRequest(index){
+    let requests = getRequests();
 
-  requests.forEach((item, index) => {
-    const user = getUserById(item.userId);
-    const status = item.status || "pending";
-    const statusClass = getStatusClass(status);
+    if(!requests[index]){
+      showNotice("Demann nan pa jwenn.", true);
+      return;
+    }
 
-    box.innerHTML += `
-      <div class="item">
-        <div class="item-title">${item.fullname || "Client"} - ${item.cardType || "Virtual Card"}</div>
-        <div class="item-sub"><strong>User ID:</strong> ${item.userId || "N/A"}</div>
-        <div class="item-sub"><strong>Email:</strong> ${item.email || (user ? user.email : "N/A")}</div>
-        <div class="item-sub"><strong>Network:</strong> ${item.network || "N/A"}</div>
-        <div class="item-sub"><strong>Currency:</strong> ${item.currency || "N/A"}</div>
-        <div class="item-sub"><strong>Payment Method:</strong> ${item.paymentMethod || "N/A"}</div>
-        <div class="item-sub"><strong>Amount:</strong> ${item.amount || "N/A"}</div>
-        <div class="item-sub"><strong>Date:</strong> ${item.date || "N/A"}</div>
-        <div class="status ${statusClass}">${status}</div>
-        <div class="action-row">
-          <button class="mini-btn approve-btn" onclick="approveRequest(${index})">Approve</button>
-          <button class="mini-btn reject-btn" onclick="rejectRequest(${index})">Reject</button>
-        </div>
-      </div>
-    `;
-  });
-}
+    requests[index].status = "Rejected";
+    saveRequests(requests);
 
-function renderCards(){
-  const box = document.getElementById("cardsBox");
-  const cards = getCards();
+    FastPayV2.addNotification({
+      userId: requests[index].userId,
+      title: "Card rejected",
+      text: "Demann kat ou a rejte. Verifye detay yo epi eseye ankò.",
+      type: "warning"
+    });
 
-  if(cards.length === 0){
-    box.className = "empty";
-    box.innerHTML = "Pa gen kat aktif pou kounye a.";
-    return;
+    loadAll();
+    showNotice("Demann kat la rejte.");
   }
 
-  box.className = "";
-  box.innerHTML = "";
+  function freezeCard(cardId){
+    let cards = getCards();
+    const index = cards.findIndex(card => card.id === cardId);
 
-  cards.forEach(card => {
-    const user = getUserById(card.userId);
-    const status = card.status || "Active";
-    const statusClass = getStatusClass(status);
+    if(index === -1){
+      showNotice("Kat la pa jwenn.", true);
+      return;
+    }
 
-    box.innerHTML += `
-      <div class="item">
-        <div class="item-title">${card.name || "FASTPAY USER"} - ${card.cardType || "Virtual Card"}</div>
-        <div class="item-sub"><strong>User:</strong> ${user ? user.fullname : "N/A"}</div>
-        <div class="item-sub"><strong>Email:</strong> ${user ? user.email : "N/A"}</div>
-        <div class="item-sub"><strong>Brand:</strong> ${card.brand || "Visa"}</div>
-        <div class="item-sub"><strong>Number:</strong> ${card.number || "**** **** **** 4587"}</div>
-        <div class="item-sub"><strong>EXP:</strong> ${card.exp || "12/29"}</div>
-        <div class="item-sub"><strong>Currency:</strong> ${card.currency || "USD"}</div>
-        <div class="item-sub"><strong>Balance:</strong> ${card.balance || 0} HTG</div>
-        <div class="item-sub"><strong>Created:</strong> ${card.createdAt || "N/A"}</div>
-        <div class="status ${statusClass}">${status}</div>
-        <div class="action-row-3">
-          <button class="mini-btn freeze-btn" onclick="freezeCard('${card.id}')">Freeze</button>
-          <button class="mini-btn activate-btn" onclick="activateCard('${card.id}')">Activate</button>
-          <button class="mini-btn load-btn" onclick="loadCardBalance('${card.id}')">Load</button>
+    cards[index].status = "Frozen";
+    saveCards(cards);
+
+    FastPayV2.addNotification({
+      userId: cards[index].userId,
+      title: "Card frozen",
+      text: "Admin lan freeze kat ou a.",
+      type: "warning"
+    });
+
+    FastPayV2.addTransaction({
+      userId: cards[index].userId,
+      service: "Admin Freeze Card",
+      amount: "0 HTG",
+      type: "card-freeze-admin",
+      status: "completed",
+      meta: { cardId: cards[index].id }
+    });
+
+    loadAll();
+    showNotice("Kat la freeze avèk siksè.");
+  }
+
+  function activateCard(cardId){
+    let cards = getCards();
+    const index = cards.findIndex(card => card.id === cardId);
+
+    if(index === -1){
+      showNotice("Kat la pa jwenn.", true);
+      return;
+    }
+
+    cards[index].status = "Active";
+    saveCards(cards);
+
+    FastPayV2.addNotification({
+      userId: cards[index].userId,
+      title: "Card activated",
+      text: "Kat ou a aktive ankò pa admin lan.",
+      type: "success"
+    });
+
+    FastPayV2.addTransaction({
+      userId: cards[index].userId,
+      service: "Admin Activate Card",
+      amount: "0 HTG",
+      type: "card-activate-admin",
+      status: "completed",
+      meta: { cardId: cards[index].id }
+    });
+
+    loadAll();
+    showNotice("Kat la aktive avèk siksè.");
+  }
+
+  function loadCardBalance(cardId){
+    let cards = getCards();
+    const index = cards.findIndex(card => card.id === cardId);
+
+    if(index === -1){
+      showNotice("Kat la pa jwenn.", true);
+      return;
+    }
+
+    const amountText = prompt("Antre montan pou mete sou kat la (HTG):");
+    if(amountText === null) return;
+
+    const amount = parseInt(amountText);
+
+    if(!amount || amount <= 0){
+      showNotice("Montan an pa valab.", true);
+      return;
+    }
+
+    cards[index].balance = parseInt(cards[index].balance || 0) + amount;
+    saveCards(cards);
+
+    FastPayV2.addNotification({
+      userId: cards[index].userId,
+      title: "Card loaded",
+      text: "Admin lan ajoute " + amount + " HTG sou kat ou a.",
+      type: "success"
+    });
+
+    FastPayV2.addTransaction({
+      userId: cards[index].userId,
+      service: "Admin Card Load",
+      amount: "+" + amount + " HTG",
+      type: "card-load-admin",
+      status: "completed",
+      meta: {
+        cardId: cards[index].id
+      }
+    });
+
+    loadAll();
+    showNotice("Kat la rechaje avèk siksè ak " + amount + " HTG.");
+  }
+
+  function renderStats(){
+    const requests = getRequests();
+    const cards = getCards();
+
+    document.getElementById("totalRequests").innerHTML = requests.length;
+    document.getElementById("totalCards").innerHTML = cards.length;
+    document.getElementById("frozenCards").innerHTML =
+      cards.filter(card => String(card.status || "").toLowerCase().includes("frozen")).length;
+    document.getElementById("approvedRequests").innerHTML =
+      requests.filter(req => String(req.status || "").toLowerCase().includes("approved")).length;
+  }
+
+  function renderRequests(){
+    const box = document.getElementById("requestBox");
+    const requests = getRequests();
+
+    if(requests.length === 0){
+      box.className = "empty";
+      box.innerHTML = "Pa gen demann kat pou kounye a.";
+      return;
+    }
+
+    box.className = "";
+    box.innerHTML = "";
+
+    requests.forEach((item, index) => {
+      const user = getUserById(item.userId);
+      const status = item.status || "pending";
+      const statusClass = getStatusClass(status);
+
+      box.innerHTML += `
+        <div class="card-item">
+          <div class="item-head">
+            <div>
+              <div class="item-title">${item.fullname || "Client"} - ${item.cardType || "Virtual Card"}</div>
+              <div class="item-sub">${item.email || (user ? user.email : "N/A")}</div>
+            </div>
+            <div class="status-badge ${statusClass}">${status}</div>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-box">
+              <div class="info-label">Network</div>
+              <div class="info-value">${item.network || "N/A"}</div>
+            </div>
+            <div class="info-box">
+              <div class="info-label">Currency</div>
+              <div class="info-value">${item.currency || "N/A"}</div>
+            </div>
+            <div class="info-box">
+              <div class="info-label">Payment</div>
+              <div class="info-value">${item.paymentMethod || "N/A"}</div>
+            </div>
+            <div class="info-box">
+              <div class="info-label">Amount</div>
+              <div class="info-value">${item.amount || "N/A"}</div>
+            </div>
+          </div>
+
+          <div class="item-sub"><strong>User ID:</strong> ${item.userId || "N/A"}</div>
+          <div class="item-sub"><strong>Date:</strong> ${item.date || "N/A"}</div>
+
+          <div class="actions-2">
+            <button class="btn btn-green" onclick="approveRequest(${index})">Approve</button>
+            <button class="btn btn-red" onclick="rejectRequest(${index})">Reject</button>
+          </div>
         </div>
-      </div>
-    `;
-  });
-}
+      `;
+    });
+  }
 
-function loadAll(){
-  renderRequests();
-  renderCards();
-}
+  function renderCards(){
+    const box = document.getElementById("cardsBox");
+    const cards = getCards();
 
-function clearCardRequests(){
-  FastPayDB.remove("fp_card_requests_v2");
+    if(cards.length === 0){
+      box.className = "empty";
+      box.innerHTML = "Pa gen kat aktif pou kounye a.";
+      return;
+    }
+
+    box.className = "";
+    box.innerHTML = "";
+
+    cards.forEach(card => {
+      const user = getUserById(card.userId);
+      const status = card.status || "Active";
+      const statusClass = getStatusClass(status);
+
+      box.innerHTML += `
+        <div class="card-item">
+          <div class="item-head">
+            <div>
+              <div class="item-title">${card.name || "FASTPAY USER"} - ${card.cardType || "Virtual Card"}</div>
+              <div class="item-sub">${user ? user.email : "N/A"}</div>
+            </div>
+            <div class="status-badge ${statusClass}">${status}</div>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-box">
+              <div class="info-label">Brand</div>
+              <div class="info-value">${card.brand || "Visa"}</div>
+            </div>
+            <div class="info-box">
+              <div class="info-label">Number</div>
+              <div class="info-value">${card.number || "**** **** **** 4587"}</div>
+            </div>
+            <div class="info-box">
+              <div class="info-label">Balance</div>
+              <div class="info-value">${card.balance || 0} HTG</div>
+            </div>
+            <div class="info-box">
+              <div class="info-label">Currency</div>
+              <div class="info-value">${card.currency || "USD"}</div>
+            </div>
+            <div class="info-box">
+              <div class="info-label">Daily Limit</div>
+              <div class="info-value">${card.dailyLimit || 25000} HTG</div>
+            </div>
+            <div class="info-box">
+              <div class="info-label">Monthly Limit</div>
+              <div class="info-value">${card.monthlyLimit || 150000} HTG</div>
+            </div>
+          </div>
+
+          <div class="item-sub"><strong>User:</strong> ${user ? user.fullname : "N/A"}</div>
+          <div class="item-sub"><strong>Created:</strong> ${card.createdAt || "N/A"}</div>
+
+          <div class="actions-3">
+            <button class="btn btn-blue" onclick="freezeCard('${card.id}')">Freeze</button>
+            <button class="btn btn-green" onclick="activateCard('${card.id}')">Activate</button>
+            <button class="btn btn-orange" onclick="loadCardBalance('${card.id}')">Load</button>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  function loadAll(){
+    renderStats();
+    renderRequests();
+    renderCards();
+  }
+
+  function clearCardRequests(){
+    FastPayDB.remove("fp_card_requests_v2");
+    loadAll();
+    showNotice("Tout card requests yo efase.");
+  }
+
   loadAll();
-}
-
-loadAll();
 </script>
 
 </body>
-  </html>
+</html>
