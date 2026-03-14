@@ -83,43 +83,10 @@ body{
   line-height:1.6;
 }
 
-.auth-buttons{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-bottom:18px;
-}
-
-.auth-btn{
-  display:block;
-  text-align:center;
-  padding:12px;
-  border-radius:12px;
-  font-weight:bold;
-  text-decoration:none;
-}
-
-.login-btn{
-  background:#111827;
-  color:white;
-}
-
-.register-btn{
-  background:#ff4d3d;
-  color:white;
-}
-
-.user-buttons{
-  display:none;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-bottom:18px;
-}
-
 .balance-card{
   background:linear-gradient(135deg,#ff4d3d,#ff8a5c);
   color:white;
-  border-radius:28px;
+  border-radius:30px;
   padding:24px;
   box-shadow:0 12px 30px rgba(255,90,61,0.25);
   margin-bottom:20px;
@@ -138,20 +105,6 @@ body{
   font-weight:normal;
 }
 
-.balance{
-  font-size:42px;
-  font-weight:bold;
-  margin:12px 0 22px;
-}
-
-.balance-sub{
-  font-size:14px;
-  opacity:0.95;
-  margin-top:-10px;
-  margin-bottom:18px;
-  word-break:break-word;
-}
-
 .notify-pill{
   display:none;
   align-items:center;
@@ -164,6 +117,55 @@ body{
   color:white;
   font-size:12px;
   font-weight:bold;
+}
+
+.balance{
+  font-size:48px;
+  font-weight:bold;
+  margin:14px 0 10px;
+}
+
+.balance-sub{
+  font-size:14px;
+  opacity:0.96;
+  margin-bottom:20px;
+  word-break:break-word;
+}
+
+.wallet-mini{
+  background:rgba(255,255,255,0.14);
+  border-radius:20px;
+  padding:14px;
+  margin-bottom:18px;
+}
+
+.wallet-mini-top{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:8px;
+}
+
+.wallet-icon{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  background:rgba(255,255,255,0.18);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+}
+
+.wallet-title{
+  font-size:16px;
+  font-weight:bold;
+}
+
+.wallet-text{
+  font-size:13px;
+  line-height:1.5;
+  opacity:0.95;
 }
 
 .actions{
@@ -187,6 +189,13 @@ a{
   display:block;
 }
 
+.small-note{
+  font-size:13px;
+  color:#6b7280;
+  line-height:1.5;
+  margin-bottom:18px;
+}
+
 .section-title{
   font-size:28px;
   font-weight:bold;
@@ -205,7 +214,7 @@ a{
   border-radius:24px;
   padding:18px;
   box-shadow:0 8px 18px rgba(0,0,0,0.08);
-  min-height:150px;
+  min-height:170px;
   display:block;
   overflow:hidden;
   color:white;
@@ -220,12 +229,12 @@ a{
 .service-box p{
   margin:0;
   font-size:15px;
-  line-height:1.5;
+  line-height:1.55;
 }
 
 .service-icon{
-  font-size:26px;
-  margin-bottom:10px;
+  font-size:28px;
+  margin-bottom:12px;
   display:block;
 }
 
@@ -237,8 +246,18 @@ a{
   background:linear-gradient(135deg,#047857,#10b981);
 }
 
+.wallet-badge{
+  display:inline-block;
+  margin-top:12px;
+  padding:6px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.18);
+  font-size:12px;
+  font-weight:bold;
+}
+
 .dashboard-section{
-  margin-top:20px;
+  margin-top:14px;
 }
 
 .main-btn{
@@ -265,6 +284,33 @@ a{
 
 .logout-btn{
   background:#374151;
+}
+
+.auth-footer{
+  margin-top:24px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.auth-btn{
+  display:block;
+  text-align:center;
+  padding:15px;
+  border-radius:16px;
+  font-weight:bold;
+  text-decoration:none;
+  font-size:16px;
+}
+
+.login-btn{
+  background:#111827;
+  color:white;
+}
+
+.register-btn{
+  background:#ff4d3d;
+  color:white;
 }
 
 /* side menu */
@@ -353,13 +399,6 @@ a{
   background:#111827;
   color:white;
 }
-
-.small-note{
-  font-size:13px;
-  color:#6b7280;
-  line-height:1.5;
-  margin-bottom:18px;
-}
 </style>
 </head>
 <body>
@@ -408,16 +447,6 @@ a{
 
   <div class="welcome" id="welcomeBox"></div>
 
-  <div class="auth-buttons" id="guestButtons">
-    <a href="login.html" class="auth-btn login-btn">Login</a>
-    <a href="register.html" class="auth-btn register-btn">Register</a>
-  </div>
-
-  <div class="user-buttons" id="userButtons">
-    <a href="dashboard.html" class="auth-btn login-btn">Dashboard</a>
-    <a href="wallet.html" class="auth-btn register-btn">Wallet</a>
-  </div>
-
   <div class="balance-card">
     <div class="balance-row">
       <h2>Solde disponib</h2>
@@ -427,11 +456,21 @@ a{
     <div class="balance" id="homeBalance">0 HTG</div>
     <div class="balance-sub" id="balanceSub">Byenvini sou FastPay v2</div>
 
+    <div class="wallet-mini">
+      <div class="wallet-mini-top">
+        <div class="wallet-icon">👛</div>
+        <div class="wallet-title">Digital Wallet</div>
+      </div>
+      <div class="wallet-text">
+        Yon bous dijital modèn pou jere lajan ou, transfè ou, ak sèvis finans ou yo fasil.
+      </div>
+    </div>
+
     <div class="actions">
       <a href="deposit.html" class="action-btn">Depoze</a>
       <a href="withdraw.html" class="action-btn">Retire</a>
       <a href="transfer.html" class="action-btn">Transfere</a>
-      <a href="notification.html" class="action-btn">Notifications</a>
+      <a href="wallet.html" class="action-btn">Demande</a>
     </div>
   </div>
 
@@ -451,7 +490,8 @@ a{
     <a href="wallet.html" class="service-box wallet-service">
       <span class="service-icon">👛</span>
       <h3>Wallet</h3>
-      <p>Gade balans ou, tranzaksyon ou ak tout aktivite kont ou.</p>
+      <p>Digital wallet ou pou balanse, tranzaksyon, depo, retrè ak transfè yo.</p>
+      <div class="wallet-badge">Digital Wallet</div>
     </a>
   </div>
 
@@ -459,6 +499,11 @@ a{
     <a href="dashboard.html" class="main-btn dashboard-btn">My Dashboard</a>
     <a href="admin.html" class="main-btn admin-btn">Admin Dashboard</a>
     <button class="main-btn logout-btn" id="logoutBtn" style="display:none;" onclick="logoutUser()">Logout</button>
+  </div>
+
+  <div class="auth-footer" id="authFooter">
+    <a href="login.html" class="auth-btn login-btn">Login</a>
+    <a href="register.html" class="auth-btn register-btn">Register</a>
   </div>
 
 </div>
@@ -480,10 +525,9 @@ const welcomeBox = document.getElementById("welcomeBox");
 const profileLetter = document.getElementById("profileLetter");
 const homeBalance = document.getElementById("homeBalance");
 const balanceSub = document.getElementById("balanceSub");
-const guestButtons = document.getElementById("guestButtons");
-const userButtons = document.getElementById("userButtons");
 const logoutBtn = document.getElementById("logoutBtn");
 const notificationBadge = document.getElementById("notificationBadge");
+const authFooter = document.getElementById("authFooter");
 
 if(currentUser){
   welcomeBox.style.display = "block";
@@ -495,9 +539,8 @@ if(currentUser){
   document.getElementById("menuUserName").innerHTML = currentUser.fullname || "FastPay User";
   document.getElementById("menuUserMail").innerHTML = currentUser.email || "No email";
 
-  guestButtons.style.display = "none";
-  userButtons.style.display = "grid";
   logoutBtn.style.display = "block";
+  authFooter.style.display = "none";
 
   const unreadCount = FastPayV2.getUnreadCount(currentUser.id);
   if(unreadCount > 0){
@@ -508,9 +551,8 @@ if(currentUser){
   }
 } else {
   welcomeBox.style.display = "none";
-  guestButtons.style.display = "grid";
-  userButtons.style.display = "none";
   logoutBtn.style.display = "none";
+  authFooter.style.display = "grid";
   homeBalance.innerHTML = "0 HTG";
   balanceSub.innerHTML = "Login pou wè balans ou";
   document.getElementById("menuUserName").innerHTML = "Guest User";
