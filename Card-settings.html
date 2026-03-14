@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FastPay Professional Card Settings</title>
+  <style>
+    *{
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
+
+    body{
+      margin:0;
+      background:#eef2f7;
+      padding:20px;
+      color:#111827;
+    }
+
+    .container{
+      max-width:430px;
+      margin:auto;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:18px;
+    }
+
+    .left-top{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .back-btn{
+      width:44px;
+      height:44px;
+      border:none;
+      border-radius:14px;
+      background:#111827;
+      color:white;
+      font-size:20px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+    }
+
+    .logo{
+      font-size:28px;
+      font-weight:bold;
+      color:#ff5a3d;
+    }
+
+    .profile{
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      background:linear-gradient(135deg,#ff5a3d,#ff7a59);
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+      font-size:18px;
+      box-shadow:0 6px 16px rgba(255,90,61,0.25);
+    }
+
+    .hero{
+      background:linear-gradient(135deg,#111827,#374151);
+      color:white;
+      border-radius:26px;
+      padding:22px;
+      margin-bottom:18px;
+      box-shadow:0 12px 28px rgba(17,24,39,0.22);
+    }
+
+    .hero h1{
+      margin:0 0 8px 0;
+      font-size:28px;
+    }
+
+    .hero p{
+      margin:0;
+      font-size:14px;
+      opacity:0.96;
+      line-height:1.6;
+    }
+
+    .notice{
+      display:none;
+      margin-bottom:16px;
+      border-radius:14px;
+      padding:14px;
+      font-weight:bold;
+      line-height:1.5;
+    }
+
+    .notice.ok{
+      background:#ecfdf3;
+      color:#166534;
+    }
+
+    .notice.err{
+      background:#fee2e2;
+      color:#991b1b;
+    }
+
+    .card-shell{
+      background:linear-gradient(135deg,#0f172a,#1e293b);
+      color:white;
+      border-radius:26px;
+      padding:22px;
+      box-shadow:0 16px 35px rgba(15,23,42,0.30);
+      margin-bottom:18px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card-shell::after{
+      content:"";
+      position:absolute;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.06);
+      top:-40px;
+      right:-50px;
+    }
+
+    .card-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      position:relative;
+      z-index:2;
+    }
+
+    .chip{
+      width:52px;
+      height:36px;
+      border-radius:10px;
+      background:linear-gradient(135deg,#facc15,#fde68a);
+    }
+
+    .card-brand{
+      font-size:18px;
+      font-weight:bold;
+    }
+
+    .card-number{
+      margin-top:22px;
+      font-size:24px;
+      letter-spacing:2px;
+      font-weight:bold;
+      position:relative;
+      z-index:2;
+    }
+
+    .card-meta{
+      margin-top:18px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      position:relative;
+      z-index:2;
+    }
+
+    .meta-block small{
+      display:block;
+      opacity:0.75;
+      font-size:11px;
+      margin-bottom:4px;
+      text-transform:uppercase;
+      letter-spacing:0.8px;
+    }
+
+    .meta-block span{
+      font-size:14px;
+      font-weight:bold;
+    }
+
+    .status-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:bold;
+      margin-top:14px;
+      position:relative;
+      z-index:2;
+    }
+
+    .status-active{
+      background:#dcfce7;
+      color:#166534;
+    }
+
+    .status-frozen{
+      background:#dbeafe;
+      color:#1d4ed8;
+    }
+
+    .status-pending{
+      background:#ffedd5;
+      color:#c2410c;
+    }
+
+    .section{
+      background:white;
+      border-radius:22px;
+      padding:18px;
+      box-shadow:0 8px 18px rgba(0,0,0,0.06);
+      margin-bottom:18px;
+    }
+
+    .section h2{
+      margin:0 0 14px 0;
+      font-size:22px;
+    }
+
+    .info-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
+
+    .info-box{
+      background:#f8fafc;
+      border-radius:16px;
+      padding:14px;
+    }
+
+    .info-title{
+      color:#6b7280;
+      font-size:13px;
+      margin-bottom:6px;
+    }
+
+    .info-value{
+      font-size:20px;
+      font-weight:bold;
+      color:#111827;
+    }
+
+    label{
+      display:block;
+      margin-bottom:8px;
+      font-weight:bold;
+      color:#111827;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      border:1px solid #d1d5db;
+      border-radius:14px;
+      font-size:16px;
+      background:white;
+      margin-bottom:16px;
+    }
+
+    .setting-row{
+      background:#f8fafc;
+      border-radius:16px;
+      padding:14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:12px;
+    }
+
+    .setting-row:last-child{
+      margin-bottom:0;
+    }
+
+    .setting-left{
+      flex:1;
+    }
+
+    .setting-title{
+      font-size:15px;
+      font-weight:bold;
+      color:#111827;
+      margin-bottom:4px;
+    }
+
+    .setting-sub{
+      font-size:13px;
+      color:#6b7280;
+      line-height:1.5;
+    }
+
+    .switch{
+      position:relative;
+      width:54px;
+      height:30px;
+      flex-shrink:0;
+    }
+
+    .switch input{
+      opacity:0;
+      width:0;
+      height:0;
+      margin:0;
+    }
+
+    .slider{
+      position:absolute;
+      cursor:pointer;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      background:#cbd5e1;
+      transition:.2s;
+      border-radius:999px;
+    }
+
+    .slider:before{
+      position:absolute;
+      content:"";
+      height:24px;
+      width:24px;
+      left:3px;
+      top:3px;
+      background:white;
+      transition:.2s;
+      border-radius:50%;
+    }
+
+    input:checked + .slider{
+      background:#10b981;
+    }
+
+    input:checked + .slider:before{
+      transform:translateX(24px);
+    }
+
+    .toolbar{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .btn{
+      display:block;
+      width:100%;
+      text-align:center;
+      padding:14px;
+      border:none;
+      border-radius:16px;
+      text-decoration:none;
+      font-weight:bold;
+      font-size:15px;
+      cursor:pointer;
+      color:white;
+    }
+
+    .btn-orange{
+      background:#ff4d3d;
+    }
+
+    .btn-dark{
+      background:#111827;
+    }
+
+    .btn-blue{
+      background:#2563eb;
+    }
+
+    .btn-green{
+      background:#10b981;
+    }
+
+    .empty{
+      color:#6b7280;
+      font-size:14px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="topbar">
+    <div class="left-top">
+      <a href="card-dashboard.html" class="back-btn">←</a>
+      <div class="logo">FastPay</div>
+    </div>
+    <div class="profile" id="profileLetter">U</div>
+  </div>
+
+  <div id="noticeBox" class="notice"></div>
+
+  <div class="hero">
+    <h1>Card Settings</h1>
+    <p>Jere sekirite ak limit kat ou a tankou yon vrè fintech app pwofesyonèl.</p>
+  </div>
+
+  <div id="cardPreviewArea"></div>
+
+  <div class="section">
+    <h2>Card Overview</h2>
+    <div class="info-grid">
+      <div class="info-box">
+        <div class="info-title">Status</div>
+        <div class="info-value" id="cardStatusText">Active</div>
+      </div>
+      <div class="info-box">
+        <div class="info-title">Balance</div>
+        <div class="info-value" id="cardBalanceText">0 HTG</div>
+      </div>
+      <div class="info-box">
+        <div class="info-title">Daily Limit</div>
+        <div class="info-value" id="dailyLimitText">25,000 HTG</div>
+      </div>
+      <div class="info-box">
+        <div class="info-title">Monthly Limit</div>
+        <div class="info-value" id="monthlyLimitText">150,000 HTG</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Limits</h2>
+
+    <label>Daily Limit (HTG)</label>
+    <input type="number" id="dailyLimitInput" placeholder="25000">
+
+    <label>Monthly Limit (HTG)</label>
+    <input type="number" id="monthlyLimitInput" placeholder="150000">
+  </div>
+
+  <div class="section">
+    <h2>Security Controls</h2>
+
+    <div class="setting-row">
+      <div class="setting-left">
+        <div class="setting-title">Online Payments</div>
+        <div class="setting-sub">Pèmèt oswa bloke peman sou entènèt ak kat sa a.</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="onlinePayments">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="setting-row">
+      <div class="setting-left">
+        <div class="setting-title">ATM Withdrawals</div>
+        <div class="setting-sub">Pèmèt oswa bloke retrè ATM sou kat sa a.</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="atmWithdrawals">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="setting-row">
+      <div class="setting-left">
+        <div class="setting-title">International Payments</div>
+        <div class="setting-sub">Pèmèt oswa bloke tranzaksyon entènasyonal yo.</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="internationalPayments">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Quick Controls</h2>
+    <div class="toolbar">
+      <button class="btn btn-blue" onclick="freezeCard()">Freeze</button>
+      <button class="btn btn-green" onclick="unfreezeCard()">Unfreeze</button>
+      <button class="btn btn-orange" onclick="saveSettings()">Save Settings</button>
+      <a href="card-history.html" class="btn btn-dark">Card History</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+<script>
+  function showNotice(message, isError = false){
+    const box = document.getElementById("noticeBox");
+    box.style.display = "block";
+    box.className = isError ? "notice err" : "notice ok";
+    box.innerHTML = message;
+  }
+
+  function getStatusClass(status){
+    const value = String(status || "").toLowerCase();
+    if(value.includes("active") || value.includes("approved")) return "status-active";
+    if(value.includes("frozen")) return "status-frozen";
+    return "status-pending";
+  }
+
+  const currentUser = FastPayV2.getCurrentUser();
+
+  if(!currentUser){
+    showNotice("Ou pa konekte. Tanpri login anvan.", true);
+    setTimeout(() => {
+      window.location.href = "login.html";
+    }, 1200);
+  }
+
+  if(currentUser){
+    document.getElementById("profileLetter").innerHTML = currentUser.fullname.charAt(0).toUpperCase();
+  }
+
+  function getStoredCard(){
+    const allCards = FastPayDB.get("fp_cards", []);
+    return allCards.find(card => card.userId === currentUser.id) || null;
+  }
+
+  function saveUserCard(cardData){
+    let allCards = FastPayDB.get("fp_cards", []);
+    const existingIndex = allCards.findIndex(card => card.userId === currentUser.id);
+
+    if(existingIndex >= 0){
+      allCards[existingIndex] = cardData;
+    } else {
+      allCards.unshift(cardData);
+    }
+
+    FastPayDB.set("fp_cards", allCards);
+  }
+
+  function buildCardPreview(card){
+    return `
+      <div class="card-shell">
+        <div class="card-top">
+          <div class="chip"></div>
+          <div class="card-brand">${card.brand || "VISA"}</div>
+        </div>
+
+        <div class="card-number">${card.number || "**** **** **** 4587"}</div>
+
+        <div class="card-meta">
+          <div class="meta-block">
+            <small>Card Holder</small>
+            <span>${card.name || "FASTPAY USER"}</span>
+          </div>
+          <div class="meta-block">
+            <small>Expiry</small>
+            <span>${card.exp || "12/29"}</span>
+          </div>
+          <div class="meta-block">
+            <small>CVV</small>
+            <span>${card.cvv || "***"}</span>
+          </div>
+        </div>
+
+        <div class="status-badge ${getStatusClass(card.status)}">${card.status || "Active"}</div>
+      </div>
+    `;
+  }
+
+  function renderPage(){
+    const card = getStoredCard();
+    const area = document.getElementById("cardPreviewArea");
+
+    if(!card){
+      area.innerHTML = `
+        <div class="section">
+          <h2>Pa gen kat aktif</h2>
+          <div class="empty">Ou poko gen kat FastPay aktif pou modifye.</div>
+          <a href="create-card.html" class="btn btn-orange" style="margin-top:14px;">Create Card</a>
+        </div>
+      `;
+      return;
+    }
+
+    if(typeof card.onlinePayments === "undefined") card.onlinePayments = true;
+    if(typeof card.atmWithdrawals === "undefined") card.atmWithdrawals = false;
+    if(typeof card.internationalPayments === "undefined") card.internationalPayments = true;
+
+    area.innerHTML = buildCardPreview(card);
+
+    document.getElementById("cardStatusText").innerHTML = card.status || "Active";
+    document.getElementById("cardBalanceText").innerHTML = (card.balance || 0) + " HTG";
+    document.getElementById("dailyLimitText").innerHTML = (card.dailyLimit || 25000) + " HTG";
+    document.getElementById("monthlyLimitText").innerHTML = (card.monthlyLimit || 150000) + " HTG";
+
+    document.getElementById("dailyLimitInput").value = card.dailyLimit || 25000;
+    document.getElementById("monthlyLimitInput").value = card.monthlyLimit || 150000;
+
+    document.getElementById("onlinePayments").checked = !!card.onlinePayments;
+    document.getElementById("atmWithdrawals").checked = !!card.atmWithdrawals;
+    document.getElementById("internationalPayments").checked = !!card.internationalPayments;
+  }
+
+  function saveSettings(){
+    const card = getStoredCard();
+
+    if(!card){
+      showNotice("Ou poko gen kat aktif.", true);
+      return;
+    }
+
+    const dailyLimit = parseInt(document.getElementById("dailyLimitInput").value || "0");
+    const monthlyLimit = parseInt(document.getElementById("monthlyLimitInput").value || "0");
+
+    if(!dailyLimit || !monthlyLimit){
+      showNotice("Tanpri mete limit yo byen.", true);
+      return;
+    }
+
+    card.dailyLimit = dailyLimit;
+    card.monthlyLimit = monthlyLimit;
+    card.onlinePayments = document.getElementById("onlinePayments").checked;
+    card.atmWithdrawals = document.getElementById("atmWithdrawals").checked;
+    card.internationalPayments = document.getElementById("internationalPayments").checked;
+
+    saveUserCard(card);
+
+    FastPayV2.addNotification({
+      userId: currentUser.id,
+      title: "Card settings updated",
+      text: "Paramèt kat ou a mete ajou avèk siksè.",
+      type: "success"
+    });
+
+    FastPayV2.addTransaction({
+      userId: currentUser.id,
+      service: "Card Settings Update",
+      amount: "0 HTG",
+      type: "card-settings-update",
+      status: "completed",
+      meta: {
+        cardId: card.id
+      }
+    });
+
+    renderPage();
+    showNotice("Paramèt kat la sove avèk siksè.");
+  }
+
+  function freezeCard(){
+    const card = getStoredCard();
+
+    if(!card){
+      showNotice("Ou poko gen kat aktif pou freeze.", true);
+      return;
+    }
+
+    card.status = "Frozen";
+    saveUserCard(card);
+
+    FastPayV2.addNotification({
+      userId: currentUser.id,
+      title: "Card frozen",
+      text: "Kat ou a freeze avèk siksè.",
+      type: "warning"
+    });
+
+    FastPayV2.addTransaction({
+      userId: currentUser.id,
+      service: "Card Freeze",
+      amount: "0 HTG",
+      type: "card-freeze",
+      status: "completed",
+      meta: {
+        cardId: card.id
+      }
+    });
+
+    renderPage();
+    showNotice("Kat la freeze avèk siksè.");
+  }
+
+  function unfreezeCard(){
+    const card = getStoredCard();
+
+    if(!card){
+      showNotice("Ou poko gen kat aktif pou unfreeze.", true);
+      return;
+    }
+
+    card.status = "Active";
+    saveUserCard(card);
+
+    FastPayV2.addNotification({
+      userId: currentUser.id,
+      title: "Card activated",
+      text: "Kat ou a aktive ankò avèk siksè.",
+      type: "success"
+    });
+
+    FastPayV2.addTransaction({
+      userId: currentUser.id,
+      service: "Card Unfreeze",
+      amount: "0 HTG",
+      type: "card-unfreeze",
+      status: "completed",
+      meta: {
+        cardId: card.id
+      }
+    });
+
+    renderPage();
+    showNotice("Kat la aktive ankò avèk siksè.");
+  }
+
+  if(currentUser){
+    renderPage();
+  }
+</script>
+
+</body>
+  </html>
