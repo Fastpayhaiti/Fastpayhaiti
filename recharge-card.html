@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Recharge Carte</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f1f5f9;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:420px;
+margin:auto;
+}
+
+h1{
+color:#ff4d3d;
+}
+
+.services{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+margin-top:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 4px 10px rgba(0,0,0,0.05);
+text-align:center;
+cursor:pointer;
+}
+
+.card img{
+width:50px;
+margin-bottom:10px;
+}
+
+.card h3{
+margin:5px 0;
+}
+
+.form{
+margin-top:30px;
+background:white;
+padding:20px;
+border-radius:15px;
+}
+
+input,select{
+width:100%;
+padding:12px;
+margin-top:10px;
+margin-bottom:15px;
+border-radius:10px;
+border:1px solid #ccc;
+}
+
+button{
+width:100%;
+padding:15px;
+background:#ff4d3d;
+color:white;
+border:none;
+border-radius:12px;
+font-size:16px;
+font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Recharge Carte</h1>
+
+<p>Chwazi kat ou vle rechaje</p>
+
+<div class="services">
+
+<div class="card" onclick="selectService('Wise')">
+<h3>Wise</h3>
+</div>
+
+<div class="card" onclick="selectService('Meru')">
+<h3>Meru</h3>
+</div>
+
+<div class="card" onclick="selectService('Payoneer')">
+<h3>Payoneer</h3>
+</div>
+
+<div class="card" onclick="selectService('PayPal')">
+<h3>PayPal</h3>
+</div>
+
+<div class="card" onclick="selectService('Skrill')">
+<h3>Skrill</h3>
+</div>
+
+<div class="card" onclick="selectService('Debit Card')">
+<h3>Debit Card</h3>
+</div>
+
+</div>
+
+<div class="form">
+
+<h3>Form Recharge</h3>
+
+<input type="text" id="service" placeholder="Service choisi" readonly>
+
+<input type="text" placeholder="Nom kliyan">
+
+<input type="text" placeholder="WhatsApp kliyan">
+
+<input type="text" placeholder="Email kont lan">
+
+<input type="number" placeholder="Montan pou rechaje">
+
+<select>
+
+<option>Metòd peman</option>
+<option>Wallet</option>
+<option>Bank</option>
+<option>MonCash</option>
+<option>NatCash</option>
+
+</select>
+
+<button onclick="submitRecharge()">Confirmer Recharge</button>
+
+</div>
+
+</div>
+
+<script>
+
+function selectService(service){
+
+document.getElementById("service").value = service
+
+}
+
+function submitRecharge(){
+
+alert("Demande recharge envoyée. Admin ap verifye li.")
+
+}
+
+</script>
+
+</body>
+                </html>
