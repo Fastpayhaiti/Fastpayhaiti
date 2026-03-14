@@ -3,180 +3,200 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FastPay Withdraw</title>
+<title>FastPay Withdraw v2</title>
 <style>
 *{
-box-sizing:border-box;
-font-family:Arial,sans-serif;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
 }
 
 body{
-margin:0;
-background:#eef2f7;
-padding:20px;
+  margin:0;
+  background:#eef2f7;
+  padding:20px;
+  color:#111827;
 }
 
 .container{
-max-width:430px;
-margin:auto;
+  max-width:430px;
+  margin:auto;
 }
 
 .back{
-display:inline-block;
-margin-bottom:18px;
-color:#ff4d3d;
-text-decoration:none;
-font-weight:bold;
+  display:inline-block;
+  margin-bottom:16px;
+  color:#ff4d3d;
+  text-decoration:none;
+  font-weight:bold;
 }
 
-.header{
-background:white;
-padding:20px;
-border-radius:18px;
-box-shadow:0 4px 14px rgba(0,0,0,0.08);
-margin-bottom:18px;
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
 }
 
-.header h1{
-margin:0 0 8px 0;
-color:#111827;
-font-size:28px;
+.logo{
+  font-size:30px;
+  font-weight:bold;
+  color:#ff5a3d;
 }
 
-.header p{
-margin:0;
-color:#6b7280;
+.profile{
+  width:46px;
+  height:46px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#ff5a3d,#ff7a59);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:18px;
+  box-shadow:0 6px 16px rgba(255,90,61,0.25);
+}
+
+.hero{
+  background:linear-gradient(135deg,#111827,#374151);
+  color:white;
+  border-radius:26px;
+  padding:24px;
+  margin-bottom:18px;
+  box-shadow:0 12px 28px rgba(17,24,39,0.22);
+}
+
+.hero h1{
+  margin:0 0 10px 0;
+  font-size:28px;
+  line-height:1.2;
+}
+
+.hero p{
+  margin:0;
+  font-size:15px;
+  line-height:1.6;
+  opacity:0.98;
 }
 
 .section{
-background:white;
-padding:18px;
-border-radius:18px;
-box-shadow:0 4px 14px rgba(0,0,0,0.08);
-margin-bottom:18px;
+  background:white;
+  border-radius:22px;
+  padding:18px;
+  box-shadow:0 8px 18px rgba(0,0,0,0.06);
+  margin-bottom:18px;
 }
 
 .section h2{
-margin:0 0 16px 0;
-font-size:22px;
-color:#111827;
-}
-
-.method-grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:12px;
-}
-
-.method-box{
-border:2px solid #e5e7eb;
-border-radius:18px;
-padding:18px 10px;
-text-align:center;
-cursor:pointer;
-background:#fff;
-}
-
-.method-box.active{
-border-color:#ff4d3d;
-background:#fff5f2;
-}
-
-.method-icon{
-font-size:28px;
-margin-bottom:10px;
-}
-
-.method-title{
-font-size:16px;
-font-weight:bold;
-color:#111827;
-}
-
-.method-sub{
-font-size:13px;
-color:#16a34a;
-margin-top:6px;
-}
-
-.bank-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:12px;
-}
-
-.bank-box{
-border:2px solid #e5e7eb;
-border-radius:18px;
-padding:16px 10px;
-text-align:center;
-cursor:pointer;
-background:#fff;
-}
-
-.bank-box.active{
-border-color:#ff4d3d;
-background:#fff5f2;
-}
-
-.bank-logo{
-font-size:15px;
-font-weight:bold;
-margin-bottom:10px;
-color:#111827;
-}
-
-.bank-name{
-font-size:16px;
-color:#111827;
+  margin:0 0 14px 0;
+  font-size:22px;
 }
 
 label{
-display:block;
-margin-bottom:8px;
-font-weight:bold;
-color:#111827;
+  display:block;
+  margin-bottom:8px;
+  font-weight:bold;
+  color:#111827;
 }
 
-select,input,textarea{
-width:100%;
-padding:14px;
-border:1px solid #d1d5db;
-border-radius:14px;
-font-size:16px;
-background:white;
+input, select, textarea{
+  width:100%;
+  padding:14px;
+  border:1px solid #d1d5db;
+  border-radius:14px;
+  font-size:16px;
+  background:white;
+  margin-bottom:16px;
 }
 
-.submit-btn{
-width:100%;
-padding:16px;
-background:#ff4d3d;
-color:white;
-border:none;
-border-radius:16px;
-font-size:17px;
-font-weight:bold;
-cursor:pointer;
-margin-top:18px;
+.summary{
+  background:#f8fafc;
+  border-radius:16px;
+  padding:16px;
 }
 
-.success-box{
-display:none;
-background:#ecfdf3;
-color:#166534;
-padding:16px;
-border-radius:16px;
-font-weight:bold;
-margin-top:16px;
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+  font-size:14px;
 }
 
-.note{
-margin-top:14px;
-font-size:14px;
-color:#6b7280;
-background:#f8fafc;
-padding:14px;
-border-radius:14px;
+.summary-row:last-child{
+  margin-bottom:0;
+}
+
+.summary-label{
+  color:#6b7280;
+}
+
+.summary-value{
+  font-weight:bold;
+  text-align:right;
+}
+
+.info-box{
+  background:#fff7ed;
+  color:#c2410c;
+  border-radius:14px;
+  padding:14px;
+  font-size:14px;
+  line-height:1.5;
+  margin-bottom:16px;
+}
+
+.ok-box{
+  background:#ecfdf3;
+  color:#166534;
+  border-radius:14px;
+  padding:14px;
+  font-size:14px;
+  line-height:1.5;
+  margin-bottom:16px;
+}
+
+.main-btn{
+  display:block;
+  width:100%;
+  text-align:center;
+  padding:15px;
+  border:none;
+  border-radius:16px;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:16px;
+  margin-top:12px;
+  cursor:pointer;
+}
+
+.orange-btn{
+  background:#ff4d3d;
+  color:white;
+}
+
+.dark-btn{
+  background:#111827;
+  color:white;
+}
+
+.notice{
+  display:none;
+  padding:14px;
+  border-radius:14px;
+  font-weight:bold;
+  line-height:1.5;
+  margin-bottom:14px;
+}
+
+.notice.success{
+  background:#ecfdf3;
+  color:#166534;
+}
+
+.notice.error{
+  background:#fee2e2;
+  color:#991b1b;
 }
 </style>
 </head>
@@ -184,176 +204,235 @@ border-radius:14px;
 
 <div class="container">
 
-<a href="index.html" class="back">← Back Home</a>
+<a href="wallet.html" class="back">← Back Wallet</a>
 
-<div class="header">
-<h1>Retire lajan</h1>
-<p>Chwazi metòd retrè ou epi voye demann lan.</p>
+<div class="topbar">
+  <div class="logo">FastPay</div>
+  <div class="profile" id="profileLetter">U</div>
+</div>
+
+<div class="hero">
+  <h1>Withdraw Funds</h1>
+  <p>Soumèt yon demann retrè pou resevwa lajan ou sou bank oswa lòt sèvis ki disponib.</p>
 </div>
 
 <div class="section">
-<h2>Méthode de retrait</h2>
+  <h2>Enfòmasyon retrè a</h2>
 
-<div class="method-grid">
-<div class="method-box active" id="method-bank" onclick="selectMethod('Banque')">
-<div class="method-icon">🏦</div>
-<div class="method-title">Banque</div>
-</div>
+  <div id="noticeBox" class="notice"></div>
+  <div id="walletStateBox" class="ok-box">Balans wallet ou disponib pou retrè.</div>
 
-<div class="method-box" id="method-digital" onclick="selectMethod('Digital')">
-<div class="method-icon">💲</div>
-<div class="method-title">Digital</div>
-</div>
+  <label>Non konplè</label>
+  <input type="text" id="clientName" placeholder="Antre non ou">
 
-<div class="method-box" id="method-wallet" onclick="selectMethod('Wallet')">
-<div class="method-icon">👛</div>
-<div class="method-title">Wallet</div>
-<div class="method-sub">FastPay</div>
-</div>
-</div>
+  <label>Email</label>
+  <input type="email" id="email" placeholder="Antre email ou">
+
+  <label>Metòd retrè</label>
+  <select id="method" onchange="updateSummary()">
+    <option>Bank</option>
+    <option>MonCash</option>
+    <option>NatCash</option>
+    <option>Cash Pickup</option>
+    <option>Wallet Transfer</option>
+  </select>
+
+  <label>Bank / sèvis</label>
+  <input type="text" id="bank" placeholder="Eg: Unibank, MonCash, NatCash">
+
+  <label>Currency</label>
+  <select id="currency" onchange="updateSummary()">
+    <option>HTG</option>
+    <option>USD</option>
+    <option>EUR</option>
+  </select>
+
+  <label>Montan</label>
+  <input type="number" id="amount" placeholder="Antre montan an" oninput="updateSummary()">
+
+  <label>Non sou kont la</label>
+  <input type="text" id="accountName" placeholder="Antre non sou kont la">
+
+  <label>Nimewo kont / nimewo sèvis la</label>
+  <input type="text" id="accountNumber" placeholder="Antre nimewo kont la">
+
+  <label>Kalite kont</label>
+  <select id="accountType">
+    <option>Checking</option>
+    <option>Savings</option>
+    <option>Mobile Wallet</option>
+    <option>Cash Pickup</option>
+  </select>
+
+  <label>Detay / nòt</label>
+  <textarea id="details" rows="4" placeholder="Mete detay sou retrè a"></textarea>
 </div>
 
 <div class="section">
-<h2>Service / Banque</h2>
+  <h2>Rezime demann lan</h2>
 
-<div class="bank-grid">
-<div class="bank-box active" id="bank-1" onclick="selectBank('Bank 1')">
-<div class="bank-logo">LOGO BANK</div>
-<div class="bank-name">Bank 1</div>
-</div>
+  <div class="summary">
+    <div class="summary-row">
+      <div class="summary-label">Client</div>
+      <div class="summary-value" id="summaryClient">N/A</div>
+    </div>
 
-<div class="bank-box" id="bank-2" onclick="selectBank('Bank 2')">
-<div class="bank-logo">LOGO BANK</div>
-<div class="bank-name">Bank 2</div>
-</div>
-</div>
-</div>
+    <div class="summary-row">
+      <div class="summary-label">Method</div>
+      <div class="summary-value" id="summaryMethod">Bank</div>
+    </div>
 
-<div class="section">
-<label>Devise du compte</label>
-<select id="currency">
-<option>HTG - Gourde haïtienne</option>
-<option>USD - US Dollar</option>
-</select>
+    <div class="summary-row">
+      <div class="summary-label">Currency</div>
+      <div class="summary-value" id="summaryCurrency">HTG</div>
+    </div>
 
-<label style="margin-top:16px;">Nom du compte</label>
-<input type="text" id="accountName" placeholder="Antre non kont lan">
+    <div class="summary-row">
+      <div class="summary-label">Amount</div>
+      <div class="summary-value" id="summaryAmount">0 HTG</div>
+    </div>
 
-<label style="margin-top:16px;">Numéro de compte</label>
-<input type="text" id="accountNumber" placeholder="Antre nimewo kont lan">
+    <div class="summary-row">
+      <div class="summary-label">Wallet Balance</div>
+      <div class="summary-value" id="summaryWallet">0 HTG</div>
+    </div>
+  </div>
 
-<label style="margin-top:16px;">Type de compte</label>
-<select id="accountType">
-<option>Épargnes</option>
-<option>Chèque</option>
-</select>
-
-<label style="margin-top:16px;">Montant</label>
-<input type="number" id="withdrawAmount" placeholder="HTG 0">
-
-<label style="margin-top:16px;">Nom kliyan</label>
-<input type="text" id="clientName" placeholder="Antre non kliyan an">
-
-<label style="margin-top:16px;">Détails</label>
-<textarea id="withdrawDetails" rows="4" placeholder="Mete detay sou retrè a"></textarea>
-
-<button class="submit-btn" onclick="submitWithdraw()">Confirmer le retrait</button>
-
-<div class="success-box" id="successBox">
-Demann retrè a soumèt avèk siksè.
-</div>
-
-<div class="note">
-Aprè admin verifye demann lan, retrè a ap trete selon metòd ou chwazi a.
-</div>
+  <button class="main-btn orange-btn" onclick="submitWithdraw()">Soumèt Demand Retrè</button>
+  <a href="withdraw-history.html" class="main-btn dark-btn">Withdraw History</a>
 </div>
 
 </div>
 
+<script src="app.js"></script>
 <script>
-let selectedMethod = "Banque";
-let selectedBank = "Bank 1";
-
-function selectMethod(method){
-  selectedMethod = method;
-
-  document.getElementById("method-bank").classList.remove("active");
-  document.getElementById("method-digital").classList.remove("active");
-  document.getElementById("method-wallet").classList.remove("active");
-
-  if(method === "Banque") document.getElementById("method-bank").classList.add("active");
-  if(method === "Digital") document.getElementById("method-digital").classList.add("active");
-  if(method === "Wallet") document.getElementById("method-wallet").classList.add("active");
+function showNotice(message, type){
+  const box = document.getElementById("noticeBox");
+  box.style.display = "block";
+  box.className = "notice " + type;
+  box.innerHTML = message;
 }
 
-function selectBank(bank){
-  selectedBank = bank;
+const currentUser = FastPayV2.getCurrentUser();
 
-  document.getElementById("bank-1").classList.remove("active");
-  document.getElementById("bank-2").classList.remove("active");
+if(!currentUser){
+  showNotice("Ou pa konekte. Tanpri login anvan.", "error");
+  setTimeout(() => {
+    window.location.href = "login.html";
+  }, 1200);
+} else {
+  document.getElementById("profileLetter").innerHTML = currentUser.fullname.charAt(0).toUpperCase();
+  document.getElementById("clientName").value = currentUser.fullname || "";
+  document.getElementById("email").value = currentUser.email || "";
+  document.getElementById("summaryWallet").innerHTML = (currentUser.balance || 0) + " HTG";
+  document.getElementById("summaryClient").innerHTML = currentUser.fullname || "N/A";
+}
 
-  if(bank === "Bank 1"){
-    document.getElementById("bank-1").classList.add("active");
-  }
+function updateSummary(){
+  const clientName = document.getElementById("clientName").value.trim() || "N/A";
+  const method = document.getElementById("method").value;
+  const currency = document.getElementById("currency").value;
+  const amount = parseInt(document.getElementById("amount").value || "0");
+  const walletBalance = parseInt((currentUser && currentUser.balance) || 0);
 
-  if(bank === "Bank 2"){
-    document.getElementById("bank-2").classList.add("active");
+  document.getElementById("summaryClient").innerHTML = clientName;
+  document.getElementById("summaryMethod").innerHTML = method;
+  document.getElementById("summaryCurrency").innerHTML = currency;
+  document.getElementById("summaryAmount").innerHTML = amount + " " + currency;
+  document.getElementById("summaryWallet").innerHTML = walletBalance + " HTG";
+
+  const stateBox = document.getElementById("walletStateBox");
+  if(amount > walletBalance){
+    stateBox.className = "info-box";
+    stateBox.innerHTML = "Balans wallet ou pa ase pou retrè sa a.";
+  } else {
+    stateBox.className = "ok-box";
+    stateBox.innerHTML = "Balans wallet ou disponib pou retrè sa a.";
   }
 }
 
 function submitWithdraw(){
-  const amount = document.getElementById("withdrawAmount").value;
-  const clientName = document.getElementById("clientName").value;
-  const details = document.getElementById("withdrawDetails").value;
+  if(!currentUser){
+    showNotice("Ou pa konekte.", "error");
+    return;
+  }
+
+  const clientName = document.getElementById("clientName").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const method = document.getElementById("method").value;
+  const bank = document.getElementById("bank").value.trim();
   const currency = document.getElementById("currency").value;
-  const accountName = document.getElementById("accountName").value;
-  const accountNumber = document.getElementById("accountNumber").value;
+  const amount = parseInt(document.getElementById("amount").value || "0");
+  const accountName = document.getElementById("accountName").value.trim();
+  const accountNumber = document.getElementById("accountNumber").value.trim();
   const accountType = document.getElementById("accountType").value;
+  const details = document.getElementById("details").value.trim();
 
-  if(!amount || amount <= 0){
-    alert("Tanpri antre yon montan ki valab.");
+  if(!clientName || !email || !bank || !amount || !accountName || !accountNumber){
+    showNotice("Tanpri ranpli tout enfòmasyon enpòtan yo.", "error");
     return;
   }
 
-  if(!clientName){
-    alert("Tanpri antre non kliyan an.");
+  if(amount <= 0){
+    showNotice("Montan an pa valab.", "error");
     return;
   }
 
-  if(!accountName){
-    alert("Tanpri antre non kont lan.");
+  if((currentUser.balance || 0) < amount){
+    showNotice("Balans wallet ou pa ase pou retrè sa a.", "error");
     return;
   }
 
-  if(!accountNumber){
-    alert("Tanpri antre nimewo kont lan.");
-    return;
-  }
-
-  const withdrawData = {
-    type: "Withdraw Request",
-    method: selectedMethod,
-    bank: selectedBank,
-    currency: currency,
-    accountName: accountName,
-    accountNumber: accountNumber,
-    accountType: accountType,
-    amount: amount,
-    clientName: clientName,
-    details: details,
+  const withdrawRequest = {
+    id: FastPayV2.generateId("WDR"),
+    userId: currentUser.id,
+    clientName,
+    email,
+    method,
+    bank,
+    currency,
+    amount: amount + " " + currency,
+    amountValue: amount,
+    accountName,
+    accountNumber,
+    accountType,
+    details,
     status: "Pending Verification",
     date: new Date().toLocaleString()
   };
 
-  localStorage.setItem("fastpay_last_withdraw", JSON.stringify(withdrawData));
+  const existingWithdraws = FastPayDB.get("fastpay_withdraws", []);
+  existingWithdraws.unshift(withdrawRequest);
+  FastPayDB.set("fastpay_withdraws", existingWithdraws);
 
-  let withdrawList = JSON.parse(localStorage.getItem("fastpay_withdraws")) || [];
-  withdrawList.unshift(withdrawData);
-  localStorage.setItem("fastpay_withdraws", JSON.stringify(withdrawList));
+  FastPayV2.addNotification({
+    userId: currentUser.id,
+    title: "Withdraw request submitted",
+    text: "Nou resevwa demann retrè ou a pou " + amount + " " + currency + ".",
+    type: "warning"
+  });
 
-  document.getElementById("successBox").style.display = "block";
+  FastPayV2.addTransaction({
+    userId: currentUser.id,
+    service: "Withdraw Request",
+    amount: "-" + amount + " " + currency,
+    type: "withdraw-request",
+    status: "pending",
+    meta: {
+      method: method,
+      withdrawId: withdrawRequest.id
+    }
+  });
+
+  showNotice("Demann retrè a anrejistre avèk siksè.", "success");
+
+  setTimeout(() => {
+    window.location.href = "withdraw-history.html";
+  }, 1000);
 }
+
+updateSummary();
 </script>
 
 </body>
-  </html>
+</html>
