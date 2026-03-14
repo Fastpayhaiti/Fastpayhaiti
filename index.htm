@@ -1,164 +1,360 @@
 <!DOCTYPE html>
 <html lang="ht">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>FastPay Haiti</title>
-
+<title>FastPay</title>
 <style>
+*{
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
 
 body{
-font-family:Arial;
-background:#f2f4f8;
-margin:0;
-padding:20px;
+  margin:0;
+  background:#eef2f7;
+  padding:20px;
+}
+
+.app{
+  max-width:430px;
+  margin:auto;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
 }
 
 .logo{
-font-size:30px;
-font-weight:bold;
-color:#ff4d3d;
+  font-size:32px;
+  font-weight:bold;
+  color:#ff5a3d;
 }
 
-.services{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-margin-top:20px;
+.profile{
+  width:46px;
+  height:46px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#ff5a3d,#ff7a59);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:18px;
+  box-shadow:0 6px 16px rgba(255,90,61,0.25);
 }
 
-.service-box{
-
-background:white;
-padding:20px;
-border-radius:20px;
-text-decoration:none;
-color:black;
-
-box-shadow:0 6px 16px rgba(0,0,0,0.08);
-
+.auth-buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:18px;
 }
 
-.service-box h3{
-margin:10px 0 5px 0;
+.auth-btn{
+  display:block;
+  text-align:center;
+  padding:12px;
+  border-radius:12px;
+  font-weight:bold;
+  text-decoration:none;
 }
 
-.service-box p{
-font-size:14px;
-color:#666;
+.login-btn{
+  background:#111827;
+  color:white;
 }
 
-.icon{
-font-size:26px;
+.register-btn{
+  background:#ff4d3d;
+  color:white;
+}
+
+.balance-card{
+  background:linear-gradient(135deg,#ff4d3d,#ff8a5c);
+  color:white;
+  border-radius:28px;
+  padding:24px;
+  box-shadow:0 12px 30px rgba(255,90,61,0.25);
+  margin-bottom:20px;
+}
+
+.balance-card h2{
+  margin:0;
+  font-size:18px;
+  font-weight:normal;
 }
 
 .balance{
-
-background:#ff4d3d;
-color:white;
-padding:25px;
-border-radius:25px;
-margin-top:20px;
-
+  font-size:42px;
+  font-weight:bold;
+  margin:12px 0 22px;
 }
 
-.balance h2{
-margin:0;
-font-size:18px;
+.actions{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
 }
 
-.amount{
-font-size:35px;
-margin-top:10px;
+a{
+  text-decoration:none;
 }
 
+.action-btn{
+  background:rgba(255,255,255,0.18);
+  color:white;
+  padding:16px;
+  border-radius:18px;
+  font-size:16px;
+  font-weight:bold;
+  text-align:center;
+  display:block;
+}
+
+.section-title{
+  font-size:28px;
+  font-weight:bold;
+  margin:18px 0 14px;
+  color:#111827;
+}
+
+.services{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  margin-bottom:20px;
+}
+
+.service-box{
+  border-radius:24px;
+  padding:18px;
+  box-shadow:0 8px 18px rgba(0,0,0,0.08);
+  min-height:132px;
+  display:block;
+  overflow:hidden;
+  color:white;
+}
+
+.service-box h3{
+  margin:0 0 10px 0;
+  font-size:20px;
+  line-height:1.15;
+}
+
+.service-box p{
+  margin:0;
+  font-size:14px;
+  line-height:1.45;
+}
+
+.service-icon{
+  font-size:24px;
+  margin-bottom:10px;
+  display:block;
+}
+
+.virtual-card{
+  background:linear-gradient(135deg,#111827,#374151);
+}
+
+.netflix{
+  background:linear-gradient(135deg,#b20710,#e50914);
+}
+
+.primevideo{
+  background:linear-gradient(135deg,#0f172a,#1d4ed8);
+}
+
+.giftcards{
+  background:linear-gradient(135deg,#6d28d9,#a855f7);
+}
+
+.topup{
+  background:linear-gradient(135deg,#f97316,#fb923c);
+}
+
+.wallet{
+  background:linear-gradient(135deg,#047857,#10b981);
+}
+
+.recharge-card{
+  background:linear-gradient(135deg,#0891b2,#22d3ee);
+}
+
+.social-media{
+  background:linear-gradient(135deg,#ff3d2e,#ff7a59);
+}
+
+.dashboard-section{
+  margin-top:20px;
+}
+
+.main-btn{
+  display:block;
+  margin-bottom:12px;
+  padding:16px;
+  border-radius:18px;
+  font-weight:bold;
+  text-align:center;
+  font-size:16px;
+  color:white;
+  box-shadow:0 8px 18px rgba(0,0,0,0.08);
+}
+
+.dashboard-btn{
+  background:#ff4d3d;
+}
+
+.admin-btn{
+  background:#111827;
+}
+
+.welcome{
+  background:#ecfdf3;
+  color:#166534;
+  padding:12px;
+  border-radius:12px;
+  font-weight:bold;
+  margin-bottom:18px;
+  display:none;
+  line-height:1.6;
+}
+
+.logout-btn{
+  margin-top:10px;
+  padding:10px 14px;
+  border:none;
+  background:#111827;
+  color:white;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+}
 </style>
-
 </head>
-
-
 <body>
 
-<div class="logo">FastPay</div>
+<div class="app">
 
+  <div class="topbar">
+    <div class="logo">FastPay</div>
+    <div class="profile" id="profileLetter">L</div>
+  </div>
 
-<div class="balance">
+  <div class="welcome" id="welcomeBox"></div>
 
-<h2>Balance</h2>
+  <div class="auth-buttons">
+    <a href="login.html" class="auth-btn login-btn">Login</a>
+    <a href="register.html" class="auth-btn register-btn">Register</a>
+  </div>
 
-<div class="amount">0 HTG</div>
+  <div class="balance-card">
+    <h2>Solde disponib</h2>
+    <div class="balance" id="homeBalance">0 HTG</div>
+
+    <div class="actions">
+      <a href="deposit.html" class="action-btn">Depoze</a>
+      <a href="withdraw.html" class="action-btn">Retire</a>
+      <a href="transfer.html" class="action-btn">Transfere</a>
+      <a href="order.html" class="action-btn">Demande</a>
+    </div>
+  </div>
+
+  <div class="section-title">Sèvis yo</div>
+
+  <div class="services">
+
+    <a href="card.html" class="service-box virtual-card">
+      <span class="service-icon">💳</span>
+      <h3>Virtual Card</h3>
+      <p>Kreye kat vityèl pou peye sou entènèt.</p>
+    </a>
+
+    <a href="netflix.html" class="service-box netflix">
+      <span class="service-icon">🎬</span>
+      <h3>Netflix</h3>
+      <p>Achte oswa renouvle plan Netflix.</p>
+    </a>
+
+    <a href="primevideo.html" class="service-box primevideo">
+      <span class="service-icon">▶️</span>
+      <h3>Prime Video</h3>
+      <p>Peye abònman Prime Video.</p>
+    </a>
+
+    <a href="giftcards.html" class="service-box giftcards">
+      <span class="service-icon">🎁</span>
+      <h3>Gift Cards</h3>
+      <p>Apple, Amazon, Steam ak plis.</p>
+    </a>
+
+    <a href="topup.html" class="service-box topup">
+      <span class="service-icon">📱</span>
+      <h3>Top Up</h3>
+      <p>Recharge mobil ak gaming.</p>
+    </a>
+
+    <a href="wallet.html" class="service-box wallet">
+      <span class="service-icon">👛</span>
+      <h3>Wallet</h3>
+      <p>Jere balans ak tranzaksyon.</p>
+    </a>
+
+    <a href="recharge-card.html" class="service-box recharge-card">
+      <span class="service-icon">💠</span>
+      <h3>Recharge Carte</h3>
+      <p>Rechaje Wise, Meru, Payoneer ak lòt kat.</p>
+    </a>
+
+    <a href="social-media.html" class="service-box social-media">
+      <span class="service-icon">🚀</span>
+      <h3>Boost Social Media</h3>
+      <p>Followers, likes, views ak subscribers pou rezo sosyal yo.</p>
+    </a>
+
+  </div>
+
+  <div class="dashboard-section">
+    <a href="dashboard.html" class="main-btn dashboard-btn">My Dashboard</a>
+    <a href="admin.html" class="main-btn admin-btn">Admin Dashboard</a>
+  </div>
 
 </div>
 
+<script>
+const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
+const loggedIn = localStorage.getItem("fastpay_logged_in");
+const welcomeBox = document.getElementById("welcomeBox");
+const profileLetter = document.getElementById("profileLetter");
+const homeBalance = document.getElementById("homeBalance");
 
-<div class="services">
+const storedBalance = localStorage.getItem("fastpay_balance");
+if(storedBalance){
+  homeBalance.innerHTML = storedBalance + " HTG";
+}
 
+if(savedUser && savedUser.fullname){
+  const firstLetter = savedUser.fullname.charAt(0).toUpperCase();
+  profileLetter.innerHTML = firstLetter;
+}
 
-<a href="topup.html" class="service-box">
+if(savedUser && loggedIn === "true"){
+  welcomeBox.style.display = "block";
+  welcomeBox.innerHTML =
+    "Byenvini, " + savedUser.fullname + "!" +
+    '<br><button class="logout-btn" onclick="logout()">Logout</button>';
+}
 
-<div class="icon">📱</div>
-
-<h3>Top Up</h3>
-
-<p>Recharge mobil ak gaming</p>
-
-</a>
-
-
-
-<a href="social-media.html" class="service-box">
-
-<div class="icon">🚀</div>
-
-<h3>Boost Social</h3>
-
-<p>Followers Likes Views</p>
-
-</a>
-
-
-
-<a href="recharge-card.html" class="service-box">
-
-<div class="icon">💳</div>
-
-<h3>Recharge Carte</h3>
-
-<p>Wise Meru Payoneer</p>
-
-</a>
-
-
-
-<a href="dashboard.html" class="service-box">
-
-<div class="icon">📊</div>
-
-<h3>Dashboard</h3>
-
-<p>Kont kliyan</p>
-
-</a>
-
-
-
-<a href="admin.html" class="service-box">
-
-<div class="icon">⚙️</div>
-
-<h3>Admin Panel</h3>
-
-<p>Jere sit la</p>
-
-</a>
-
-
-</div>
-
+function logout(){
+  localStorage.removeItem("fastpay_logged_in");
+  window.location.href = "index.html";
+}
+</script>
 
 </body>
-
 </html>
