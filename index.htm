@@ -29,14 +29,14 @@ margin-bottom:20px;
 }
 
 .logo{
-font-size:30px;
+font-size:32px;
 font-weight:bold;
 color:#ff5a3d;
 }
 
 .profile{
-width:44px;
-height:44px;
+width:46px;
+height:46px;
 border-radius:14px;
 background:linear-gradient(135deg,#ff5a3d,#ff7a59);
 color:white;
@@ -45,6 +45,7 @@ align-items:center;
 justify-content:center;
 font-weight:bold;
 font-size:18px;
+box-shadow:0 6px 16px rgba(255,90,61,0.25);
 }
 
 .auth-buttons{
@@ -114,6 +115,7 @@ font-size:16px;
 font-weight:bold;
 text-align:center;
 display:block;
+backdrop-filter:blur(4px);
 }
 
 .section-title{
@@ -131,25 +133,71 @@ margin-bottom:20px;
 }
 
 .service-box{
-background:white;
-border-radius:22px;
+border-radius:24px;
 padding:18px;
-box-shadow:0 4px 14px rgba(0,0,0,0.05);
-min-height:120px;
-color:#111;
+box-shadow:0 8px 18px rgba(0,0,0,0.08);
+min-height:132px;
 display:block;
+position:relative;
+overflow:hidden;
 }
 
 .service-box h3{
 margin:0 0 10px 0;
-font-size:19px;
+font-size:20px;
+line-height:1.15;
 }
 
 .service-box p{
 margin:0;
-color:#666;
 font-size:14px;
-line-height:1.4;
+line-height:1.45;
+}
+
+.service-icon{
+font-size:24px;
+margin-bottom:10px;
+display:block;
+}
+
+.virtual-card{
+background:linear-gradient(135deg,#111827,#374151);
+color:white;
+}
+
+.netflix{
+background:linear-gradient(135deg,#b20710,#e50914);
+color:white;
+}
+
+.primevideo{
+background:linear-gradient(135deg,#0f172a,#1d4ed8);
+color:white;
+}
+
+.giftcards{
+background:linear-gradient(135deg,#6d28d9,#a855f7);
+color:white;
+}
+
+.topup{
+background:linear-gradient(135deg,#f97316,#fb923c);
+color:white;
+}
+
+.wallet{
+background:linear-gradient(135deg,#047857,#10b981);
+color:white;
+}
+
+.recharge-card{
+background:linear-gradient(135deg,#0891b2,#22d3ee);
+color:white;
+}
+
+.social-media{
+background:linear-gradient(135deg,#ff3d2e,#ff7a59);
+color:white;
 }
 
 .dashboard-section{
@@ -165,6 +213,7 @@ font-weight:bold;
 text-align:center;
 font-size:16px;
 color:white;
+box-shadow:0 8px 18px rgba(0,0,0,0.08);
 }
 
 .dashboard-btn{
@@ -230,42 +279,50 @@ cursor:pointer;
 
 <div class="services">
 
-<a href="card.html" class="service-box">
+<a href="card.html" class="service-box virtual-card">
+<span class="service-icon">💳</span>
 <h3>Virtual Card</h3>
 <p>Kreye kat vityèl pou peye sou entènèt.</p>
 </a>
 
-<a href="netflix.html" class="service-box">
+<a href="netflix.html" class="service-box netflix">
+<span class="service-icon">🎬</span>
 <h3>Netflix</h3>
 <p>Achte oswa renouvle plan Netflix.</p>
 </a>
 
-<a href="primevideo.html" class="service-box">
+<a href="primevideo.html" class="service-box primevideo">
+<span class="service-icon">▶️</span>
 <h3>Prime Video</h3>
 <p>Peye abònman Prime Video.</p>
 </a>
 
-<a href="giftcards.html" class="service-box">
+<a href="giftcards.html" class="service-box giftcards">
+<span class="service-icon">🎁</span>
 <h3>Gift Cards</h3>
 <p>Apple, Amazon, Steam ak plis.</p>
 </a>
 
-<a href="topup.html" class="service-box">
+<a href="topup.html" class="service-box topup">
+<span class="service-icon">📱</span>
 <h3>Top Up</h3>
 <p>Recharge mobil ak gaming.</p>
 </a>
 
-<a href="wallet.html" class="service-box">
+<a href="wallet.html" class="service-box wallet">
+<span class="service-icon">👛</span>
 <h3>Wallet</h3>
 <p>Jere balans ak tranzaksyon.</p>
 </a>
 
-<a href="recharge-card.html" class="service-box">
+<a href="recharge-card.html" class="service-box recharge-card">
+<span class="service-icon">💠</span>
 <h3>Recharge Carte</h3>
 <p>Rechaje Wise, Meru, Payoneer ak lòt kat.</p>
 </a>
 
-<a href="social-media.html" class="service-box">
+<a href="social-media.html" class="service-box social-media">
+<span class="service-icon">🚀</span>
 <h3>Boost Social Media</h3>
 <p>Followers, likes, views ak subscribers pou rezo sosyal yo.</p>
 </a>
