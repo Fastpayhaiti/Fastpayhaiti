@@ -1,391 +1,448 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FastPay Dashboard v2</title>
-<style>
-*{
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FastPay Professional Dashboard</title>
+  <style>
+    *{
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
 
-body{
-  margin:0;
-  background:#eef2f7;
-  padding:20px;
-  color:#111827;
-}
+    body{
+      margin:0;
+      background:#eef2f7;
+      padding:20px;
+      color:#111827;
+    }
 
-.container{
-  max-width:430px;
-  margin:auto;
-  position:relative;
-}
+    .container{
+      max-width:430px;
+      margin:auto;
+      position:relative;
+    }
 
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:18px;
+    }
 
-.left-top{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
+    .left-top{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
 
-.menu-btn{
-  width:46px;
-  height:46px;
-  border:none;
-  border-radius:14px;
-  background:#111827;
-  color:white;
-  font-size:22px;
-  font-weight:bold;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 6px 16px rgba(17,24,39,0.20);
-}
+    .menu-btn{
+      width:46px;
+      height:46px;
+      border:none;
+      border-radius:14px;
+      background:#111827;
+      color:white;
+      font-size:22px;
+      font-weight:bold;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 6px 16px rgba(17,24,39,0.20);
+    }
 
-.logo{
-  font-size:30px;
-  font-weight:bold;
-  color:#ff5a3d;
-}
+    .logo{
+      font-size:30px;
+      font-weight:bold;
+      color:#ff5a3d;
+    }
 
-.profile{
-  width:46px;
-  height:46px;
-  border-radius:14px;
-  background:linear-gradient(135deg,#ff5a3d,#ff7a59);
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  font-size:18px;
-  box-shadow:0 6px 16px rgba(255,90,61,0.25);
-}
+    .profile{
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      background:linear-gradient(135deg,#ff5a3d,#ff7a59);
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+      font-size:18px;
+      box-shadow:0 6px 16px rgba(255,90,61,0.25);
+    }
 
-.hero{
-  background:linear-gradient(135deg,#ff4d3d,#ff8a5c);
-  color:white;
-  border-radius:26px;
-  padding:24px;
-  margin-bottom:18px;
-  box-shadow:0 12px 28px rgba(255,90,61,0.22);
-}
+    .hero{
+      background:linear-gradient(135deg,#ff4d3d,#ff8a5c);
+      color:white;
+      border-radius:26px;
+      padding:24px;
+      margin-bottom:18px;
+      box-shadow:0 12px 28px rgba(255,90,61,0.22);
+    }
 
-.hero h1{
-  margin:0 0 10px 0;
-  font-size:28px;
-  line-height:1.2;
-}
+    .hero h1{
+      margin:0 0 10px 0;
+      font-size:28px;
+      line-height:1.2;
+    }
 
-.hero p{
-  margin:0;
-  font-size:15px;
-  line-height:1.6;
-  opacity:0.98;
-}
+    .hero p{
+      margin:0;
+      font-size:15px;
+      line-height:1.6;
+      opacity:0.98;
+    }
 
-.quick-actions{
-  background:white;
-  border-radius:22px;
-  padding:18px;
-  box-shadow:0 8px 18px rgba(0,0,0,0.06);
-  margin-bottom:18px;
-}
+    .wallet-card{
+      background:linear-gradient(135deg,#111827,#374151);
+      color:white;
+      border-radius:26px;
+      padding:22px;
+      box-shadow:0 16px 35px rgba(17,24,39,0.26);
+      margin-bottom:18px;
+      position:relative;
+      overflow:hidden;
+    }
 
-.quick-actions h2{
-  margin:0 0 14px 0;
-  font-size:22px;
-}
+    .wallet-card::after{
+      content:"";
+      position:absolute;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.06);
+      top:-40px;
+      right:-50px;
+    }
 
-.quick-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
+    .wallet-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      position:relative;
+      z-index:2;
+      gap:12px;
+    }
 
-.quick-btn{
-  display:block;
-  text-align:center;
-  padding:14px 10px;
-  border-radius:16px;
-  text-decoration:none;
-  font-weight:bold;
-  font-size:15px;
-  color:white;
-}
+    .wallet-label{
+      font-size:14px;
+      opacity:0.86;
+    }
 
-.quick-deposit{
-  background:#ff4d3d;
-}
+    .wallet-tag{
+      background:rgba(255,255,255,0.14);
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:bold;
+      white-space:nowrap;
+    }
 
-.quick-withdraw{
-  background:#111827;
-}
+    .wallet-balance{
+      margin-top:18px;
+      font-size:42px;
+      font-weight:bold;
+      position:relative;
+      z-index:2;
+    }
 
-.quick-transfer{
-  background:#111827;
-}
+    .wallet-sub{
+      margin-top:6px;
+      font-size:14px;
+      opacity:0.9;
+      position:relative;
+      z-index:2;
+      word-break:break-word;
+    }
 
-.balance-card{
-  background:linear-gradient(135deg,#111827,#374151);
-  color:white;
-  border-radius:24px;
-  padding:22px;
-  box-shadow:0 12px 28px rgba(17,24,39,0.22);
-  margin-bottom:18px;
-}
+    .quick-actions{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+      margin-top:18px;
+      position:relative;
+      z-index:2;
+    }
 
-.balance-label{
-  font-size:16px;
-  opacity:0.95;
-}
+    .quick-btn{
+      display:block;
+      text-align:center;
+      padding:14px;
+      border-radius:16px;
+      text-decoration:none;
+      font-weight:bold;
+      font-size:15px;
+      color:white;
+      background:rgba(255,255,255,0.14);
+    }
 
-.balance-amount{
-  font-size:42px;
-  font-weight:bold;
-  margin-top:10px;
-}
+    .section{
+      background:white;
+      border-radius:22px;
+      padding:18px;
+      box-shadow:0 8px 18px rgba(0,0,0,0.06);
+      margin-bottom:18px;
+    }
 
-.balance-sub{
-  margin-top:8px;
-  font-size:14px;
-  opacity:0.9;
-}
+    .section h2{
+      margin:0 0 14px 0;
+      font-size:22px;
+    }
 
-.section{
-  background:white;
-  border-radius:22px;
-  padding:18px;
-  box-shadow:0 8px 18px rgba(0,0,0,0.06);
-  margin-bottom:18px;
-}
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
 
-.section h2{
-  margin:0 0 14px 0;
-  font-size:22px;
-}
+    .stat-box{
+      background:#f8fafc;
+      border-radius:16px;
+      padding:14px;
+      position:relative;
+    }
 
-.stat-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-}
+    .stat-title{
+      color:#6b7280;
+      font-size:13px;
+      margin-bottom:6px;
+    }
 
-.stat-box{
-  background:#f8fafc;
-  border-radius:16px;
-  padding:14px;
-  position:relative;
-}
+    .stat-value{
+      font-size:20px;
+      font-weight:bold;
+      color:#111827;
+    }
 
-.stat-title{
-  color:#6b7280;
-  font-size:13px;
-  margin-bottom:6px;
-}
+    .small-badge{
+      position:absolute;
+      top:10px;
+      right:10px;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      min-width:22px;
+      height:22px;
+      padding:0 7px;
+      border-radius:999px;
+      background:#ef4444;
+      color:white;
+      font-size:11px;
+      font-weight:bold;
+    }
 
-.stat-value{
-  font-size:20px;
-  font-weight:bold;
-  color:#111827;
-}
+    .feature-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
 
-.small-badge{
-  position:absolute;
-  top:10px;
-  right:10px;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  min-width:22px;
-  height:22px;
-  padding:0 7px;
-  border-radius:999px;
-  background:#ef4444;
-  color:white;
-  font-size:11px;
-  font-weight:bold;
-}
+    .feature-card{
+      display:block;
+      text-decoration:none;
+      color:#111827;
+      background:#f8fafc;
+      border-radius:18px;
+      padding:16px;
+    }
 
-.tx-item{
-  padding:12px 0;
-  border-bottom:1px solid #eee;
-}
+    .feature-icon{
+      font-size:24px;
+      margin-bottom:10px;
+      display:block;
+    }
 
-.tx-item:last-child{
-  border-bottom:none;
-}
+    .feature-title{
+      font-weight:bold;
+      font-size:15px;
+      margin-bottom:6px;
+    }
 
-.tx-top{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  align-items:flex-start;
-}
+    .feature-sub{
+      font-size:13px;
+      color:#6b7280;
+      line-height:1.45;
+    }
 
-.tx-name{
-  font-weight:bold;
-  font-size:15px;
-}
+    .tx-item,
+    .note-item{
+      padding:12px 0;
+      border-bottom:1px solid #eee;
+    }
 
-.tx-amount{
-  font-weight:bold;
-  font-size:15px;
-  text-align:right;
-}
+    .tx-item:last-child,
+    .note-item:last-child{
+      border-bottom:none;
+    }
 
-.tx-date{
-  color:#6b7280;
-  font-size:13px;
-  margin-top:4px;
-}
+    .tx-top{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+    }
 
-.main-btn{
-  display:block;
-  width:100%;
-  text-align:center;
-  padding:15px;
-  border:none;
-  border-radius:16px;
-  text-decoration:none;
-  font-weight:bold;
-  font-size:16px;
-  margin-top:12px;
-  cursor:pointer;
-}
+    .tx-name,
+    .note-title{
+      font-weight:bold;
+      font-size:15px;
+    }
 
-.orange-btn{
-  background:#ff4d3d;
-  color:white;
-}
+    .tx-amount{
+      font-weight:bold;
+      font-size:15px;
+      text-align:right;
+    }
 
-.dark-btn{
-  background:#111827;
-  color:white;
-}
+    .tx-date,
+    .note-date{
+      color:#6b7280;
+      font-size:13px;
+      margin-top:4px;
+    }
 
-.empty{
-  color:#6b7280;
-  font-size:14px;
-}
+    .note-text{
+      color:#4b5563;
+      font-size:14px;
+      margin-top:6px;
+      line-height:1.5;
+    }
 
-.notice{
-  display:none;
-  padding:14px;
-  border-radius:14px;
-  font-weight:bold;
-  line-height:1.5;
-  margin-bottom:14px;
-}
+    .toolbar{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:14px;
+    }
 
-.notice.error{
-  background:#fee2e2;
-  color:#991b1b;
-}
+    .btn{
+      display:block;
+      width:100%;
+      text-align:center;
+      padding:14px;
+      border:none;
+      border-radius:16px;
+      text-decoration:none;
+      font-weight:bold;
+      font-size:15px;
+      cursor:pointer;
+      color:white;
+    }
 
-/* Side menu */
-.menu-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.35);
-  z-index:999;
-  display:none;
-}
+    .btn-orange{
+      background:#ff4d3d;
+    }
 
-.side-menu{
-  position:fixed;
-  top:0;
-  left:-320px;
-  width:290px;
-  height:100%;
-  background:white;
-  z-index:1000;
-  box-shadow:0 10px 30px rgba(0,0,0,0.18);
-  transition:0.25s ease;
-  padding:20px 16px;
-  overflow-y:auto;
-}
+    .btn-dark{
+      background:#111827;
+    }
 
-.side-menu.active{
-  left:0;
-}
+    .notice{
+      display:none;
+      padding:14px;
+      border-radius:14px;
+      font-weight:bold;
+      line-height:1.5;
+      margin-bottom:14px;
+    }
 
-.menu-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
+    .notice.err{
+      background:#fee2e2;
+      color:#991b1b;
+    }
 
-.menu-title{
-  font-size:24px;
-  font-weight:bold;
-  color:#111827;
-}
+    .empty{
+      color:#6b7280;
+      font-size:14px;
+    }
 
-.close-menu{
-  width:40px;
-  height:40px;
-  border:none;
-  border-radius:12px;
-  background:#111827;
-  color:white;
-  font-size:18px;
-  cursor:pointer;
-}
+    .menu-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.35);
+      z-index:999;
+      display:none;
+    }
 
-.menu-user{
-  background:#f8fafc;
-  border-radius:16px;
-  padding:14px;
-  margin-bottom:16px;
-}
+    .side-menu{
+      position:fixed;
+      top:0;
+      left:-320px;
+      width:295px;
+      height:100%;
+      background:white;
+      z-index:1000;
+      box-shadow:0 10px 30px rgba(0,0,0,0.18);
+      transition:0.25s ease;
+      padding:20px 16px;
+      overflow-y:auto;
+    }
 
-.menu-user-name{
-  font-weight:bold;
-  font-size:16px;
-  color:#111827;
-}
+    .side-menu.active{
+      left:0;
+    }
 
-.menu-user-mail{
-  margin-top:4px;
-  font-size:13px;
-  color:#6b7280;
-  word-break:break-word;
-}
+    .menu-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:18px;
+    }
 
-.menu-link{
-  display:block;
-  text-decoration:none;
-  color:#111827;
-  background:#f8fafc;
-  padding:14px 16px;
-  border-radius:14px;
-  margin-bottom:10px;
-  font-weight:bold;
-}
+    .menu-title{
+      font-size:24px;
+      font-weight:bold;
+      color:#111827;
+    }
 
-.menu-link.logout{
-  background:#111827;
-  color:white;
-}
+    .close-menu{
+      width:40px;
+      height:40px;
+      border:none;
+      border-radius:12px;
+      background:#111827;
+      color:white;
+      font-size:18px;
+      cursor:pointer;
+    }
 
-@media (max-width:360px){
-  .quick-grid{
-    grid-template-columns:1fr;
-  }
-}
-</style>
+    .menu-user{
+      background:#f8fafc;
+      border-radius:16px;
+      padding:14px;
+      margin-bottom:16px;
+    }
+
+    .menu-user-name{
+      font-weight:bold;
+      font-size:16px;
+      color:#111827;
+    }
+
+    .menu-user-mail{
+      margin-top:4px;
+      font-size:13px;
+      color:#6b7280;
+      word-break:break-word;
+    }
+
+    .menu-link{
+      display:block;
+      text-decoration:none;
+      color:#111827;
+      background:#f8fafc;
+      padding:14px 16px;
+      border-radius:14px;
+      margin-bottom:10px;
+      font-weight:bold;
+    }
+
+    .menu-link.logout{
+      background:#111827;
+      color:white;
+    }
+  </style>
 </head>
 <body>
 
@@ -393,7 +450,7 @@ body{
 
 <div class="side-menu" id="sideMenu">
   <div class="menu-header">
-    <div class="menu-title">Menu</div>
+    <div class="menu-title">FastPay Menu</div>
     <button class="close-menu" onclick="closeMenu()">✕</button>
   </div>
 
@@ -403,12 +460,13 @@ body{
   </div>
 
   <a href="index.html" class="menu-link">🏠 Home</a>
-  <a href="dashboard.html" class="menu-link">📊 Dashboard</a>
   <a href="wallet.html" class="menu-link">👛 Wallet</a>
   <a href="statement.html" class="menu-link">📄 Statement</a>
   <a href="notification.html" class="menu-link">🔔 Notifications</a>
   <a href="create-card.html" class="menu-link">💳 Create Card</a>
   <a href="card-dashboard.html" class="menu-link">🏦 Card Dashboard</a>
+  <a href="card-settings.html" class="menu-link">⚙️ Card Settings</a>
+  <a href="card-history.html" class="menu-link">🧾 Card History</a>
   <a href="deposit-history.html" class="menu-link">💰 Deposit History</a>
   <a href="withdraw-history.html" class="menu-link">💸 Withdraw History</a>
   <a href="transfer-history.html" class="menu-link">🔁 Transfer History</a>
@@ -426,40 +484,41 @@ body{
     <div class="profile" id="profileLetter">U</div>
   </div>
 
-  <div id="noticeBox" class="notice error"></div>
+  <div id="noticeBox" class="notice err"></div>
 
   <div class="hero">
     <h1 id="welcomeText">Byenvini sou FastPay</h1>
-    <p>Jere wallet ou, kat ou, tranzaksyon ou, ak tout sèvis FastPay yo nan yon sèl espas.</p>
+    <p>Dashboard pwofesyonèl ou a pou jere wallet, kat, tranzaksyon, ak tout sèvis FastPay yo.</p>
   </div>
 
-  <div class="quick-actions">
-    <h2>Aksyon rapid</h2>
-    <div class="quick-grid">
-      <a href="deposit.html" class="quick-btn quick-deposit">Depoze</a>
-      <a href="withdraw.html" class="quick-btn quick-withdraw">Retire</a>
-      <a href="transfer.html" class="quick-btn quick-transfer">Transfere</a>
+  <div class="wallet-card">
+    <div class="wallet-top">
+      <div class="wallet-label">Available Balance</div>
+      <div class="wallet-tag">Digital Wallet</div>
+    </div>
+
+    <div class="wallet-balance" id="balanceAmount">0 HTG</div>
+    <div class="wallet-sub" id="memberSince">Kliyan FastPay</div>
+
+    <div class="quick-actions">
+      <a href="deposit.html" class="quick-btn">Deposit</a>
+      <a href="withdraw.html" class="quick-btn">Withdraw</a>
+      <a href="transfer.html" class="quick-btn">Transfer</a>
+      <a href="wallet.html" class="quick-btn">Wallet</a>
     </div>
   </div>
 
-  <div class="balance-card">
-    <div class="balance-label">Solde disponib</div>
-    <div class="balance-amount" id="balanceAmount">0 HTG</div>
-    <div class="balance-sub" id="memberSince">Kliyan FastPay</div>
-  </div>
-
   <div class="section">
-    <h2>Rezime Kont</h2>
-
-    <div class="stat-grid">
+    <h2>Account Overview</h2>
+    <div class="stats-grid">
       <div class="stat-box">
-        <div class="stat-title">Total Tranzaksyon</div>
+        <div class="stat-title">Transactions</div>
         <div class="stat-value" id="totalTransactions">0</div>
       </div>
 
       <div class="stat-box">
         <div class="small-badge" id="notificationBadge">0</div>
-        <div class="stat-title">Notifikasyon</div>
+        <div class="stat-title">Notifications</div>
         <div class="stat-value" id="notificationCount">0</div>
       </div>
 
@@ -469,99 +528,154 @@ body{
       </div>
 
       <div class="stat-box">
-        <div class="stat-title">Kont Status</div>
+        <div class="stat-title">Status</div>
         <div class="stat-value" id="accountStatus">Active</div>
       </div>
     </div>
   </div>
 
   <div class="section">
-    <h2>Dènye Tranzaksyon</h2>
+    <h2>Quick Access</h2>
+    <div class="feature-grid">
+      <a href="wallet.html" class="feature-card">
+        <span class="feature-icon">👛</span>
+        <div class="feature-title">Wallet</div>
+        <div class="feature-sub">Gade balans ou ak mouvman finans yo.</div>
+      </a>
+
+      <a href="card-dashboard.html" class="feature-card">
+        <span class="feature-icon">💳</span>
+        <div class="feature-title">My Card</div>
+        <div class="feature-sub">Jere kat ou, details li, ak balans li.</div>
+      </a>
+
+      <a href="statement.html" class="feature-card">
+        <span class="feature-icon">📄</span>
+        <div class="feature-title">Statement</div>
+        <div class="feature-sub">Tout mouvman wallet ou yo ansanm.</div>
+      </a>
+
+      <a href="notification.html" class="feature-card">
+        <span class="feature-icon">🔔</span>
+        <div class="feature-title">Notifications</div>
+        <div class="feature-sub">Wè tout alèt ak nouvèl yo fasil.</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Recent Transactions</h2>
     <div id="transactionsBox" class="empty">Pa gen tranzaksyon pou kounye a.</div>
 
-    <a href="wallet.html" class="main-btn orange-btn">Ale sou Wallet</a>
+    <div class="toolbar">
+      <a href="statement.html" class="btn btn-dark">Statement</a>
+      <a href="transfer-history.html" class="btn btn-orange">Transfer History</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Recent Notifications</h2>
+    <div id="notificationsBox" class="empty">Pa gen notifikasyon pou kounye a.</div>
+
+    <div class="toolbar">
+      <a href="notification.html" class="btn btn-orange">All Notifications</a>
+      <a href="deposit-history.html" class="btn btn-dark">Deposit History</a>
+    </div>
   </div>
 
 </div>
 
 <script src="app.js"></script>
 <script>
-function showError(message){
-  const box = document.getElementById("noticeBox");
-  box.style.display = "block";
-  box.innerHTML = message;
-}
-
-function openMenu(){
-  document.getElementById("sideMenu").classList.add("active");
-  document.getElementById("menuOverlay").style.display = "block";
-}
-
-function closeMenu(){
-  document.getElementById("sideMenu").classList.remove("active");
-  document.getElementById("menuOverlay").style.display = "none";
-}
-
-const currentUser = FastPayV2.getCurrentUser();
-
-if(!currentUser){
-  showError("Ou pa konekte. Tanpri login anvan.");
-  setTimeout(() => {
-    window.location.href = "login.html";
-  }, 1200);
-} else {
-  document.getElementById("welcomeText").innerHTML = "Byenvini, " + currentUser.fullname;
-  document.getElementById("profileLetter").innerHTML = currentUser.fullname.charAt(0).toUpperCase();
-  document.getElementById("balanceAmount").innerHTML = (currentUser.balance || 0) + " HTG";
-  document.getElementById("memberSince").innerHTML = "Depi: " + (currentUser.createdAt || "N/A");
-  document.getElementById("accountStatus").innerHTML = currentUser.status || "Active";
-
-  document.getElementById("menuUserName").innerHTML = currentUser.fullname || "FastPay User";
-  document.getElementById("menuUserMail").innerHTML = currentUser.email || "No email";
-
-  const userTransactions = FastPayV2.getUserTransactions(currentUser.id);
-  const userNotifications = FastPayV2.getUserNotifications(currentUser.id);
-  const unreadCount = FastPayV2.getUnreadCount(currentUser.id);
-  const cardRequests = FastPayV2.getCardRequests().filter(item => item.userId === currentUser.id);
-
-  document.getElementById("totalTransactions").innerHTML = userTransactions.length;
-  document.getElementById("notificationCount").innerHTML = userNotifications.length;
-  document.getElementById("cardRequestCount").innerHTML = cardRequests.length;
-
-  const badge = document.getElementById("notificationBadge");
-  if(unreadCount > 0){
-    badge.style.display = "inline-flex";
-    badge.innerHTML = unreadCount;
-  } else {
-    badge.style.display = "none";
+  function showError(message){
+    const box = document.getElementById("noticeBox");
+    box.style.display = "block";
+    box.innerHTML = message;
   }
 
-  const txBox = document.getElementById("transactionsBox");
+  function openMenu(){
+    document.getElementById("sideMenu").classList.add("active");
+    document.getElementById("menuOverlay").style.display = "block";
+  }
 
-  if(userTransactions.length === 0){
-    txBox.innerHTML = "Pa gen tranzaksyon pou kounye a.";
+  function closeMenu(){
+    document.getElementById("sideMenu").classList.remove("active");
+    document.getElementById("menuOverlay").style.display = "none";
+  }
+
+  const currentUser = FastPayV2.getCurrentUser();
+
+  if(!currentUser){
+    showError("Ou pa konekte. Tanpri login anvan.");
+    setTimeout(() => {
+      window.location.href = "login.html";
+    }, 1200);
   } else {
-    txBox.innerHTML = "";
-    userTransactions.slice(0, 6).forEach(function(tx){
-      txBox.innerHTML += `
-        <div class="tx-item">
-          <div class="tx-top">
-            <div>
-              <div class="tx-name">${tx.service || 'Transaction'}</div>
-              <div class="tx-date">${tx.date || ''}</div>
+    document.getElementById("welcomeText").innerHTML = "Byenvini, " + currentUser.fullname;
+    document.getElementById("profileLetter").innerHTML = currentUser.fullname.charAt(0).toUpperCase();
+    document.getElementById("balanceAmount").innerHTML = (currentUser.balance || 0) + " HTG";
+    document.getElementById("memberSince").innerHTML = currentUser.email || "FastPay Wallet";
+    document.getElementById("accountStatus").innerHTML = currentUser.status || "Active";
+
+    document.getElementById("menuUserName").innerHTML = currentUser.fullname || "FastPay User";
+    document.getElementById("menuUserMail").innerHTML = currentUser.email || "No email";
+
+    const userTransactions = FastPayV2.getUserTransactions(currentUser.id) || [];
+    const userNotifications = FastPayV2.getUserNotifications(currentUser.id) || [];
+    const unreadCount = FastPayV2.getUnreadCount(currentUser.id) || 0;
+    const cardRequests = FastPayV2.getCardRequests().filter(item => item.userId === currentUser.id);
+
+    document.getElementById("totalTransactions").innerHTML = userTransactions.length;
+    document.getElementById("notificationCount").innerHTML = userNotifications.length;
+    document.getElementById("cardRequestCount").innerHTML = cardRequests.length;
+
+    const badge = document.getElementById("notificationBadge");
+    if(unreadCount > 0){
+      badge.style.display = "inline-flex";
+      badge.innerHTML = unreadCount;
+    }
+
+    const txBox = document.getElementById("transactionsBox");
+    if(userTransactions.length === 0){
+      txBox.innerHTML = "Pa gen tranzaksyon pou kounye a.";
+    } else {
+      txBox.innerHTML = "";
+      userTransactions.slice(0,6).forEach(function(tx){
+        txBox.innerHTML += `
+          <div class="tx-item">
+            <div class="tx-top">
+              <div>
+                <div class="tx-name">${tx.service || "Transaction"}</div>
+                <div class="tx-date">${tx.date || ""}</div>
+              </div>
+              <div class="tx-amount">${tx.amount || "0"}</div>
             </div>
-            <div class="tx-amount">${tx.amount || '0'}</div>
           </div>
-        </div>
-      `;
-    });
-  }
-}
+        `;
+      });
+    }
 
-function logoutUser(){
-  FastPayV2.logoutUser();
-  window.location.href = "login.html";
-}
+    const noteBox = document.getElementById("notificationsBox");
+    if(userNotifications.length === 0){
+      noteBox.innerHTML = "Pa gen notifikasyon pou kounye a.";
+    } else {
+      noteBox.innerHTML = "";
+      userNotifications.slice(0,5).forEach(function(note){
+        noteBox.innerHTML += `
+          <div class="note-item">
+            <div class="note-title">${note.title || "Nouvo alèt"}</div>
+            <div class="note-text">${note.text || ""}</div>
+            <div class="note-date">${note.date || ""}</div>
+          </div>
+        `;
+      });
+    }
+  }
+
+  function logoutUser(){
+    FastPayV2.logoutUser();
+    window.location.href = "login.html";
+  }
 </script>
 
 </body>
