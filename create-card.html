@@ -1,521 +1,690 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FastPay Create Card v2</title>
-<style>
-*{
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FastPay Professional Create Card</title>
+  <style>
+    *{
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
 
-body{
-  margin:0;
-  background:#eef2f7;
-  padding:20px;
-  color:#111827;
-}
+    body{
+      margin:0;
+      background:#eef2f7;
+      padding:20px;
+      color:#111827;
+    }
 
-.container{
-  max-width:430px;
-  margin:auto;
-}
+    .container{
+      max-width:430px;
+      margin:auto;
+    }
 
-.back{
-  display:inline-block;
-  margin-bottom:16px;
-  color:#ff4d3d;
-  text-decoration:none;
-  font-weight:bold;
-}
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:18px;
+    }
 
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
+    .left-top{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
 
-.logo{
-  font-size:30px;
-  font-weight:bold;
-  color:#ff5a3d;
-}
+    .back-btn{
+      width:44px;
+      height:44px;
+      border:none;
+      border-radius:14px;
+      background:#111827;
+      color:white;
+      font-size:20px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+    }
 
-.profile{
-  width:46px;
-  height:46px;
-  border-radius:14px;
-  background:linear-gradient(135deg,#ff5a3d,#ff7a59);
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  font-size:18px;
-  box-shadow:0 6px 16px rgba(255,90,61,0.25);
-}
+    .logo{
+      font-size:28px;
+      font-weight:bold;
+      color:#ff5a3d;
+    }
 
-.hero{
-  background:linear-gradient(135deg,#111827,#374151);
-  color:white;
-  border-radius:26px;
-  padding:24px;
-  margin-bottom:18px;
-  box-shadow:0 12px 28px rgba(17,24,39,0.22);
-}
+    .profile{
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      background:linear-gradient(135deg,#ff5a3d,#ff7a59);
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+      font-size:18px;
+      box-shadow:0 6px 16px rgba(255,90,61,0.25);
+    }
 
-.hero h1{
-  margin:0 0 10px 0;
-  font-size:28px;
-  line-height:1.2;
-}
+    .hero{
+      background:linear-gradient(135deg,#111827,#374151);
+      color:white;
+      border-radius:26px;
+      padding:22px;
+      margin-bottom:18px;
+      box-shadow:0 12px 28px rgba(17,24,39,0.22);
+    }
 
-.hero p{
-  margin:0;
-  font-size:15px;
-  line-height:1.6;
-  opacity:0.98;
-}
+    .hero h1{
+      margin:0 0 8px 0;
+      font-size:28px;
+    }
 
-.section{
-  background:white;
-  border-radius:22px;
-  padding:18px;
-  box-shadow:0 8px 18px rgba(0,0,0,0.06);
-  margin-bottom:18px;
-}
+    .hero p{
+      margin:0;
+      font-size:14px;
+      opacity:0.96;
+      line-height:1.6;
+    }
 
-.section h2{
-  margin:0 0 14px 0;
-  font-size:22px;
-}
+    .notice{
+      display:none;
+      margin-bottom:16px;
+      border-radius:14px;
+      padding:14px;
+      font-weight:bold;
+      line-height:1.5;
+    }
 
-label{
-  display:block;
-  margin-bottom:8px;
-  font-weight:bold;
-  color:#111827;
-}
+    .notice.ok{
+      background:#ecfdf3;
+      color:#166534;
+    }
 
-input, select, textarea{
-  width:100%;
-  padding:14px;
-  border:1px solid #d1d5db;
-  border-radius:14px;
-  font-size:16px;
-  background:white;
-  margin-bottom:16px;
-}
+    .notice.err{
+      background:#fee2e2;
+      color:#991b1b;
+    }
 
-.option-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-  margin-bottom:16px;
-}
+    .section{
+      background:white;
+      border-radius:22px;
+      padding:18px;
+      box-shadow:0 8px 18px rgba(0,0,0,0.06);
+      margin-bottom:18px;
+    }
 
-.option-card{
-  border:2px solid #e5e7eb;
-  border-radius:18px;
-  padding:16px 12px;
-  background:white;
-  cursor:pointer;
-  text-align:center;
-}
+    .section h2{
+      margin:0 0 14px 0;
+      font-size:22px;
+    }
 
-.option-card.active{
-  border-color:#111827;
-  background:#f9fafb;
-}
+    label{
+      display:block;
+      margin-bottom:8px;
+      font-weight:bold;
+      color:#111827;
+    }
 
-.option-title{
-  font-weight:bold;
-  font-size:15px;
-  margin-bottom:6px;
-}
+    input, select, textarea{
+      width:100%;
+      padding:14px;
+      border:1px solid #d1d5db;
+      border-radius:14px;
+      font-size:16px;
+      background:white;
+      margin-bottom:16px;
+    }
 
-.option-sub{
-  font-size:13px;
-  color:#6b7280;
-}
+    .option-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+      margin-bottom:16px;
+    }
 
-.summary{
-  background:#f8fafc;
-  border-radius:16px;
-  padding:16px;
-}
+    .option-card{
+      border:2px solid #e5e7eb;
+      border-radius:18px;
+      padding:16px 14px;
+      background:white;
+      cursor:pointer;
+      transition:0.2s ease;
+    }
 
-.summary-row{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:10px;
-  font-size:14px;
-}
+    .option-card.active{
+      border-color:#111827;
+      background:#f8fafc;
+      box-shadow:0 8px 18px rgba(0,0,0,0.05);
+    }
 
-.summary-row:last-child{
-  margin-bottom:0;
-}
+    .option-title{
+      font-weight:bold;
+      font-size:16px;
+      margin-bottom:6px;
+      color:#111827;
+    }
 
-.summary-label{
-  color:#6b7280;
-}
+    .option-sub{
+      font-size:13px;
+      color:#6b7280;
+      line-height:1.45;
+    }
 
-.summary-value{
-  font-weight:bold;
-  text-align:right;
-}
+    .preview-card{
+      background:linear-gradient(135deg,#0f172a,#1e293b);
+      color:white;
+      border-radius:24px;
+      padding:20px;
+      min-height:210px;
+      position:relative;
+      overflow:hidden;
+      box-shadow:0 16px 35px rgba(15,23,42,0.30);
+      margin-bottom:16px;
+    }
 
-.wallet-box{
-  background:#ecfdf3;
-  color:#166534;
-  border-radius:14px;
-  padding:14px;
-  font-weight:bold;
-  margin-bottom:14px;
-}
+    .preview-card::after{
+      content:"";
+      position:absolute;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.06);
+      top:-40px;
+      right:-50px;
+    }
 
-.wallet-bad{
-  background:#fee2e2;
-  color:#991b1b;
-  border-radius:14px;
-  padding:14px;
-  font-weight:bold;
-  margin-bottom:14px;
-}
+    .preview-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      position:relative;
+      z-index:2;
+    }
 
-.main-btn{
-  display:block;
-  width:100%;
-  text-align:center;
-  padding:15px;
-  border:none;
-  border-radius:16px;
-  text-decoration:none;
-  font-weight:bold;
-  font-size:16px;
-  margin-top:12px;
-  cursor:pointer;
-}
+    .chip{
+      width:50px;
+      height:34px;
+      border-radius:10px;
+      background:linear-gradient(135deg,#facc15,#fde68a);
+    }
 
-.orange-btn{
-  background:#ff4d3d;
-  color:white;
-}
+    .brand{
+      font-size:18px;
+      font-weight:bold;
+    }
 
-.dark-btn{
-  background:#111827;
-  color:white;
-}
+    .preview-type{
+      margin-top:16px;
+      font-size:13px;
+      opacity:0.8;
+      position:relative;
+      z-index:2;
+    }
 
-.notice{
-  display:none;
-  padding:14px;
-  border-radius:14px;
-  font-weight:bold;
-  line-height:1.5;
-  margin-bottom:14px;
-}
+    .preview-price{
+      margin-top:6px;
+      font-size:30px;
+      font-weight:bold;
+      position:relative;
+      z-index:2;
+    }
 
-.notice.success{
-  background:#ecfdf3;
-  color:#166534;
-}
+    .preview-number{
+      margin-top:22px;
+      font-size:23px;
+      letter-spacing:2px;
+      font-weight:bold;
+      position:relative;
+      z-index:2;
+    }
 
-.notice.error{
-  background:#fee2e2;
-  color:#991b1b;
-}
-</style>
+    .preview-meta{
+      margin-top:18px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      position:relative;
+      z-index:2;
+    }
+
+    .meta-block small{
+      display:block;
+      opacity:0.75;
+      font-size:11px;
+      margin-bottom:4px;
+      text-transform:uppercase;
+      letter-spacing:0.8px;
+    }
+
+    .meta-block span{
+      font-size:14px;
+      font-weight:bold;
+    }
+
+    .wallet-ok{
+      background:#ecfdf3;
+      color:#166534;
+      border-radius:14px;
+      padding:14px;
+      font-weight:bold;
+      margin-bottom:14px;
+      line-height:1.5;
+    }
+
+    .wallet-bad{
+      background:#fee2e2;
+      color:#991b1b;
+      border-radius:14px;
+      padding:14px;
+      font-weight:bold;
+      margin-bottom:14px;
+      line-height:1.5;
+    }
+
+    .summary{
+      background:#f8fafc;
+      border-radius:16px;
+      padding:16px;
+    }
+
+    .summary-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:10px;
+      font-size:14px;
+    }
+
+    .summary-row:last-child{
+      margin-bottom:0;
+    }
+
+    .summary-label{
+      color:#6b7280;
+    }
+
+    .summary-value{
+      font-weight:bold;
+      text-align:right;
+      color:#111827;
+    }
+
+    .toolbar{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .btn{
+      display:block;
+      width:100%;
+      text-align:center;
+      padding:14px;
+      border:none;
+      border-radius:16px;
+      text-decoration:none;
+      font-weight:bold;
+      font-size:15px;
+      cursor:pointer;
+      color:white;
+    }
+
+    .btn-orange{
+      background:#ff4d3d;
+    }
+
+    .btn-dark{
+      background:#111827;
+    }
+  </style>
 </head>
 <body>
 
 <div class="container">
 
-<a href="dashboard.html" class="back">← Back Dashboard</a>
-
-<div class="topbar">
-  <div class="logo">FastPay</div>
-  <div class="profile" id="profileLetter">U</div>
-</div>
-
-<div class="hero">
-  <h1>Create New Card</h1>
-  <p>Mande nouvo kat FastPay ou a fasil, epi chwazi opsyon ki pi bon pou ou.</p>
-</div>
-
-<div class="section">
-  <h2>Card Request Form</h2>
+  <div class="topbar">
+    <div class="left-top">
+      <a href="dashboard.html" class="back-btn">←</a>
+      <div class="logo">FastPay</div>
+    </div>
+    <div class="profile" id="profileLetter">U</div>
+  </div>
 
   <div id="noticeBox" class="notice"></div>
 
-  <label>Non konplè</label>
-  <input type="text" id="fullname" placeholder="Antre non konplè ou">
+  <div class="hero">
+    <h1>Create Professional Card</h1>
+    <p>Mande yon kat FastPay premium ak yon eksperyans plis pwofesyonèl, pi pwòp, epi pi serye.</p>
+  </div>
 
-  <label>Email</label>
-  <input type="email" id="email" placeholder="Antre email ou">
+  <div class="section">
+    <h2>Card Preview</h2>
 
-  <label>Nimewo telefòn / WhatsApp</label>
-  <input type="text" id="phone" placeholder="Eg: 50942778505">
+    <div class="preview-card">
+      <div class="preview-top">
+        <div class="chip"></div>
+        <div class="brand" id="previewBrand">VISA</div>
+      </div>
 
-  <label>Adrès</label>
-  <input type="text" id="address" placeholder="Antre adrès ou">
+      <div class="preview-type" id="previewType">Virtual Card</div>
+      <div class="preview-price" id="previewPrice">1500 HTG</div>
 
-  <label>Dat nesans</label>
-  <input type="date" id="dob">
+      <div class="preview-number">**** **** **** 4587</div>
 
-  <label>Tip pyès idantite</label>
-  <select id="idType">
-    <option>Kat idantite</option>
-    <option>Paspò</option>
-    <option>Permi</option>
-  </select>
-
-  <label>Nimewo pyès la</label>
-  <input type="text" id="idNumber" placeholder="Antre nimewo pyès la">
-</div>
-
-<div class="section">
-  <h2>Opsyon kat la</h2>
-
-  <label>Kalite kat</label>
-  <div class="option-grid">
-    <div class="option-card active" id="virtualOption" onclick="selectCardType('Virtual')">
-      <div class="option-title">Virtual</div>
-      <div class="option-sub">Pi rapid ak senp</div>
-    </div>
-
-    <div class="option-card" id="premiumOption" onclick="selectCardType('Premium')">
-      <div class="option-title">Premium</div>
-      <div class="option-sub">Pi gwo limit</div>
+      <div class="preview-meta">
+        <div class="meta-block">
+          <small>Holder</small>
+          <span id="previewHolder">FASTPAY USER</span>
+        </div>
+        <div class="meta-block">
+          <small>Expiry</small>
+          <span>12/29</span>
+        </div>
+        <div class="meta-block">
+          <small>CVV</small>
+          <span>392</span>
+        </div>
+      </div>
     </div>
   </div>
 
-  <label>Rezo kat la</label>
-  <div class="option-grid">
-    <div class="option-card active" id="visaOption" onclick="selectNetwork('Visa')">
-      <div class="option-title">Visa</div>
-      <div class="option-sub">Global payments</div>
-    </div>
+  <div class="section">
+    <h2>Client Information</h2>
 
-    <div class="option-card" id="masterOption" onclick="selectNetwork('Mastercard')">
-      <div class="option-title">Mastercard</div>
-      <div class="option-sub">Secure checkout</div>
-    </div>
+    <label>Non konplè</label>
+    <input type="text" id="fullname" placeholder="Antre non konplè ou">
+
+    <label>Email</label>
+    <input type="email" id="email" placeholder="Antre email ou">
+
+    <label>Telefòn / WhatsApp</label>
+    <input type="text" id="phone" placeholder="Eg: 50942778505">
+
+    <label>Adrès</label>
+    <input type="text" id="address" placeholder="Antre adrès ou">
+
+    <label>Dat nesans</label>
+    <input type="date" id="dob">
+
+    <label>Tip pyès idantite</label>
+    <select id="idType">
+      <option>Kat idantite</option>
+      <option>Paspò</option>
+      <option>Permi</option>
+    </select>
+
+    <label>Nimewo pyès la</label>
+    <input type="text" id="idNumber" placeholder="Antre nimewo pyès la">
   </div>
 
-  <label>Currency</label>
-  <select id="currency">
-    <option>USD</option>
-    <option>HTG</option>
-    <option>EUR</option>
-  </select>
+  <div class="section">
+    <h2>Card Options</h2>
 
-  <label>Metòd peman</label>
-  <select id="paymentMethod" onchange="updateWalletState()">
-    <option>Wallet</option>
-    <option>Bank</option>
-    <option>MonCash</option>
-    <option>NatCash</option>
-    <option>Cash</option>
-  </select>
+    <label>Kalite kat</label>
+    <div class="option-grid">
+      <div class="option-card active" id="virtualOption" onclick="selectCardType('Virtual')">
+        <div class="option-title">Virtual</div>
+        <div class="option-sub">Pi rapid, pi senp, ideyal pou acha sou entènèt.</div>
+      </div>
 
-  <label>Nòt / detay</label>
-  <textarea id="note" rows="4" placeholder="Mete nenpòt detay sou demann kat la"></textarea>
-</div>
-
-<div class="section">
-  <h2>Rezime demann lan</h2>
-
-  <div id="walletStateBox" class="wallet-box">Wallet ou disponib pou peman sa a.</div>
-
-  <div class="summary">
-    <div class="summary-row">
-      <div class="summary-label">Card Type</div>
-      <div class="summary-value" id="summaryCardType">Virtual</div>
+      <div class="option-card" id="premiumOption" onclick="selectCardType('Premium')">
+        <div class="option-title">Premium</div>
+        <div class="option-sub">Pi gwo limit, aparans premium, eksperyans pi wo nivo.</div>
+      </div>
     </div>
 
-    <div class="summary-row">
-      <div class="summary-label">Network</div>
-      <div class="summary-value" id="summaryNetwork">Visa</div>
+    <label>Rezo kat la</label>
+    <div class="option-grid">
+      <div class="option-card active" id="visaOption" onclick="selectNetwork('Visa')">
+        <div class="option-title">Visa</div>
+        <div class="option-sub">Bon pou peman global ak sit entènasyonal.</div>
+      </div>
+
+      <div class="option-card" id="masterOption" onclick="selectNetwork('Mastercard')">
+        <div class="option-title">Mastercard</div>
+        <div class="option-sub">Sekirite ak konpatibilite sou anpil platfòm.</div>
+      </div>
     </div>
 
-    <div class="summary-row">
-      <div class="summary-label">Price</div>
-      <div class="summary-value" id="summaryPrice">1500 HTG</div>
-    </div>
+    <label>Currency</label>
+    <select id="currency">
+      <option>USD</option>
+      <option>HTG</option>
+      <option>EUR</option>
+    </select>
 
-    <div class="summary-row">
-      <div class="summary-label">Wallet Balance</div>
-      <div class="summary-value" id="summaryWallet">0 HTG</div>
-    </div>
+    <label>Metòd peman</label>
+    <select id="paymentMethod" onchange="updateWalletState()">
+      <option>Wallet</option>
+      <option>Bank</option>
+      <option>MonCash</option>
+      <option>NatCash</option>
+      <option>Cash</option>
+    </select>
+
+    <label>Nòt / detay</label>
+    <textarea id="note" rows="4" placeholder="Mete nenpòt detay sou demann kat la"></textarea>
   </div>
 
-  <button class="main-btn orange-btn" onclick="submitCardRequest()">Confirmer la demande</button>
-  <a href="card-dashboard.html" class="main-btn dark-btn">Ale sou Card Dashboard</a>
-</div>
+  <div class="section">
+    <h2>Request Summary</h2>
+
+    <div id="walletStateBox" class="wallet-ok">Wallet ou gen ase balans pou peman sa a.</div>
+
+    <div class="summary">
+      <div class="summary-row">
+        <div class="summary-label">Card Type</div>
+        <div class="summary-value" id="summaryCardType">Virtual</div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">Network</div>
+        <div class="summary-value" id="summaryNetwork">Visa</div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">Currency</div>
+        <div class="summary-value" id="summaryCurrency">USD</div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">Price</div>
+        <div class="summary-value" id="summaryPrice">1500 HTG</div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">Wallet Balance</div>
+        <div class="summary-value" id="summaryWallet">0 HTG</div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn btn-orange" onclick="submitCardRequest()">Submit Request</button>
+      <a href="card-dashboard.html" class="btn btn-dark">Card Dashboard</a>
+    </div>
+  </div>
 
 </div>
 
 <script src="app.js"></script>
 <script>
-let selectedCardType = "Virtual";
-let selectedNetwork = "Visa";
-let selectedPrice = 1500;
+  let selectedCardType = "Virtual";
+  let selectedNetwork = "Visa";
+  let selectedPrice = 1500;
 
-function showNotice(message, type){
-  const box = document.getElementById("noticeBox");
-  box.style.display = "block";
-  box.className = "notice " + type;
-  box.innerHTML = message;
-}
-
-const currentUser = FastPayV2.getCurrentUser();
-
-if(!currentUser){
-  showNotice("Ou pa konekte. Tanpri login anvan.", "error");
-  setTimeout(() => {
-    window.location.href = "login.html";
-  }, 1200);
-} else {
-  document.getElementById("profileLetter").innerHTML = currentUser.fullname.charAt(0).toUpperCase();
-  document.getElementById("fullname").value = currentUser.fullname || "";
-  document.getElementById("email").value = currentUser.email || "";
-  document.getElementById("phone").value = currentUser.phone || "";
-  document.getElementById("summaryWallet").innerHTML = (currentUser.balance || 0) + " HTG";
-}
-
-function selectCardType(type){
-  selectedCardType = type;
-
-  document.getElementById("virtualOption").classList.remove("active");
-  document.getElementById("premiumOption").classList.remove("active");
-
-  if(type === "Virtual"){
-    document.getElementById("virtualOption").classList.add("active");
-    selectedPrice = 1500;
-  } else {
-    document.getElementById("premiumOption").classList.add("active");
-    selectedPrice = 3000;
+  function showNotice(message, isError = false){
+    const box = document.getElementById("noticeBox");
+    box.style.display = "block";
+    box.className = isError ? "notice err" : "notice ok";
+    box.innerHTML = message;
   }
 
-  document.getElementById("summaryCardType").innerHTML = selectedCardType;
-  document.getElementById("summaryPrice").innerHTML = selectedPrice + " HTG";
-  updateWalletState();
-}
+  const currentUser = FastPayV2.getCurrentUser();
 
-function selectNetwork(network){
-  selectedNetwork = network;
-
-  document.getElementById("visaOption").classList.remove("active");
-  document.getElementById("masterOption").classList.remove("active");
-
-  if(network === "Visa"){
-    document.getElementById("visaOption").classList.add("active");
-  } else {
-    document.getElementById("masterOption").classList.add("active");
-  }
-
-  document.getElementById("summaryNetwork").innerHTML = selectedNetwork;
-}
-
-function updateWalletState(){
-  if(!currentUser) return;
-
-  const paymentMethod = document.getElementById("paymentMethod").value;
-  const box = document.getElementById("walletStateBox");
-
-  if(paymentMethod === "Wallet"){
-    if((currentUser.balance || 0) >= selectedPrice){
-      box.className = "wallet-box";
-      box.innerHTML = "Wallet ou gen ase balans pou peman sa a.";
-    } else {
-      box.className = "wallet-bad";
-      box.innerHTML = "Wallet ou pa gen ase balans pou peman sa a.";
-    }
-  } else {
-    box.className = "wallet-box";
-    box.innerHTML = "Metòd sa a mande verifikasyon admin avan kat la aktive.";
-  }
-}
-
-function submitCardRequest(){
   if(!currentUser){
-    showNotice("Ou pa konekte.", "error");
-    return;
+    showNotice("Ou pa konekte. Tanpri login anvan.", true);
+    setTimeout(() => {
+      window.location.href = "login.html";
+    }, 1200);
+  } else {
+    document.getElementById("profileLetter").innerHTML = currentUser.fullname.charAt(0).toUpperCase();
+    document.getElementById("fullname").value = currentUser.fullname || "";
+    document.getElementById("email").value = currentUser.email || "";
+    document.getElementById("phone").value = currentUser.phone || "";
+    document.getElementById("summaryWallet").innerHTML = (currentUser.balance || 0) + " HTG";
+    document.getElementById("previewHolder").innerHTML = (currentUser.fullname || "FASTPAY USER").toUpperCase();
   }
 
-  const fullname = document.getElementById("fullname").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const address = document.getElementById("address").value.trim();
-  const dob = document.getElementById("dob").value;
-  const idType = document.getElementById("idType").value;
-  const idNumber = document.getElementById("idNumber").value.trim();
-  const currency = document.getElementById("currency").value;
-  const paymentMethod = document.getElementById("paymentMethod").value;
-  const note = document.getElementById("note").value.trim();
+  function selectCardType(type){
+    selectedCardType = type;
 
-  if(!fullname || !email || !phone || !address || !dob || !idNumber){
-    showNotice("Tanpri ranpli tout enfòmasyon enpòtan yo.", "error");
-    return;
+    document.getElementById("virtualOption").classList.remove("active");
+    document.getElementById("premiumOption").classList.remove("active");
+
+    if(type === "Virtual"){
+      document.getElementById("virtualOption").classList.add("active");
+      selectedPrice = 1500;
+    } else {
+      document.getElementById("premiumOption").classList.add("active");
+      selectedPrice = 3000;
+    }
+
+    document.getElementById("summaryCardType").innerHTML = selectedCardType;
+    document.getElementById("summaryPrice").innerHTML = selectedPrice + " HTG";
+    document.getElementById("previewType").innerHTML = selectedCardType + " Card";
+    document.getElementById("previewPrice").innerHTML = selectedPrice + " HTG";
+
+    updateWalletState();
   }
 
-  if(paymentMethod === "Wallet"){
-    const debit = FastPayV2.subtractBalance(currentUser.id, selectedPrice);
+  function selectNetwork(network){
+    selectedNetwork = network;
 
-    if(!debit.success){
-      showNotice("Wallet ou pa gen ase balans pou kreye kat la.", "error");
+    document.getElementById("visaOption").classList.remove("active");
+    document.getElementById("masterOption").classList.remove("active");
+
+    if(network === "Visa"){
+      document.getElementById("visaOption").classList.add("active");
+    } else {
+      document.getElementById("masterOption").classList.add("active");
+    }
+
+    document.getElementById("summaryNetwork").innerHTML = selectedNetwork;
+    document.getElementById("previewBrand").innerHTML = selectedNetwork.toUpperCase();
+  }
+
+  document.getElementById("currency").addEventListener("change", function(){
+    document.getElementById("summaryCurrency").innerHTML = this.value;
+  });
+
+  document.getElementById("fullname").addEventListener("input", function(){
+    const value = this.value.trim() || "FASTPAY USER";
+    document.getElementById("previewHolder").innerHTML = value.toUpperCase();
+  });
+
+  function updateWalletState(){
+    if(!currentUser) return;
+
+    const paymentMethod = document.getElementById("paymentMethod").value;
+    const box = document.getElementById("walletStateBox");
+
+    if(paymentMethod === "Wallet"){
+      if((currentUser.balance || 0) >= selectedPrice){
+        box.className = "wallet-ok";
+        box.innerHTML = "Wallet ou gen ase balans pou peye demann kat sa a.";
+      } else {
+        box.className = "wallet-bad";
+        box.innerHTML = "Wallet ou pa gen ase balans pou peye demann kat sa a.";
+      }
+    } else {
+      box.className = "wallet-ok";
+      box.innerHTML = "Metòd peman sa a ap bezwen verifikasyon admin avan kat la apwouve.";
+    }
+  }
+
+  function submitCardRequest(){
+    if(!currentUser){
+      showNotice("Ou pa konekte.", true);
       return;
     }
 
-    FastPayV2.addTransaction({
-      userId: currentUser.id,
-      service: "Card Request - " + selectedCardType + " " + selectedNetwork,
-      amount: "-" + selectedPrice + " HTG",
-      type: "card-request",
-      status: "paid",
-      meta: {
-        paymentMethod: "Wallet"
+    const fullname = document.getElementById("fullname").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const address = document.getElementById("address").value.trim();
+    const dob = document.getElementById("dob").value;
+    const idType = document.getElementById("idType").value;
+    const idNumber = document.getElementById("idNumber").value.trim();
+    const currency = document.getElementById("currency").value;
+    const paymentMethod = document.getElementById("paymentMethod").value;
+    const note = document.getElementById("note").value.trim();
+
+    if(!fullname || !email || !phone || !address || !dob || !idNumber){
+      showNotice("Tanpri ranpli tout enfòmasyon enpòtan yo.", true);
+      return;
+    }
+
+    if(paymentMethod === "Wallet"){
+      const debit = FastPayV2.subtractBalance(currentUser.id, selectedPrice);
+
+      if(!debit.success){
+        showNotice("Wallet ou pa gen ase balans pou kreye kat la.", true);
+        return;
       }
+
+      FastPayV2.addTransaction({
+        userId: currentUser.id,
+        service: "Professional Card Request - " + selectedCardType + " " + selectedNetwork,
+        amount: "-" + selectedPrice + " HTG",
+        type: "card-request",
+        status: "paid",
+        meta: {
+          paymentMethod: "Wallet"
+        }
+      });
+    }
+
+    FastPayV2.createCardRequest({
+      userId: currentUser.id,
+      fullname: fullname,
+      email: email,
+      phone: phone,
+      address: address,
+      dob: dob,
+      idType: idType,
+      idNumber: idNumber,
+      network: selectedNetwork,
+      cardType: selectedCardType,
+      currency: currency,
+      paymentMethod: paymentMethod,
+      amount: selectedPrice + " HTG",
+      note: note
     });
+
+    FastPayV2.addNotification({
+      userId: currentUser.id,
+      title: "Card request submitted",
+      text: "Nou resevwa demann pwofesyonèl kat ou a pou " + selectedCardType + " " + selectedNetwork + ".",
+      type: "info"
+    });
+
+    showNotice("Demann kat la anrejistre avèk siksè.");
+
+    setTimeout(() => {
+      window.location.href = "card-dashboard.html";
+    }, 1000);
   }
 
-  FastPayV2.createCardRequest({
-    userId: currentUser.id,
-    fullname: fullname,
-    email: email,
-    phone: phone,
-    address: address,
-    dob: dob,
-    idType: idType,
-    idNumber: idNumber,
-    network: selectedNetwork,
-    cardType: selectedCardType,
-    currency: currency,
-    paymentMethod: paymentMethod,
-    amount: selectedPrice + " HTG",
-    note: note
-  });
-
-  FastPayV2.addNotification({
-    userId: currentUser.id,
-    title: "Card request submitted",
-    text: "Nou resevwa demann kat ou a pou " + selectedCardType + " " + selectedNetwork + ".",
-    type: "info"
-  });
-
-  showNotice("Demann kat la anrejistre avèk siksè.", "success");
-
-  setTimeout(() => {
-    window.location.href = "card-dashboard.html";
-  }, 1000);
-}
-
-updateWalletState();
+  if(currentUser){
+    updateWalletState();
+  }
 </script>
 
 </body>
-        </html>
+</html>
