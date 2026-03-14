@@ -131,11 +131,6 @@
       background:#111827;
       color:white;
     }
-
-    .btn-danger{
-      background:#991b1b;
-      color:white;
-    }
   </style>
 </head>
 <body>
@@ -203,7 +198,7 @@
     orderBox.className = "";
     orderBox.innerHTML =
       '<div class="row"><strong>Order ID:</strong> ' + (order.orderId || 'N/A') + '</div>' +
-      '<div class="row"><strong>Client:</strong> ' + (order.fullname || 'N/A') + '</div>' +
+      '<div class="row"><strong>Client:</strong> ' + (order.fullname || order.clientName || 'N/A') + '</div>' +
       '<div class="row"><strong>WhatsApp:</strong> ' + (order.whatsapp || 'N/A') + '</div>' +
       '<div class="row"><strong>Service:</strong> ' + (order.service || 'N/A') + '</div>' +
       '<div class="row"><strong>Plan / Amount:</strong> ' + (order.amount || 'N/A') + '</div>' +
@@ -243,7 +238,7 @@
     if (type === "deposit") {
       return `
         <div class="item">
-          <div class="item-title">${item.clientName || 'Client'} - ${item.amount || '0'} </div>
+          <div class="item-title">${item.clientName || 'Client'} - ${item.amount || '0'}</div>
           <div class="item-sub"><strong>Method:</strong> ${item.method || 'N/A'}</div>
           <div class="item-sub"><strong>Bank:</strong> ${item.bank || 'N/A'}</div>
           <div class="item-sub"><strong>Currency:</strong> ${item.currency || 'N/A'}</div>
@@ -312,7 +307,10 @@
           <div class="item-sub"><strong>Client:</strong> ${item.clientName || 'N/A'}</div>
           <div class="item-sub"><strong>WhatsApp:</strong> ${item.whatsapp || 'N/A'}</div>
           <div class="item-sub"><strong>Email:</strong> ${item.email || 'N/A'}</div>
+          <div class="item-sub"><strong>Account Name:</strong> ${item.accountName || 'N/A'}</div>
+          <div class="item-sub"><strong>Last 4:</strong> ${item.last4 || 'N/A'}</div>
           <div class="item-sub"><strong>Payment Method:</strong> ${item.paymentMethod || 'N/A'}</div>
+          <div class="item-sub"><strong>Details:</strong> ${item.details || 'N/A'}</div>
           <div class="item-sub"><strong>Date:</strong> ${item.date || 'N/A'}</div>
           <span class="status">Status: ${item.status || 'Pending Verification'}</span>
         </div>
@@ -325,6 +323,9 @@
           <div class="item-title">${item.service || 'Social Media Order'} - ${item.amount || '0'}</div>
           <div class="item-sub"><strong>Client:</strong> ${item.fullname || item.clientName || 'N/A'}</div>
           <div class="item-sub"><strong>WhatsApp:</strong> ${item.whatsapp || 'N/A'}</div>
+          <div class="item-sub"><strong>Platform:</strong> ${item.platform || 'N/A'}</div>
+          <div class="item-sub"><strong>Username/Link:</strong> ${item.targetLink || 'N/A'}</div>
+          <div class="item-sub"><strong>Payment Method:</strong> ${item.paymentMethod || 'N/A'}</div>
           <div class="item-sub"><strong>Details:</strong> ${item.details || 'N/A'}</div>
           <div class="item-sub"><strong>Order ID:</strong> ${item.orderId || 'N/A'}</div>
           <div class="item-sub"><strong>Date:</strong> ${item.date || 'N/A'}</div>
@@ -340,27 +341,12 @@
     `;
   }
 
-  function getSocialMediaOrders() {
-    const orders = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
-    const lastOrder = JSON.parse(localStorage.getItem("fastpay_last_order") || "null");
-
-    let socialOrders = [];
-
-    if (lastOrder && lastOrder.service && String(lastOrder.service).includes("social")) {
-      socialOrders.push(lastOrder);
-    }
-
-    orders.forEach(function(tx) {
-      if (tx.service && String(tx.service).toLowerCase().includes("social")) {
-        socialOrders.push(tx);
-      }
-    });
-
-    return socialOrders;
-  }
-
   function getRechargeCardRequests() {
     return JSON.parse(localStorage.getItem("fastpay_recharge_cards")) || [];
+  }
+
+  function getSocialMediaOrders() {
+    return JSON.parse(localStorage.getItem("fastpay_social_orders")) || [];
   }
 
   function loadAllData() {
@@ -387,6 +373,7 @@
     localStorage.removeItem("fastpay_transfers");
     localStorage.removeItem("fastpay_card_requests");
     localStorage.removeItem("fastpay_recharge_cards");
+    localStorage.removeItem("fastpay_social_orders");
     loadAllData();
   }
 
