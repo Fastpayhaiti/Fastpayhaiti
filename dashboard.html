@@ -20,6 +20,7 @@ body{
 .container{
   max-width:430px;
   margin:auto;
+  position:relative;
 }
 
 .topbar{
@@ -27,6 +28,28 @@ body{
   justify-content:space-between;
   align-items:center;
   margin-bottom:18px;
+}
+
+.left-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.menu-btn{
+  width:46px;
+  height:46px;
+  border:none;
+  border-radius:14px;
+  background:#111827;
+  color:white;
+  font-size:22px;
+  font-weight:bold;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 6px 16px rgba(17,24,39,0.20);
 }
 
 .logo{
@@ -71,6 +94,48 @@ body{
   opacity:0.98;
 }
 
+.quick-actions{
+  background:white;
+  border-radius:22px;
+  padding:18px;
+  box-shadow:0 8px 18px rgba(0,0,0,0.06);
+  margin-bottom:18px;
+}
+
+.quick-actions h2{
+  margin:0 0 14px 0;
+  font-size:22px;
+}
+
+.quick-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.quick-btn{
+  display:block;
+  text-align:center;
+  padding:14px 10px;
+  border-radius:16px;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:15px;
+  color:white;
+}
+
+.quick-deposit{
+  background:#ff4d3d;
+}
+
+.quick-withdraw{
+  background:#111827;
+}
+
+.quick-transfer{
+  background:#111827;
+}
+
 .balance-card{
   background:linear-gradient(135deg,#111827,#374151);
   color:white;
@@ -97,40 +162,6 @@ body{
   opacity:0.9;
 }
 
-.quick-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-  margin-bottom:18px;
-}
-
-.quick-card{
-  background:white;
-  border-radius:22px;
-  padding:18px;
-  box-shadow:0 8px 18px rgba(0,0,0,0.06);
-  text-decoration:none;
-  color:#111827;
-}
-
-.quick-icon{
-  font-size:24px;
-  display:block;
-  margin-bottom:10px;
-}
-
-.quick-title{
-  font-weight:bold;
-  font-size:16px;
-  margin-bottom:6px;
-}
-
-.quick-sub{
-  font-size:13px;
-  color:#6b7280;
-  line-height:1.45;
-}
-
 .section{
   background:white;
   border-radius:22px;
@@ -154,6 +185,7 @@ body{
   background:#f8fafc;
   border-radius:16px;
   padding:14px;
+  position:relative;
 }
 
 .stat-title{
@@ -166,6 +198,23 @@ body{
   font-size:20px;
   font-weight:bold;
   color:#111827;
+}
+
+.small-badge{
+  position:absolute;
+  top:10px;
+  right:10px;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  min-width:22px;
+  height:22px;
+  padding:0 7px;
+  border-radius:999px;
+  background:#ef4444;
+  color:white;
+  font-size:11px;
+  font-weight:bold;
 }
 
 .tx-item{
@@ -199,27 +248,6 @@ body{
   color:#6b7280;
   font-size:13px;
   margin-top:4px;
-}
-
-.badge{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-width:24px;
-  height:24px;
-  padding:0 8px;
-  border-radius:999px;
-  background:#ef4444;
-  color:white;
-  font-size:12px;
-  font-weight:bold;
-}
-
-.row-between{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
 }
 
 .main-btn{
@@ -264,97 +292,195 @@ body{
   background:#fee2e2;
   color:#991b1b;
 }
+
+/* Side menu */
+.menu-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.35);
+  z-index:999;
+  display:none;
+}
+
+.side-menu{
+  position:fixed;
+  top:0;
+  left:-320px;
+  width:290px;
+  height:100%;
+  background:white;
+  z-index:1000;
+  box-shadow:0 10px 30px rgba(0,0,0,0.18);
+  transition:0.25s ease;
+  padding:20px 16px;
+  overflow-y:auto;
+}
+
+.side-menu.active{
+  left:0;
+}
+
+.menu-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.menu-title{
+  font-size:24px;
+  font-weight:bold;
+  color:#111827;
+}
+
+.close-menu{
+  width:40px;
+  height:40px;
+  border:none;
+  border-radius:12px;
+  background:#111827;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+}
+
+.menu-user{
+  background:#f8fafc;
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:16px;
+}
+
+.menu-user-name{
+  font-weight:bold;
+  font-size:16px;
+  color:#111827;
+}
+
+.menu-user-mail{
+  margin-top:4px;
+  font-size:13px;
+  color:#6b7280;
+  word-break:break-word;
+}
+
+.menu-link{
+  display:block;
+  text-decoration:none;
+  color:#111827;
+  background:#f8fafc;
+  padding:14px 16px;
+  border-radius:14px;
+  margin-bottom:10px;
+  font-weight:bold;
+}
+
+.menu-link.logout{
+  background:#111827;
+  color:white;
+}
+
+@media (max-width:360px){
+  .quick-grid{
+    grid-template-columns:1fr;
+  }
+}
 </style>
 </head>
 <body>
 
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+<div class="side-menu" id="sideMenu">
+  <div class="menu-header">
+    <div class="menu-title">Menu</div>
+    <button class="close-menu" onclick="closeMenu()">✕</button>
+  </div>
+
+  <div class="menu-user">
+    <div class="menu-user-name" id="menuUserName">FastPay User</div>
+    <div class="menu-user-mail" id="menuUserMail">Not connected</div>
+  </div>
+
+  <a href="index.html" class="menu-link">🏠 Home</a>
+  <a href="dashboard.html" class="menu-link">📊 Dashboard</a>
+  <a href="wallet.html" class="menu-link">👛 Wallet</a>
+  <a href="statement.html" class="menu-link">📄 Statement</a>
+  <a href="notification.html" class="menu-link">🔔 Notifications</a>
+  <a href="create-card.html" class="menu-link">💳 Create Card</a>
+  <a href="card-dashboard.html" class="menu-link">🏦 Card Dashboard</a>
+  <a href="deposit-history.html" class="menu-link">💰 Deposit History</a>
+  <a href="withdraw-history.html" class="menu-link">💸 Withdraw History</a>
+  <a href="transfer-history.html" class="menu-link">🔁 Transfer History</a>
+  <a href="admin.html" class="menu-link">🛠️ Admin</a>
+  <a href="#" class="menu-link logout" onclick="logoutUser()">🚪 Logout</a>
+</div>
+
 <div class="container">
 
-<div class="topbar">
-  <div class="logo">FastPay</div>
-  <div class="profile" id="profileLetter">U</div>
-</div>
-
-<div id="noticeBox" class="notice error"></div>
-
-<div class="hero">
-  <h1 id="welcomeText">Byenvini sou FastPay</h1>
-  <p>Jere wallet ou, kat ou, tranzaksyon ou, ak tout sèvis FastPay yo nan yon sèl espas.</p>
-</div>
-
-<div class="balance-card">
-  <div class="balance-label">Wallet Balance</div>
-  <div class="balance-amount" id="balanceAmount">0 HTG</div>
-  <div class="balance-sub" id="memberSince">Kliyan FastPay</div>
-</div>
-
-<div class="quick-grid">
-  <a href="wallet.html" class="quick-card">
-    <span class="quick-icon">👛</span>
-    <div class="quick-title">Wallet</div>
-    <div class="quick-sub">Gade balans ou ak mouvman yo.</div>
-  </a>
-
-  <a href="card-dashboard.html" class="quick-card">
-    <span class="quick-icon">💳</span>
-    <div class="quick-title">My Card</div>
-    <div class="quick-sub">Jere kat FastPay ou a fasil.</div>
-  </a>
-
-  <a href="statement.html" class="quick-card">
-    <span class="quick-icon">📄</span>
-    <div class="quick-title">Statement</div>
-    <div class="quick-sub">Tout mouvman finans ou ansanm.</div>
-  </a>
-
-  <a href="notification.html" class="quick-card">
-    <span class="quick-icon">🔔</span>
-    <div class="quick-title">Notifications</div>
-    <div class="quick-sub">Wè tout alèt ak dènye nouvèl yo.</div>
-  </a>
-</div>
-
-<div class="section">
-  <h2>Rezime Kont</h2>
-
-  <div class="stat-grid">
-    <div class="stat-box">
-      <div class="stat-title">Total Tranzaksyon</div>
-      <div class="stat-value" id="totalTransactions">0</div>
+  <div class="topbar">
+    <div class="left-top">
+      <button class="menu-btn" onclick="openMenu()">☰</button>
+      <div class="logo">FastPay</div>
     </div>
+    <div class="profile" id="profileLetter">U</div>
+  </div>
 
-    <div class="stat-box">
-      <div class="stat-title">Notifikasyon</div>
-      <div class="row-between">
-        <div class="stat-value" id="notificationCount">0</div>
-        <div class="badge" id="notificationBadge" style="display:none;">0</div>
-      </div>
-    </div>
+  <div id="noticeBox" class="notice error"></div>
 
-    <div class="stat-box">
-      <div class="stat-title">Card Requests</div>
-      <div class="stat-value" id="cardRequestCount">0</div>
-    </div>
+  <div class="hero">
+    <h1 id="welcomeText">Byenvini sou FastPay</h1>
+    <p>Jere wallet ou, kat ou, tranzaksyon ou, ak tout sèvis FastPay yo nan yon sèl espas.</p>
+  </div>
 
-    <div class="stat-box">
-      <div class="stat-title">Kont Status</div>
-      <div class="stat-value" id="accountStatus">Active</div>
+  <div class="quick-actions">
+    <h2>Aksyon rapid</h2>
+    <div class="quick-grid">
+      <a href="deposit.html" class="quick-btn quick-deposit">Depoze</a>
+      <a href="withdraw.html" class="quick-btn quick-withdraw">Retire</a>
+      <a href="transfer.html" class="quick-btn quick-transfer">Transfere</a>
     </div>
   </div>
-</div>
 
-<div class="section">
-  <h2>Dènye Tranzaksyon</h2>
-  <div id="transactionsBox" class="empty">Pa gen tranzaksyon pou kounye a.</div>
-</div>
+  <div class="balance-card">
+    <div class="balance-label">Solde disponib</div>
+    <div class="balance-amount" id="balanceAmount">0 HTG</div>
+    <div class="balance-sub" id="memberSince">Kliyan FastPay</div>
+  </div>
 
-<div class="section">
-  <h2>Aksyon rapid</h2>
-  <a href="deposit.html" class="main-btn orange-btn">Depoze</a>
-  <a href="withdraw.html" class="main-btn dark-btn">Retire</a>
-  <a href="transfer.html" class="main-btn dark-btn">Transfere</a>
-  <button class="main-btn orange-btn" onclick="logoutUser()">Logout</button>
-</div>
+  <div class="section">
+    <h2>Rezime Kont</h2>
+
+    <div class="stat-grid">
+      <div class="stat-box">
+        <div class="stat-title">Total Tranzaksyon</div>
+        <div class="stat-value" id="totalTransactions">0</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="small-badge" id="notificationBadge">0</div>
+        <div class="stat-title">Notifikasyon</div>
+        <div class="stat-value" id="notificationCount">0</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-title">Card Requests</div>
+        <div class="stat-value" id="cardRequestCount">0</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-title">Kont Status</div>
+        <div class="stat-value" id="accountStatus">Active</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Dènye Tranzaksyon</h2>
+    <div id="transactionsBox" class="empty">Pa gen tranzaksyon pou kounye a.</div>
+
+    <a href="wallet.html" class="main-btn orange-btn">Ale sou Wallet</a>
+  </div>
 
 </div>
 
@@ -364,6 +490,16 @@ function showError(message){
   const box = document.getElementById("noticeBox");
   box.style.display = "block";
   box.innerHTML = message;
+}
+
+function openMenu(){
+  document.getElementById("sideMenu").classList.add("active");
+  document.getElementById("menuOverlay").style.display = "block";
+}
+
+function closeMenu(){
+  document.getElementById("sideMenu").classList.remove("active");
+  document.getElementById("menuOverlay").style.display = "none";
 }
 
 const currentUser = FastPayV2.getCurrentUser();
@@ -379,6 +515,9 @@ if(!currentUser){
   document.getElementById("balanceAmount").innerHTML = (currentUser.balance || 0) + " HTG";
   document.getElementById("memberSince").innerHTML = "Depi: " + (currentUser.createdAt || "N/A");
   document.getElementById("accountStatus").innerHTML = currentUser.status || "Active";
+
+  document.getElementById("menuUserName").innerHTML = currentUser.fullname || "FastPay User";
+  document.getElementById("menuUserMail").innerHTML = currentUser.email || "No email";
 
   const userTransactions = FastPayV2.getUserTransactions(currentUser.id);
   const userNotifications = FastPayV2.getUserNotifications(currentUser.id);
@@ -426,4 +565,4 @@ function logoutUser(){
 </script>
 
 </body>
-    </html>
+</html>
