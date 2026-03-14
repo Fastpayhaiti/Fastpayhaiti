@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FastPay Card Dashboard</title>
+<style>
+*{
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  margin:0;
+  background:#eef2f7;
+  padding:20px;
+  color:#111827;
+}
+
+.container{
+  max-width:430px;
+  margin:auto;
+}
+
+.back{
+  display:inline-block;
+  margin-bottom:16px;
+  color:#ff4d3d;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.logo{
+  font-size:30px;
+  font-weight:bold;
+  color:#ff5a3d;
+}
+
+.profile{
+  width:46px;
+  height:46px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#ff5a3d,#ff7a59);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:18px;
+  box-shadow:0 6px 16px rgba(255,90,61,0.25);
+}
+
+.hero{
+  background:linear-gradient(135deg,#111827,#374151);
+  color:white;
+  border-radius:26px;
+  padding:24px;
+  margin-bottom:18px;
+  box-shadow:0 12px 28px rgba(17,24,39,0.22);
+}
+
+.hero h1{
+  margin:0 0 10px 0;
+  font-size:30px;
+  line-height:1.2;
+}
+
+.hero p{
+  margin:0;
+  font-size:15px;
+  line-height:1.6;
+  opacity:0.98;
+}
+
+.card-box{
+  background:linear-gradient(135deg,#111,#333);
+  color:white;
+  border-radius:22px;
+  padding:20px;
+  min-height:210px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  position:relative;
+  box-shadow:0 12px 28px rgba(0,0,0,0.25);
+  margin-bottom:18px;
+}
+
+.card-chip{
+  width:46px;
+  height:32px;
+  background:gold;
+  border-radius:6px;
+}
+
+.card-number{
+  font-size:22px;
+  letter-spacing:2px;
+  margin-top:18px;
+}
+
+.card-name{
+  font-size:16px;
+  font-weight:bold;
+  margin-top:12px;
+}
+
+.card-meta{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:14px;
+  font-size:14px;
+  opacity:0.9;
+}
+
+.card-brand{
+  position:absolute;
+  right:20px;
+  bottom:20px;
+  font-size:18px;
+  font-weight:bold;
+  opacity:0.9;
+}
+
+.section{
+  background:white;
+  border-radius:22px;
+  padding:18px;
+  box-shadow:0 8px 18px rgba(0,0,0,0.06);
+  margin-bottom:18px;
+}
+
+.section h2{
+  margin:0 0 14px 0;
+  font-size:22px;
+}
+
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.stat-box{
+  background:#f8fafc;
+  border-radius:16px;
+  padding:14px;
+}
+
+.stat-title{
+  color:#6b7280;
+  font-size:13px;
+  margin-bottom:6px;
+}
+
+.stat-value{
+  font-size:20px;
+  font-weight:bold;
+  color:#111827;
+}
+
+.status{
+  display:inline-block;
+  padding:7px 12px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.status-active{
+  background:#ecfdf3;
+  color:#166534;
+}
+
+.status-pending{
+  background:#fff7ed;
+  color:#c2410c;
+}
+
+.status-frozen{
+  background:#eff6ff;
+  color:#1d4ed8;
+}
+
+.info-row{
+  padding:10px 0;
+  border-bottom:1px solid #eee;
+}
+
+.info-row:last-child{
+  border-bottom:none;
+}
+
+.info-label{
+  color:#6b7280;
+  font-size:13px;
+  margin-bottom:4px;
+}
+
+.info-value{
+  font-weight:bold;
+  font-size:15px;
+}
+
+.action-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.btn{
+  display:block;
+  width:100%;
+  text-align:center;
+  padding:14px;
+  border:none;
+  border-radius:16px;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:15px;
+  cursor:pointer;
+}
+
+.btn-orange{
+  background:#ff4d3d;
+  color:white;
+}
+
+.btn-dark{
+  background:#111827;
+  color:white;
+}
+
+.btn-blue{
+  background:#1d4ed8;
+  color:white;
+}
+
+.btn-green{
+  background:#10b981;
+  color:white;
+}
+
+.empty-box{
+  background:white;
+  border-radius:22px;
+  padding:18px;
+  box-shadow:0 8px 18px rgba(0,0,0,0.06);
+  color:#6b7280;
+}
+
+.notice{
+  display:none;
+  margin-top:14px;
+  background:#ecfdf3;
+  color:#166534;
+  border-radius:14px;
+  padding:14px;
+  font-weight:bold;
+  line-height:1.5;
+}
+
+.notice.error{
+  background:#fee2e2;
+  color:#991b1b;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<a href="dashboard.html" class="back">← Back Dashboard</a>
+
+<div class="topbar">
+  <div class="logo">FastPay</div>
+  <div class="profile" id="profileLetter">L</div>
+</div>
+
+<div class="hero">
+  <h1>Card Dashboard</h1>
+  <p>Jere kat FastPay ou a, wè estati li, balans li, epi kontwole aksyon prensipal yo.</p>
+</div>
+
+<div id="cardArea"></div>
+
+<div class="section">
+  <h2>Rezime kat la</h2>
+
+  <div class="stat-grid">
+    <div class="stat-box">
+      <div class="stat-title">Card Balance</div>
+      <div class="stat-value" id="cardBalance">0 HTG</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-title">Wallet Balance</div>
+      <div class="stat-value" id="walletBalance">0 HTG</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-title">Card Status</div>
+      <div class="stat-value" id="cardStatusText">Pending</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-title">Network</div>
+      <div class="stat-value" id="cardNetworkText">N/A</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Detay kat la</h2>
+
+  <div class="info-row">
+    <div class="info-label">Card Type</div>
+    <div class="info-value" id="infoCardType">N/A</div>
+  </div>
+
+  <div class="info-row">
+    <div class="info-label">Card Holder</div>
+    <div class="info-value" id="infoCardHolder">N/A</div>
+  </div>
+
+  <div class="info-row">
+    <div class="info-label">Currency</div>
+    <div class="info-value" id="infoCurrency">N/A</div>
+  </div>
+
+  <div class="info-row">
+    <div class="info-label">Created At</div>
+    <div class="info-value" id="infoCreatedAt">N/A</div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Aksyon rapid</h2>
+
+  <div class="action-grid">
+    <button class="btn btn-blue" onclick="freezeCard()">Freeze Card</button>
+    <button class="btn btn-green" onclick="unfreezeCard()">Unfreeze Card</button>
+    <button class="btn btn-orange" onclick="loadCard()">Load Card</button>
+    <a href="create-card.html" class="btn btn-dark">Create New Card</a>
+  </div>
+
+  <div id="noticeBox" class="notice"></div>
+</div>
+
+</div>
+
+<script>
+const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
+let walletBalance = parseInt(localStorage.getItem("fastpay_balance") || "0");
+let virtualCard = JSON.parse(localStorage.getItem("fastpay_virtual_card") || "null");
+const cardRequests = JSON.parse(localStorage.getItem("fastpay_card_requests")) || [];
+
+if(savedUser && savedUser.fullname){
+  document.getElementById("profileLetter").innerHTML = savedUser.fullname.charAt(0).toUpperCase();
+}
+
+function getLatestCardRequest(){
+  if(cardRequests.length > 0){
+    return cardRequests[0];
+  }
+  return null;
+}
+
+function buildPendingCard(request){
+  return `
+    <div class="empty-box">
+      <h2 style="margin-top:0;">Card Request Pending</h2>
+      <p>Nou jwenn demann kat ou a. Admin ap verifye li avan li aktive.</p>
+      <div style="margin-top:12px;">
+        <div><strong>Card Type:</strong> ${request.cardType || 'N/A'}</div>
+        <div><strong>Network:</strong> ${request.network || 'N/A'}</div>
+        <div><strong>Amount:</strong> ${request.amount || 'N/A'}</div>
+        <div><strong>Status:</strong> <span class="status status-pending">${request.status || 'Pending'}</span></div>
+      </div>
+    </div>
+  `;
+}
+
+function buildActiveCard(card){
+  return `
+    <div class="card-box">
+      <div class="card-chip"></div>
+      <div class="card-number">${card.number || '**** **** **** 4587'}</div>
+      <div class="card-name">${card.name || 'FASTPAY USER'}</div>
+      <div class="card-meta">
+        <div>EXP: ${card.exp || '12/29'}</div>
+        <div>CVV: ${card.cvv || '***'}</div>
+      </div>
+      <div class="card-brand">${card.brand || 'VISA'}</div>
+    </div>
+  `;
+}
+
+function renderCard(){
+  const cardArea = document.getElementById("cardArea");
+  const latestRequest = getLatestCardRequest();
+
+  if(virtualCard){
+    cardArea.innerHTML = buildActiveCard(virtualCard);
+  } else if(latestRequest){
+    cardArea.innerHTML = buildPendingCard(latestRequest);
+  } else {
+    cardArea.innerHTML = `
+      <div class="empty-box">
+        <h2 style="margin-top:0;">Pa gen kat aktif</h2>
+        <p>Ou poko gen kat FastPay aktif pou kounye a.</p>
+        <a href="create-card.html" class="btn btn-orange" style="margin-top:14px;">Create Your First Card</a>
+      </div>
+    `;
+  }
+
+  updateSummary();
+}
+
+function updateSummary(){
+  const latestRequest = getLatestCardRequest();
+
+  document.getElementById("walletBalance").innerHTML = walletBalance + " HTG";
+
+  if(virtualCard){
+    document.getElementById("cardBalance").innerHTML = (virtualCard.balance || 0) + " HTG";
+    document.getElementById("cardStatusText").innerHTML = virtualCard.status || "Active";
+    document.getElementById("cardNetworkText").innerHTML = virtualCard.brand || "Visa";
+    document.getElementById("infoCardType").innerHTML = virtualCard.cardType || "Virtual Card";
+    document.getElementById("infoCardHolder").innerHTML = virtualCard.name || "FASTPAY USER";
+    document.getElementById("infoCurrency").innerHTML = virtualCard.currency || "HTG";
+    document.getElementById("infoCreatedAt").innerHTML = virtualCard.createdAt || "N/A";
+    return;
+  }
+
+  if(latestRequest){
+    document.getElementById("cardBalance").innerHTML = "0 HTG";
+    document.getElementById("cardStatusText").innerHTML = latestRequest.status || "Pending";
+    document.getElementById("cardNetworkText").innerHTML = latestRequest.network || "N/A";
+    document.getElementById("infoCardType").innerHTML = latestRequest.cardType || "N/A";
+    document.getElementById("infoCardHolder").innerHTML = latestRequest.fullName || "N/A";
+    document.getElementById("infoCurrency").innerHTML = latestRequest.currency || "N/A";
+    document.getElementById("infoCreatedAt").innerHTML = latestRequest.date || "N/A";
+    return;
+  }
+
+  document.getElementById("cardBalance").innerHTML = "0 HTG";
+  document.getElementById("cardStatusText").innerHTML = "No Card";
+  document.getElementById("cardNetworkText").innerHTML = "N/A";
+  document.getElementById("infoCardType").innerHTML = "N/A";
+  document.getElementById("infoCardHolder").innerHTML = "N/A";
+  document.getElementById("infoCurrency").innerHTML = "N/A";
+  document.getElementById("infoCreatedAt").innerHTML = "N/A";
+}
+
+function showNotice(message, isError = false){
+  const box = document.getElementById("noticeBox");
+  box.style.display = "block";
+  box.className = isError ? "notice error" : "notice";
+  box.innerHTML = message;
+}
+
+function ensureCardExists(){
+  if(!virtualCard){
+    const latestRequest = getLatestCardRequest();
+
+    if(latestRequest && latestRequest.status === "Approved"){
+      virtualCard = {
+        active: true,
+        number: "**** **** **** 4587",
+        name: (latestRequest.fullName || "FASTPAY USER").toUpperCase(),
+        exp: "12/29",
+        cvv: "392",
+        brand: (latestRequest.network || "Visa").toUpperCase(),
+        status: "Active",
+        balance: 0,
+        cardType: latestRequest.cardType || "Virtual Card",
+        currency: latestRequest.currency || "HTG",
+        createdAt: latestRequest.date || new Date().toLocaleString()
+      };
+      localStorage.setItem("fastpay_virtual_card", JSON.stringify(virtualCard));
+    }
+  }
+}
+
+function freezeCard(){
+  ensureCardExists();
+
+  if(!virtualCard){
+    showNotice("Ou poko gen kat aktif pou freeze.", true);
+    return;
+  }
+
+  virtualCard.status = "Frozen";
+  localStorage.setItem("fastpay_virtual_card", JSON.stringify(virtualCard));
+  renderCard();
+  showNotice("Kat la freeze avèk siksè.");
+}
+
+function unfreezeCard(){
+  ensureCardExists();
+
+  if(!virtualCard){
+    showNotice("Ou poko gen kat aktif pou unfreeze.", true);
+    return;
+  }
+
+  virtualCard.status = "Active";
+  localStorage.setItem("fastpay_virtual_card", JSON.stringify(virtualCard));
+  renderCard();
+  showNotice("Kat la aktive ankò avèk siksè.");
+}
+
+function loadCard(){
+  ensureCardExists();
+
+  if(!virtualCard){
+    showNotice("Ou poko gen kat aktif pou rechaje.", true);
+    return;
+  }
+
+  const amountText = prompt("Antre montan ou vle mete sou kat la (HTG):");
+
+  if(amountText === null) return;
+
+  const amount = parseInt(amountText);
+
+  if(!amount || amount <= 0){
+    showNotice("Montan an pa valab.", true);
+    return;
+  }
+
+  walletBalance = parseInt(localStorage.getItem("fastpay_balance") || "0");
+
+  if(walletBalance < amount){
+    showNotice("Wallet ou pa gen ase balans pou rechaje kat la.", true);
+    return;
+  }
+
+  walletBalance -= amount;
+  localStorage.setItem("fastpay_balance", walletBalance);
+
+  virtualCard.balance = parseInt(virtualCard.balance || 0) + amount;
+  localStorage.setItem("fastpay_virtual_card", JSON.stringify(virtualCard));
+
+  let transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
+  transactions.unshift({
+    service: "Load Card - " + (virtualCard.brand || "CARD"),
+    amount: "-" + amount + " HTG",
+    date: new Date().toLocaleString(),
+    orderId: "LOAD-" + Math.floor(Math.random() * 90000 + 10000)
+  });
+  localStorage.setItem("fastpay_transactions", JSON.stringify(transactions));
+
+  renderCard();
+  showNotice("Kat la rechaje avèk siksè ak " + amount + " HTG.");
+}
+
+ensureCardExists();
+renderCard();
+</script>
+
+</body>
+  </html>
