@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FastPay Admin Cards</title>
+<title>FastPay Admin Cards v2</title>
 <style>
 *{
   box-sizing:border-box;
@@ -48,6 +48,22 @@ body{
   margin:8px 0 0;
   opacity:0.96;
   line-height:1.5;
+}
+
+.notice{
+  display:none;
+  background:#ecfdf3;
+  color:#166534;
+  padding:14px;
+  border-radius:14px;
+  font-weight:bold;
+  margin-bottom:16px;
+  line-height:1.5;
+}
+
+.notice.error{
+  background:#fee2e2;
+  color:#991b1b;
 }
 
 .box{
@@ -191,22 +207,6 @@ body{
   background:#111827;
   color:white;
 }
-
-.notice{
-  display:none;
-  background:#ecfdf3;
-  color:#166534;
-  padding:14px;
-  border-radius:14px;
-  font-weight:bold;
-  margin-bottom:16px;
-  line-height:1.5;
-}
-
-.notice.error{
-  background:#fee2e2;
-  color:#991b1b;
-}
 </style>
 </head>
 <body>
@@ -215,19 +215,19 @@ body{
   <a href="admin.html" class="back">← Back Admin</a>
 
   <div class="header">
-    <h1>Admin Cards</h1>
-    <p>Jere tout demann kat yo, aktive kat yo, bloke yo, epi kontwole balans yo.</p>
+    <h1>Admin Cards v2</h1>
+    <p>Apwouve, rejte, aktive, bloke, epi jere kat kliyan yo nan FastPay v2.</p>
   </div>
 
   <div id="noticeBox" class="notice"></div>
 
   <div class="box">
-    <h2>Card Requests</h2>
+    <h2>Card Requests v2</h2>
     <div id="requestBox" class="empty">Pa gen demann kat pou kounye a.</div>
   </div>
 
   <div class="box">
-    <h2>Active / Existing Cards</h2>
+    <h2>User Cards</h2>
     <div id="cardsBox" class="empty">Pa gen kat aktif pou kounye a.</div>
   </div>
 
@@ -235,6 +235,7 @@ body{
   <button class="btn btn-secondary" onclick="clearCardRequests()">Clear Card Requests</button>
 </div>
 
+<script src="app.js"></script>
 <script>
 function showNotice(message, isError = false){
   const box = document.getElementById("noticeBox");
@@ -244,95 +245,187 @@ function showNotice(message, isError = false){
 }
 
 function getStatusClass(status){
-  if(status === "Approved" || status === "Active"){
+  const value = String(status || "").toLowerCase();
+
+  if(value.includes("approved") || value.includes("active") || value.includes("paid")){
     return "status-approved";
   }
-  if(status === "Rejected"){
+  if(value.includes("rejected")){
     return "status-rejected";
   }
-  if(status === "Frozen"){
+  if(value.includes("frozen")){
     return "status-frozen";
   }
   return "status-pending";
 }
 
-function createVirtualCardFromRequest(request){
+function getUsers(){
+  return FastPayDB.get("fp_users", []);
+}
+
+function getRequests(){
+  return FastPayDB.get("fp_card_requests_v2", []);
+}
+
+function saveRequests(requests){
+  FastPayDB.set("fp_card_requests_v2", requests);
+}
+
+function getCards(){
+  return FastPayDB.get("fp_cards", []);
+}
+
+function saveCards(cards){
+  FastPayDB.set("fp_cards", cards);
+}
+
+function getUserById(userId){
+  const users = getUsers();
+  return users.find(u => u.id === userId) || null;
+}
+
+function createCardForUser(request){
+  let cards = getCards();
+  const existing = cards.find(card => card.userId === request.userId);
+
+  if(existing){
+    return existing;
+  }
+
   const cardData = {
-    active: true,
-    number: "**** **** **** 4587",
-    name: (request.fullName || "FASTPAY USER").toUpperCase(),
+    id: FastPayV2.generateId("CARD"),
+    userId: request.userId,
+    number: "**** **** **** " + Math.floor(Math.random() * 9000 + 1000),
+    name: (request.fullname || "FASTPAY USER").toUpperCase(),
     exp: "12/29",
     cvv: "392",
     brand: (request.network || "Visa").toUpperCase(),
     status: "Active",
     balance: 0,
-    cardType: request.cardType || "Virtual Card",
-    currency: request.currency || "HTG",
+    cardType: request.cardType || "Virtual",
+    currency: request.currency || "USD",
     createdAt: new Date().toLocaleString()
   };
 
-  localStorage.setItem("fastpay_virtual_card", JSON.stringify(cardData));
+  cards.unshift(cardData);
+  saveCards(cards);
   return cardData;
 }
 
 function approveRequest(index){
-  let requests = JSON.parse(localStorage.getItem("fastpay_card_requests")) || [];
-  if(!requests[index]) return;
+  let requests = getRequests();
+
+  if(!requests[index]){
+    showNotice("Demann nan pa jwenn.", true);
+    return;
+  }
 
   requests[index].status = "Approved";
-  localStorage.setItem("fastpay_card_requests", JSON.stringify(requests));
+  saveRequests(requests);
 
-  createVirtualCardFromRequest(requests[index]);
+  const createdCard = createCardForUser(requests[index]);
+
+  FastPayV2.addNotification({
+    userId: requests[index].userId,
+    title: "Card approved",
+    text: "Demann kat ou a apwouve. Kat ou a deja aktif.",
+    type: "success"
+  });
+
+  FastPayV2.addTransaction({
+    userId: requests[index].userId,
+    service: "Card Approved - " + (createdCard.brand || "CARD"),
+    amount: "0 HTG",
+    type: "card-approved",
+    status: "approved",
+    meta: {
+      cardId: createdCard.id,
+      requestId: requests[index].id
+    }
+  });
+
   loadAll();
-  showNotice("Demann kat la apwouve avèk siksè, epi kat la aktive.");
+  showNotice("Demann kat la apwouve avèk siksè.");
 }
 
 function rejectRequest(index){
-  let requests = JSON.parse(localStorage.getItem("fastpay_card_requests")) || [];
-  if(!requests[index]) return;
+  let requests = getRequests();
+
+  if(!requests[index]){
+    showNotice("Demann nan pa jwenn.", true);
+    return;
+  }
 
   requests[index].status = "Rejected";
-  localStorage.setItem("fastpay_card_requests", JSON.stringify(requests));
+  saveRequests(requests);
+
+  FastPayV2.addNotification({
+    userId: requests[index].userId,
+    title: "Card rejected",
+    text: "Demann kat ou a rejte. Tcheke detay yo epi eseye ankò.",
+    type: "warning"
+  });
+
   loadAll();
   showNotice("Demann kat la rejte.");
 }
 
-function freezeExistingCard(){
-  let card = JSON.parse(localStorage.getItem("fastpay_virtual_card") || "null");
-  if(!card){
-    showNotice("Pa gen kat aktif pou freeze.", true);
+function freezeCard(cardId){
+  let cards = getCards();
+  const index = cards.findIndex(card => card.id === cardId);
+
+  if(index === -1){
+    showNotice("Kat la pa jwenn.", true);
     return;
   }
 
-  card.status = "Frozen";
-  localStorage.setItem("fastpay_virtual_card", JSON.stringify(card));
+  cards[index].status = "Frozen";
+  saveCards(cards);
+
+  FastPayV2.addNotification({
+    userId: cards[index].userId,
+    title: "Card frozen",
+    text: "Admin lan freeze kat ou a.",
+    type: "warning"
+  });
+
   loadAll();
   showNotice("Kat la freeze avèk siksè.");
 }
 
-function activateExistingCard(){
-  let card = JSON.parse(localStorage.getItem("fastpay_virtual_card") || "null");
-  if(!card){
-    showNotice("Pa gen kat aktif pou aktive.", true);
+function activateCard(cardId){
+  let cards = getCards();
+  const index = cards.findIndex(card => card.id === cardId);
+
+  if(index === -1){
+    showNotice("Kat la pa jwenn.", true);
     return;
   }
 
-  card.status = "Active";
-  localStorage.setItem("fastpay_virtual_card", JSON.stringify(card));
+  cards[index].status = "Active";
+  saveCards(cards);
+
+  FastPayV2.addNotification({
+    userId: cards[index].userId,
+    title: "Card activated",
+    text: "Kat ou a aktive ankò pa admin lan.",
+    type: "success"
+  });
+
   loadAll();
   showNotice("Kat la aktive avèk siksè.");
 }
 
-function loadExistingCardBalance(){
-  let card = JSON.parse(localStorage.getItem("fastpay_virtual_card") || "null");
-  let wallet = parseInt(localStorage.getItem("fastpay_balance") || "0");
+function loadCardBalance(cardId){
+  let cards = getCards();
+  const index = cards.findIndex(card => card.id === cardId);
 
-  if(!card){
-    showNotice("Pa gen kat aktif pou rechaje.", true);
+  if(index === -1){
+    showNotice("Kat la pa jwenn.", true);
     return;
   }
 
-  const amountText = prompt("Antre montan ou vle mete sou kat la (HTG):");
+  const amountText = prompt("Antre montan pou mete sou kat la (HTG):");
   if(amountText === null) return;
 
   const amount = parseInt(amountText);
@@ -341,25 +434,26 @@ function loadExistingCardBalance(){
     return;
   }
 
-  if(wallet < amount){
-    showNotice("Wallet pa gen ase balans pou rechaje kat la.", true);
-    return;
-  }
+  cards[index].balance = parseInt(cards[index].balance || 0) + amount;
+  saveCards(cards);
 
-  wallet -= amount;
-  localStorage.setItem("fastpay_balance", wallet);
-
-  card.balance = parseInt(card.balance || 0) + amount;
-  localStorage.setItem("fastpay_virtual_card", JSON.stringify(card));
-
-  let transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
-  transactions.unshift({
-    service: "Admin Load Card - " + (card.brand || "CARD"),
-    amount: "-" + amount + " HTG",
-    date: new Date().toLocaleString(),
-    orderId: "ADMINLOAD-" + Math.floor(Math.random() * 90000 + 10000)
+  FastPayV2.addNotification({
+    userId: cards[index].userId,
+    title: "Card loaded",
+    text: "Admin lan ajoute " + amount + " HTG sou kat ou a.",
+    type: "success"
   });
-  localStorage.setItem("fastpay_transactions", JSON.stringify(transactions));
+
+  FastPayV2.addTransaction({
+    userId: cards[index].userId,
+    service: "Admin Card Load - " + (cards[index].brand || "CARD"),
+    amount: "+" + amount + " HTG",
+    type: "card-load-admin",
+    status: "completed",
+    meta: {
+      cardId: cards[index].id
+    }
+  });
 
   loadAll();
   showNotice("Kat la rechaje avèk siksè ak " + amount + " HTG.");
@@ -367,7 +461,7 @@ function loadExistingCardBalance(){
 
 function renderRequests(){
   const box = document.getElementById("requestBox");
-  const requests = JSON.parse(localStorage.getItem("fastpay_card_requests")) || [];
+  const requests = getRequests();
 
   if(requests.length === 0){
     box.className = "empty";
@@ -379,15 +473,16 @@ function renderRequests(){
   box.innerHTML = "";
 
   requests.forEach((item, index) => {
-    const status = item.status || "Pending Payment Verification";
+    const user = getUserById(item.userId);
+    const status = item.status || "pending";
     const statusClass = getStatusClass(status);
 
     box.innerHTML += `
       <div class="item">
-        <div class="item-title">${item.fullName || "Client"} - ${item.cardType || "Virtual Card"}</div>
+        <div class="item-title">${item.fullname || "Client"} - ${item.cardType || "Virtual Card"}</div>
+        <div class="item-sub"><strong>User ID:</strong> ${item.userId || "N/A"}</div>
+        <div class="item-sub"><strong>Email:</strong> ${item.email || (user ? user.email : "N/A")}</div>
         <div class="item-sub"><strong>Network:</strong> ${item.network || "N/A"}</div>
-        <div class="item-sub"><strong>Email:</strong> ${item.email || "N/A"}</div>
-        <div class="item-sub"><strong>WhatsApp:</strong> ${item.whatsapp || "N/A"}</div>
         <div class="item-sub"><strong>Currency:</strong> ${item.currency || "N/A"}</div>
         <div class="item-sub"><strong>Payment Method:</strong> ${item.paymentMethod || "N/A"}</div>
         <div class="item-sub"><strong>Amount:</strong> ${item.amount || "N/A"}</div>
@@ -402,51 +497,58 @@ function renderRequests(){
   });
 }
 
-function renderExistingCards(){
+function renderCards(){
   const box = document.getElementById("cardsBox");
-  const card = JSON.parse(localStorage.getItem("fastpay_virtual_card") || "null");
+  const cards = getCards();
 
-  if(!card){
+  if(cards.length === 0){
     box.className = "empty";
     box.innerHTML = "Pa gen kat aktif pou kounye a.";
     return;
   }
 
-  const status = card.status || "Active";
-  const statusClass = getStatusClass(status);
-
   box.className = "";
-  box.innerHTML = `
-    <div class="item">
-      <div class="item-title">${card.name || "FASTPAY USER"} - ${card.cardType || "Virtual Card"}</div>
-      <div class="item-sub"><strong>Brand:</strong> ${card.brand || "Visa"}</div>
-      <div class="item-sub"><strong>Number:</strong> ${card.number || "**** **** **** 4587"}</div>
-      <div class="item-sub"><strong>EXP:</strong> ${card.exp || "12/29"}</div>
-      <div class="item-sub"><strong>Currency:</strong> ${card.currency || "HTG"}</div>
-      <div class="item-sub"><strong>Balance:</strong> ${card.balance || 0} HTG</div>
-      <div class="item-sub"><strong>Created:</strong> ${card.createdAt || "N/A"}</div>
-      <div class="status ${statusClass}">${status}</div>
-      <div class="action-row-3">
-        <button class="mini-btn freeze-btn" onclick="freezeExistingCard()">Freeze</button>
-        <button class="mini-btn activate-btn" onclick="activateExistingCard()">Activate</button>
-        <button class="mini-btn load-btn" onclick="loadExistingCardBalance()">Load</button>
+  box.innerHTML = "";
+
+  cards.forEach(card => {
+    const user = getUserById(card.userId);
+    const status = card.status || "Active";
+    const statusClass = getStatusClass(status);
+
+    box.innerHTML += `
+      <div class="item">
+        <div class="item-title">${card.name || "FASTPAY USER"} - ${card.cardType || "Virtual Card"}</div>
+        <div class="item-sub"><strong>User:</strong> ${user ? user.fullname : "N/A"}</div>
+        <div class="item-sub"><strong>Email:</strong> ${user ? user.email : "N/A"}</div>
+        <div class="item-sub"><strong>Brand:</strong> ${card.brand || "Visa"}</div>
+        <div class="item-sub"><strong>Number:</strong> ${card.number || "**** **** **** 4587"}</div>
+        <div class="item-sub"><strong>EXP:</strong> ${card.exp || "12/29"}</div>
+        <div class="item-sub"><strong>Currency:</strong> ${card.currency || "USD"}</div>
+        <div class="item-sub"><strong>Balance:</strong> ${card.balance || 0} HTG</div>
+        <div class="item-sub"><strong>Created:</strong> ${card.createdAt || "N/A"}</div>
+        <div class="status ${statusClass}">${status}</div>
+        <div class="action-row-3">
+          <button class="mini-btn freeze-btn" onclick="freezeCard('${card.id}')">Freeze</button>
+          <button class="mini-btn activate-btn" onclick="activateCard('${card.id}')">Activate</button>
+          <button class="mini-btn load-btn" onclick="loadCardBalance('${card.id}')">Load</button>
+        </div>
       </div>
-    </div>
-  `;
+    `;
+  });
 }
 
 function loadAll(){
   renderRequests();
-  renderExistingCards();
+  renderCards();
 }
 
 function clearCardRequests(){
-  localStorage.removeItem("fastpay_card_requests");
+  FastPayDB.remove("fp_card_requests_v2");
   loadAll();
 }
 
-window.onload = loadAll;
+loadAll();
 </script>
 
 </body>
-</html>
+  </html>
