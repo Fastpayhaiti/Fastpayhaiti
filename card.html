@@ -3,21 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FastPay Virtual Card</title>
+<title>FastPay Virtual Card Request</title>
 <style>
 *{
 box-sizing:border-box;
 font-family:Arial,sans-serif;
 }
+
 body{
 margin:0;
 background:#eef2f7;
 padding:20px;
 }
+
 .container{
 max-width:430px;
 margin:auto;
 }
+
 .back{
 display:inline-block;
 margin-bottom:18px;
@@ -25,17 +28,20 @@ color:#ff4d3d;
 text-decoration:none;
 font-weight:bold;
 }
+
 .topbar{
 display:flex;
 justify-content:space-between;
 align-items:center;
 margin-bottom:18px;
 }
+
 .logo{
 font-size:28px;
 font-weight:bold;
 color:#ff5a3d;
 }
+
 .profile{
 width:44px;
 height:44px;
@@ -48,6 +54,7 @@ justify-content:center;
 font-weight:bold;
 font-size:18px;
 }
+
 .card-box{
 background:white;
 padding:22px;
@@ -55,6 +62,7 @@ border-radius:22px;
 box-shadow:0 4px 14px rgba(0,0,0,0.08);
 margin-bottom:18px;
 }
+
 .icon-wrap{
 width:90px;
 height:90px;
@@ -67,37 +75,43 @@ margin:0 auto 20px;
 font-size:42px;
 color:#ff7a59;
 }
+
 .title{
 text-align:center;
 font-size:24px;
 font-weight:bold;
 color:#111827;
-margin-bottom:12px;
+margin-bottom:10px;
 }
+
 .desc{
 text-align:center;
-font-size:16px;
+font-size:15px;
 color:#6b7280;
 line-height:1.6;
 margin-bottom:20px;
 }
+
 .info-box{
 background:#f8fafc;
 padding:18px;
 border-radius:16px;
 margin-bottom:20px;
 }
+
 .info-box h3{
 margin:0 0 12px 0;
-font-size:22px;
+font-size:21px;
 color:#111827;
 }
+
 .info-box p{
-margin:10px 0;
+margin:8px 0;
 color:#4b5563;
 font-size:15px;
 line-height:1.5;
 }
+
 .price-box{
 background:#fff7ed;
 padding:16px;
@@ -105,66 +119,108 @@ border-radius:16px;
 margin-bottom:20px;
 text-align:center;
 }
+
 .price-label{
 font-size:15px;
 color:#9a3412;
 margin-bottom:8px;
 }
+
 .price-amount{
 font-size:34px;
 font-weight:bold;
 color:#c2410c;
 }
-.section-title{
+
+.section{
+background:white;
+padding:18px;
+border-radius:18px;
+box-shadow:0 4px 14px rgba(0,0,0,0.08);
+margin-bottom:18px;
+}
+
+.section h3{
+margin:0 0 16px 0;
 font-size:22px;
+color:#111827;
+}
+
+label{
+display:block;
+margin-bottom:8px;
 font-weight:bold;
 color:#111827;
-margin:0 0 14px 0;
 }
+
+input,select,textarea{
+width:100%;
+padding:14px;
+border:1px solid #d1d5db;
+border-radius:14px;
+font-size:16px;
+background:white;
+margin-bottom:16px;
+}
+
 .methods{
 display:grid;
 grid-template-columns:repeat(3,1fr);
 gap:12px;
-margin-bottom:20px;
+margin-bottom:18px;
 }
+
 .method{
-background:#fff;
 border:2px solid #e5e7eb;
 border-radius:18px;
 padding:16px 10px;
 text-align:center;
+cursor:pointer;
+background:#fff;
 }
+
+.method.active{
+border-color:#ff4d3d;
+background:#fff5f2;
+}
+
 .method-icon{
 font-size:28px;
 margin-bottom:10px;
 }
+
 .method-title{
 font-size:15px;
 font-weight:bold;
 color:#111827;
 }
+
 .method-sub{
 font-size:12px;
 color:#16a34a;
 margin-top:6px;
 }
+
 .balance-box{
 background:#f9fafb;
 padding:16px;
 border-radius:16px;
-margin-bottom:20px;
+margin-bottom:18px;
 text-align:center;
 }
+
 .balance-label{
 font-size:14px;
 color:#6b7280;
 margin-bottom:8px;
 }
+
 .balance-amount{
 font-size:28px;
 font-weight:bold;
 color:#111827;
 }
+
 .alert{
 padding:16px;
 border-radius:16px;
@@ -172,39 +228,60 @@ font-weight:bold;
 text-align:center;
 margin-bottom:14px;
 }
+
 .alert-danger{
 background:#e5e7eb;
 color:#ffffff;
 font-size:16px;
 }
+
 .alert-success{
 background:#ecfdf3;
 color:#166534;
 font-size:16px;
 }
-.btn{
+
+.submit-btn{
+width:100%;
+padding:16px;
+background:#ff4d3d;
+color:white;
+border:none;
+border-radius:16px;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+margin-top:6px;
+}
+
+.secondary-btn{
 display:block;
 width:100%;
 padding:16px;
+background:#111827;
+color:white;
 border:none;
 border-radius:16px;
-font-size:18px;
+font-size:17px;
 font-weight:bold;
 text-align:center;
 text-decoration:none;
-cursor:pointer;
-}
-.btn-primary{
-background:#ff4d3d;
-color:white;
-}
-.btn-secondary{
-background:#111827;
-color:white;
 margin-top:12px;
 }
-.note{
+
+.success-box{
+display:none;
+background:#ecfdf3;
+color:#166534;
+padding:16px;
+border-radius:16px;
+font-weight:bold;
 margin-top:16px;
+line-height:1.5;
+}
+
+.note{
+margin-top:14px;
 background:#f8fafc;
 padding:14px;
 border-radius:14px;
@@ -226,42 +303,78 @@ line-height:1.5;
 
 <div class="card-box">
 <div class="icon-wrap">💳</div>
-
-<div class="title">Carte Vityèl</div>
-
+<div class="title">Demande Carte Vityèl</div>
 <div class="desc">
-Jwenn kat vityèl Visa oswa Mastercard pou acha sou entènèt ak sèvis dijital.
+Ranpli enfòmasyon yo epi chwazi mwayen peman ou pou mande kat vityèl FastPay la.
 </div>
 
 <div class="info-box">
 <h3>Sa kliyan an bezwen:</h3>
-<p>- Pyès idantite valab (Kat oswa Paspò)</p>
+<p>- Pyès idantite valab</p>
 <p>- Enfòmasyon pèsonèl</p>
+<p>- Email aktif</p>
 <p>- <strong>1500 HTG</strong> frè kreyasyon</p>
 </div>
 
 <div class="price-box">
-<div class="price-label">Pri kreyasyon kat la</div>
+<div class="price-label">Frè kreyasyon kat la</div>
 <div class="price-amount">1500 HTG</div>
 </div>
+</div>
 
-<h3 class="section-title">Mwayen peman</h3>
+<div class="section">
+<h3>Enfòmasyon pèsonèl</h3>
+
+<label>Non konplè</label>
+<input type="text" id="fullName" placeholder="Antre non konplè a">
+
+<label>Email</label>
+<input type="email" id="email" placeholder="Antre imel kliyan an">
+
+<label>WhatsApp</label>
+<input type="text" id="whatsapp" placeholder="Eg: 50942778505">
+
+<label>Dat nesans</label>
+<input type="date" id="dob">
+
+<label>Adrès</label>
+<input type="text" id="address" placeholder="Antre adrès kliyan an">
+
+<label>Tip pyès idantite</label>
+<select id="idType">
+<option>Kat idantite</option>
+<option>Paspò</option>
+<option>Permi</option>
+</select>
+
+<label>Nimewo pyès la</label>
+<input type="text" id="idNumber" placeholder="Antre nimewo pyès la">
+
+<label>Kalite kat</label>
+<select id="cardType">
+<option>Visa Virtual Card</option>
+<option>Mastercard Virtual Card</option>
+</select>
+</div>
+
+<div class="section">
+<h3>Mwayen peman</h3>
 
 <div class="methods">
-<div class="method">
+<div class="method active" id="method-wallet" onclick="selectMethod('Wallet')">
+<div class="method-icon">👛</div>
+<div class="method-title">Wallet</div>
+<div class="method-sub">FastPay</div>
+</div>
+
+<div class="method" id="method-bank" onclick="selectMethod('Bank')">
 <div class="method-icon">🏦</div>
 <div class="method-title">Bank</div>
 </div>
 
-<div class="method">
+<div class="method" id="method-digital" onclick="selectMethod('Digital')">
 <div class="method-icon">💲</div>
 <div class="method-title">Digital</div>
-</div>
-
-<div class="method">
-<div class="method-icon">👛</div>
-<div class="method-title">Wallet</div>
-<div class="method-sub">FastPay</div>
 </div>
 </div>
 
@@ -270,76 +383,157 @@ Jwenn kat vityèl Visa oswa Mastercard pou acha sou entènèt ak sèvis dijital.
 <div class="balance-amount" id="walletBalance">0 HTG</div>
 </div>
 
-<div id="statusArea"></div>
+<div id="walletMessage"></div>
 
-<a href="deposit.html" class="btn btn-secondary">Rechaje wallet la</a>
+<label>Montan</label>
+<input type="number" id="amount" value="1500" readonly>
+
+<label>Detay peman / nòt</label>
+<textarea id="paymentNote" rows="4" placeholder="Mete detay sou peman an oswa demann kat la"></textarea>
+
+<button class="submit-btn" onclick="submitCardRequest()">Confirmer la demande</button>
+<a href="deposit.html" class="secondary-btn">Rechaje wallet la</a>
+
+<div class="success-box" id="successBox"></div>
 
 <div class="note">
-Kliyan ka peye ak bank, digital, oswa dirèkteman ak balans FastPay li.
-Si balans wallet la rive sou 1500 HTG oswa plis, li ka kontinye kreye kat la.
+Si kliyan an peye ak wallet FastPay, sistèm nan ka retire 1500 HTG dirèkteman sou balans lan.  
+Si li chwazi Bank oswa Digital, admin ap verifye peman an avan kat la aktive.
 </div>
 </div>
+
 </div>
 
 <script>
 const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
 const profileLetter = document.getElementById("profileLetter");
-const statusArea = document.getElementById("statusArea");
 const walletBalanceEl = document.getElementById("walletBalance");
+const walletMessage = document.getElementById("walletMessage");
+let selectedMethod = "Wallet";
 
 if(savedUser && savedUser.fullname){
   profileLetter.innerHTML = savedUser.fullname.charAt(0).toUpperCase();
+  document.getElementById("fullName").value = savedUser.fullname || "";
+  document.getElementById("email").value = savedUser.email || "";
 }
 
-let balance = parseInt(localStorage.getItem("fastpay_balance")) || 0;
-walletBalanceEl.innerHTML = balance + " HTG";
+function selectMethod(method){
+  selectedMethod = method;
 
-function createVirtualCard(){
-  let currentBalance = parseInt(localStorage.getItem("fastpay_balance")) || 0;
+  document.getElementById("method-wallet").classList.remove("active");
+  document.getElementById("method-bank").classList.remove("active");
+  document.getElementById("method-digital").classList.remove("active");
 
-  if(currentBalance < 1500){
-    alert("Solde insuffisant.");
+  if(method === "Wallet") document.getElementById("method-wallet").classList.add("active");
+  if(method === "Bank") document.getElementById("method-bank").classList.add("active");
+  if(method === "Digital") document.getElementById("method-digital").classList.add("active");
+
+  updateWalletMessage();
+}
+
+function updateWalletMessage(){
+  let balance = parseInt(localStorage.getItem("fastpay_balance")) || 0;
+  walletBalanceEl.innerHTML = balance + " HTG";
+
+  if(selectedMethod === "Wallet"){
+    if(balance >= 1500){
+      walletMessage.innerHTML = '<div class="alert alert-success">Solde ase. Ou ka peye frè kat la ak wallet ou.</div>';
+    }else{
+      walletMessage.innerHTML = '<div class="alert alert-danger">Solde insuffisant pou peman wallet la (1500 HTG requis)</div>';
+    }
+  }else{
+    walletMessage.innerHTML = '<div class="alert alert-success">Metòd sa a mande verifikasyon admin apre peman an.</div>';
+  }
+}
+
+function submitCardRequest(){
+  const fullName = document.getElementById("fullName").value;
+  const email = document.getElementById("email").value;
+  const whatsapp = document.getElementById("whatsapp").value;
+  const dob = document.getElementById("dob").value;
+  const address = document.getElementById("address").value;
+  const idType = document.getElementById("idType").value;
+  const idNumber = document.getElementById("idNumber").value;
+  const cardType = document.getElementById("cardType").value;
+  const paymentNote = document.getElementById("paymentNote").value;
+  let balance = parseInt(localStorage.getItem("fastpay_balance")) || 0;
+
+  if(!fullName || !email || !whatsapp || !dob || !address || !idNumber){
+    alert("Tanpri ranpli tout enfòmasyon yo.");
     return;
   }
 
-  currentBalance -= 1500;
-  localStorage.setItem("fastpay_balance", currentBalance);
+  let status = "Pending Payment Verification";
 
-  const cardData = {
-    active: true,
-    number: "**** **** **** 4587",
-    name: savedUser && savedUser.fullname ? savedUser.fullname.toUpperCase() : "FASTPAY USER",
-    exp: "12/29",
-    brand: "VISA",
-    createdAt: new Date().toLocaleString()
+  if(selectedMethod === "Wallet"){
+    if(balance < 1500){
+      alert("Balans wallet la pa sifi pou kreye kat la.");
+      return;
+    }
+
+    balance -= 1500;
+    localStorage.setItem("fastpay_balance", balance);
+
+    const cardData = {
+      active: true,
+      number: "**** **** **** 4587",
+      name: fullName.toUpperCase(),
+      exp: "12/29",
+      brand: cardType.includes("Visa") ? "VISA" : "MASTERCARD",
+      createdAt: new Date().toLocaleString()
+    };
+    localStorage.setItem("fastpay_virtual_card", JSON.stringify(cardData));
+
+    let transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
+    transactions.unshift({
+      service: "Virtual Card Creation",
+      amount: "-1500 HTG",
+      date: new Date().toLocaleString(),
+      orderId: "CARD-" + Math.floor(Math.random() * 90000 + 10000)
+    });
+    localStorage.setItem("fastpay_transactions", JSON.stringify(transactions));
+
+    status = "Card Created";
+  }
+
+  const requestData = {
+    type: "Virtual Card Request",
+    fullName: fullName,
+    email: email,
+    whatsapp: whatsapp,
+    dob: dob,
+    address: address,
+    idType: idType,
+    idNumber: idNumber,
+    cardType: cardType,
+    paymentMethod: selectedMethod,
+    amount: "1500 HTG",
+    note: paymentNote,
+    status: status,
+    date: new Date().toLocaleString()
   };
 
-  localStorage.setItem("fastpay_virtual_card", JSON.stringify(cardData));
+  localStorage.setItem("fastpay_last_card_request", JSON.stringify(requestData));
 
-  let transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
-  transactions.unshift({
-    service: "Virtual Card Creation",
-    amount: "-1500 HTG",
-    date: new Date().toLocaleString(),
-    orderId: "CARD-" + Math.floor(Math.random() * 90000 + 10000)
-  });
-  localStorage.setItem("fastpay_transactions", JSON.stringify(transactions));
+  let requests = JSON.parse(localStorage.getItem("fastpay_card_requests")) || [];
+  requests.unshift(requestData);
+  localStorage.setItem("fastpay_card_requests", JSON.stringify(requests));
 
-  alert("Kat vityèl la kreye avèk siksè.");
-  window.location.href = "dashboard.html";
+  const successBox = document.getElementById("successBox");
+
+  if(selectedMethod === "Wallet"){
+    successBox.style.display = "block";
+    successBox.innerHTML = "Demann kat la konfime avèk siksè. 1500 HTG retire sou wallet la, epi kat la aktive.";
+    setTimeout(() => {
+      window.location.href = "dashboard.html";
+    }, 1500);
+  }else{
+    successBox.style.display = "block";
+    successBox.innerHTML = "Demann kat la voye avèk siksè. Admin ap verifye peman an avan kat la aktive.";
+  }
 }
 
-if(balance >= 1500){
-  statusArea.innerHTML = `
-    <div class="alert alert-success">Solde ase. Ou ka kreye kat la kounye a.</div>
-    <button class="btn btn-primary" onclick="createVirtualCard()">Créer ma carte virtuelle</button>
-  `;
-}else{
-  statusArea.innerHTML = `
-    <div class="alert alert-danger">Solde insuffisant (1500 HTG requis)</div>
-    <a href="deposit.html" class="btn btn-primary">Ajoute lajan pou kontinye</a>
-  `;
-}
+updateWalletMessage();
 </script>
 
 </body>
