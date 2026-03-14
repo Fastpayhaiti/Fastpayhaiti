@@ -3,163 +3,396 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Recharge Carte</title>
-
+<title>Recharge Carte - FastPay</title>
 <style>
+*{
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
 
 body{
-font-family:Arial;
-background:#f1f5f9;
 margin:0;
+background:#eef2f7;
 padding:20px;
+color:#111827;
 }
 
 .container{
-max-width:420px;
+max-width:430px;
 margin:auto;
 }
 
-h1{
+.back{
+display:inline-block;
+margin-bottom:16px;
 color:#ff4d3d;
+text-decoration:none;
+font-weight:bold;
+}
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;
+}
+
+.logo{
+font-size:30px;
+font-weight:bold;
+color:#ff5a3d;
+}
+
+.profile{
+width:46px;
+height:46px;
+border-radius:14px;
+background:linear-gradient(135deg,#ff5a3d,#ff7a59);
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+font-size:18px;
+box-shadow:0 6px 16px rgba(255,90,61,0.25);
+}
+
+.hero{
+background:linear-gradient(135deg,#0891b2,#22d3ee);
+color:white;
+border-radius:26px;
+padding:24px;
+margin-bottom:18px;
+box-shadow:0 12px 28px rgba(34,211,238,0.20);
+}
+
+.hero h1{
+margin:0 0 10px 0;
+font-size:30px;
+line-height:1.2;
+}
+
+.hero p{
+margin:0;
+font-size:15px;
+line-height:1.6;
+opacity:0.98;
+}
+
+.section{
+background:white;
+padding:18px;
+border-radius:22px;
+box-shadow:0 8px 18px rgba(0,0,0,0.06);
+margin-bottom:18px;
+}
+
+.section h3{
+margin:0 0 16px 0;
+font-size:22px;
+color:#111827;
+}
+
+.balance-box{
+background:#f8fafc;
+padding:16px;
+border-radius:16px;
+margin-bottom:18px;
+text-align:center;
+}
+
+.balance-label{
+font-size:14px;
+color:#6b7280;
+margin-bottom:8px;
+}
+
+.balance-amount{
+font-size:28px;
+font-weight:bold;
+color:#111827;
 }
 
 .services{
 display:grid;
 grid-template-columns:repeat(2,1fr);
-gap:15px;
-margin-top:20px;
+gap:12px;
+margin-bottom:18px;
 }
 
-.card{
-background:white;
-padding:20px;
-border-radius:15px;
-box-shadow:0 4px 10px rgba(0,0,0,0.05);
+.service-card{
+border:2px solid #e5e7eb;
+border-radius:18px;
+padding:16px 10px;
 text-align:center;
+cursor:pointer;
+background:#fff;
+}
+
+.service-card.active{
+border-color:#0891b2;
+background:#ecfeff;
+}
+
+.service-icon{
+font-size:24px;
+margin-bottom:8px;
+display:block;
+}
+
+.service-title{
+font-size:15px;
+font-weight:bold;
+color:#111827;
+}
+
+label{
+display:block;
+margin-bottom:8px;
+font-weight:bold;
+color:#111827;
+}
+
+input, select, textarea{
+width:100%;
+padding:14px;
+border:1px solid #d1d5db;
+border-radius:14px;
+font-size:16px;
+background:white;
+margin-bottom:16px;
+}
+
+.submit-btn{
+width:100%;
+padding:16px;
+background:linear-gradient(135deg,#0891b2,#22d3ee);
+color:white;
+border:none;
+border-radius:16px;
+font-size:17px;
+font-weight:bold;
 cursor:pointer;
 }
 
-.card img{
-width:50px;
-margin-bottom:10px;
-}
-
-.card h3{
-margin:5px 0;
-}
-
-.form{
-margin-top:30px;
-background:white;
-padding:20px;
-border-radius:15px;
-}
-
-input,select{
-width:100%;
-padding:12px;
-margin-top:10px;
-margin-bottom:15px;
-border-radius:10px;
-border:1px solid #ccc;
-}
-
-button{
-width:100%;
-padding:15px;
-background:#ff4d3d;
-color:white;
-border:none;
-border-radius:12px;
-font-size:16px;
+.success-box{
+display:none;
+background:#ecfdf3;
+color:#166534;
+padding:16px;
+border-radius:16px;
 font-weight:bold;
+margin-top:16px;
+line-height:1.5;
 }
 
+.note{
+margin-top:14px;
+background:#f8fafc;
+padding:14px;
+border-radius:14px;
+font-size:14px;
+color:#6b7280;
+line-height:1.5;
+}
 </style>
 </head>
-
 <body>
 
 <div class="container">
+<a href="index.html" class="back">← Back Home</a>
 
+<div class="topbar">
+<div class="logo">FastPay</div>
+<div class="profile" id="profileLetter">L</div>
+</div>
+
+<div class="hero">
 <h1>Recharge Carte</h1>
+<p>Rechaje Wise, Meru, Payoneer ak lòt kat fasil atravè FastPay.</p>
+</div>
 
-<p>Chwazi kat ou vle rechaje</p>
+<div class="section">
+<div class="balance-box">
+<div class="balance-label">Solde wallet aktyèl</div>
+<div class="balance-amount" id="walletBalance">0 HTG</div>
+</div>
+
+<h3>Chwazi sèvis la</h3>
 
 <div class="services">
-
-<div class="card" onclick="selectService('Wise')">
-<h3>Wise</h3>
+<div class="service-card active" id="service-wise" onclick="selectService('Wise')">
+<span class="service-icon">💠</span>
+<div class="service-title">Wise</div>
 </div>
 
-<div class="card" onclick="selectService('Meru')">
-<h3>Meru</h3>
+<div class="service-card" id="service-meru" onclick="selectService('Meru')">
+<span class="service-icon">💳</span>
+<div class="service-title">Meru</div>
 </div>
 
-<div class="card" onclick="selectService('Payoneer')">
-<h3>Payoneer</h3>
+<div class="service-card" id="service-payoneer" onclick="selectService('Payoneer')">
+<span class="service-icon">🟠</span>
+<div class="service-title">Payoneer</div>
 </div>
 
-<div class="card" onclick="selectService('PayPal')">
-<h3>PayPal</h3>
+<div class="service-card" id="service-paypal" onclick="selectService('PayPal')">
+<span class="service-icon">🅿️</span>
+<div class="service-title">PayPal</div>
 </div>
 
-<div class="card" onclick="selectService('Skrill')">
-<h3>Skrill</h3>
+<div class="service-card" id="service-skrill" onclick="selectService('Skrill')">
+<span class="service-icon">💜</span>
+<div class="service-title">Skrill</div>
 </div>
 
-<div class="card" onclick="selectService('Debit Card')">
-<h3>Debit Card</h3>
+<div class="service-card" id="service-debit" onclick="selectService('Debit Card')">
+<span class="service-icon">🏦</span>
+<div class="service-title">Debit Card</div>
+</div>
+</div>
 </div>
 
-</div>
+<div class="section">
+<h3>Enfòmasyon recharge la</h3>
 
-<div class="form">
+<label>Sèvis chwazi</label>
+<input type="text" id="selectedService" value="Wise" readonly>
 
-<h3>Form Recharge</h3>
+<label>Non kliyan</label>
+<input type="text" id="clientName" placeholder="Antre non kliyan an">
 
-<input type="text" id="service" placeholder="Service choisi" readonly>
+<label>WhatsApp kliyan</label>
+<input type="text" id="whatsapp" placeholder="Eg: 50942778505">
 
-<input type="text" placeholder="Nom kliyan">
+<label>Email kont lan</label>
+<input type="email" id="email" placeholder="Antre email kont lan">
 
-<input type="text" placeholder="WhatsApp kliyan">
+<label>Non sou kat / kont</label>
+<input type="text" id="accountName" placeholder="Antre non sou kat la oswa kont lan">
 
-<input type="text" placeholder="Email kont lan">
+<label>4 dènye chif kat la</label>
+<input type="text" id="last4" placeholder="Eg: 4587">
 
-<input type="number" placeholder="Montan pou rechaje">
+<label>Devise</label>
+<select id="currency">
+<option>USD</option>
+<option>HTG</option>
+<option>EUR</option>
+</select>
 
-<select>
+<label>Montan pou rechaje</label>
+<input type="number" id="amount" placeholder="Antre montan an">
 
-<option>Metòd peman</option>
+<label>Metòd peman</label>
+<select id="paymentMethod">
 <option>Wallet</option>
 <option>Bank</option>
 <option>MonCash</option>
 <option>NatCash</option>
-
+<option>Cash</option>
 </select>
 
-<button onclick="submitRecharge()">Confirmer Recharge</button>
+<label>Detay / Nòt</label>
+<textarea id="details" rows="4" placeholder="Mete detay sou recharge la"></textarea>
 
+<button class="submit-btn" onclick="submitRechargeCard()">Confirmer Recharge</button>
+
+<div class="success-box" id="successBox"></div>
+
+<div class="note">
+Demann recharge carte yo ap parèt otomatikman sou Admin Dashboard la anba seksyon <strong>Recharge Card Requests</strong>.
+</div>
 </div>
 
 </div>
 
 <script>
+const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
+const profileLetter = document.getElementById("profileLetter");
+const walletBalance = localStorage.getItem("fastpay_balance") || 0;
+document.getElementById("walletBalance").innerHTML = walletBalance + " HTG";
+
+if(savedUser && savedUser.fullname){
+  profileLetter.innerHTML = savedUser.fullname.charAt(0).toUpperCase();
+  document.getElementById("clientName").value = savedUser.fullname || "";
+  document.getElementById("email").value = savedUser.email || "";
+}
+
+let currentService = "Wise";
+
+function clearActiveServices(){
+  document.getElementById("service-wise").classList.remove("active");
+  document.getElementById("service-meru").classList.remove("active");
+  document.getElementById("service-payoneer").classList.remove("active");
+  document.getElementById("service-paypal").classList.remove("active");
+  document.getElementById("service-skrill").classList.remove("active");
+  document.getElementById("service-debit").classList.remove("active");
+}
 
 function selectService(service){
+  currentService = service;
+  clearActiveServices();
 
-document.getElementById("service").value = service
+  if(service === "Wise") document.getElementById("service-wise").classList.add("active");
+  if(service === "Meru") document.getElementById("service-meru").classList.add("active");
+  if(service === "Payoneer") document.getElementById("service-payoneer").classList.add("active");
+  if(service === "PayPal") document.getElementById("service-paypal").classList.add("active");
+  if(service === "Skrill") document.getElementById("service-skrill").classList.add("active");
+  if(service === "Debit Card") document.getElementById("service-debit").classList.add("active");
 
+  document.getElementById("selectedService").value = service;
 }
 
-function submitRecharge(){
+function submitRechargeCard(){
+  const clientName = document.getElementById("clientName").value;
+  const whatsapp = document.getElementById("whatsapp").value;
+  const email = document.getElementById("email").value;
+  const accountName = document.getElementById("accountName").value;
+  const last4 = document.getElementById("last4").value;
+  const currency = document.getElementById("currency").value;
+  const amount = document.getElementById("amount").value;
+  const paymentMethod = document.getElementById("paymentMethod").value;
+  const details = document.getElementById("details").value;
 
-alert("Demande recharge envoyée. Admin ap verifye li.")
+  if(!clientName || !whatsapp || !email || !accountName || !amount){
+    alert("Tanpri ranpli tout enfòmasyon enpòtan yo.");
+    return;
+  }
 
+  const rechargeData = {
+    type: "Recharge Card Request",
+    service: currentService,
+    clientName: clientName,
+    whatsapp: whatsapp,
+    email: email,
+    accountName: accountName,
+    last4: last4,
+    currency: currency,
+    amount: amount + " " + currency,
+    paymentMethod: paymentMethod,
+    details: details,
+    status: "Pending Verification",
+    date: new Date().toLocaleString()
+  };
+
+  localStorage.setItem("fastpay_last_recharge_card", JSON.stringify(rechargeData));
+
+  let rechargeList = JSON.parse(localStorage.getItem("fastpay_recharge_cards")) || [];
+  rechargeList.unshift(rechargeData);
+  localStorage.setItem("fastpay_recharge_cards", JSON.stringify(rechargeList));
+
+  document.getElementById("successBox").style.display = "block";
+  document.getElementById("successBox").innerHTML =
+    "Recharge carte a voye avèk siksè. Admin ap wè li sou dashboard la epi verifye li.";
+
+  document.getElementById("whatsapp").value = "";
+  document.getElementById("accountName").value = "";
+  document.getElementById("last4").value = "";
+  document.getElementById("amount").value = "";
+  document.getElementById("details").value = "";
 }
-
 </script>
 
 </body>
-                </html>
+</html>
