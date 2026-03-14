@@ -3,65 +3,270 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register - FastPay</title>
+<title>FastPay Register v2</title>
 <style>
-*{box-sizing:border-box;font-family:Arial,sans-serif;}
-body{margin:0;background:#eef2f7;padding:20px;}
-.container{max-width:420px;margin:auto;}
-.card{background:white;padding:22px;border-radius:18px;box-shadow:0 4px 14px rgba(0,0,0,0.08);}
-h1{margin-top:0;color:#111827;}
-p{color:#6b7280;}
-label{display:block;margin-top:14px;margin-bottom:6px;font-weight:bold;color:#222;}
-input{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-size:16px;}
-button{margin-top:18px;width:100%;padding:14px;background:#ff4d3d;color:white;border:none;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;}
-.link{display:block;text-align:center;margin-top:14px;color:#ff4d3d;text-decoration:none;font-weight:bold;}
-.back{display:inline-block;margin-bottom:20px;color:#ff4d3d;text-decoration:none;font-weight:bold;}
-.success{display:none;margin-top:14px;background:#ecfdf3;color:#166534;padding:12px;border-radius:12px;font-weight:bold;text-align:center;}
+*{
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  margin:0;
+  background:#eef2f7;
+  padding:20px;
+  color:#111827;
+}
+
+.container{
+  max-width:430px;
+  margin:auto;
+}
+
+.back{
+  display:inline-block;
+  margin-bottom:16px;
+  color:#ff4d3d;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.logo{
+  font-size:30px;
+  font-weight:bold;
+  color:#ff5a3d;
+}
+
+.profile{
+  width:46px;
+  height:46px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#ff5a3d,#ff7a59);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:18px;
+  box-shadow:0 6px 16px rgba(255,90,61,0.25);
+}
+
+.hero{
+  background:linear-gradient(135deg,#ff4d3d,#ff8a5c);
+  color:white;
+  border-radius:26px;
+  padding:24px;
+  margin-bottom:18px;
+  box-shadow:0 12px 28px rgba(255,90,61,0.22);
+}
+
+.hero h1{
+  margin:0 0 10px 0;
+  font-size:30px;
+  line-height:1.2;
+}
+
+.hero p{
+  margin:0;
+  font-size:15px;
+  line-height:1.6;
+  opacity:0.98;
+}
+
+.section{
+  background:white;
+  border-radius:22px;
+  padding:18px;
+  box-shadow:0 8px 18px rgba(0,0,0,0.06);
+  margin-bottom:18px;
+}
+
+.section h2{
+  margin:0 0 14px 0;
+  font-size:22px;
+}
+
+label{
+  display:block;
+  margin-bottom:8px;
+  font-weight:bold;
+  color:#111827;
+}
+
+input{
+  width:100%;
+  padding:14px;
+  border:1px solid #d1d5db;
+  border-radius:14px;
+  font-size:16px;
+  background:white;
+  margin-bottom:16px;
+}
+
+.main-btn{
+  display:block;
+  width:100%;
+  text-align:center;
+  padding:15px;
+  border:none;
+  border-radius:16px;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:16px;
+  margin-top:12px;
+  cursor:pointer;
+}
+
+.orange-btn{
+  background:#ff4d3d;
+  color:white;
+}
+
+.dark-btn{
+  background:#111827;
+  color:white;
+}
+
+.notice{
+  display:none;
+  padding:14px;
+  border-radius:14px;
+  font-weight:bold;
+  line-height:1.5;
+  margin-bottom:14px;
+}
+
+.notice.success{
+  background:#ecfdf3;
+  color:#166534;
+}
+
+.notice.error{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.small-text{
+  color:#6b7280;
+  font-size:14px;
+  line-height:1.5;
+  margin-top:12px;
+  text-align:center;
+}
 </style>
 </head>
 <body>
+
 <div class="container">
+
 <a href="index.html" class="back">← Back Home</a>
-<div class="card">
-<h1>Create Account</h1>
-<p>Kreye kont FastPay ou an.</p>
 
-<form id="registerForm">
-<label>Full Name</label>
-<input type="text" id="fullname" placeholder="Antre non ou" required>
-
-<label>Email Address</label>
-<input type="email" id="email" placeholder="Antre imel ou" required>
-
-<label>Password</label>
-<input type="password" id="password" placeholder="Antre modpas ou" required>
-
-<button type="submit">Create Account</button>
-</form>
-
-<div class="success" id="successMsg">Kont lan kreye avèk siksè.</div>
-
-<a href="login.html" class="link">Already have an account? Login</a>
-</div>
+<div class="topbar">
+  <div class="logo">FastPay</div>
+  <div class="profile">R</div>
 </div>
 
+<div class="hero">
+  <h1>Create Account</h1>
+  <p>Kreye nouvo kont FastPay ou a pou jere wallet, kat, transfè ak sèvis yo.</p>
+</div>
+
+<div class="section">
+  <h2>Enfòmasyon kont lan</h2>
+
+  <div id="noticeBox" class="notice"></div>
+
+  <label>Non konplè</label>
+  <input type="text" id="fullname" placeholder="Antre non konplè ou">
+
+  <label>Email</label>
+  <input type="email" id="email" placeholder="Antre email ou">
+
+  <label>Nimewo telefòn / WhatsApp</label>
+  <input type="text" id="phone" placeholder="Eg: 50942778505">
+
+  <label>Modpas</label>
+  <input type="password" id="password" placeholder="Kreye modpas ou">
+
+  <label>Konfime modpas</label>
+  <input type="password" id="confirmPassword" placeholder="Retape modpas la">
+
+  <button class="main-btn orange-btn" onclick="registerUser()">Create My Account</button>
+  <a href="login.html" class="main-btn dark-btn">Mwen deja gen kont</a>
+
+  <div class="small-text">
+    Lè ou kreye kont la, ou ap konekte otomatikman sou FastPay v2.
+  </div>
+</div>
+
+</div>
+
+<script src="app.js"></script>
 <script>
-document.getElementById("registerForm").addEventListener("submit", function(e){
-  e.preventDefault();
+function showNotice(message, type){
+  const box = document.getElementById("noticeBox");
+  box.style.display = "block";
+  box.className = "notice " + type;
+  box.innerHTML = message;
+}
 
-  const fullname = document.getElementById("fullname").value;
-  const email = document.getElementById("email").value;
+function registerUser(){
+  const fullname = document.getElementById("fullname").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const phone = document.getElementById("phone").value.trim();
   const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
 
-  const user = { fullname, email, password };
-  localStorage.setItem("fastpay_user", JSON.stringify(user));
+  if(!fullname || !email || !phone || !password || !confirmPassword){
+    showNotice("Tanpri ranpli tout chan yo.", "error");
+    return;
+  }
 
-  document.getElementById("successMsg").style.display = "block";
+  if(password.length < 4){
+    showNotice("Modpas la dwe gen omwen 4 karaktè.", "error");
+    return;
+  }
 
-  setTimeout(() => {
-    window.location.href = "login.html";
-  }, 1200);
-});
+  if(password !== confirmPassword){
+    showNotice("2 modpas yo pa menm.", "error");
+    return;
+  }
+
+  const result = FastPayV2.registerUser({
+    fullname: fullname,
+    email: email,
+    phone: phone,
+    password: password
+  });
+
+  if(!result.success){
+    showNotice(result.message || "Kont la pa kreye.", "error");
+    return;
+  }
+
+  const loginResult = FastPayV2.loginUser(email, password);
+
+  if(loginResult.success){
+    showNotice("Kont la kreye avèk siksè. W ap antre sou dashboard la...", "success");
+    setTimeout(() => {
+      window.location.href = "dashboard.html";
+    }, 1200);
+  } else {
+    showNotice("Kont la kreye, men login otomatik la pa mache.", "error");
+  }
+}
+
+const session = FastPayV2.getSession();
+if(session && session.loggedIn){
+  window.location.href = "dashboard.html";
+}
 </script>
+
 </body>
 </html>
