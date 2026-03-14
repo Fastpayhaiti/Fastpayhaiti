@@ -1,335 +1,681 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FastPay Admin Approval</title>
-  <style>
-    *{
-      box-sizing:border-box;
-      font-family:Arial,sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FastPay Admin v2</title>
+<style>
+*{
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
 
-    body{
-      margin:0;
-      background:#eef2f7;
-      padding:20px;
-      color:#111827;
-    }
+body{
+  margin:0;
+  background:#eef2f7;
+  padding:20px;
+  color:#111827;
+}
 
-    .container{
-      max-width:430px;
-      margin:auto;
-    }
+.container{
+  max-width:430px;
+  margin:auto;
+}
 
-    .back{
-      display:inline-block;
-      margin-bottom:20px;
-      color:#ff4d3d;
-      text-decoration:none;
-      font-weight:bold;
-    }
+.back{
+  display:inline-block;
+  margin-bottom:20px;
+  color:#ff4d3d;
+  text-decoration:none;
+  font-weight:bold;
+}
 
-    .header{
-      background:linear-gradient(135deg,#ff4d3d,#ff8a5c);
-      color:white;
-      padding:22px;
-      border-radius:22px;
-      margin-bottom:20px;
-      box-shadow:0 10px 25px rgba(255,90,61,0.25);
-    }
+.header{
+  background:linear-gradient(135deg,#111827,#374151);
+  color:white;
+  padding:22px;
+  border-radius:22px;
+  margin-bottom:20px;
+  box-shadow:0 10px 25px rgba(17,24,39,0.22);
+}
 
-    .header h1{
-      margin:0;
-      font-size:30px;
-    }
+.header h1{
+  margin:0;
+  font-size:30px;
+}
 
-    .header p{
-      margin:8px 0 0;
-      opacity:0.96;
-      line-height:1.5;
-    }
+.header p{
+  margin:8px 0 0;
+  opacity:0.96;
+  line-height:1.5;
+}
 
-    .box{
-      background:white;
-      border-radius:20px;
-      padding:18px;
-      box-shadow:0 4px 14px rgba(0,0,0,0.08);
-      margin-bottom:16px;
-    }
+.notice{
+  display:none;
+  background:#ecfdf3;
+  color:#166534;
+  padding:14px;
+  border-radius:14px;
+  font-weight:bold;
+  margin-bottom:16px;
+  line-height:1.5;
+}
 
-    .box h2{
-      margin:0 0 14px 0;
-      font-size:22px;
-      color:#111827;
-    }
+.notice.error{
+  background:#fee2e2;
+  color:#991b1b;
+}
 
-    .empty{
-      color:#6b7280;
-      font-size:15px;
-    }
+.box{
+  background:white;
+  border-radius:20px;
+  padding:18px;
+  box-shadow:0 4px 14px rgba(0,0,0,0.08);
+  margin-bottom:16px;
+}
 
-    .item{
-      padding:14px 0;
-      border-bottom:1px solid #eee;
-    }
+.box h2{
+  margin:0 0 14px 0;
+  font-size:22px;
+  color:#111827;
+}
 
-    .item:last-child{
-      border-bottom:none;
-    }
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
 
-    .item-title{
-      font-weight:bold;
-      color:#111827;
-      font-size:16px;
-    }
+.stat-box{
+  background:#f8fafc;
+  border-radius:16px;
+  padding:14px;
+}
 
-    .item-sub{
-      color:#6b7280;
-      font-size:14px;
-      margin-top:4px;
-      line-height:1.45;
-    }
+.stat-title{
+  color:#6b7280;
+  font-size:13px;
+  margin-bottom:6px;
+}
 
-    .status{
-      display:inline-block;
-      padding:8px 14px;
-      border-radius:999px;
-      font-size:13px;
-      font-weight:bold;
-      margin-top:8px;
-    }
+.stat-value{
+  font-size:20px;
+  font-weight:bold;
+  color:#111827;
+}
 
-    .status-pending{
-      background:#fff7ed;
-      color:#c2410c;
-    }
+.empty{
+  color:#6b7280;
+  font-size:15px;
+}
 
-    .status-approved{
-      background:#ecfdf3;
-      color:#166534;
-    }
+.item{
+  padding:14px 0;
+  border-bottom:1px solid #eee;
+}
 
-    .status-rejected{
-      background:#fee2e2;
-      color:#991b1b;
-    }
+.item:last-child{
+  border-bottom:none;
+}
 
-    .action-row{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin-top:12px;
-    }
+.item-title{
+  font-weight:bold;
+  color:#111827;
+  font-size:16px;
+}
 
-    .mini-btn{
-      border:none;
-      border-radius:12px;
-      padding:10px 12px;
-      font-weight:bold;
-      cursor:pointer;
-      font-size:14px;
-    }
+.item-sub{
+  color:#6b7280;
+  font-size:14px;
+  margin-top:4px;
+  line-height:1.45;
+}
 
-    .approve-btn{
-      background:#10b981;
-      color:white;
-    }
+.status{
+  display:inline-block;
+  padding:8px 14px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:bold;
+  margin-top:8px;
+}
 
-    .reject-btn{
-      background:#ef4444;
-      color:white;
-    }
+.status-pending{
+  background:#fff7ed;
+  color:#c2410c;
+}
 
-    .btn{
-      display:block;
-      width:100%;
-      text-align:center;
-      padding:14px;
-      border:none;
-      border-radius:14px;
-      text-decoration:none;
-      font-size:16px;
-      font-weight:bold;
-      cursor:pointer;
-      margin-top:12px;
-    }
+.status-approved{
+  background:#ecfdf3;
+  color:#166534;
+}
 
-    .btn-primary{
-      background:#ff4d3d;
-      color:white;
-    }
+.status-rejected{
+  background:#fee2e2;
+  color:#991b1b;
+}
 
-    .btn-secondary{
-      background:#111827;
-      color:white;
-    }
-  </style>
+.status-active{
+  background:#eff6ff;
+  color:#1d4ed8;
+}
+
+.action-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+
+.mini-btn{
+  border:none;
+  border-radius:12px;
+  padding:10px 12px;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.approve-btn{
+  background:#10b981;
+  color:white;
+}
+
+.reject-btn{
+  background:#ef4444;
+  color:white;
+}
+
+.btn{
+  display:block;
+  width:100%;
+  text-align:center;
+  padding:14px;
+  border:none;
+  border-radius:14px;
+  text-decoration:none;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:12px;
+}
+
+.btn-primary{
+  background:#ff4d3d;
+  color:white;
+}
+
+.btn-secondary{
+  background:#111827;
+  color:white;
+}
+</style>
 </head>
 <body>
 
 <div class="container">
-  <a href="index.html" class="back">← Back Home</a>
+  <a href="dashboard.html" class="back">← Back Dashboard</a>
 
   <div class="header">
-    <h1>Admin Approval</h1>
-    <p>Apwouve oswa rejte tout demann kliyan yo sou FastPay.</p>
+    <h1>Admin Dashboard v2</h1>
+    <p>Jere users yo, verifye depo, retrè, transfè, epi kontwole mouvman FastPay v2 yo.</p>
+  </div>
+
+  <div id="noticeBox" class="notice"></div>
+
+  <div class="box">
+    <h2>Rezime platfòm nan</h2>
+    <div class="stat-grid">
+      <div class="stat-box">
+        <div class="stat-title">Total Users</div>
+        <div class="stat-value" id="totalUsers">0</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-title">Deposit Requests</div>
+        <div class="stat-value" id="totalDeposits">0</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-title">Withdraw Requests</div>
+        <div class="stat-value" id="totalWithdraws">0</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-title">Transfer Requests</div>
+        <div class="stat-value" id="totalTransfers">0</div>
+      </div>
+    </div>
   </div>
 
   <div class="box">
-    <h2>Deposit Requests</h2>
+    <h2>Users v2</h2>
+    <div id="usersBox" class="empty">Pa gen users pou kounye a.</div>
+  </div>
+
+  <div class="box">
+    <h2>Deposit Requests v2</h2>
     <div id="depositBox" class="empty">Pa gen demann depo pou kounye a.</div>
   </div>
 
   <div class="box">
-    <h2>Withdraw Requests</h2>
+    <h2>Withdraw Requests v2</h2>
     <div id="withdrawBox" class="empty">Pa gen demann retrè pou kounye a.</div>
   </div>
 
   <div class="box">
-    <h2>Transfer Requests</h2>
+    <h2>Transfer Requests v2</h2>
     <div id="transferBox" class="empty">Pa gen demann transfè pou kounye a.</div>
   </div>
 
-  <div class="box">
-    <h2>Virtual Card Requests</h2>
-    <div id="cardBox" class="empty">Pa gen demann kat pou kounye a.</div>
-  </div>
-
-  <div class="box">
-    <h2>Recharge Card Requests</h2>
-    <div id="rechargeBox" class="empty">Pa gen recharge card pou kounye a.</div>
-  </div>
-
-  <div class="box">
-    <h2>Social Media Orders</h2>
-    <div id="socialBox" class="empty">Pa gen lòd social media pou kounye a.</div>
-  </div>
-
-  <div class="box">
-    <h2>Top Up Orders</h2>
-    <div id="topupBox" class="empty">Pa gen top up pou kounye a.</div>
-  </div>
-
-  <button class="btn btn-primary" onclick="loadAll()">Refresh Dashboard</button>
-  <button class="btn btn-secondary" onclick="clearAll()">Clear All Requests</button>
+  <button class="btn btn-primary" onclick="loadAll()">Refresh Admin</button>
+  <button class="btn btn-secondary" onclick="clearV2Requests()">Clear All Requests</button>
 </div>
 
+<script src="app.js"></script>
 <script>
+function showNotice(message, isError = false){
+  const box = document.getElementById("noticeBox");
+  box.style.display = "block";
+  box.className = isError ? "notice error" : "notice";
+  box.innerHTML = message;
+}
+
 function getStatusClass(status){
-  if(status === "Approved" || status === "Completed" || status === "Paid with Wallet"){
+  const value = String(status || "").toLowerCase();
+
+  if(value.includes("approved") || value.includes("completed") || value.includes("paid")){
     return "status-approved";
   }
-  if(status === "Rejected"){
+  if(value.includes("rejected")){
     return "status-rejected";
+  }
+  if(value.includes("active")){
+    return "status-active";
   }
   return "status-pending";
 }
 
-function setStatus(storageKey, index, newStatus){
-  let items = JSON.parse(localStorage.getItem(storageKey)) || [];
-  if(!items[index]) return;
-
-  items[index].status = newStatus;
-  localStorage.setItem(storageKey, JSON.stringify(items));
-  loadAll();
+function getUsers(){
+  return FastPayDB.get("fp_users", []);
 }
 
-function renderBox(boxId, storageKey, type){
-  const box = document.getElementById(boxId);
-  const items = JSON.parse(localStorage.getItem(storageKey)) || [];
+function saveUsers(users){
+  FastPayDB.set("fp_users", users);
+}
 
-  if(items.length === 0){
+function getDeposits(){
+  return FastPayDB.get("fastpay_deposits", []);
+}
+
+function saveDeposits(items){
+  FastPayDB.set("fastpay_deposits", items);
+}
+
+function getWithdraws(){
+  return FastPayDB.get("fastpay_withdraws", []);
+}
+
+function saveWithdraws(items){
+  FastPayDB.set("fastpay_withdraws", items);
+}
+
+function getTransfers(){
+  return FastPayDB.get("fastpay_transfers", []);
+}
+
+function saveTransfers(items){
+  FastPayDB.set("fastpay_transfers", items);
+}
+
+function getUserById(userId){
+  const users = getUsers();
+  return users.find(u => u.id === userId) || null;
+}
+
+function approveDeposit(index){
+  let deposits = getDeposits();
+  if(!deposits[index]){
+    showNotice("Demann depo a pa jwenn.", true);
+    return;
+  }
+
+  const deposit = deposits[index];
+  const user = getUserById(deposit.userId);
+
+  if(!user){
+    showNotice("User depo sa a pa jwenn.", true);
+    return;
+  }
+
+  if(String(deposit.status).toLowerCase().includes("approved")){
+    showNotice("Depo sa deja apwouve.", true);
+    return;
+  }
+
+  deposits[index].status = "Approved";
+  saveDeposits(deposits);
+
+  const amountValue = parseInt(deposit.amountValue || 0);
+  FastPayV2.addBalance(user.id, amountValue);
+
+  FastPayV2.addNotification({
+    userId: user.id,
+    title: "Deposit approved",
+    text: "Depo ou a pou " + deposit.amount + " apwouve avèk siksè.",
+    type: "success"
+  });
+
+  FastPayV2.addTransaction({
+    userId: user.id,
+    service: "Deposit Approved",
+    amount: "+" + amountValue + " " + (deposit.currency || "HTG"),
+    type: "deposit-approved",
+    status: "approved",
+    meta: {
+      depositId: deposit.id,
+      reference: deposit.reference || "N/A"
+    }
+  });
+
+  loadAll();
+  showNotice("Depo a apwouve epi balans user la mete ajou.");
+}
+
+function rejectDeposit(index){
+  let deposits = getDeposits();
+  if(!deposits[index]){
+    showNotice("Demann depo a pa jwenn.", true);
+    return;
+  }
+
+  deposits[index].status = "Rejected";
+  saveDeposits(deposits);
+
+  const user = getUserById(deposits[index].userId);
+  if(user){
+    FastPayV2.addNotification({
+      userId: user.id,
+      title: "Deposit rejected",
+      text: "Depo ou a rejte. Verifye detay yo epi eseye ankò.",
+      type: "warning"
+    });
+  }
+
+  loadAll();
+  showNotice("Depo a rejte.");
+}
+
+function approveWithdraw(index){
+  let withdraws = getWithdraws();
+  if(!withdraws[index]){
+    showNotice("Demann retrè a pa jwenn.", true);
+    return;
+  }
+
+  const item = withdraws[index];
+  const user = getUserById(item.userId);
+
+  if(!user){
+    showNotice("User retrè sa a pa jwenn.", true);
+    return;
+  }
+
+  if(String(item.status).toLowerCase().includes("approved")){
+    showNotice("Retrè sa deja apwouve.", true);
+    return;
+  }
+
+  withdraws[index].status = "Approved";
+  saveWithdraws(withdraws);
+
+  FastPayV2.addNotification({
+    userId: user.id,
+    title: "Withdraw approved",
+    text: "Retrè ou a pou " + item.amount + " apwouve avèk siksè.",
+    type: "success"
+  });
+
+  FastPayV2.addTransaction({
+    userId: user.id,
+    service: "Withdraw Approved",
+    amount: "-" + (item.amountValue || 0) + " " + (item.currency || "HTG"),
+    type: "withdraw-approved",
+    status: "approved",
+    meta: {
+      withdrawId: item.id,
+      method: item.method || "N/A"
+    }
+  });
+
+  loadAll();
+  showNotice("Retrè a apwouve avèk siksè.");
+}
+
+function rejectWithdraw(index){
+  let withdraws = getWithdraws();
+  if(!withdraws[index]){
+    showNotice("Demann retrè a pa jwenn.", true);
+    return;
+  }
+
+  withdraws[index].status = "Rejected";
+  saveWithdraws(withdraws);
+
+  const user = getUserById(withdraws[index].userId);
+  if(user){
+    FastPayV2.addNotification({
+      userId: user.id,
+      title: "Withdraw rejected",
+      text: "Retrè ou a rejte. Verifye detay yo epi eseye ankò.",
+      type: "warning"
+    });
+  }
+
+  loadAll();
+  showNotice("Retrè a rejte.");
+}
+
+function approveTransfer(index){
+  let transfers = getTransfers();
+  if(!transfers[index]){
+    showNotice("Demann transfè a pa jwenn.", true);
+    return;
+  }
+
+  const item = transfers[index];
+  const user = getUserById(item.userId);
+
+  if(!user){
+    showNotice("User transfè sa a pa jwenn.", true);
+    return;
+  }
+
+  if(String(item.status).toLowerCase().includes("approved")){
+    showNotice("Transfè sa deja apwouve.", true);
+    return;
+  }
+
+  transfers[index].status = "Approved";
+  saveTransfers(transfers);
+
+  FastPayV2.addNotification({
+    userId: user.id,
+    title: "Transfer approved",
+    text: "Transfè ou a pou " + item.amount + " apwouve avèk siksè.",
+    type: "success"
+  });
+
+  FastPayV2.addTransaction({
+    userId: user.id,
+    service: "Transfer Approved",
+    amount: "-" + (item.amountValue || 0) + " " + (item.currency || "HTG"),
+    type: "transfer-approved",
+    status: "approved",
+    meta: {
+      transferId: item.id,
+      receiverName: item.receiverName || "N/A"
+    }
+  });
+
+  loadAll();
+  showNotice("Transfè a apwouve avèk siksè.");
+}
+
+function rejectTransfer(index){
+  let transfers = getTransfers();
+  if(!transfers[index]){
+    showNotice("Demann transfè a pa jwenn.", true);
+    return;
+  }
+
+  transfers[index].status = "Rejected";
+  saveTransfers(transfers);
+
+  const user = getUserById(transfers[index].userId);
+  if(user){
+    FastPayV2.addNotification({
+      userId: user.id,
+      title: "Transfer rejected",
+      text: "Transfè ou a rejte. Verifye detay yo epi eseye ankò.",
+      type: "warning"
+    });
+  }
+
+  loadAll();
+  showNotice("Transfè a rejte.");
+}
+
+function renderUsers(){
+  const box = document.getElementById("usersBox");
+  const users = getUsers();
+
+  document.getElementById("totalUsers").innerHTML = users.length;
+
+  if(users.length === 0){
     box.className = "empty";
-    box.innerHTML = "Pa gen done pou kounye a.";
+    box.innerHTML = "Pa gen users pou kounye a.";
     return;
   }
 
   box.className = "";
   box.innerHTML = "";
 
-  items.forEach((item, index) => {
-    let title = "Request";
-    let details = "";
-
-    if(type === "deposit"){
-      title = `${item.clientName || "Client"} - ${item.amount || "0"}`;
-      details = `
-        <div class="item-sub"><strong>Method:</strong> ${item.method || "N/A"}</div>
-        <div class="item-sub"><strong>Bank:</strong> ${item.bank || "N/A"}</div>
-        <div class="item-sub"><strong>Currency:</strong> ${item.currency || "N/A"}</div>
-        <div class="item-sub"><strong>Date:</strong> ${item.date || "N/A"}</div>
-      `;
-    }
-
-    if(type === "withdraw"){
-      title = `${item.clientName || "Client"} - ${item.amount || "0"}`;
-      details = `
-        <div class="item-sub"><strong>Method:</strong> ${item.method || "N/A"}</div>
-        <div class="item-sub"><strong>Bank:</strong> ${item.bank || "N/A"}</div>
-        <div class="item-sub"><strong>Account:</strong> ${item.accountName || "N/A"}</div>
-        <div class="item-sub"><strong>Date:</strong> ${item.date || "N/A"}</div>
-      `;
-    }
-
-    if(type === "transfer"){
-      title = `${item.clientName || "Client"} - ${item.amount || "0"}`;
-      details = `
-        <div class="item-sub"><strong>Receiver:</strong> ${item.receiverName || "N/A"}</div>
-        <div class="item-sub"><strong>Receiver ID:</strong> ${item.receiverId || "N/A"}</div>
-        <div class="item-sub"><strong>Date:</strong> ${item.date || "N/A"}</div>
-      `;
-    }
-
-    if(type === "card"){
-      title = `${item.fullName || "Client"} - ${item.cardType || "Virtual Card"}`;
-      details = `
-        <div class="item-sub"><strong>Email:</strong> ${item.email || "N/A"}</div>
-        <div class="item-sub"><strong>Payment:</strong> ${item.paymentMethod || "N/A"}</div>
-        <div class="item-sub"><strong>Amount:</strong> ${item.amount || "1500 HTG"}</div>
-        <div class="item-sub"><strong>Date:</strong> ${item.date || "N/A"}</div>
-      `;
-    }
-
-    if(type === "recharge"){
-      title = `${item.service || "Recharge"} - ${item.amount || "0"}`;
-      details = `
-        <div class="item-sub"><strong>Client:</strong> ${item.clientName || "N/A"}</div>
-        <div class="item-sub"><strong>Payment:</strong> ${item.paymentMethod || "N/A"}</div>
-        <div class="item-sub"><strong>Date:</strong> ${item.date || "N/A"}</div>
-      `;
-    }
-
-    if(type === "social"){
-      title = `${item.service || "Social Order"} - ${item.amount || "0"}`;
-      details = `
-        <div class="item-sub"><strong>Client:</strong> ${item.fullname || item.clientName || "N/A"}</div>
-        <div class="item-sub"><strong>Platform:</strong> ${item.platform || "N/A"}</div>
-        <div class="item-sub"><strong>Date:</strong> ${item.date || "N/A"}</div>
-      `;
-    }
-
-    if(type === "topup"){
-      title = `${item.operator || "Top Up"} - ${item.amount || "0"}`;
-      details = `
-        <div class="item-sub"><strong>Client:</strong> ${item.clientName || "N/A"}</div>
-        <div class="item-sub"><strong>Phone:</strong> ${item.phoneNumber || "N/A"}</div>
-        <div class="item-sub"><strong>Plan:</strong> ${item.plan || "N/A"}</div>
-        <div class="item-sub"><strong>Date:</strong> ${item.date || "N/A"}</div>
-      `;
-    }
-
-    const status = item.status || "Pending Verification";
-    const statusClass = getStatusClass(status);
+  users.forEach(user => {
+    const notifications = FastPayV2.getUserNotifications(user.id) || [];
+    const transactions = FastPayV2.getUserTransactions(user.id) || [];
 
     box.innerHTML += `
       <div class="item">
-        <div class="item-title">${title}</div>
-        ${details}
-        <div class="status ${statusClass}">${status}</div>
+        <div class="item-title">${user.fullname || "User"} - ${user.balance || 0} HTG</div>
+        <div class="item-sub"><strong>User ID:</strong> ${user.id || "N/A"}</div>
+        <div class="item-sub"><strong>Email:</strong> ${user.email || "N/A"}</div>
+        <div class="item-sub"><strong>Phone:</strong> ${user.phone || "N/A"}</div>
+        <div class="item-sub"><strong>Status:</strong> ${user.status || "active"}</div>
+        <div class="item-sub"><strong>Notifications:</strong> ${notifications.length}</div>
+        <div class="item-sub"><strong>Transactions:</strong> ${transactions.length}</div>
+        <div class="item-sub"><strong>Created:</strong> ${user.createdAt || "N/A"}</div>
+        <div class="status ${getStatusClass(user.status || "active")}">${user.status || "active"}</div>
+      </div>
+    `;
+  });
+}
+
+function renderDeposits(){
+  const box = document.getElementById("depositBox");
+  const deposits = getDeposits();
+
+  document.getElementById("totalDeposits").innerHTML = deposits.length;
+
+  if(deposits.length === 0){
+    box.className = "empty";
+    box.innerHTML = "Pa gen demann depo pou kounye a.";
+    return;
+  }
+
+  box.className = "";
+  box.innerHTML = "";
+
+  deposits.forEach((item, index) => {
+    box.innerHTML += `
+      <div class="item">
+        <div class="item-title">${item.clientName || "Client"} - ${item.amount || "0"}</div>
+        <div class="item-sub"><strong>User ID:</strong> ${item.userId || "N/A"}</div>
+        <div class="item-sub"><strong>Method:</strong> ${item.method || "N/A"}</div>
+        <div class="item-sub"><strong>Bank:</strong> ${item.bank || "N/A"}</div>
+        <div class="item-sub"><strong>Reference:</strong> ${item.reference || "N/A"}</div>
+        <div class="item-sub"><strong>Date:</strong> ${item.date || "N/A"}</div>
+        <div class="status ${getStatusClass(item.status)}">${item.status || "Pending Verification"}</div>
         <div class="action-row">
-          <button class="mini-btn approve-btn" onclick="setStatus('${storageKey}', ${index}, 'Approved')">Approve</button>
-          <button class="mini-btn reject-btn" onclick="setStatus('${storageKey}', ${index}, 'Rejected')">Reject</button>
+          <button class="mini-btn approve-btn" onclick="approveDeposit(${index})">Approve</button>
+          <button class="mini-btn reject-btn" onclick="rejectDeposit(${index})">Reject</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function renderWithdraws(){
+  const box = document.getElementById("withdrawBox");
+  const withdraws = getWithdraws();
+
+  document.getElementById("totalWithdraws").innerHTML = withdraws.length;
+
+  if(withdraws.length === 0){
+    box.className = "empty";
+    box.innerHTML = "Pa gen demann retrè pou kounye a.";
+    return;
+  }
+
+  box.className = "";
+  box.innerHTML = "";
+
+  withdraws.forEach((item, index) => {
+    box.innerHTML += `
+      <div class="item">
+        <div class="item-title">${item.clientName || "Client"} - ${item.amount || "0"}</div>
+        <div class="item-sub"><strong>User ID:</strong> ${item.userId || "N/A"}</div>
+        <div class="item-sub"><strong>Method:</strong> ${item.method || "N/A"}</div>
+        <div class="item-sub"><strong>Bank:</strong> ${item.bank || "N/A"}</div>
+        <div class="item-sub"><strong>Account Name:</strong> ${item.accountName || "N/A"}</div>
+        <div class="item-sub"><strong>Account Number:</strong> ${item.accountNumber || "N/A"}</div>
+        <div class="item-sub"><strong>Date:</strong> ${item.date || "N/A"}</div>
+        <div class="status ${getStatusClass(item.status)}">${item.status || "Pending Verification"}</div>
+        <div class="action-row">
+          <button class="mini-btn approve-btn" onclick="approveWithdraw(${index})">Approve</button>
+          <button class="mini-btn reject-btn" onclick="rejectWithdraw(${index})">Reject</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function renderTransfers(){
+  const box = document.getElementById("transferBox");
+  const transfers = getTransfers();
+
+  document.getElementById("totalTransfers").innerHTML = transfers.length;
+
+  if(transfers.length === 0){
+    box.className = "empty";
+    box.innerHTML = "Pa gen demann transfè pou kounye a.";
+    return;
+  }
+
+  box.className = "";
+  box.innerHTML = "";
+
+  transfers.forEach((item, index) => {
+    box.innerHTML += `
+      <div class="item">
+        <div class="item-title">${item.clientName || "Client"} - ${item.amount || "0"}</div>
+        <div class="item-sub"><strong>User ID:</strong> ${item.userId || "N/A"}</div>
+        <div class="item-sub"><strong>Type:</strong> ${item.transferType || "N/A"}</div>
+        <div class="item-sub"><strong>Receiver:</strong> ${item.receiverName || "N/A"}</div>
+        <div class="item-sub"><strong>Receiver ID:</strong> ${item.receiverId || "N/A"}</div>
+        <div class="item-sub"><strong>Reference:</strong> ${item.reference || "N/A"}</div>
+        <div class="item-sub"><strong>Date:</strong> ${item.date || "N/A"}</div>
+        <div class="status ${getStatusClass(item.status)}">${item.status || "Pending Verification"}</div>
+        <div class="action-row">
+          <button class="mini-btn approve-btn" onclick="approveTransfer(${index})">Approve</button>
+          <button class="mini-btn reject-btn" onclick="rejectTransfer(${index})">Reject</button>
         </div>
       </div>
     `;
@@ -337,28 +683,22 @@ function renderBox(boxId, storageKey, type){
 }
 
 function loadAll(){
-  renderBox("depositBox", "fastpay_deposits", "deposit");
-  renderBox("withdrawBox", "fastpay_withdraws", "withdraw");
-  renderBox("transferBox", "fastpay_transfers", "transfer");
-  renderBox("cardBox", "fastpay_card_requests", "card");
-  renderBox("rechargeBox", "fastpay_recharge_cards", "recharge");
-  renderBox("socialBox", "fastpay_social_orders", "social");
-  renderBox("topupBox", "fastpay_topups", "topup");
+  renderUsers();
+  renderDeposits();
+  renderWithdraws();
+  renderTransfers();
 }
 
-function clearAll(){
-  localStorage.removeItem("fastpay_deposits");
-  localStorage.removeItem("fastpay_withdraws");
-  localStorage.removeItem("fastpay_transfers");
-  localStorage.removeItem("fastpay_card_requests");
-  localStorage.removeItem("fastpay_recharge_cards");
-  localStorage.removeItem("fastpay_social_orders");
-  localStorage.removeItem("fastpay_topups");
+function clearV2Requests(){
+  FastPayDB.remove("fastpay_deposits");
+  FastPayDB.remove("fastpay_withdraws");
+  FastPayDB.remove("fastpay_transfers");
   loadAll();
+  showNotice("Tout demand v2 yo efase.");
 }
 
-window.onload = loadAll;
+loadAll();
 </script>
 
 </body>
-</html>
+  </html>
