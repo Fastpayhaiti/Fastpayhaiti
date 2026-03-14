@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FastPay Admin Cards</title>
+<style>
+*{
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  margin:0;
+  background:#eef2f7;
+  padding:20px;
+  color:#111827;
+}
+
+.container{
+  max-width:430px;
+  margin:auto;
+}
+
+.back{
+  display:inline-block;
+  margin-bottom:20px;
+  color:#ff4d3d;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.header{
+  background:linear-gradient(135deg,#111827,#374151);
+  color:white;
+  padding:22px;
+  border-radius:22px;
+  margin-bottom:20px;
+  box-shadow:0 10px 25px rgba(17,24,39,0.22);
+}
+
+.header h1{
+  margin:0;
+  font-size:30px;
+}
+
+.header p{
+  margin:8px 0 0;
+  opacity:0.96;
+  line-height:1.5;
+}
+
+.box{
+  background:white;
+  border-radius:20px;
+  padding:18px;
+  box-shadow:0 4px 14px rgba(0,0,0,0.08);
+  margin-bottom:16px;
+}
+
+.box h2{
+  margin:0 0 14px 0;
+  font-size:22px;
+  color:#111827;
+}
+
+.empty{
+  color:#6b7280;
+  font-size:15px;
+}
+
+.item{
+  padding:14px 0;
+  border-bottom:1px solid #eee;
+}
+
+.item:last-child{
+  border-bottom:none;
+}
+
+.item-title{
+  font-weight:bold;
+  color:#111827;
+  font-size:16px;
+}
+
+.item-sub{
+  color:#6b7280;
+  font-size:14px;
+  margin-top:4px;
+  line-height:1.45;
+}
+
+.status{
+  display:inline-block;
+  padding:8px 14px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:bold;
+  margin-top:8px;
+}
+
+.status-pending{
+  background:#fff7ed;
+  color:#c2410c;
+}
+
+.status-approved{
+  background:#ecfdf3;
+  color:#166534;
+}
+
+.status-rejected{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.status-frozen{
+  background:#eff6ff;
+  color:#1d4ed8;
+}
+
+.action-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+
+.action-row-3{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+
+.mini-btn{
+  border:none;
+  border-radius:12px;
+  padding:10px 12px;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.approve-btn{
+  background:#10b981;
+  color:white;
+}
+
+.reject-btn{
+  background:#ef4444;
+  color:white;
+}
+
+.freeze-btn{
+  background:#1d4ed8;
+  color:white;
+}
+
+.activate-btn{
+  background:#047857;
+  color:white;
+}
+
+.load-btn{
+  background:#ff4d3d;
+  color:white;
+}
+
+.btn{
+  display:block;
+  width:100%;
+  text-align:center;
+  padding:14px;
+  border:none;
+  border-radius:14px;
+  text-decoration:none;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:12px;
+}
+
+.btn-primary{
+  background:#ff4d3d;
+  color:white;
+}
+
+.btn-secondary{
+  background:#111827;
+  color:white;
+}
+
+.notice{
+  display:none;
+  background:#ecfdf3;
+  color:#166534;
+  padding:14px;
+  border-radius:14px;
+  font-weight:bold;
+  margin-bottom:16px;
+  line-height:1.5;
+}
+
+.notice.error{
+  background:#fee2e2;
+  color:#991b1b;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="admin.html" class="back">← Back Admin</a>
+
+  <div class="header">
+    <h1>Admin Cards</h1>
+    <p>Jere tout demann kat yo, aktive kat yo, bloke yo, epi kontwole balans yo.</p>
+  </div>
+
+  <div id="noticeBox" class="notice"></div>
+
+  <div class="box">
+    <h2>Card Requests</h2>
+    <div id="requestBox" class="empty">Pa gen demann kat pou kounye a.</div>
+  </div>
+
+  <div class="box">
+    <h2>Active / Existing Cards</h2>
+    <div id="cardsBox" class="empty">Pa gen kat aktif pou kounye a.</div>
+  </div>
+
+  <button class="btn btn-primary" onclick="loadAll()">Refresh Cards</button>
+  <button class="btn btn-secondary" onclick="clearCardRequests()">Clear Card Requests</button>
+</div>
+
+<script>
+function showNotice(message, isError = false){
+  const box = document.getElementById("noticeBox");
+  box.style.display = "block";
+  box.className = isError ? "notice error" : "notice";
+  box.innerHTML = message;
+}
+
+function getStatusClass(status){
+  if(status === "Approved" || status === "Active"){
+    return "status-approved";
+  }
+  if(status === "Rejected"){
+    return "status-rejected";
+  }
+  if(status === "Frozen"){
+    return "status-frozen";
+  }
+  return "status-pending";
+}
+
+function createVirtualCardFromRequest(request){
+  const cardData = {
+    active: true,
+    number: "**** **** **** 4587",
+    name: (request.fullName || "FASTPAY USER").toUpperCase(),
+    exp: "12/29",
+    cvv: "392",
+    brand: (request.network || "Visa").toUpperCase(),
+    status: "Active",
+    balance: 0,
+    cardType: request.cardType || "Virtual Card",
+    currency: request.currency || "HTG",
+    createdAt: new Date().toLocaleString()
+  };
+
+  localStorage.setItem("fastpay_virtual_card", JSON.stringify(cardData));
+  return cardData;
+}
+
+function approveRequest(index){
+  let requests = JSON.parse(localStorage.getItem("fastpay_card_requests")) || [];
+  if(!requests[index]) return;
+
+  requests[index].status = "Approved";
+  localStorage.setItem("fastpay_card_requests", JSON.stringify(requests));
+
+  createVirtualCardFromRequest(requests[index]);
+  loadAll();
+  showNotice("Demann kat la apwouve avèk siksè, epi kat la aktive.");
+}
+
+function rejectRequest(index){
+  let requests = JSON.parse(localStorage.getItem("fastpay_card_requests")) || [];
+  if(!requests[index]) return;
+
+  requests[index].status = "Rejected";
+  localStorage.setItem("fastpay_card_requests", JSON.stringify(requests));
+  loadAll();
+  showNotice("Demann kat la rejte.");
+}
+
+function freezeExistingCard(){
+  let card = JSON.parse(localStorage.getItem("fastpay_virtual_card") || "null");
+  if(!card){
+    showNotice("Pa gen kat aktif pou freeze.", true);
+    return;
+  }
+
+  card.status = "Frozen";
+  localStorage.setItem("fastpay_virtual_card", JSON.stringify(card));
+  loadAll();
+  showNotice("Kat la freeze avèk siksè.");
+}
+
+function activateExistingCard(){
+  let card = JSON.parse(localStorage.getItem("fastpay_virtual_card") || "null");
+  if(!card){
+    showNotice("Pa gen kat aktif pou aktive.", true);
+    return;
+  }
+
+  card.status = "Active";
+  localStorage.setItem("fastpay_virtual_card", JSON.stringify(card));
+  loadAll();
+  showNotice("Kat la aktive avèk siksè.");
+}
+
+function loadExistingCardBalance(){
+  let card = JSON.parse(localStorage.getItem("fastpay_virtual_card") || "null");
+  let wallet = parseInt(localStorage.getItem("fastpay_balance") || "0");
+
+  if(!card){
+    showNotice("Pa gen kat aktif pou rechaje.", true);
+    return;
+  }
+
+  const amountText = prompt("Antre montan ou vle mete sou kat la (HTG):");
+  if(amountText === null) return;
+
+  const amount = parseInt(amountText);
+  if(!amount || amount <= 0){
+    showNotice("Montan an pa valab.", true);
+    return;
+  }
+
+  if(wallet < amount){
+    showNotice("Wallet pa gen ase balans pou rechaje kat la.", true);
+    return;
+  }
+
+  wallet -= amount;
+  localStorage.setItem("fastpay_balance", wallet);
+
+  card.balance = parseInt(card.balance || 0) + amount;
+  localStorage.setItem("fastpay_virtual_card", JSON.stringify(card));
+
+  let transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
+  transactions.unshift({
+    service: "Admin Load Card - " + (card.brand || "CARD"),
+    amount: "-" + amount + " HTG",
+    date: new Date().toLocaleString(),
+    orderId: "ADMINLOAD-" + Math.floor(Math.random() * 90000 + 10000)
+  });
+  localStorage.setItem("fastpay_transactions", JSON.stringify(transactions));
+
+  loadAll();
+  showNotice("Kat la rechaje avèk siksè ak " + amount + " HTG.");
+}
+
+function renderRequests(){
+  const box = document.getElementById("requestBox");
+  const requests = JSON.parse(localStorage.getItem("fastpay_card_requests")) || [];
+
+  if(requests.length === 0){
+    box.className = "empty";
+    box.innerHTML = "Pa gen demann kat pou kounye a.";
+    return;
+  }
+
+  box.className = "";
+  box.innerHTML = "";
+
+  requests.forEach((item, index) => {
+    const status = item.status || "Pending Payment Verification";
+    const statusClass = getStatusClass(status);
+
+    box.innerHTML += `
+      <div class="item">
+        <div class="item-title">${item.fullName || "Client"} - ${item.cardType || "Virtual Card"}</div>
+        <div class="item-sub"><strong>Network:</strong> ${item.network || "N/A"}</div>
+        <div class="item-sub"><strong>Email:</strong> ${item.email || "N/A"}</div>
+        <div class="item-sub"><strong>WhatsApp:</strong> ${item.whatsapp || "N/A"}</div>
+        <div class="item-sub"><strong>Currency:</strong> ${item.currency || "N/A"}</div>
+        <div class="item-sub"><strong>Payment Method:</strong> ${item.paymentMethod || "N/A"}</div>
+        <div class="item-sub"><strong>Amount:</strong> ${item.amount || "N/A"}</div>
+        <div class="item-sub"><strong>Date:</strong> ${item.date || "N/A"}</div>
+        <div class="status ${statusClass}">${status}</div>
+        <div class="action-row">
+          <button class="mini-btn approve-btn" onclick="approveRequest(${index})">Approve</button>
+          <button class="mini-btn reject-btn" onclick="rejectRequest(${index})">Reject</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function renderExistingCards(){
+  const box = document.getElementById("cardsBox");
+  const card = JSON.parse(localStorage.getItem("fastpay_virtual_card") || "null");
+
+  if(!card){
+    box.className = "empty";
+    box.innerHTML = "Pa gen kat aktif pou kounye a.";
+    return;
+  }
+
+  const status = card.status || "Active";
+  const statusClass = getStatusClass(status);
+
+  box.className = "";
+  box.innerHTML = `
+    <div class="item">
+      <div class="item-title">${card.name || "FASTPAY USER"} - ${card.cardType || "Virtual Card"}</div>
+      <div class="item-sub"><strong>Brand:</strong> ${card.brand || "Visa"}</div>
+      <div class="item-sub"><strong>Number:</strong> ${card.number || "**** **** **** 4587"}</div>
+      <div class="item-sub"><strong>EXP:</strong> ${card.exp || "12/29"}</div>
+      <div class="item-sub"><strong>Currency:</strong> ${card.currency || "HTG"}</div>
+      <div class="item-sub"><strong>Balance:</strong> ${card.balance || 0} HTG</div>
+      <div class="item-sub"><strong>Created:</strong> ${card.createdAt || "N/A"}</div>
+      <div class="status ${statusClass}">${status}</div>
+      <div class="action-row-3">
+        <button class="mini-btn freeze-btn" onclick="freezeExistingCard()">Freeze</button>
+        <button class="mini-btn activate-btn" onclick="activateExistingCard()">Activate</button>
+        <button class="mini-btn load-btn" onclick="loadExistingCardBalance()">Load</button>
+      </div>
+    </div>
+  `;
+}
+
+function loadAll(){
+  renderRequests();
+  renderExistingCards();
+}
+
+function clearCardRequests(){
+  localStorage.removeItem("fastpay_card_requests");
+  loadAll();
+}
+
+window.onload = loadAll;
+</script>
+
+</body>
+</html>
