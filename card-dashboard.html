@@ -159,6 +159,44 @@
       font-weight:bold;
       position:relative;
       z-index:2;
+      word-break:break-word;
+    }
+
+    .card-action-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+      position:relative;
+      z-index:2;
+    }
+
+    .mini-card-btn{
+      border:none;
+      background:#111827;
+      color:white;
+      padding:10px 14px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:bold;
+      font-size:13px;
+    }
+
+    .mini-card-btn.orange{
+      background:#ff5a3d;
+    }
+
+    .card-secret-box{
+      margin-top:12px;
+      display:none;
+      font-size:14px;
+      color:white;
+      position:relative;
+      z-index:2;
+      line-height:1.7;
+      background:rgba(255,255,255,0.08);
+      padding:12px;
+      border-radius:14px;
     }
 
     .card-meta{
@@ -407,7 +445,7 @@
 
   <div class="hero">
     <h1>Professional Card</h1>
-    <p>Jere kat FastPay ou a tankou yon vrè fintech app: balans, freeze, load, ak tout aktivite yo.</p>
+    <p>Jere kat FastPay ou a tankou yon vrè fintech app: balans, freeze, load, ak tout detay li yo.</p>
   </div>
 
   <div id="cardArea"></div>
@@ -494,6 +532,7 @@
     </div>
 
     <div class="action-grid" style="margin-top:12px;">
+      <a href="card-settings.html" class="action-btn btn-dark" style="display:flex;align-items:center;justify-content:center;text-decoration:none;">Card Settings</a>
       <a href="create-card.html" class="action-btn btn-dark" style="display:flex;align-items:center;justify-content:center;text-decoration:none;">New Card</a>
     </div>
   </div>
@@ -507,6 +546,8 @@
 
 <script src="app.js"></script>
 <script>
+  let cardVisible = false;
+
   function showNotice(message, isError = false){
     const box = document.getElementById("noticeBox");
     box.style.display = "block";
@@ -571,7 +612,7 @@
       id: FastPayV2.generateId("CARD"),
       userId: currentUser.id,
       number: "**** **** **** " + Math.floor(Math.random() * 9000 + 1000),
-      realNumber: "458712349876" + Math.floor(Math.random() * 9000 + 1000),
+      realNumber: "4587 1234 9876 " + Math.floor(Math.random() * 9000 + 1000),
       name: (request.fullname || currentUser.fullname || "FASTPAY USER").toUpperCase(),
       exp: "12/29",
       cvv: "392",
@@ -590,6 +631,9 @@
   }
 
   function buildCardUI(card){
+    const maskedNumber = card.number || "**** **** **** 4587";
+    const fullNumber = card.realNumber || "4587 1234 9876 4587";
+
     return `
       <div class="card-shell">
         <div class="card-top">
@@ -602,7 +646,19 @@
           <div class="balance-value">${card.balance || 0} HTG</div>
         </div>
 
-        <div class="card-number">${card.number || "**** **** **** 4587"}</div>
+        <div class="card-number" id="cardNumberDisplay" data-masked="${maskedNumber}" data-full="${fullNumber}">
+          ${maskedNumber}
+        </div>
+
+        <div class="card-action-row">
+          <button class="mini-card-btn" onclick="toggleCardDetails()">Show Details</button>
+          <button class="mini-card-btn orange" onclick="copyDisplayedCard()">Copy Number</button>
+        </div>
+
+        <div class="card-secret-box" id="cardSecretBox">
+          Expiry: <span id="cardExpiryInline">${card.exp || "12/29"}</span><br>
+          CVV: <span id="cardCvvInline">${card.cvv || "392"}</span>
+        </div>
 
         <div class="card-meta">
           <div class="meta-block">
@@ -665,7 +721,7 @@
       document.getElementById("walletBalance").innerHTML = (currentUser.balance || 0) + " HTG";
       document.getElementById("dailyLimit").innerHTML = (card.dailyLimit || 25000) + " HTG";
       document.getElementById("monthlyLimit").innerHTML = (card.monthlyLimit || 150000) + " HTG";
-      document.getElementById("detailNumber").innerHTML = card.number || "**** **** **** 0000";
+      document.getElementById("detailNumber").innerHTML = card.realNumber || card.number || "**** **** **** 0000";
       document.getElementById("detailHolder").innerHTML = card.name || currentUser.fullname;
       document.getElementById("detailExp").innerHTML = card.exp || "12/29";
       document.getElementById("detailCvv").innerHTML = card.cvv || "392";
@@ -716,8 +772,49 @@
       `;
     }
 
+    cardVisible = false;
     updateDetails(card, latestRequest);
     renderActivity();
+  }
+
+  function toggleCardDetails(){
+    const numberEl = document.getElementById("cardNumberDisplay");
+    const secretBox = document.getElementById("cardSecretBox");
+
+    if(!numberEl || !secretBox){
+      showNotice("Pa gen kat aktif pou montre detay yo.", true);
+      return;
+    }
+
+    const masked = numberEl.getAttribute("data-masked");
+    const full = numberEl.getAttribute("data-full");
+
+    if(!cardVisible){
+      numberEl.innerHTML = full;
+      secretBox.style.display = "block";
+      cardVisible = true;
+    } else {
+      numberEl.innerHTML = masked;
+      secretBox.style.display = "none";
+      cardVisible = false;
+    }
+  }
+
+  function copyDisplayedCard(){
+    const numberEl = document.getElementById("cardNumberDisplay");
+
+    if(!numberEl){
+      showNotice("Pa gen kat aktif pou kopye.", true);
+      return;
+    }
+
+    const full = numberEl.getAttribute("data-full") || numberEl.innerText;
+
+    navigator.clipboard.writeText(full).then(() => {
+      showNotice("Card number lan kopye avèk siksè.");
+    }).catch(() => {
+      showNotice("Pa rive kopye card number lan.", true);
+    });
   }
 
   function copyValue(id){
@@ -847,7 +944,8 @@
       tx.type === "card-request" ||
       tx.type === "card-approved" ||
       tx.type === "card-freeze" ||
-      tx.type === "card-unfreeze"
+      tx.type === "card-unfreeze" ||
+      tx.type === "card-issued"
     );
 
     if(cardTx.length === 0){
@@ -879,4 +977,4 @@
 </script>
 
 </body>
-          </html>
+  </html>
