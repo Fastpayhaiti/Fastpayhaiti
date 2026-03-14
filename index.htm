@@ -9,26 +9,31 @@
 box-sizing:border-box;
 font-family:Arial,sans-serif;
 }
+
 body{
 margin:0;
 background:#eef2f7;
 padding:20px;
 }
+
 .app{
 max-width:430px;
 margin:auto;
 }
+
 .topbar{
 display:flex;
 justify-content:space-between;
 align-items:center;
 margin-bottom:20px;
 }
+
 .logo{
 font-size:30px;
 font-weight:bold;
 color:#ff5a3d;
 }
+
 .profile{
 width:44px;
 height:44px;
@@ -41,12 +46,14 @@ justify-content:center;
 font-weight:bold;
 font-size:18px;
 }
+
 .auth-buttons{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:10px;
 margin-bottom:18px;
 }
+
 .auth-btn{
 display:block;
 text-align:center;
@@ -55,14 +62,17 @@ border-radius:12px;
 font-weight:bold;
 text-decoration:none;
 }
+
 .login-btn{
 background:#111827;
 color:white;
 }
+
 .register-btn{
 background:#ff4d3d;
 color:white;
 }
+
 .balance-card{
 background:linear-gradient(135deg,#ff4d3d,#ff8a5c);
 color:white;
@@ -71,24 +81,29 @@ padding:24px;
 box-shadow:0 12px 30px rgba(255,90,61,0.25);
 margin-bottom:20px;
 }
+
 .balance-card h2{
 margin:0;
 font-size:18px;
 font-weight:normal;
 }
+
 .balance{
 font-size:42px;
 font-weight:bold;
 margin:12px 0 22px;
 }
+
 .actions{
 display:grid;
 grid-template-columns:repeat(2,1fr);
 gap:12px;
 }
+
 a{
 text-decoration:none;
 }
+
 .action-btn{
 background:rgba(255,255,255,0.18);
 border:none;
@@ -100,18 +115,21 @@ font-weight:bold;
 text-align:center;
 display:block;
 }
+
 .section-title{
 font-size:28px;
 font-weight:bold;
 margin:18px 0 14px;
 color:#111827;
 }
+
 .services{
 display:grid;
 grid-template-columns:repeat(2,1fr);
 gap:14px;
 margin-bottom:20px;
 }
+
 .service-box{
 background:white;
 border-radius:22px;
@@ -119,20 +137,25 @@ padding:18px;
 box-shadow:0 4px 14px rgba(0,0,0,0.05);
 min-height:120px;
 color:#111;
+display:block;
 }
+
 .service-box h3{
 margin:0 0 10px 0;
 font-size:19px;
 }
+
 .service-box p{
 margin:0;
 color:#666;
 font-size:14px;
 line-height:1.4;
 }
+
 .dashboard-section{
 margin-top:20px;
 }
+
 .main-btn{
 display:block;
 margin-bottom:12px;
@@ -143,12 +166,15 @@ text-align:center;
 font-size:16px;
 color:white;
 }
+
 .dashboard-btn{
 background:#ff4d3d;
 }
+
 .admin-btn{
 background:#111827;
 }
+
 .welcome{
 background:#ecfdf3;
 color:#166534;
@@ -159,6 +185,7 @@ margin-bottom:18px;
 display:none;
 line-height:1.6;
 }
+
 .logout-btn{
 margin-top:10px;
 padding:10px 14px;
@@ -202,6 +229,7 @@ cursor:pointer;
 <div class="section-title">Sèvis yo</div>
 
 <div class="services">
+
 <a href="card.html" class="service-box">
 <h3>Virtual Card</h3>
 <p>Kreye kat vityèl pou peye sou entènèt.</p>
@@ -231,6 +259,12 @@ cursor:pointer;
 <h3>Wallet</h3>
 <p>Jere balans ak tranzaksyon.</p>
 </a>
+
+<a href="recharge-card.html" class="service-box">
+<h3>Recharge Carte</h3>
+<p>Rechaje Wise, Meru, Payoneer ak lòt kat.</p>
+</a>
+
 </div>
 
 <div class="dashboard-section">
@@ -252,7 +286,7 @@ if(storedBalance){
   homeBalance.innerHTML = storedBalance + " HTG";
 }
 
-if(savedUser){
+if(savedUser && savedUser.fullname){
   const firstLetter = savedUser.fullname.charAt(0).toUpperCase();
   profileLetter.innerHTML = firstLetter;
 }
@@ -272,7 +306,3 @@ function logout(){
 
 </body>
 </html>
-<a href="recharge-card.html" class="service-box">
-<h3>Recharge Carte</h3>
-<p>Rechaje Wise, Meru, Payoneer ak lòt kat.</p>
-</a>
