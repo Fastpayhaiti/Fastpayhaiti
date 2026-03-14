@@ -20,6 +20,7 @@ body{
 .app{
   max-width:430px;
   margin:auto;
+  position:relative;
 }
 
 .topbar{
@@ -27,6 +28,28 @@ body{
   justify-content:space-between;
   align-items:center;
   margin-bottom:20px;
+}
+
+.left-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.menu-btn{
+  width:46px;
+  height:46px;
+  border:none;
+  border-radius:14px;
+  background:#111827;
+  color:white;
+  font-size:22px;
+  font-weight:bold;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 6px 16px rgba(17,24,39,0.20);
 }
 
 .logo{
@@ -102,6 +125,13 @@ body{
   margin-bottom:20px;
 }
 
+.balance-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
 .balance-card h2{
   margin:0;
   font-size:18px;
@@ -119,6 +149,21 @@ body{
   opacity:0.95;
   margin-top:-10px;
   margin-bottom:18px;
+  word-break:break-word;
+}
+
+.notify-pill{
+  display:none;
+  align-items:center;
+  justify-content:center;
+  min-width:28px;
+  height:28px;
+  padding:0 10px;
+  border-radius:999px;
+  background:#ef4444;
+  color:white;
+  font-size:12px;
+  font-weight:bold;
 }
 
 .actions{
@@ -160,7 +205,7 @@ a{
   border-radius:24px;
   padding:18px;
   box-shadow:0 8px 18px rgba(0,0,0,0.08);
-  min-height:132px;
+  min-height:138px;
   display:block;
   overflow:hidden;
   color:white;
@@ -184,7 +229,7 @@ a{
   display:block;
 }
 
-.virtual-card{
+.dark-card{
   background:linear-gradient(135deg,#111827,#374151);
 }
 
@@ -204,12 +249,20 @@ a{
   background:linear-gradient(135deg,#ff3d2e,#ff7a59);
 }
 
-.statement{
-  background:linear-gradient(135deg,#1f2937,#4b5563);
+.netflix{
+  background:linear-gradient(135deg,#b91c1c,#ef4444);
+}
+
+.prime{
+  background:linear-gradient(135deg,#1d4ed8,#38bdf8);
 }
 
 .notifications{
   background:linear-gradient(135deg,#7c3aed,#a855f7);
+}
+
+.statement{
+  background:linear-gradient(135deg,#1f2937,#4b5563);
 }
 
 .dashboard-section{
@@ -242,26 +295,91 @@ a{
   background:#374151;
 }
 
-.notify-row{
+/* side menu */
+.menu-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.35);
+  z-index:999;
+  display:none;
+}
+
+.side-menu{
+  position:fixed;
+  top:0;
+  left:-320px;
+  width:295px;
+  height:100%;
+  background:white;
+  z-index:1000;
+  box-shadow:0 10px 30px rgba(0,0,0,0.18);
+  transition:0.25s ease;
+  padding:20px 16px;
+  overflow-y:auto;
+}
+
+.side-menu.active{
+  left:0;
+}
+
+.menu-header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
+  margin-bottom:18px;
+}
+
+.menu-title{
+  font-size:24px;
+  font-weight:bold;
+  color:#111827;
+}
+
+.close-menu{
+  width:40px;
+  height:40px;
+  border:none;
+  border-radius:12px;
+  background:#111827;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+}
+
+.menu-user{
+  background:#f8fafc;
+  border-radius:16px;
+  padding:14px;
   margin-bottom:16px;
 }
 
-.notify-pill{
-  display:none;
-  align-items:center;
-  justify-content:center;
-  min-width:28px;
-  height:28px;
-  padding:0 10px;
-  border-radius:999px;
-  background:#ef4444;
-  color:white;
-  font-size:12px;
+.menu-user-name{
   font-weight:bold;
+  font-size:16px;
+  color:#111827;
+}
+
+.menu-user-mail{
+  margin-top:4px;
+  font-size:13px;
+  color:#6b7280;
+  word-break:break-word;
+}
+
+.menu-link{
+  display:block;
+  text-decoration:none;
+  color:#111827;
+  background:#f8fafc;
+  padding:14px 16px;
+  border-radius:14px;
+  margin-bottom:10px;
+  font-weight:bold;
+}
+
+.menu-link.logout{
+  background:#111827;
+  color:white;
 }
 
 .small-note{
@@ -274,10 +392,45 @@ a{
 </head>
 <body>
 
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+<div class="side-menu" id="sideMenu">
+  <div class="menu-header">
+    <div class="menu-title">FastPay Menu</div>
+    <button class="close-menu" onclick="closeMenu()">✕</button>
+  </div>
+
+  <div class="menu-user">
+    <div class="menu-user-name" id="menuUserName">FastPay User</div>
+    <div class="menu-user-mail" id="menuUserMail">Not connected</div>
+  </div>
+
+  <a href="index.html" class="menu-link">🏠 Home</a>
+  <a href="dashboard.html" class="menu-link">📊 Dashboard</a>
+  <a href="wallet.html" class="menu-link">👛 Wallet</a>
+  <a href="statement.html" class="menu-link">📄 Statement</a>
+  <a href="notification.html" class="menu-link">🔔 Notifications</a>
+  <a href="create-card.html" class="menu-link">💳 Create Card</a>
+  <a href="card-dashboard.html" class="menu-link">🏦 Card Dashboard</a>
+  <a href="topup.html" class="menu-link">📱 Top Up</a>
+  <a href="netflix.html" class="menu-link">🎬 Netflix</a>
+  <a href="primevideo.html" class="menu-link">▶️ Prime Video</a>
+  <a href="recharge-card.html" class="menu-link">💠 Recharge Card</a>
+  <a href="social-media.html" class="menu-link">🚀 Social Media</a>
+  <a href="deposit-history.html" class="menu-link">💰 Deposit History</a>
+  <a href="withdraw-history.html" class="menu-link">💸 Withdraw History</a>
+  <a href="transfer-history.html" class="menu-link">🔁 Transfer History</a>
+  <a href="admin.html" class="menu-link">🛠️ Admin</a>
+  <a href="#" class="menu-link logout" onclick="logoutUser()">🚪 Logout</a>
+</div>
+
 <div class="app">
 
   <div class="topbar">
-    <div class="logo">FastPay</div>
+    <div class="left-top">
+      <button class="menu-btn" onclick="openMenu()">☰</button>
+      <div class="logo">FastPay</div>
+    </div>
     <div class="profile" id="profileLetter">F</div>
   </div>
 
@@ -294,7 +447,7 @@ a{
   </div>
 
   <div class="balance-card">
-    <div class="notify-row">
+    <div class="balance-row">
       <h2>Solde disponib</h2>
       <div class="notify-pill" id="notificationBadge">0</div>
     </div>
@@ -318,13 +471,13 @@ a{
 
   <div class="services">
 
-    <a href="create-card.html" class="service-box virtual-card">
+    <a href="create-card.html" class="service-box dark-card">
       <span class="service-icon">💳</span>
       <h3>Create Card</h3>
       <p>Mande yon nouvo kat FastPay fasil.</p>
     </a>
 
-    <a href="card-dashboard.html" class="service-box virtual-card">
+    <a href="card-dashboard.html" class="service-box dark-card">
       <span class="service-icon">🏦</span>
       <h3>Card Dashboard</h3>
       <p>Jere kat ou ak balans li.</p>
@@ -334,6 +487,18 @@ a{
       <span class="service-icon">📱</span>
       <h3>Top Up</h3>
       <p>Recharge mobil ak lòt sèvis.</p>
+    </a>
+
+    <a href="netflix.html" class="service-box netflix">
+      <span class="service-icon">🎬</span>
+      <h3>Netflix</h3>
+      <p>Achte oswa renouvle plan Netflix.</p>
+    </a>
+
+    <a href="primevideo.html" class="service-box prime">
+      <span class="service-icon">▶️</span>
+      <h3>Prime Video</h3>
+      <p>Peye abònman Prime Video.</p>
     </a>
 
     <a href="wallet.html" class="service-box wallet">
@@ -378,6 +543,16 @@ a{
 
 <script src="app.js"></script>
 <script>
+function openMenu(){
+  document.getElementById("sideMenu").classList.add("active");
+  document.getElementById("menuOverlay").style.display = "block";
+}
+
+function closeMenu(){
+  document.getElementById("sideMenu").classList.remove("active");
+  document.getElementById("menuOverlay").style.display = "none";
+}
+
 const currentUser = FastPayV2.getCurrentUser();
 const welcomeBox = document.getElementById("welcomeBox");
 const profileLetter = document.getElementById("profileLetter");
@@ -394,6 +569,9 @@ if(currentUser){
   profileLetter.innerHTML = currentUser.fullname.charAt(0).toUpperCase();
   homeBalance.innerHTML = (currentUser.balance || 0) + " HTG";
   balanceSub.innerHTML = currentUser.email || "FastPay Wallet";
+
+  document.getElementById("menuUserName").innerHTML = currentUser.fullname || "FastPay User";
+  document.getElementById("menuUserMail").innerHTML = currentUser.email || "No email";
 
   guestButtons.style.display = "none";
   userButtons.style.display = "grid";
@@ -413,6 +591,8 @@ if(currentUser){
   logoutBtn.style.display = "none";
   homeBalance.innerHTML = "0 HTG";
   balanceSub.innerHTML = "Login pou wè balans ou";
+  document.getElementById("menuUserName").innerHTML = "Guest User";
+  document.getElementById("menuUserMail").innerHTML = "Login pou plis opsyon";
 }
 
 function logoutUser(){
@@ -422,4 +602,4 @@ function logoutUser(){
 </script>
 
 </body>
-        </html>
+      </html>
