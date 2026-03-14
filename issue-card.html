@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FastPay Issue Card</title>
+  <style>
+    *{
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
+    body{
+      margin:0;
+      background:#eef2f7;
+      padding:20px;
+      color:#111827;
+    }
+    .container{
+      max-width:430px;
+      margin:auto;
+    }
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:18px;
+    }
+    .left-top{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .back-btn{
+      width:44px;
+      height:44px;
+      border:none;
+      border-radius:14px;
+      background:#111827;
+      color:white;
+      font-size:20px;
+      text-decoration:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .logo{
+      font-size:28px;
+      font-weight:bold;
+      color:#ff5a3d;
+    }
+    .admin-badge{
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      background:linear-gradient(135deg,#111827,#374151);
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+      font-size:18px;
+    }
+    .hero{
+      background:linear-gradient(135deg,#111827,#374151);
+      color:white;
+      border-radius:26px;
+      padding:22px;
+      margin-bottom:18px;
+      box-shadow:0 12px 28px rgba(17,24,39,0.22);
+    }
+    .hero h1{
+      margin:0 0 8px 0;
+      font-size:28px;
+    }
+    .hero p{
+      margin:0;
+      font-size:14px;
+      line-height:1.6;
+      opacity:.96;
+    }
+    .notice{
+      display:none;
+      margin-bottom:16px;
+      border-radius:14px;
+      padding:14px;
+      font-weight:bold;
+      line-height:1.5;
+    }
+    .notice.ok{
+      background:#ecfdf3;
+      color:#166534;
+    }
+    .notice.err{
+      background:#fee2e2;
+      color:#991b1b;
+    }
+    .section{
+      background:white;
+      border-radius:22px;
+      padding:18px;
+      box-shadow:0 8px 18px rgba(0,0,0,0.06);
+      margin-bottom:18px;
+    }
+    .section h2{
+      margin:0 0 14px 0;
+      font-size:22px;
+    }
+    label{
+      display:block;
+      margin-bottom:8px;
+      font-weight:bold;
+    }
+    input, select, textarea{
+      width:100%;
+      padding:14px;
+      border:1px solid #d1d5db;
+      border-radius:14px;
+      font-size:16px;
+      background:white;
+      margin-bottom:16px;
+    }
+    .preview-card{
+      background:linear-gradient(135deg,#0f172a,#1e293b);
+      color:white;
+      border-radius:24px;
+      padding:20px;
+      min-height:210px;
+      position:relative;
+      overflow:hidden;
+      box-shadow:0 16px 35px rgba(15,23,42,0.30);
+      margin-bottom:16px;
+    }
+    .preview-card::after{
+      content:"";
+      position:absolute;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.06);
+      top:-40px;
+      right:-50px;
+    }
+    .preview-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      position:relative;
+      z-index:2;
+    }
+    .chip{
+      width:50px;
+      height:34px;
+      border-radius:10px;
+      background:linear-gradient(135deg,#facc15,#fde68a);
+    }
+    .brand{
+      font-size:18px;
+      font-weight:bold;
+    }
+    .preview-type{
+      margin-top:16px;
+      font-size:13px;
+      opacity:.8;
+      position:relative;
+      z-index:2;
+    }
+    .preview-balance{
+      margin-top:6px;
+      font-size:30px;
+      font-weight:bold;
+      position:relative;
+      z-index:2;
+    }
+    .preview-number{
+      margin-top:22px;
+      font-size:23px;
+      letter-spacing:2px;
+      font-weight:bold;
+      position:relative;
+      z-index:2;
+    }
+    .preview-meta{
+      margin-top:18px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      position:relative;
+      z-index:2;
+    }
+    .meta-block small{
+      display:block;
+      opacity:.75;
+      font-size:11px;
+      margin-bottom:4px;
+      text-transform:uppercase;
+      letter-spacing:.8px;
+    }
+    .meta-block span{
+      font-size:14px;
+      font-weight:bold;
+    }
+    .summary{
+      background:#f8fafc;
+      border-radius:16px;
+      padding:16px;
+    }
+    .summary-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:10px;
+      font-size:14px;
+    }
+    .summary-row:last-child{
+      margin-bottom:0;
+    }
+    .summary-label{
+      color:#6b7280;
+    }
+    .summary-value{
+      font-weight:bold;
+      text-align:right;
+      color:#111827;
+      word-break:break-word;
+    }
+    .toolbar{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:14px;
+    }
+    .btn{
+      display:block;
+      width:100%;
+      text-align:center;
+      padding:14px;
+      border:none;
+      border-radius:16px;
+      text-decoration:none;
+      font-weight:bold;
+      font-size:15px;
+      cursor:pointer;
+      color:white;
+    }
+    .btn-orange{
+      background:#ff4d3d;
+    }
+    .btn-dark{
+      background:#111827;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="topbar">
+    <div class="left-top">
+      <a href="admin-cards.html" class="back-btn">←</a>
+      <div class="logo">FastPay</div>
+    </div>
+    <div class="admin-badge">A</div>
+  </div>
+
+  <div id="noticeBox" class="notice"></div>
+
+  <div class="hero">
+    <h1>Issue New Card</h1>
+    <p>Kreye epi bay yon nouvo kat bay kliyan an dirèkteman depi admin panel la.</p>
+  </div>
+
+  <div class="section">
+    <h2>Card Preview</h2>
+
+    <div class="preview-card">
+      <div class="preview-top">
+        <div class="chip"></div>
+        <div class="brand" id="previewBrand">VISA</div>
+      </div>
+
+      <div class="preview-type" id="previewType">Virtual Card</div>
+      <div class="preview-balance" id="previewBalance">0 HTG</div>
+      <div class="preview-number" id="previewNumber">**** **** **** 4587</div>
+
+      <div class="preview-meta">
+        <div class="meta-block">
+          <small>Holder</small>
+          <span id="previewHolder">FASTPAY USER</span>
+        </div>
+        <div class="meta-block">
+          <small>Expiry</small>
+          <span id="previewExp">12/29</span>
+        </div>
+        <div class="meta-block">
+          <small>CVV</small>
+          <span id="previewCvv">392</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Client & Card Info</h2>
+
+    <label>User ID</label>
+    <input type="text" id="userId" placeholder="Eg: USER_xxx">
+
+    <label>Card Holder Name</label>
+    <input type="text" id="holderName" placeholder="Antre non sou kat la">
+
+    <label>Brand</label>
+    <select id="brand" onchange="updatePreview()">
+      <option>Visa</option>
+      <option>Mastercard</option>
+    </select>
+
+    <label>Card Type</label>
+    <select id="cardType" onchange="updatePreview()">
+      <option>Virtual</option>
+      <option>Premium</option>
+    </select>
+
+    <label>Currency</label>
+    <select id="currency" onchange="updatePreview()">
+      <option>USD</option>
+      <option>HTG</option>
+      <option>EUR</option>
+    </select>
+
+    <label>Initial Balance</label>
+    <input type="number" id="initialBalance" placeholder="0" oninput="updatePreview()">
+
+    <label>Expiry</label>
+    <input type="text" id="expiry" placeholder="12/29" oninput="updatePreview()">
+
+    <label>CVV</label>
+    <input type="text" id="cvv" placeholder="392" oninput="updatePreview()">
+
+    <label>Daily Limit</label>
+    <input type="number" id="dailyLimit" placeholder="25000">
+
+    <label>Monthly Limit</label>
+    <input type="number" id="monthlyLimit" placeholder="150000">
+
+    <label>Status</label>
+    <select id="status">
+      <option>Active</option>
+      <option>Frozen</option>
+      <option>Pending</option>
+    </select>
+
+    <label>Note</label>
+    <textarea id="note" rows="4" placeholder="Nòt admin sou kat sa a"></textarea>
+  </div>
+
+  <div class="section">
+    <h2>Summary</h2>
+
+    <div class="summary">
+      <div class="summary-row">
+        <div class="summary-label">User ID</div>
+        <div class="summary-value" id="sumUserId">N/A</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-label">Holder</div>
+        <div class="summary-value" id="sumHolder">FASTPAY USER</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-label">Brand</div>
+        <div class="summary-value" id="sumBrand">Visa</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-label">Type</div>
+        <div class="summary-value" id="sumType">Virtual</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-label">Balance</div>
+        <div class="summary-value" id="sumBalance">0 HTG</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-label">Status</div>
+        <div class="summary-value" id="sumStatus">Active</div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn btn-orange" onclick="issueCard()">Issue Card</button>
+      <a href="admin-cards.html" class="btn btn-dark">Back Admin Cards</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+<script>
+function showNotice(message, isError = false){
+  const box = document.getElementById("noticeBox");
+  box.style.display = "block";
+  box.className = isError ? "notice err" : "notice ok";
+  box.innerHTML = message;
+}
+
+function randomLast4(){
+  return Math.floor(Math.random() * 9000 + 1000);
+}
+
+function updatePreview(){
+  const holder = document.getElementById("holderName").value.trim() || "FASTPAY USER";
+  const brand = document.getElementById("brand").value;
+  const type = document.getElementById("cardType").value;
+  const currency = document.getElementById("currency").value;
+  const balance = document.getElementById("initialBalance").value || "0";
+  const exp = document.getElementById("expiry").value.trim() || "12/29";
+  const cvv = document.getElementById("cvv").value.trim() || "392";
+  const userId = document.getElementById("userId").value.trim() || "N/A";
+  const status = document.getElementById("status").value;
+
+  document.getElementById("previewHolder").innerHTML = holder.toUpperCase();
+  document.getElementById("previewBrand").innerHTML = brand.toUpperCase();
+  document.getElementById("previewType").innerHTML = type + " Card";
+  document.getElementById("previewBalance").innerHTML = balance + " " + currency;
+  document.getElementById("previewExp").innerHTML = exp;
+  document.getElementById("previewCvv").innerHTML = cvv;
+
+  document.getElementById("sumUserId").innerHTML = userId;
+  document.getElementById("sumHolder").innerHTML = holder.toUpperCase();
+  document.getElementById("sumBrand").innerHTML = brand;
+  document.getElementById("sumType").innerHTML = type;
+  document.getElementById("sumBalance").innerHTML = balance + " " + currency;
+  document.getElementById("sumStatus").innerHTML = status;
+}
+
+["userId","holderName","initialBalance","expiry","cvv","dailyLimit","monthlyLimit","status"].forEach(id=>{
+  document.getElementById(id).addEventListener("input", updatePreview);
+  document.getElementById(id).addEventListener("change", updatePreview);
+});
+
+function getUsers(){
+  return FastPayDB.get("fp_users", []);
+}
+
+function getCards(){
+  return FastPayDB.get("fp_cards", []);
+}
+
+function saveCards(cards){
+  FastPayDB.set("fp_cards", cards);
+}
+
+function getUserById(userId){
+  const users = getUsers();
+  return users.find(u => u.id === userId) || null;
+}
+
+function issueCard(){
+  const userId = document.getElementById("userId").value.trim();
+  const holderName = document.getElementById("holderName").value.trim();
+  const brand = document.getElementById("brand").value;
+  const cardType = document.getElementById("cardType").value;
+  const currency = document.getElementById("currency").value;
+  const initialBalance = parseInt(document.getElementById("initialBalance").value || "0");
+  const expiry = document.getElementById("expiry").value.trim() || "12/29";
+  const cvv = document.getElementById("cvv").value.trim() || "392";
+  const dailyLimit = parseInt(document.getElementById("dailyLimit").value || "25000");
+  const monthlyLimit = parseInt(document.getElementById("monthlyLimit").value || "150000");
+  const status = document.getElementById("status").value;
+  const note = document.getElementById("note").value.trim();
+
+  if(!userId || !holderName){
+    showNotice("Tanpri mete User ID ak non sou kat la.", true);
+    return;
+  }
+
+  const user = getUserById(userId);
+  if(!user){
+    showNotice("User sa a pa egziste nan sistèm nan.", true);
+    return;
+  }
+
+  let cards = getCards();
+  const existing = cards.find(c => c.userId === userId);
+
+  if(existing){
+    showNotice("User sa a deja gen yon kat.", true);
+    return;
+  }
+
+  const cardData = {
+    id: FastPayV2.generateId("CARD"),
+    userId: userId,
+    number: "**** **** **** " + randomLast4(),
+    realNumber: "458712349876" + randomLast4(),
+    name: holderName.toUpperCase(),
+    exp: expiry,
+    cvv: cvv,
+    brand: brand.toUpperCase(),
+    status: status,
+    balance: initialBalance,
+    cardType: cardType,
+    currency: currency,
+    createdAt: new Date().toLocaleString(),
+    dailyLimit: dailyLimit,
+    monthlyLimit: monthlyLimit,
+    note: note,
+    issuedBy: "admin"
+  };
+
+  cards.unshift(cardData);
+  saveCards(cards);
+
+  FastPayV2.addNotification({
+    userId: userId,
+    title: "New issued card",
+    text: "Yon nouvo " + cardType + " " + brand + " card kreye pou ou.",
+    type: "success"
+  });
+
+  FastPayV2.addTransaction({
+    userId: userId,
+    service: "Issued Card - " + brand,
+    amount: "+" + initialBalance + " " + currency,
+    type: "card-issued",
+    status: "completed",
+    meta: {
+      cardId: cardData.id,
+      issuedBy: "admin"
+    }
+  });
+
+  showNotice("Kat la kreye avèk siksè.");
+  setTimeout(() => {
+    window.location.href = "admin-cards.html";
+  }, 1000);
+}
+
+updatePreview();
+document.getElementById("previewNumber").innerHTML = "**** **** **** " + randomLast4();
+</script>
+
+</body>
+  </html>
