@@ -4,41 +4,41 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FastPay Dashboard</title>
-
 <style>
-
 *{
 box-sizing:border-box;
 font-family:Arial,sans-serif;
 }
-
 body{
 margin:0;
 background:#eef2f7;
 padding:20px;
 }
-
 .container{
 max-width:430px;
 margin:auto;
 }
-
-.topbar{
+.back{
+display:inline-block;
+margin-bottom:20px;
+color:#ff4d3d;
+text-decoration:none;
+font-weight:bold;
+}
+.header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:20px;
+margin-bottom:18px;
 }
-
 .logo{
 font-size:28px;
 font-weight:bold;
-color:#ff4d3d;
+color:#ff5a3d;
 }
-
 .profile{
-width:46px;
-height:46px;
+width:44px;
+height:44px;
 border-radius:14px;
 background:linear-gradient(135deg,#ff5a3d,#ff7a59);
 color:white;
@@ -48,227 +48,297 @@ justify-content:center;
 font-weight:bold;
 font-size:18px;
 }
-
+.welcome{
+background:white;
+padding:18px;
+border-radius:18px;
+box-shadow:0 4px 14px rgba(0,0,0,0.08);
+margin-bottom:18px;
+}
+.welcome h2{
+margin:0 0 8px 0;
+color:#111827;
+}
+.welcome p{
+margin:0;
+color:#6b7280;
+}
 .balance-card{
 background:linear-gradient(135deg,#ff4d3d,#ff8a5c);
 color:white;
-border-radius:28px;
-padding:24px;
-margin-bottom:20px;
+border-radius:24px;
+padding:22px;
 box-shadow:0 12px 30px rgba(255,90,61,0.25);
+margin-bottom:18px;
 }
-
 .balance-title{
-font-size:18px;
+font-size:17px;
+opacity:0.95;
 }
-
 .balance{
 font-size:40px;
 font-weight:bold;
-margin-top:10px;
+margin-top:8px;
 }
-
-.actions{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-margin-top:20px;
-}
-
-.action-btn{
-background:rgba(255,255,255,0.18);
-padding:16px;
-border-radius:16px;
-text-align:center;
-font-weight:bold;
-color:white;
-text-decoration:none;
-}
-
 .section{
 background:white;
-border-radius:20px;
 padding:18px;
-box-shadow:0 8px 18px rgba(0,0,0,0.08);
-margin-bottom:16px;
+border-radius:18px;
+box-shadow:0 4px 14px rgba(0,0,0,0.08);
+margin-bottom:18px;
 }
-
-.section h2{
-margin:0 0 14px 0;
+.section h3{
+margin-top:0;
 font-size:22px;
+color:#111827;
 }
-
-.item{
+.virtual-card{
+background:linear-gradient(135deg,#111,#333);
+color:white;
+border-radius:18px;
+padding:18px;
+height:180px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+position:relative;
+box-shadow:0 10px 25px rgba(0,0,0,0.25);
+}
+.card-chip{
+width:42px;
+height:30px;
+background:gold;
+border-radius:6px;
+}
+.card-number{
+font-size:20px;
+letter-spacing:2px;
+}
+.card-name{
+font-weight:bold;
+font-size:16px;
+}
+.card-exp{
+font-size:14px;
+opacity:0.85;
+}
+.card-logo{
+position:absolute;
+right:18px;
+bottom:18px;
+font-weight:bold;
+font-size:18px;
+opacity:0.85;
+}
+.tx{
+padding:12px 0;
 border-bottom:1px solid #eee;
-padding:10px 0;
 }
-
-.item:last-child{
+.tx:last-child{
 border-bottom:none;
 }
-
-.item-title{
+.tx-name{
 font-weight:bold;
-font-size:15px;
+color:#111827;
 }
-
-.item-sub{
+.tx-sub{
 font-size:13px;
 color:#6b7280;
-margin-top:3px;
+margin-top:4px;
 }
-
-.status{
-display:inline-block;
-padding:6px 12px;
-border-radius:999px;
-font-size:12px;
+.tx-amount{
 font-weight:bold;
-background:#fff7ed;
-color:#c2410c;
-margin-top:5px;
+color:#ff5a3d;
+margin-top:4px;
 }
-
-.back{
-display:inline-block;
-margin-bottom:16px;
-color:#ff4d3d;
-font-weight:bold;
-text-decoration:none;
-}
-
 .empty{
 color:#6b7280;
-font-size:14px;
+font-size:15px;
 }
-
+.no-card{
+background:#f8fafc;
+padding:16px;
+border-radius:14px;
+color:#6b7280;
+}
+.main-btn{
+display:block;
+width:100%;
+text-align:center;
+padding:15px;
+border-radius:16px;
+text-decoration:none;
+font-weight:bold;
+font-size:16px;
+margin-top:12px;
+}
+.orange-btn{
+background:#ff4d3d;
+color:white;
+}
+.dark-btn{
+background:#111827;
+color:white;
+}
+.notify-btn{
+display:block;
+width:100%;
+text-align:center;
+padding:15px;
+border-radius:16px;
+text-decoration:none;
+font-weight:bold;
+font-size:16px;
+margin-top:12px;
+background:#111827;
+color:white;
+position:relative;
+}
+.notify-badge{
+position:absolute;
+top:-8px;
+right:14px;
+min-width:24px;
+height:24px;
+padding:0 7px;
+border-radius:999px;
+background:#ef4444;
+color:white;
+font-size:12px;
+font-weight:bold;
+display:none;
+align-items:center;
+justify-content:center;
+}
 </style>
 </head>
-
 <body>
 
 <div class="container">
+<a href="index.html" class="back">← Back Home</a>
 
-<a href="index.html" class="back">← Home</a>
-
-<div class="topbar">
+<div class="header">
 <div class="logo">FastPay</div>
 <div class="profile" id="profileLetter">L</div>
 </div>
 
+<div class="welcome">
+<h2 id="welcomeName">Byenvini</h2>
+<p>Men espas pèsonèl FastPay ou.</p>
+</div>
+
 <div class="balance-card">
-
-<div class="balance-title">Wallet Balance</div>
-<div class="balance" id="balanceAmount">0 HTG</div>
-
-<div class="actions">
-
-<a href="deposit.html" class="action-btn">Depoze</a>
-<a href="withdraw.html" class="action-btn">Retire</a>
-<a href="transfer.html" class="action-btn">Transfere</a>
-<a href="topup.html" class="action-btn">Top Up</a>
-
+<div class="balance-title">Solde disponib</div>
+<div class="balance" id="userBalance">0 HTG</div>
 </div>
-
-</div>
-
 
 <div class="section">
-<h2>Tranzaksyon</h2>
-
-<div id="transactionsBox" class="empty">
-Pa gen tranzaksyon pou kounye a.
+<h3>Virtual Card</h3>
+<div id="cardArea"></div>
 </div>
-
-</div>
-
 
 <div class="section">
-<h2>Order History</h2>
+<h3>Transaction History</h3>
+<div id="txBox" class="empty">Pa gen tranzaksyon pou kounye a.</div>
 
-<div id="ordersBox" class="empty">
-Pa gen sèvis ou achte pou kounye a.
+<a href="notification.html" class="notify-btn">
+  🔔 Notifications
+  <span id="notificationBadge" class="notify-badge">0</span>
+</a>
+
+<a href="wallet.html" class="main-btn orange-btn">Ale sou Wallet</a>
+<a href="statement.html" class="main-btn dark-btn">Wallet Statement</a>
 </div>
-
 </div>
-
-</div>
-
 
 <script>
-
 const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
-const profileLetter = document.getElementById("profileLetter");
-
-if(savedUser && savedUser.fullname){
-profileLetter.innerHTML = savedUser.fullname.charAt(0).toUpperCase();
-}
-
-const balance = localStorage.getItem("fastpay_balance") || 0;
-document.getElementById("balanceAmount").innerHTML = balance + " HTG";
-
-
-function loadTransactions(){
-
 const transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
-const box = document.getElementById("transactionsBox");
+const cardData = JSON.parse(localStorage.getItem("fastpay_virtual_card"));
 
-if(transactions.length === 0){
-box.innerHTML="Pa gen tranzaksyon pou kounye a.";
-return;
+if(savedUser){
+  document.getElementById("welcomeName").innerHTML = "Byenvini, " + savedUser.fullname;
+  document.getElementById("profileLetter").innerHTML = savedUser.fullname.charAt(0).toUpperCase();
 }
 
-box.innerHTML="";
-
-transactions.forEach(function(tx){
-
-box.innerHTML +=
-'<div class="item">'+
-'<div class="item-title">'+tx.service+'</div>'+
-'<div class="item-sub">'+tx.amount+'</div>'+
-'<div class="item-sub">'+tx.date+'</div>'+
-'</div>';
-
-});
-
+const userBalance = localStorage.getItem("fastpay_balance");
+if(userBalance){
+  document.getElementById("userBalance").innerHTML = userBalance + " HTG";
 }
 
+const cardArea = document.getElementById("cardArea");
 
-function loadOrders(){
-
-const socialOrders = JSON.parse(localStorage.getItem("fastpay_social_orders")) || [];
-const topups = JSON.parse(localStorage.getItem("fastpay_topups")) || [];
-const recharge = JSON.parse(localStorage.getItem("fastpay_recharge_cards")) || [];
-
-const box = document.getElementById("ordersBox");
-
-const all = [...socialOrders,...topups,...recharge];
-
-if(all.length === 0){
-box.innerHTML="Pa gen sèvis ou achte pou kounye a.";
-return;
+if(cardData && cardData.active){
+  cardArea.innerHTML = `
+    <div class="virtual-card">
+      <div class="card-chip"></div>
+      <div class="card-number">${cardData.number}</div>
+      <div class="card-name">${cardData.name}</div>
+      <div class="card-exp">${cardData.exp}</div>
+      <div class="card-logo">${cardData.brand}</div>
+    </div>
+  `;
+}else{
+  cardArea.innerHTML = `<div class="no-card">Ou poko gen kat vityèl aktif pou kounye a.</div>`;
 }
 
-box.innerHTML="";
+const txBox = document.getElementById("txBox");
 
-all.forEach(function(order){
+if(transactions.length > 0){
+  txBox.className = "";
+  txBox.innerHTML = "";
 
-box.innerHTML +=
-'<div class="item">'+
-'<div class="item-title">'+(order.service || order.operator || "Service")+'</div>'+
-'<div class="item-sub">'+(order.amount || "0")+'</div>'+
-'<div class="item-sub">'+(order.date || "")+'</div>'+
-'<span class="status">'+(order.status || "Pending")+'</span>'+
-'</div>';
-
-});
-
+  transactions.forEach(function(tx){
+    txBox.innerHTML +=
+      '<div class="tx">' +
+      '<div class="tx-name">' + tx.service + '</div>' +
+      '<div class="tx-sub">Order ID: ' + (tx.orderId || 'N/A') + '</div>' +
+      '<div class="tx-sub">' + tx.date + '</div>' +
+      '<div class="tx-amount">' + tx.amount + '</div>' +
+      '</div>';
+  });
 }
 
-loadTransactions();
-loadOrders();
+function getFastPayNotifications() {
+  const deposits = JSON.parse(localStorage.getItem("fastpay_deposits")) || [];
+  const withdraws = JSON.parse(localStorage.getItem("fastpay_withdraws")) || [];
+  const transfers = JSON.parse(localStorage.getItem("fastpay_transfers")) || [];
+  const topups = JSON.parse(localStorage.getItem("fastpay_topups")) || [];
+  const socialOrders = JSON.parse(localStorage.getItem("fastpay_social_orders")) || [];
+  const rechargeCards = JSON.parse(localStorage.getItem("fastpay_recharge_cards")) || [];
+  const cardRequests = JSON.parse(localStorage.getItem("fastpay_card_requests")) || [];
+  const transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
 
+  let notices = [];
+  deposits.forEach(item => notices.push(item));
+  withdraws.forEach(item => notices.push(item));
+  transfers.forEach(item => notices.push(item));
+  topups.forEach(item => notices.push(item));
+  socialOrders.forEach(item => notices.push(item));
+  rechargeCards.forEach(item => notices.push(item));
+  cardRequests.forEach(item => notices.push(item));
+  transactions.forEach(item => notices.push(item));
+
+  return notices;
+}
+
+function updateNotificationBadge() {
+  const badge = document.getElementById("notificationBadge");
+  if (!badge) return;
+
+  const notices = getFastPayNotifications();
+  const total = notices.length;
+
+  if (total > 0) {
+    badge.style.display = "inline-flex";
+    badge.innerHTML = total;
+  } else {
+    badge.style.display = "none";
+  }
+}
+
+updateNotificationBadge();
 </script>
 
 </body>
-</html>
+  </html>
