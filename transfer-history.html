@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FastPay Deposit History</title>
+<style>
+*{
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  margin:0;
+  background:#eef2f7;
+  padding:20px;
+  color:#111827;
+}
+
+.container{
+  max-width:430px;
+  margin:auto;
+}
+
+.back{
+  display:inline-block;
+  margin-bottom:16px;
+  color:#ff4d3d;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.logo{
+  font-size:30px;
+  font-weight:bold;
+  color:#ff5a3d;
+}
+
+.profile{
+  width:46px;
+  height:46px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#ff5a3d,#ff7a59);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:18px;
+  box-shadow:0 6px 16px rgba(255,90,61,0.25);
+}
+
+.hero{
+  background:linear-gradient(135deg,#047857,#10b981);
+  color:white;
+  border-radius:26px;
+  padding:24px;
+  margin-bottom:18px;
+  box-shadow:0 12px 28px rgba(16,185,129,0.22);
+}
+
+.hero h1{
+  margin:0 0 10px 0;
+  font-size:30px;
+  line-height:1.2;
+}
+
+.hero p{
+  margin:0;
+  font-size:15px;
+  line-height:1.6;
+  opacity:0.98;
+}
+
+.section{
+  background:white;
+  border-radius:22px;
+  padding:18px;
+  box-shadow:0 8px 18px rgba(0,0,0,0.06);
+  margin-bottom:18px;
+}
+
+.section h2{
+  margin:0 0 14px 0;
+  font-size:22px;
+}
+
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.stat-box{
+  background:#f8fafc;
+  border-radius:16px;
+  padding:14px;
+}
+
+.stat-title{
+  color:#6b7280;
+  font-size:13px;
+  margin-bottom:6px;
+}
+
+.stat-value{
+  font-size:20px;
+  font-weight:bold;
+  color:#111827;
+}
+
+.deposit-item{
+  padding:12px 0;
+  border-bottom:1px solid #eee;
+}
+
+.deposit-item:last-child{
+  border-bottom:none;
+}
+
+.deposit-top{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+}
+
+.deposit-name{
+  font-weight:bold;
+  font-size:15px;
+}
+
+.deposit-amount{
+  font-weight:bold;
+  font-size:15px;
+  text-align:right;
+}
+
+.deposit-date{
+  color:#6b7280;
+  font-size:13px;
+  margin-top:4px;
+}
+
+.deposit-sub{
+  color:#6b7280;
+  font-size:13px;
+  margin-top:4px;
+  line-height:1.45;
+}
+
+.status{
+  display:inline-block;
+  margin-top:6px;
+  background:#fff7ed;
+  color:#c2410c;
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.empty{
+  color:#6b7280;
+  font-size:14px;
+}
+
+.main-btn{
+  display:block;
+  width:100%;
+  text-align:center;
+  padding:15px;
+  border-radius:16px;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:16px;
+  margin-top:12px;
+}
+
+.green-btn{
+  background:#10b981;
+  color:white;
+}
+
+.dark-btn{
+  background:#111827;
+  color:white;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<a href="wallet.html" class="back">← Back Wallet</a>
+
+<div class="topbar">
+  <div class="logo">FastPay</div>
+  <div class="profile" id="profileLetter">L</div>
+</div>
+
+<div class="hero">
+  <h1>Deposit History</h1>
+  <p>Isit la ou ka wè tout depo ou fè yo, estati yo ak dat yo.</p>
+</div>
+
+<div class="section">
+  <h2>Rezime Depo</h2>
+
+  <div class="stat-grid">
+    <div class="stat-box">
+      <div class="stat-title">Total Deposits</div>
+      <div class="stat-value" id="totalDeposits">0</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-title">Last Amount</div>
+      <div class="stat-value" id="lastAmount">0</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-title">Last Bank</div>
+      <div class="stat-value" id="lastBank">Pa gen</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-title">Last Status</div>
+      <div class="stat-value" id="lastStatus">N/A</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Tout depo yo</h2>
+  <div id="depositBox" class="empty">Pa gen depo pou kounye a.</div>
+
+  <a href="deposit.html" class="main-btn green-btn">Nouvo Deposit</a>
+  <a href="dashboard.html" class="main-btn dark-btn">Ale sou Dashboard</a>
+</div>
+
+</div>
+
+<script>
+const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
+const deposits = JSON.parse(localStorage.getItem("fastpay_deposits")) || [];
+
+if(savedUser && savedUser.fullname){
+  document.getElementById("profileLetter").innerHTML =
+    savedUser.fullname.charAt(0).toUpperCase();
+}
+
+document.getElementById("totalDeposits").innerHTML = deposits.length;
+
+if(deposits.length > 0){
+  document.getElementById("lastAmount").innerHTML = deposits[0].amount || "0";
+  document.getElementById("lastBank").innerHTML = deposits[0].bank || "Pa gen";
+  document.getElementById("lastStatus").innerHTML = deposits[0].status || "Pending";
+}
+
+function loadDeposits(){
+  const box = document.getElementById("depositBox");
+
+  if(deposits.length === 0){
+    box.innerHTML = "Pa gen depo pou kounye a.";
+    return;
+  }
+
+  box.innerHTML = "";
+
+  deposits.forEach(function(item){
+    box.innerHTML += `
+      <div class="deposit-item">
+        <div class="deposit-top">
+          <div>
+            <div class="deposit-name">${item.bank || 'Deposit'}</div>
+            <div class="deposit-date">${item.date || ''}</div>
+          </div>
+          <div class="deposit-amount">${item.amount || '0'}</div>
+        </div>
+
+        <div class="deposit-sub"><strong>Method:</strong> ${item.method || 'N/A'}</div>
+        <div class="deposit-sub"><strong>Currency:</strong> ${item.currency || 'N/A'}</div>
+        <div class="deposit-sub"><strong>Client:</strong> ${item.clientName || 'N/A'}</div>
+        <div class="deposit-sub"><strong>Details:</strong> ${item.details || 'N/A'}</div>
+        <div class="status">${item.status || 'Pending Verification'}</div>
+      </div>
+    `;
+  });
+}
+
+loadDeposits();
+</script>
+
+</body>
+  </html>
