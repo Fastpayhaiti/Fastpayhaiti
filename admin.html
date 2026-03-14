@@ -178,6 +178,11 @@
     <div id="socialMediaBox" class="empty">Pa gen lòd social media pou kounye a.</div>
   </div>
 
+  <div class="box">
+    <h2>Top Up Orders</h2>
+    <div id="topupBox" class="empty">Pa gen top up pou kounye a.</div>
+  </div>
+
   <button class="btn btn-primary" onclick="loadAllData()">Refresh Dashboard</button>
   <button class="btn btn-secondary" onclick="clearRequests()">Clear Requests</button>
 </div>
@@ -200,7 +205,7 @@
       '<div class="row"><strong>Order ID:</strong> ' + (order.orderId || 'N/A') + '</div>' +
       '<div class="row"><strong>Client:</strong> ' + (order.fullname || order.clientName || 'N/A') + '</div>' +
       '<div class="row"><strong>WhatsApp:</strong> ' + (order.whatsapp || 'N/A') + '</div>' +
-      '<div class="row"><strong>Service:</strong> ' + (order.service || 'N/A') + '</div>' +
+      '<div class="row"><strong>Service:</strong> ' + (order.service || order.type || 'N/A') + '</div>' +
       '<div class="row"><strong>Plan / Amount:</strong> ' + (order.amount || 'N/A') + '</div>' +
       '<div class="row"><strong>Details:</strong> ' + (order.details || 'N/A') + '</div>' +
       '<div class="row"><strong>Date:</strong> ' + (order.date || 'N/A') + '</div>' +
@@ -231,6 +236,7 @@
     if (type === "card") return "Pa gen demann kat pou kounye a.";
     if (type === "recharge") return "Pa gen recharge carte pou kounye a.";
     if (type === "social") return "Pa gen lòd social media pou kounye a.";
+    if (type === "topup") return "Pa gen top up pou kounye a.";
     return "Pa gen done pou kounye a.";
   }
 
@@ -334,6 +340,25 @@
       `;
     }
 
+    if (type === "topup") {
+      return `
+        <div class="item">
+          <div class="item-title">${item.operator || 'Top Up'} - ${item.amount || '0'}</div>
+          <div class="item-sub"><strong>Client:</strong> ${item.clientName || 'N/A'}</div>
+          <div class="item-sub"><strong>WhatsApp:</strong> ${item.whatsapp || 'N/A'}</div>
+          <div class="item-sub"><strong>Country:</strong> ${item.country || 'N/A'}</div>
+          <div class="item-sub"><strong>Phone:</strong> ${item.phoneNumber || 'N/A'}</div>
+          <div class="item-sub"><strong>Plan:</strong> ${item.plan || 'N/A'}</div>
+          <div class="item-sub"><strong>Package:</strong> ${item.packageName || 'N/A'}</div>
+          <div class="item-sub"><strong>Payment Method:</strong> ${item.paymentMethod || 'N/A'}</div>
+          <div class="item-sub"><strong>Details:</strong> ${item.details || 'N/A'}</div>
+          <div class="item-sub"><strong>Order ID:</strong> ${item.orderId || 'N/A'}</div>
+          <div class="item-sub"><strong>Date:</strong> ${item.date || 'N/A'}</div>
+          <span class="status">Status: ${item.status || 'Pending Payment Verification'}</span>
+        </div>
+      `;
+    }
+
     return `
       <div class="item">
         <div class="item-title">No data</div>
@@ -349,6 +374,10 @@
     return JSON.parse(localStorage.getItem("fastpay_social_orders")) || [];
   }
 
+  function getTopupOrders() {
+    return JSON.parse(localStorage.getItem("fastpay_topups")) || [];
+  }
+
   function loadAllData() {
     renderSingleLastOrder();
 
@@ -358,6 +387,7 @@
     const cardRequests = JSON.parse(localStorage.getItem("fastpay_card_requests")) || [];
     const rechargeCards = getRechargeCardRequests();
     const socialOrders = getSocialMediaOrders();
+    const topupOrders = getTopupOrders();
 
     renderList("depositBox", deposits, "deposit");
     renderList("withdrawBox", withdraws, "withdraw");
@@ -365,6 +395,7 @@
     renderList("cardRequestBox", cardRequests, "card");
     renderList("rechargeCardBox", rechargeCards, "recharge");
     renderList("socialMediaBox", socialOrders, "social");
+    renderList("topupBox", topupOrders, "topup");
   }
 
   function clearRequests() {
@@ -374,6 +405,7 @@
     localStorage.removeItem("fastpay_card_requests");
     localStorage.removeItem("fastpay_recharge_cards");
     localStorage.removeItem("fastpay_social_orders");
+    localStorage.removeItem("fastpay_topups");
     loadAllData();
   }
 
@@ -381,4 +413,4 @@
 </script>
 
 </body>
-</html>
+  </html>
