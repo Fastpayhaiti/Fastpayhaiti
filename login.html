@@ -1,92 +1,239 @@
 <!DOCTYPE html>
-<html>
+<html lang="ht">
 <head>
-<title>Login - FastPay</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FastPay Login v2</title>
 <style>
-body{
-font-family:Arial;
-background:#f4f6fb;
-padding:20px;
+*{
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
 }
 
-.box{
-max-width:400px;
-margin:auto;
-background:white;
-padding:20px;
-border-radius:15px;
-box-shadow:0 5px 20px rgba(0,0,0,0.08);
+body{
+  margin:0;
+  background:#eef2f7;
+  padding:20px;
+  color:#111827;
+}
+
+.container{
+  max-width:430px;
+  margin:auto;
+}
+
+.back{
+  display:inline-block;
+  margin-bottom:16px;
+  color:#ff4d3d;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.logo{
+  font-size:30px;
+  font-weight:bold;
+  color:#ff5a3d;
+}
+
+.profile{
+  width:46px;
+  height:46px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#ff5a3d,#ff7a59);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:18px;
+  box-shadow:0 6px 16px rgba(255,90,61,0.25);
+}
+
+.hero{
+  background:linear-gradient(135deg,#111827,#374151);
+  color:white;
+  border-radius:26px;
+  padding:24px;
+  margin-bottom:18px;
+  box-shadow:0 12px 28px rgba(17,24,39,0.22);
+}
+
+.hero h1{
+  margin:0 0 10px 0;
+  font-size:30px;
+  line-height:1.2;
+}
+
+.hero p{
+  margin:0;
+  font-size:15px;
+  line-height:1.6;
+  opacity:0.98;
+}
+
+.section{
+  background:white;
+  border-radius:22px;
+  padding:18px;
+  box-shadow:0 8px 18px rgba(0,0,0,0.06);
+  margin-bottom:18px;
+}
+
+.section h2{
+  margin:0 0 14px 0;
+  font-size:22px;
+}
+
+label{
+  display:block;
+  margin-bottom:8px;
+  font-weight:bold;
+  color:#111827;
 }
 
 input{
-width:100%;
-padding:12px;
-margin-top:10px;
-margin-bottom:15px;
-border-radius:8px;
-border:1px solid #ccc;
+  width:100%;
+  padding:14px;
+  border:1px solid #d1d5db;
+  border-radius:14px;
+  font-size:16px;
+  background:white;
+  margin-bottom:16px;
 }
 
-button{
-width:100%;
-padding:14px;
-background:#ff4d3d;
-color:white;
-border:none;
-border-radius:10px;
-font-size:16px;
-font-weight:bold;
+.main-btn{
+  display:block;
+  width:100%;
+  text-align:center;
+  padding:15px;
+  border:none;
+  border-radius:16px;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:16px;
+  margin-top:12px;
+  cursor:pointer;
 }
 
-a{
-display:block;
-margin-top:15px;
-text-align:center;
+.orange-btn{
+  background:#ff4d3d;
+  color:white;
+}
+
+.dark-btn{
+  background:#111827;
+  color:white;
+}
+
+.notice{
+  display:none;
+  padding:14px;
+  border-radius:14px;
+  font-weight:bold;
+  line-height:1.5;
+  margin-bottom:14px;
+}
+
+.notice.success{
+  background:#ecfdf3;
+  color:#166534;
+}
+
+.notice.error{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.small-text{
+  color:#6b7280;
+  font-size:14px;
+  line-height:1.5;
+  margin-top:12px;
+  text-align:center;
 }
 </style>
 </head>
-
 <body>
 
-<div class="box">
+<div class="container">
 
-<h2>Login</h2>
+<a href="index.html" class="back">← Back Home</a>
 
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
+<div class="topbar">
+  <div class="logo">FastPay</div>
+  <div class="profile">L</div>
+</div>
 
-<button onclick="login()">Login</button>
+<div class="hero">
+  <h1>Login FastPay</h1>
+  <p>Antre nan kont ou pou jere wallet ou, kat ou, ak tout sèvis FastPay yo.</p>
+</div>
 
-<a href="register.html">Create account</a>
+<div class="section">
+  <h2>Konekte ak kont ou</h2>
+
+  <div id="noticeBox" class="notice"></div>
+
+  <label>Email</label>
+  <input type="email" id="email" placeholder="Antre email ou">
+
+  <label>Modpas</label>
+  <input type="password" id="password" placeholder="Antre modpas ou">
+
+  <button class="main-btn orange-btn" onclick="loginUser()">Login</button>
+  <a href="register.html" class="main-btn dark-btn">Kreye nouvo kont</a>
+
+  <div class="small-text">
+    Asire w `app.js` la nan menm folder ak paj sa a.
+  </div>
+</div>
 
 </div>
 
+<script src="app.js"></script>
 <script>
-
-function login(){
-
-const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
-
-const email = document.getElementById("email").value;
-const password = document.getElementById("password").value;
-
-if(savedUser && savedUser.email === email && savedUser.password === password){
-
-localStorage.setItem("fastpay_logged_in","true");
-
-alert("Login successful");
-
-window.location.href="index.html";
-
-}else{
-
-alert("Login incorrect");
-
+function showNotice(message, type){
+  const box = document.getElementById("noticeBox");
+  box.style.display = "block";
+  box.className = "notice " + type;
+  box.innerHTML = message;
 }
 
+function loginUser(){
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  if(!email || !password){
+    showNotice("Tanpri antre email ak modpas ou.", "error");
+    return;
+  }
+
+  const result = FastPayV2.loginUser(email, password);
+
+  if(!result.success){
+    showNotice(result.message || "Login pa mache.", "error");
+    return;
+  }
+
+  showNotice("Login fèt avèk siksè. W ap antre sou dashboard la...", "success");
+
+  setTimeout(() => {
+    window.location.href = "dashboard.html";
+  }, 1000);
 }
 
+const session = FastPayV2.getSession();
+if(session && session.loggedIn){
+  window.location.href = "dashboard.html";
+}
 </script>
 
 </body>
