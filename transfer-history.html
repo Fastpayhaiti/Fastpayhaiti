@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FastPay Deposit History</title>
+<title>FastPay Transfer History v2</title>
 <style>
 *{
   box-sizing:border-box;
@@ -58,17 +58,17 @@ body{
 }
 
 .hero{
-  background:linear-gradient(135deg,#047857,#10b981);
+  background:linear-gradient(135deg,#111827,#374151);
   color:white;
   border-radius:26px;
   padding:24px;
   margin-bottom:18px;
-  box-shadow:0 12px 28px rgba(16,185,129,0.22);
+  box-shadow:0 12px 28px rgba(17,24,39,0.22);
 }
 
 .hero h1{
   margin:0 0 10px 0;
-  font-size:30px;
+  font-size:28px;
   line-height:1.2;
 }
 
@@ -116,60 +116,69 @@ body{
   color:#111827;
 }
 
-.deposit-item{
+.item{
   padding:12px 0;
   border-bottom:1px solid #eee;
 }
 
-.deposit-item:last-child{
+.item:last-child{
   border-bottom:none;
 }
 
-.deposit-top{
+.item-top{
   display:flex;
   justify-content:space-between;
   gap:12px;
   align-items:flex-start;
 }
 
-.deposit-name{
+.item-title{
   font-weight:bold;
   font-size:15px;
 }
 
-.deposit-amount{
+.item-amount{
   font-weight:bold;
   font-size:15px;
   text-align:right;
+  color:#dc2626;
 }
 
-.deposit-date{
+.item-date{
   color:#6b7280;
   font-size:13px;
   margin-top:4px;
 }
 
-.deposit-sub{
-  color:#6b7280;
-  font-size:13px;
-  margin-top:4px;
-  line-height:1.45;
-}
-
-.status{
-  display:inline-block;
+.item-sub{
+  color:#4b5563;
+  font-size:14px;
   margin-top:6px;
-  background:#fff7ed;
-  color:#c2410c;
+  line-height:1.5;
+}
+
+.badge{
+  display:inline-block;
+  margin-top:8px;
   border-radius:999px;
   padding:5px 10px;
   font-size:12px;
   font-weight:bold;
 }
 
-.empty{
-  color:#6b7280;
-  font-size:14px;
+.badge-success{
+  background:#ecfdf3;
+  color:#166534;
+}
+
+.badge-warning{
+  background:#fff7ed;
+  color:#c2410c;
+}
+
+.badge-danger{
+  background:#fee2e2;
+  color:#991b1b;
 }
 
 .main-btn{
@@ -177,21 +186,42 @@ body{
   width:100%;
   text-align:center;
   padding:15px;
+  border:none;
   border-radius:16px;
   text-decoration:none;
   font-weight:bold;
   font-size:16px;
   margin-top:12px;
+  cursor:pointer;
 }
 
-.green-btn{
-  background:#10b981;
+.orange-btn{
+  background:#ff4d3d;
   color:white;
 }
 
 .dark-btn{
   background:#111827;
   color:white;
+}
+
+.empty{
+  color:#6b7280;
+  font-size:14px;
+}
+
+.notice{
+  display:none;
+  padding:14px;
+  border-radius:14px;
+  font-weight:bold;
+  line-height:1.5;
+  margin-bottom:14px;
+}
+
+.notice.error{
+  background:#fee2e2;
+  color:#991b1b;
 }
 </style>
 </head>
@@ -203,100 +233,123 @@ body{
 
 <div class="topbar">
   <div class="logo">FastPay</div>
-  <div class="profile" id="profileLetter">L</div>
+  <div class="profile" id="profileLetter">U</div>
 </div>
 
+<div id="noticeBox" class="notice error"></div>
+
 <div class="hero">
-  <h1>Deposit History</h1>
-  <p>Isit la ou ka wè tout depo ou fè yo, estati yo ak dat yo.</p>
+  <h1>Transfer History</h1>
+  <p>Wè tout demann transfè ou yo, estati yo, ak detay reseptè yo nan yon sèl paj.</p>
 </div>
 
 <div class="section">
-  <h2>Rezime Depo</h2>
+  <h2>Rezime Transfè</h2>
 
   <div class="stat-grid">
     <div class="stat-box">
-      <div class="stat-title">Total Deposits</div>
-      <div class="stat-value" id="totalDeposits">0</div>
+      <div class="stat-title">Total Transfers</div>
+      <div class="stat-value" id="totalTransfers">0</div>
     </div>
 
     <div class="stat-box">
-      <div class="stat-title">Last Amount</div>
-      <div class="stat-value" id="lastAmount">0</div>
+      <div class="stat-title">Approved</div>
+      <div class="stat-value" id="approvedTransfers">0</div>
     </div>
 
     <div class="stat-box">
-      <div class="stat-title">Last Bank</div>
-      <div class="stat-value" id="lastBank">Pa gen</div>
+      <div class="stat-title">Pending</div>
+      <div class="stat-value" id="pendingTransfers">0</div>
     </div>
 
     <div class="stat-box">
-      <div class="stat-title">Last Status</div>
-      <div class="stat-value" id="lastStatus">N/A</div>
+      <div class="stat-title">Total Amount</div>
+      <div class="stat-value" id="totalAmount">0 HTG</div>
     </div>
   </div>
 </div>
 
 <div class="section">
-  <h2>Tout depo yo</h2>
-  <div id="depositBox" class="empty">Pa gen depo pou kounye a.</div>
+  <h2>Tout demann transfè yo</h2>
+  <div id="transferList" class="empty">Pa gen transfè pou kounye a.</div>
 
-  <a href="deposit.html" class="main-btn green-btn">Nouvo Deposit</a>
-  <a href="dashboard.html" class="main-btn dark-btn">Ale sou Dashboard</a>
+  <a href="transfer.html" class="main-btn orange-btn">Nouvo Transfer</a>
+  <a href="dashboard.html" class="main-btn dark-btn">Retounen sou Dashboard</a>
 </div>
 
 </div>
 
+<script src="app.js"></script>
 <script>
-const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
-const deposits = JSON.parse(localStorage.getItem("fastpay_deposits")) || [];
+function showError(message){
+  const box = document.getElementById("noticeBox");
+  box.style.display = "block";
+  box.innerHTML = message;
+}
 
-if(savedUser && savedUser.fullname){
+function getStatusBadge(status){
+  const s = String(status || "").toLowerCase();
+  if(s.includes("approved")) return "badge-success";
+  if(s.includes("rejected")) return "badge-danger";
+  return "badge-warning";
+}
+
+const currentUser = FastPayV2.getCurrentUser();
+
+if(!currentUser){
+  showError("Ou pa konekte. Tanpri login anvan.");
+  setTimeout(() => {
+    window.location.href = "login.html";
+  }, 1200);
+} else {
   document.getElementById("profileLetter").innerHTML =
-    savedUser.fullname.charAt(0).toUpperCase();
-}
+    currentUser.fullname.charAt(0).toUpperCase();
 
-document.getElementById("totalDeposits").innerHTML = deposits.length;
+  const allTransfers = FastPayDB.get("fastpay_transfers", []);
+  const userTransfers = allTransfers.filter(item => item.userId === currentUser.id);
 
-if(deposits.length > 0){
-  document.getElementById("lastAmount").innerHTML = deposits[0].amount || "0";
-  document.getElementById("lastBank").innerHTML = deposits[0].bank || "Pa gen";
-  document.getElementById("lastStatus").innerHTML = deposits[0].status || "Pending";
-}
+  document.getElementById("totalTransfers").innerHTML = userTransfers.length;
+  document.getElementById("approvedTransfers").innerHTML =
+    userTransfers.filter(item => String(item.status || "").toLowerCase().includes("approved")).length;
+  document.getElementById("pendingTransfers").innerHTML =
+    userTransfers.filter(item => String(item.status || "").toLowerCase().includes("pending")).length;
 
-function loadDeposits(){
-  const box = document.getElementById("depositBox");
-
-  if(deposits.length === 0){
-    box.innerHTML = "Pa gen depo pou kounye a.";
-    return;
-  }
-
-  box.innerHTML = "";
-
-  deposits.forEach(function(item){
-    box.innerHTML += `
-      <div class="deposit-item">
-        <div class="deposit-top">
-          <div>
-            <div class="deposit-name">${item.bank || 'Deposit'}</div>
-            <div class="deposit-date">${item.date || ''}</div>
-          </div>
-          <div class="deposit-amount">${item.amount || '0'}</div>
-        </div>
-
-        <div class="deposit-sub"><strong>Method:</strong> ${item.method || 'N/A'}</div>
-        <div class="deposit-sub"><strong>Currency:</strong> ${item.currency || 'N/A'}</div>
-        <div class="deposit-sub"><strong>Client:</strong> ${item.clientName || 'N/A'}</div>
-        <div class="deposit-sub"><strong>Details:</strong> ${item.details || 'N/A'}</div>
-        <div class="status">${item.status || 'Pending Verification'}</div>
-      </div>
-    `;
+  let totalAmount = 0;
+  userTransfers.forEach(item => {
+    totalAmount += parseInt(item.amountValue || 0);
   });
-}
+  document.getElementById("totalAmount").innerHTML = totalAmount + " HTG";
 
-loadDeposits();
+  const list = document.getElementById("transferList");
+
+  if(userTransfers.length === 0){
+    list.innerHTML = "Pa gen transfè pou kounye a.";
+  } else {
+    list.className = "";
+    list.innerHTML = "";
+
+    userTransfers.forEach(function(item){
+      list.innerHTML += `
+        <div class="item">
+          <div class="item-top">
+            <div>
+              <div class="item-title">${item.transferType || "Transfer"} - ${item.receiverName || "N/A"}</div>
+              <div class="item-date">${item.date || ""}</div>
+            </div>
+            <div class="item-amount">${item.amount || "0 HTG"}</div>
+          </div>
+
+          <div class="item-sub"><strong>Receiver ID:</strong> ${item.receiverId || "N/A"}</div>
+          <div class="item-sub"><strong>Reference:</strong> ${item.reference || "N/A"}</div>
+          <div class="item-sub"><strong>Currency:</strong> ${item.currency || "HTG"}</div>
+          <div class="item-sub"><strong>Details:</strong> ${item.details || "N/A"}</div>
+          <div class="badge ${getStatusBadge(item.status)}">${item.status || "Pending Verification"}</div>
+        </div>
+      `;
+    });
+  }
+}
 </script>
 
 </body>
-  </html>
+</html>
