@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Card - FastPay</title>
+<style>
+*{
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  margin:0;
+  background:#eef2f7;
+  padding:20px;
+  color:#111827;
+}
+
+.container{
+  max-width:430px;
+  margin:auto;
+}
+
+.back{
+  display:inline-block;
+  margin-bottom:16px;
+  color:#ff4d3d;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.logo{
+  font-size:30px;
+  font-weight:bold;
+  color:#ff5a3d;
+}
+
+.profile{
+  width:46px;
+  height:46px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#ff5a3d,#ff7a59);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:18px;
+  box-shadow:0 6px 16px rgba(255,90,61,0.25);
+}
+
+.hero{
+  background:linear-gradient(135deg,#111827,#374151);
+  color:white;
+  border-radius:26px;
+  padding:24px;
+  margin-bottom:18px;
+  box-shadow:0 12px 28px rgba(17,24,39,0.22);
+}
+
+.hero h1{
+  margin:0 0 10px 0;
+  font-size:30px;
+  line-height:1.2;
+}
+
+.hero p{
+  margin:0;
+  font-size:15px;
+  line-height:1.6;
+  opacity:0.98;
+}
+
+.section{
+  background:white;
+  border-radius:22px;
+  padding:18px;
+  box-shadow:0 8px 18px rgba(0,0,0,0.06);
+  margin-bottom:18px;
+}
+
+.section h2{
+  margin:0 0 14px 0;
+  font-size:22px;
+}
+
+label{
+  display:block;
+  margin-bottom:8px;
+  font-weight:bold;
+  color:#111827;
+}
+
+input, select, textarea{
+  width:100%;
+  padding:14px;
+  border:1px solid #d1d5db;
+  border-radius:14px;
+  font-size:16px;
+  background:white;
+  margin-bottom:16px;
+}
+
+.card-options{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-bottom:16px;
+}
+
+.option-card{
+  border:2px solid #e5e7eb;
+  border-radius:18px;
+  padding:16px 12px;
+  background:white;
+  cursor:pointer;
+  text-align:center;
+}
+
+.option-card.active{
+  border-color:#111827;
+  background:#f9fafb;
+}
+
+.option-title{
+  font-weight:bold;
+  font-size:15px;
+  margin-bottom:6px;
+}
+
+.option-sub{
+  font-size:13px;
+  color:#6b7280;
+}
+
+.summary{
+  background:#f8fafc;
+  border-radius:16px;
+  padding:16px;
+}
+
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+  font-size:14px;
+}
+
+.summary-row:last-child{
+  margin-bottom:0;
+}
+
+.summary-label{
+  color:#6b7280;
+}
+
+.summary-value{
+  font-weight:bold;
+  text-align:right;
+}
+
+.wallet-box{
+  background:#ecfdf3;
+  color:#166534;
+  border-radius:14px;
+  padding:14px;
+  font-weight:bold;
+  margin-bottom:14px;
+}
+
+.wallet-bad{
+  background:#fee2e2;
+  color:#991b1b;
+  border-radius:14px;
+  padding:14px;
+  font-weight:bold;
+  margin-bottom:14px;
+}
+
+.main-btn{
+  display:block;
+  width:100%;
+  text-align:center;
+  padding:15px;
+  border:none;
+  border-radius:16px;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:16px;
+  margin-top:12px;
+  cursor:pointer;
+}
+
+.orange-btn{
+  background:#ff4d3d;
+  color:white;
+}
+
+.dark-btn{
+  background:#111827;
+  color:white;
+}
+
+.success-box{
+  display:none;
+  background:#ecfdf3;
+  color:#166534;
+  padding:16px;
+  border-radius:16px;
+  font-weight:bold;
+  margin-top:16px;
+  line-height:1.5;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<a href="index.html" class="back">← Back Home</a>
+
+<div class="topbar">
+  <div class="logo">FastPay</div>
+  <div class="profile" id="profileLetter">L</div>
+</div>
+
+<div class="hero">
+  <h1>Create New Card</h1>
+  <p>Ranpli enfòmasyon yo pou mande yon nouvo kat vityèl FastPay.</p>
+</div>
+
+<div class="section">
+  <h2>Enfòmasyon kliyan</h2>
+
+  <label>Non konplè</label>
+  <input type="text" id="fullName" placeholder="Antre non kliyan an">
+
+  <label>Email</label>
+  <input type="email" id="email" placeholder="Antre imel kliyan an">
+
+  <label>WhatsApp</label>
+  <input type="text" id="whatsapp" placeholder="Eg: 50942778505">
+
+  <label>Adrès</label>
+  <input type="text" id="address" placeholder="Antre adrès kliyan an">
+
+  <label>Dat nesans</label>
+  <input type="date" id="dob">
+
+  <label>Tip pyès idantite</label>
+  <select id="idType">
+    <option>Kat idantite</option>
+    <option>Paspò</option>
+    <option>Permi</option>
+  </select>
+
+  <label>Nimewo pyès la</label>
+  <input type="text" id="idNumber" placeholder="Antre nimewo pyès la">
+</div>
+
+<div class="section">
+  <h2>Opsyon kat la</h2>
+
+  <label>Kalite kat</label>
+  <div class="card-options">
+    <div class="option-card active" id="virtualCardOption" onclick="selectCardKind('Virtual')">
+      <div class="option-title">Virtual Card</div>
+      <div class="option-sub">Pi vit ak pi fasil</div>
+    </div>
+
+    <div class="option-card" id="premiumCardOption" onclick="selectCardKind('Premium')">
+      <div class="option-title">Premium Card</div>
+      <div class="option-sub">Pi gwo limit</div>
+    </div>
+  </div>
+
+  <label>Rezo kat la</label>
+  <div class="card-options">
+    <div class="option-card active" id="visaOption" onclick="selectNetwork('Visa')">
+      <div class="option-title">Visa</div>
+      <div class="option-sub">Global payments</div>
+    </div>
+
+    <div class="option-card" id="mastercardOption" onclick="selectNetwork('Mastercard')">
+      <div class="option-title">Mastercard</div>
+      <div class="option-sub">Secure checkout</div>
+    </div>
+  </div>
+
+  <label>Currency</label>
+  <select id="currency">
+    <option>USD</option>
+    <option>HTG</option>
+    <option>EUR</option>
+  </select>
+
+  <label>Metòd peman</label>
+  <select id="paymentMethod" onchange="updateWalletState()">
+    <option>Wallet</option>
+    <option>Bank</option>
+    <option>MonCash</option>
+    <option>NatCash</option>
+    <option>Cash</option>
+  </select>
+
+  <label>Nòt / detay</label>
+  <textarea id="note" rows="4" placeholder="Mete nenpòt detay sou demann kat la"></textarea>
+</div>
+
+<div class="section">
+  <h2>Rezime demann lan</h2>
+
+  <div id="walletStateBox" class="wallet-box">Wallet ou disponib pou peman sa a.</div>
+
+  <div class="summary">
+    <div class="summary-row">
+      <div class="summary-label">Card Type</div>
+      <div class="summary-value" id="summaryCardType">Virtual</div>
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-label">Network</div>
+      <div class="summary-value" id="summaryNetwork">Visa</div>
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-label">Price</div>
+      <div class="summary-value" id="summaryPrice">1500 HTG</div>
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-label">Wallet Balance</div>
+      <div class="summary-value" id="summaryWallet">0 HTG</div>
+    </div>
+  </div>
+
+  <button class="main-btn orange-btn" onclick="submitCardRequest()">Confirmer la demande</button>
+  <a href="wallet.html" class="main-btn dark-btn">Ale sou Wallet</a>
+
+  <div class="success-box" id="successBox"></div>
+</div>
+
+</div>
+
+<script>
+const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
+const walletBalance = parseInt(localStorage.getItem("fastpay_balance") || "0");
+
+let selectedCardKind = "Virtual";
+let selectedNetwork = "Visa";
+let selectedPrice = 1500;
+
+if(savedUser && savedUser.fullname){
+  document.getElementById("profileLetter").innerHTML = savedUser.fullname.charAt(0).toUpperCase();
+  document.getElementById("fullName").value = savedUser.fullname || "";
+  document.getElementById("email").value = savedUser.email || "";
+}
+
+document.getElementById("summaryWallet").innerHTML = walletBalance + " HTG";
+
+function selectCardKind(kind){
+  selectedCardKind = kind;
+
+  document.getElementById("virtualCardOption").classList.remove("active");
+  document.getElementById("premiumCardOption").classList.remove("active");
+
+  if(kind === "Virtual"){
+    document.getElementById("virtualCardOption").classList.add("active");
+    selectedPrice = 1500;
+  } else {
+    document.getElementById("premiumCardOption").classList.add("active");
+    selectedPrice = 3000;
+  }
+
+  document.getElementById("summaryCardType").innerHTML = selectedCardKind;
+  document.getElementById("summaryPrice").innerHTML = selectedPrice + " HTG";
+  updateWalletState();
+}
+
+function selectNetwork(network){
+  selectedNetwork = network;
+
+  document.getElementById("visaOption").classList.remove("active");
+  document.getElementById("mastercardOption").classList.remove("active");
+
+  if(network === "Visa"){
+    document.getElementById("visaOption").classList.add("active");
+  } else {
+    document.getElementById("mastercardOption").classList.add("active");
+  }
+
+  document.getElementById("summaryNetwork").innerHTML = selectedNetwork;
+}
+
+function updateWalletState(){
+  const paymentMethod = document.getElementById("paymentMethod").value;
+  const box = document.getElementById("walletStateBox");
+
+  if(paymentMethod === "Wallet"){
+    if(walletBalance >= selectedPrice){
+      box.className = "wallet-box";
+      box.innerHTML = "Wallet ou gen ase balans pou peman sa a.";
+    } else {
+      box.className = "wallet-bad";
+      box.innerHTML = "Wallet ou pa gen ase balans pou peman sa a.";
+    }
+  } else {
+    box.className = "wallet-box";
+    box.innerHTML = "Metòd sa a mande verifikasyon admin avan kat la aktive.";
+  }
+}
+
+function submitCardRequest(){
+  const fullName = document.getElementById("fullName").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const whatsapp = document.getElementById("whatsapp").value.trim();
+  const address = document.getElementById("address").value.trim();
+  const dob = document.getElementById("dob").value;
+  const idType = document.getElementById("idType").value;
+  const idNumber = document.getElementById("idNumber").value.trim();
+  const currency = document.getElementById("currency").value;
+  const paymentMethod = document.getElementById("paymentMethod").value;
+  const note = document.getElementById("note").value.trim();
+
+  if(!fullName || !email || !whatsapp || !address || !dob || !idNumber){
+    alert("Tanpri ranpli tout enfòmasyon enpòtan yo.");
+    return;
+  }
+
+  let status = "Pending Payment Verification";
+  let currentWallet = parseInt(localStorage.getItem("fastpay_balance") || "0");
+
+  if(paymentMethod === "Wallet"){
+    if(currentWallet < selectedPrice){
+      alert("Wallet ou pa gen ase balans pou kreye kat la.");
+      return;
+    }
+
+    currentWallet -= selectedPrice;
+    localStorage.setItem("fastpay_balance", currentWallet);
+
+    let transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
+    const txId = "CARDREQ-" + Math.floor(Math.random() * 90000 + 10000);
+
+    transactions.unshift({
+      service: "Card Request - " + selectedCardKind + " " + selectedNetwork,
+      amount: "-" + selectedPrice + " HTG",
+      date: new Date().toLocaleString(),
+      orderId: txId
+    });
+
+    localStorage.setItem("fastpay_transactions", JSON.stringify(transactions));
+    status = "Paid with Wallet";
+  }
+
+  const cardRequest = {
+    type: "Virtual Card Request",
+    fullName: fullName,
+    email: email,
+    whatsapp: whatsapp,
+    address: address,
+    dob: dob,
+    idType: idType,
+    idNumber: idNumber,
+    cardType: selectedCardKind + " Card",
+    network: selectedNetwork,
+    currency: currency,
+    paymentMethod: paymentMethod,
+    amount: selectedPrice + " HTG",
+    note: note,
+    status: status,
+    date: new Date().toLocaleString()
+  };
+
+  localStorage.setItem("fastpay_last_card_request", JSON.stringify(cardRequest));
+
+  let cardRequests = JSON.parse(localStorage.getItem("fastpay_card_requests")) || [];
+  cardRequests.unshift(cardRequest);
+  localStorage.setItem("fastpay_card_requests", JSON.stringify(cardRequests));
+
+  const successBox = document.getElementById("successBox");
+  successBox.style.display = "block";
+
+  if(paymentMethod === "Wallet"){
+    successBox.innerHTML = "Demann kat la anrejistre avèk siksè. Wallet la debite, epi admin ap verifye aktivasyon an.";
+  } else {
+    successBox.innerHTML = "Demann kat la anrejistre avèk siksè. Admin ap verifye peman an avan kat la aktive.";
+  }
+}
+
+updateWalletState();
+</script>
+
+</body>
+  </html>
