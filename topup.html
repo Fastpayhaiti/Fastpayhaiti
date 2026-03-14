@@ -1,41 +1,596 @@
 <!DOCTYPE html>
-<html>
+<html lang="ht">
 <head>
-<title>Top Up</title>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Top Up - FastPay</title>
 <style>
-body{font-family:Arial,sans-serif;background:#f4f4f4;padding:30px;text-align:center;margin:0;}
-.container{max-width:420px;margin:auto;}
-.back{display:inline-block;margin-bottom:20px;color:#ff4d3d;text-decoration:none;font-weight:bold;}
-.box{background:white;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
-h1{color:#111827;}
-p{color:#666;}
-a{text-decoration:none;}
-button{background:#ff4d3d;color:white;border:none;padding:12px 20px;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;}
+*{
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+margin:0;
+background:#eef2f7;
+padding:20px;
+color:#111827;
+}
+
+.container{
+max-width:430px;
+margin:auto;
+}
+
+.back{
+display:inline-block;
+margin-bottom:16px;
+color:#ff4d3d;
+text-decoration:none;
+font-weight:bold;
+}
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;
+}
+
+.logo{
+font-size:30px;
+font-weight:bold;
+color:#ff5a3d;
+}
+
+.profile{
+width:46px;
+height:46px;
+border-radius:14px;
+background:linear-gradient(135deg,#ff5a3d,#ff7a59);
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+font-size:18px;
+box-shadow:0 6px 16px rgba(255,90,61,0.25);
+}
+
+.hero{
+background:linear-gradient(135deg,#f97316,#fb923c);
+color:white;
+border-radius:26px;
+padding:24px;
+margin-bottom:18px;
+box-shadow:0 12px 28px rgba(249,115,22,0.22);
+}
+
+.hero h1{
+margin:0 0 10px 0;
+font-size:30px;
+line-height:1.2;
+}
+
+.hero p{
+margin:0;
+font-size:15px;
+line-height:1.6;
+opacity:0.98;
+}
+
+.section{
+background:white;
+padding:18px;
+border-radius:22px;
+box-shadow:0 8px 18px rgba(0,0,0,0.06);
+margin-bottom:18px;
+}
+
+.section h3{
+margin:0 0 16px 0;
+font-size:22px;
+color:#111827;
+}
+
+.balance-box{
+background:#f8fafc;
+padding:16px;
+border-radius:16px;
+margin-bottom:18px;
+text-align:center;
+}
+
+.balance-label{
+font-size:14px;
+color:#6b7280;
+margin-bottom:8px;
+}
+
+.balance-amount{
+font-size:28px;
+font-weight:bold;
+color:#111827;
+}
+
+label{
+display:block;
+margin-bottom:8px;
+font-weight:bold;
+color:#111827;
+}
+
+input, select, textarea{
+width:100%;
+padding:14px;
+border:1px solid #d1d5db;
+border-radius:14px;
+font-size:16px;
+background:white;
+margin-bottom:16px;
+}
+
+.plan-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+margin-bottom:16px;
+}
+
+.plan-card{
+border:2px solid #e5e7eb;
+border-radius:18px;
+padding:16px 12px;
+background:white;
+cursor:pointer;
+}
+
+.plan-card.active{
+border-color:#f97316;
+background:#fff7ed;
+}
+
+.plan-title{
+font-size:20px;
+font-weight:bold;
+margin-bottom:6px;
+}
+
+.plan-sub{
+font-size:14px;
+color:#6b7280;
+margin-bottom:8px;
+}
+
+.plan-price{
+font-size:18px;
+font-weight:bold;
+color:#f97316;
+}
+
+.methods{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+margin-bottom:16px;
+}
+
+.method-card{
+border:2px solid #e5e7eb;
+border-radius:18px;
+padding:16px 12px;
+text-align:center;
+cursor:pointer;
+background:white;
+font-weight:bold;
+}
+
+.method-card.active{
+border-color:#f97316;
+background:#fff7ed;
+}
+
+.method-icon{
+font-size:24px;
+display:block;
+margin-bottom:8px;
+}
+
+.wallet-ok{
+background:#ecfdf3;
+color:#166534;
+padding:14px;
+border-radius:14px;
+font-weight:bold;
+margin-bottom:14px;
+}
+
+.wallet-bad{
+background:#fee2e2;
+color:#991b1b;
+padding:14px;
+border-radius:14px;
+font-weight:bold;
+margin-bottom:14px;
+}
+
+.pay-box{
+background:#f8fafc;
+padding:14px;
+border-radius:14px;
+font-size:14px;
+color:#4b5563;
+line-height:1.5;
+margin-bottom:16px;
+}
+
+.summary{
+background:#fff7ed;
+padding:16px;
+border-radius:16px;
+margin-bottom:16px;
+}
+
+.summary-row{
+display:flex;
+justify-content:space-between;
+gap:12px;
+margin-bottom:10px;
+font-size:15px;
+}
+
+.summary-row:last-child{
+margin-bottom:0;
+}
+
+.summary-label{
+color:#6b7280;
+}
+
+.summary-value{
+font-weight:bold;
+text-align:right;
+}
+
+.submit-btn{
+width:100%;
+padding:16px;
+background:linear-gradient(135deg,#f97316,#fb923c);
+color:white;
+border:none;
+border-radius:16px;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.secondary-btn{
+display:block;
+width:100%;
+padding:16px;
+background:#111827;
+color:white;
+border:none;
+border-radius:16px;
+font-size:17px;
+font-weight:bold;
+text-align:center;
+text-decoration:none;
+margin-top:12px;
+}
+
+.success-box{
+display:none;
+background:#ecfdf3;
+color:#166534;
+padding:16px;
+border-radius:16px;
+font-weight:bold;
+margin-top:16px;
+line-height:1.5;
+}
 </style>
 </head>
 <body>
+
 <div class="container">
 <a href="index.html" class="back">← Back Home</a>
-<h1>Top Up Services</h1>
 
-<div class="box">
-<h2>Mobile Recharge</h2>
-<p>Recharge phone credit quickly.</p>
-<a href="order.html?service=topup"><button>Recharge Now</button></a>
+<div class="topbar">
+<div class="logo">FastPay</div>
+<div class="profile" id="profileLetter">L</div>
 </div>
 
-<div class="box">
-<h2>Gaming Top Up</h2>
-<p>Free Fire, PUBG, PlayStation and more.</p>
-<a href="order.html?service=topup"><button>Top Up Now</button></a>
+<div class="hero">
+<h1>Top Up Mobile</h1>
+<p>Rechaje nimewo mobil fasil ak plan pare pou Digicel, Natcom ak lòt sèvis.</p>
 </div>
 
-<div class="box">
-<h2>International Top Up</h2>
-<p>Send mobile credit worldwide.</p>
-<a href="order.html?service=topup"><button>Send Top Up</button></a>
+<div class="section">
+<div class="balance-box">
+<div class="balance-label">Solde wallet aktyèl</div>
+<div class="balance-amount" id="walletBalance">0 HTG</div>
+</div>
+
+<h3>Enfòmasyon nimewo a</h3>
+
+<label>Non kliyan</label>
+<input type="text" id="clientName" placeholder="Antre non kliyan an">
+
+<label>WhatsApp</label>
+<input type="text" id="whatsapp" placeholder="Eg: 50942778505">
+
+<label>Peyi</label>
+<select id="country">
+<option value="Haiti">Haiti</option>
+<option value="Dominican Republic">Dominican Republic</option>
+<option value="United States">United States</option>
+<option value="Canada">Canada</option>
+</select>
+
+<label>Operatè</label>
+<select id="operator">
+<option value="Natcom">Natcom</option>
+<option value="Digicel">Digicel</option>
+<option value="International">International</option>
+</select>
+
+<label>Nimewo telefòn</label>
+<input type="text" id="phoneNumber" placeholder="Eg: 509XXXXXXXX">
+</div>
+
+<div class="section">
+<h3>Chwazi plan ou</h3>
+
+<div class="plan-grid">
+<div class="plan-card active" id="plan-1" onclick="selectPlan('1310 HTG','BASIC $10',1310)">
+<div class="plan-title">1310 HTG</div>
+<div class="plan-sub">BASIC $10</div>
+<div class="plan-price">$10.80</div>
+</div>
+
+<div class="plan-card" id="plan-2" onclick="selectPlan('2620 HTG','PLUS $20',2620)">
+<div class="plan-title">2620 HTG</div>
+<div class="plan-sub">PLUS $20</div>
+<div class="plan-price">$21.10</div>
+</div>
+
+<div class="plan-card" id="plan-3" onclick="selectPlan('3930 HTG','PREMIUM $30',3930)">
+<div class="plan-title">3930 HTG</div>
+<div class="plan-sub">PREMIUM $30</div>
+<div class="plan-price">$31.40</div>
+</div>
+
+<div class="plan-card" id="plan-4" onclick="selectPlan('6550 HTG','ULTIMATE $50',6550)">
+<div class="plan-title">6550 HTG</div>
+<div class="plan-sub">ULTIMATE $50</div>
+<div class="plan-price">$52.00</div>
 </div>
 </div>
+
+<div class="summary">
+<div class="summary-row">
+<div class="summary-label">Plan</div>
+<div class="summary-value" id="selectedPlanText">1310 HTG</div>
+</div>
+
+<div class="summary-row">
+<div class="summary-label">Package</div>
+<div class="summary-value" id="selectedPlanName">BASIC $10</div>
+</div>
+
+<div class="summary-row">
+<div class="summary-label">Montan</div>
+<div class="summary-value" id="selectedAmountText">1310 HTG</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>Mwayen peman</h3>
+
+<div class="methods">
+<div class="method-card active" id="method-wallet" onclick="selectMethod('Wallet')">
+<span class="method-icon">👛</span>
+Wallet
+</div>
+
+<div class="method-card" id="method-bank" onclick="selectMethod('Bank')">
+<span class="method-icon">🏦</span>
+Bank
+</div>
+
+<div class="method-card" id="method-moncash" onclick="selectMethod('MonCash')">
+<span class="method-icon">📲</span>
+MonCash
+</div>
+
+<div class="method-card" id="method-natcash" onclick="selectMethod('NatCash')">
+<span class="method-icon">💵</span>
+NatCash
+</div>
+</div>
+
+<div id="walletStatus"></div>
+
+<div class="pay-box" id="paymentNoteBox">
+Peman sa a ap verifye selon metòd ou chwazi a.
+</div>
+
+<label>Detay / Nòt</label>
+<textarea id="details" rows="4" placeholder="Mete detay sou top up la"></textarea>
+
+<button class="submit-btn" onclick="submitTopup()">Confirmer Payment</button>
+<a href="deposit.html" class="secondary-btn">Rechaje wallet la</a>
+
+<div class="success-box" id="successBox"></div>
+</div>
+
+</div>
+
+<script>
+const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
+const profileLetter = document.getElementById("profileLetter");
+const storedBalance = parseInt(localStorage.getItem("fastpay_balance") || "0");
+
+document.getElementById("walletBalance").innerHTML = storedBalance + " HTG";
+
+if(savedUser && savedUser.fullname){
+  profileLetter.innerHTML = savedUser.fullname.charAt(0).toUpperCase();
+  document.getElementById("clientName").value = savedUser.fullname || "";
+}
+
+let selectedMethod = "Wallet";
+let selectedPlan = "1310 HTG";
+let selectedPlanName = "BASIC $10";
+let selectedAmount = 1310;
+
+function clearPlans(){
+  document.getElementById("plan-1").classList.remove("active");
+  document.getElementById("plan-2").classList.remove("active");
+  document.getElementById("plan-3").classList.remove("active");
+  document.getElementById("plan-4").classList.remove("active");
+}
+
+function selectPlan(planText, packageName, amount){
+  selectedPlan = planText;
+  selectedPlanName = packageName;
+  selectedAmount = amount;
+
+  clearPlans();
+
+  if(amount === 1310) document.getElementById("plan-1").classList.add("active");
+  if(amount === 2620) document.getElementById("plan-2").classList.add("active");
+  if(amount === 3930) document.getElementById("plan-3").classList.add("active");
+  if(amount === 6550) document.getElementById("plan-4").classList.add("active");
+
+  document.getElementById("selectedPlanText").innerHTML = selectedPlan;
+  document.getElementById("selectedPlanName").innerHTML = selectedPlanName;
+  document.getElementById("selectedAmountText").innerHTML = selectedAmount + " HTG";
+
+  updatePaymentStatus();
+}
+
+function selectMethod(method){
+  selectedMethod = method;
+
+  document.getElementById("method-wallet").classList.remove("active");
+  document.getElementById("method-bank").classList.remove("active");
+  document.getElementById("method-moncash").classList.remove("active");
+  document.getElementById("method-natcash").classList.remove("active");
+
+  if(method === "Wallet") document.getElementById("method-wallet").classList.add("active");
+  if(method === "Bank") document.getElementById("method-bank").classList.add("active");
+  if(method === "MonCash") document.getElementById("method-moncash").classList.add("active");
+  if(method === "NatCash") document.getElementById("method-natcash").classList.add("active");
+
+  updatePaymentStatus();
+}
+
+function updatePaymentStatus(){
+  const balance = parseInt(localStorage.getItem("fastpay_balance") || "0");
+  const walletStatus = document.getElementById("walletStatus");
+  const noteBox = document.getElementById("paymentNoteBox");
+
+  if(selectedMethod === "Wallet"){
+    if(balance >= selectedAmount){
+      walletStatus.innerHTML = '<div class="wallet-ok">Wallet ou gen ase balans pou plan sa a.</div>';
+    } else {
+      walletStatus.innerHTML = '<div class="wallet-bad">Wallet ou pa gen ase balans pou plan sa a.</div>';
+    }
+    noteBox.innerHTML = "Si ou peye ak Wallet, sistèm nan ap retire lajan an dirèkteman sou balans ou.";
+  }
+
+  if(selectedMethod === "Bank"){
+    walletStatus.innerHTML = "";
+    noteBox.innerHTML = "Si ou chwazi Bank, admin ap verifye peman an avan top up la trete.";
+  }
+
+  if(selectedMethod === "MonCash"){
+    walletStatus.innerHTML = "";
+    noteBox.innerHTML = "Si ou chwazi MonCash, admin ap verifye tranzaksyon an avan top up la trete.";
+  }
+
+  if(selectedMethod === "NatCash"){
+    walletStatus.innerHTML = "";
+    noteBox.innerHTML = "Si ou chwazi NatCash, admin ap verifye tranzaksyon an avan top up la trete.";
+  }
+}
+
+function submitTopup(){
+  const clientName = document.getElementById("clientName").value;
+  const whatsapp = document.getElementById("whatsapp").value;
+  const country = document.getElementById("country").value;
+  const operator = document.getElementById("operator").value;
+  const phoneNumber = document.getElementById("phoneNumber").value;
+  const details = document.getElementById("details").value;
+
+  let balance = parseInt(localStorage.getItem("fastpay_balance") || "0");
+
+  if(!clientName || !whatsapp || !phoneNumber){
+    alert("Tanpri ranpli non, WhatsApp ak nimewo telefòn lan.");
+    return;
+  }
+
+  let status = "Pending Payment Verification";
+
+  if(selectedMethod === "Wallet"){
+    if(balance < selectedAmount){
+      alert("Wallet ou pa gen ase balans.");
+      return;
+    }
+
+    balance -= selectedAmount;
+    localStorage.setItem("fastpay_balance", balance);
+    status = "Paid with Wallet";
+  }
+
+  const topupData = {
+    type: "Top Up Order",
+    clientName: clientName,
+    whatsapp: whatsapp,
+    country: country,
+    operator: operator,
+    phoneNumber: phoneNumber,
+    plan: selectedPlan,
+    packageName: selectedPlanName,
+    amount: selectedAmount + " HTG",
+    paymentMethod: selectedMethod,
+    details: details,
+    orderId: "TOP-" + Math.floor(Math.random() * 90000 + 10000),
+    status: status,
+    date: new Date().toLocaleString()
+  };
+
+  localStorage.setItem("fastpay_last_topup", JSON.stringify(topupData));
+
+  let topupOrders = JSON.parse(localStorage.getItem("fastpay_topups")) || [];
+  topupOrders.unshift(topupData);
+  localStorage.setItem("fastpay_topups", JSON.stringify(topupOrders));
+
+  let transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
+  if(selectedMethod === "Wallet"){
+    transactions.unshift({
+      service: "Top Up - " + operator,
+      amount: "-" + selectedAmount + " HTG",
+      date: new Date().toLocaleString(),
+      orderId: topupData.orderId
+    });
+    localStorage.setItem("fastpay_transactions", JSON.stringify(transactions));
+  }
+
+  const successBox = document.getElementById("successBox");
+  successBox.style.display = "block";
+
+  if(selectedMethod === "Wallet"){
+    successBox.innerHTML = "Peman an konfime avèk siksè. Top up la anrejistre epi admin ap trete li.";
+  } else {
+    successBox.innerHTML = "Top up la anrejistre. Chwazi peman ou a epi admin ap verifye li anvan tretman.";
+  }
+}
+
+updatePaymentStatus();
+</script>
+
 </body>
-</html>
+  </html>
