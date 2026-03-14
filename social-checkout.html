@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Media Checkout - FastPay</title>
+<style>
+*{
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+margin:0;
+background:#eef2f7;
+padding:20px;
+color:#111827;
+}
+
+.container{
+max-width:430px;
+margin:auto;
+}
+
+.back{
+display:inline-block;
+margin-bottom:16px;
+color:#ff4d3d;
+text-decoration:none;
+font-weight:bold;
+}
+
+.hero{
+background:linear-gradient(135deg,#ff3d2e,#ff7a59);
+color:white;
+border-radius:24px;
+padding:22px;
+margin-bottom:18px;
+box-shadow:0 12px 28px rgba(255,90,61,0.22);
+}
+
+.hero h1{
+margin:0 0 10px 0;
+font-size:28px;
+}
+
+.hero p{
+margin:0;
+line-height:1.6;
+}
+
+.section{
+background:white;
+padding:18px;
+border-radius:22px;
+box-shadow:0 8px 18px rgba(0,0,0,0.06);
+margin-bottom:18px;
+}
+
+.section h3{
+margin:0 0 16px 0;
+font-size:22px;
+}
+
+.summary{
+background:#fff7ed;
+padding:16px;
+border-radius:16px;
+margin-bottom:16px;
+}
+
+.summary-row{
+display:flex;
+justify-content:space-between;
+gap:12px;
+margin-bottom:10px;
+font-size:15px;
+}
+
+.summary-row:last-child{
+margin-bottom:0;
+}
+
+.summary-label{
+color:#6b7280;
+}
+
+.summary-value{
+font-weight:bold;
+text-align:right;
+}
+
+label{
+display:block;
+margin-bottom:8px;
+font-weight:bold;
+}
+
+input, select, textarea{
+width:100%;
+padding:14px;
+border:1px solid #d1d5db;
+border-radius:14px;
+font-size:16px;
+background:white;
+margin-bottom:16px;
+}
+
+.methods{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+margin-bottom:16px;
+}
+
+.method-card{
+border:2px solid #e5e7eb;
+border-radius:18px;
+padding:16px 12px;
+text-align:center;
+cursor:pointer;
+background:white;
+font-weight:bold;
+}
+
+.method-card.active{
+border-color:#ff4d3d;
+background:#fff5f2;
+}
+
+.method-icon{
+font-size:24px;
+display:block;
+margin-bottom:8px;
+}
+
+.pay-box{
+background:#f8fafc;
+padding:14px;
+border-radius:14px;
+font-size:14px;
+color:#4b5563;
+line-height:1.5;
+margin-bottom:16px;
+}
+
+.wallet-ok{
+background:#ecfdf3;
+color:#166534;
+padding:14px;
+border-radius:14px;
+font-weight:bold;
+margin-bottom:14px;
+}
+
+.wallet-bad{
+background:#fee2e2;
+color:#991b1b;
+padding:14px;
+border-radius:14px;
+font-weight:bold;
+margin-bottom:14px;
+}
+
+.submit-btn{
+width:100%;
+padding:16px;
+background:linear-gradient(135deg,#ff3d2e,#ff7a59);
+color:white;
+border:none;
+border-radius:16px;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.secondary-btn{
+display:block;
+width:100%;
+padding:16px;
+background:#111827;
+color:white;
+border:none;
+border-radius:16px;
+font-size:17px;
+font-weight:bold;
+text-align:center;
+text-decoration:none;
+margin-top:12px;
+}
+
+.success-box{
+display:none;
+background:#ecfdf3;
+color:#166534;
+padding:16px;
+border-radius:16px;
+font-weight:bold;
+margin-top:16px;
+line-height:1.5;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<a href="social-media.html" class="back">← Back</a>
+
+<div class="hero">
+<h1>Social Media Checkout</h1>
+<p>Konfime sèvis ou vle achte a epi chwazi mwayen peman an.</p>
+</div>
+
+<div class="section">
+<h3>Rezime lòd la</h3>
+
+<div class="summary">
+<div class="summary-row">
+<div class="summary-label">Service</div>
+<div class="summary-value" id="serviceName">N/A</div>
+</div>
+
+<div class="summary-row">
+<div class="summary-label">Platform</div>
+<div class="summary-value" id="platformName">N/A</div>
+</div>
+
+<div class="summary-row">
+<div class="summary-label">Price</div>
+<div class="summary-value" id="serviceAmount">0 HTG</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>Enfòmasyon kliyan</h3>
+
+<label>Non kliyan</label>
+<input type="text" id="clientName" placeholder="Antre non kliyan an">
+
+<label>WhatsApp</label>
+<input type="text" id="whatsapp" placeholder="Eg: 50942778505">
+
+<label>Link / Username</label>
+<input type="text" id="targetLink" placeholder="Mete lyen oswa username kont lan">
+
+<label>Detay / Nòt</label>
+<textarea id="details" rows="4" placeholder="Mete detay sou sèvis la"></textarea>
+</div>
+
+<div class="section">
+<h3>Mwayen peman</h3>
+
+<div class="methods">
+<div class="method-card active" id="method-wallet" onclick="selectMethod('Wallet')">
+<span class="method-icon">👛</span>
+Wallet
+</div>
+
+<div class="method-card" id="method-bank" onclick="selectMethod('Bank')">
+<span class="method-icon">🏦</span>
+Bank
+</div>
+
+<div class="method-card" id="method-moncash" onclick="selectMethod('MonCash')">
+<span class="method-icon">📲</span>
+MonCash
+</div>
+
+<div class="method-card" id="method-natcash" onclick="selectMethod('NatCash')">
+<span class="method-icon">💵</span>
+NatCash
+</div>
+</div>
+
+<div id="walletStatus"></div>
+
+<div class="pay-box" id="paymentNoteBox">
+Peman sa a ap verifye selon metòd ou chwazi a.
+</div>
+
+<button class="submit-btn" onclick="submitSocialOrder()">Confirmer Payment</button>
+<a href="deposit.html" class="secondary-btn">Rechaje wallet la</a>
+
+<div class="success-box" id="successBox"></div>
+</div>
+
+</div>
+
+<script>
+const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
+const params = new URLSearchParams(window.location.search);
+
+const service = params.get("service") || "Social Service";
+const amount = parseInt(params.get("amount") || "0");
+const platform = params.get("platform") || "N/A";
+
+document.getElementById("serviceName").innerHTML = service;
+document.getElementById("platformName").innerHTML = platform;
+document.getElementById("serviceAmount").innerHTML = amount + " HTG";
+
+if(savedUser){
+  document.getElementById("clientName").value = savedUser.fullname || "";
+}
+
+let selectedMethod = "Wallet";
+
+function selectMethod(method){
+  selectedMethod = method;
+
+  document.getElementById("method-wallet").classList.remove("active");
+  document.getElementById("method-bank").classList.remove("active");
+  document.getElementById("method-moncash").classList.remove("active");
+  document.getElementById("method-natcash").classList.remove("active");
+
+  if(method === "Wallet") document.getElementById("method-wallet").classList.add("active");
+  if(method === "Bank") document.getElementById("method-bank").classList.add("active");
+  if(method === "MonCash") document.getElementById("method-moncash").classList.add("active");
+  if(method === "NatCash") document.getElementById("method-natcash").classList.add("active");
+
+  updatePaymentStatus();
+}
+
+function updatePaymentStatus(){
+  const balance = parseInt(localStorage.getItem("fastpay_balance") || "0");
+  const walletStatus = document.getElementById("walletStatus");
+  const noteBox = document.getElementById("paymentNoteBox");
+
+  if(selectedMethod === "Wallet"){
+    if(balance >= amount){
+      walletStatus.innerHTML = '<div class="wallet-ok">Wallet ou gen ase balans pou sèvis sa a.</div>';
+    } else {
+      walletStatus.innerHTML = '<div class="wallet-bad">Wallet ou pa gen ase balans pou sèvis sa a.</div>';
+    }
+    noteBox.innerHTML = "Si ou peye ak Wallet, sistèm nan ap retire lajan an dirèkteman sou balans ou.";
+  }
+
+  if(selectedMethod === "Bank"){
+    walletStatus.innerHTML = "";
+    noteBox.innerHTML = "Si ou chwazi Bank, admin ap verifye peman an avan sèvis la trete.";
+  }
+
+  if(selectedMethod === "MonCash"){
+    walletStatus.innerHTML = "";
+    noteBox.innerHTML = "Si ou chwazi MonCash, admin ap verifye tranzaksyon an avan sèvis la trete.";
+  }
+
+  if(selectedMethod === "NatCash"){
+    walletStatus.innerHTML = "";
+    noteBox.innerHTML = "Si ou chwazi NatCash, admin ap verifye tranzaksyon an avan sèvis la trete.";
+  }
+}
+
+function submitSocialOrder(){
+  const clientName = document.getElementById("clientName").value;
+  const whatsapp = document.getElementById("whatsapp").value;
+  const targetLink = document.getElementById("targetLink").value;
+  const details = document.getElementById("details").value;
+  let balance = parseInt(localStorage.getItem("fastpay_balance") || "0");
+
+  if(!clientName || !whatsapp || !targetLink){
+    alert("Tanpri ranpli non, WhatsApp ak lyen/username lan.");
+    return;
+  }
+
+  let status = "Pending Payment Verification";
+
+  if(selectedMethod === "Wallet"){
+    if(balance < amount){
+      alert("Wallet ou pa gen ase balans.");
+      return;
+    }
+
+    balance -= amount;
+    localStorage.setItem("fastpay_balance", balance);
+    status = "Paid with Wallet";
+  }
+
+  const orderData = {
+    type: "Social Media Order",
+    fullname: clientName,
+    whatsapp: whatsapp,
+    service: service,
+    amount: amount + " HTG",
+    platform: platform,
+    targetLink: targetLink,
+    details: details,
+    paymentMethod: selectedMethod,
+    orderId: "SOC-" + Math.floor(Math.random() * 90000 + 10000),
+    status: status,
+    date: new Date().toLocaleString()
+  };
+
+  localStorage.setItem("fastpay_last_order", JSON.stringify(orderData));
+
+  let socialOrders = JSON.parse(localStorage.getItem("fastpay_social_orders")) || [];
+  socialOrders.unshift(orderData);
+  localStorage.setItem("fastpay_social_orders", JSON.stringify(socialOrders));
+
+  let transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
+  if(selectedMethod === "Wallet"){
+    transactions.unshift({
+      service: service,
+      amount: "-" + amount + " HTG",
+      date: new Date().toLocaleString(),
+      orderId: orderData.orderId
+    });
+    localStorage.setItem("fastpay_transactions", JSON.stringify(transactions));
+  }
+
+  const successBox = document.getElementById("successBox");
+  successBox.style.display = "block";
+
+  if(selectedMethod === "Wallet"){
+    successBox.innerHTML = "Peman an konfime avèk siksè. Sèvis la anrejistre epi admin ap trete li.";
+  } else {
+    successBox.innerHTML = "Lòd la anrejistre. Chwazi peman ou a epi admin ap verifye li anvan tretman.";
+  }
+}
+
+updatePaymentStatus();
+</script>
+
+</body>
+  </html>
