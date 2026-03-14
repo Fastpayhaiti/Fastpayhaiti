@@ -1,59 +1,383 @@
 <!DOCTYPE html>
-<html>
+<html lang="ht">
 <head>
-<title>Wallet</title>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FastPay Wallet</title>
 <style>
-body{font-family:Arial,sans-serif;background:#eef2f7;padding:20px;margin:0;}
-.container{max-width:420px;margin:auto;}
-.back{display:inline-block;margin-bottom:20px;color:#ff4d3d;text-decoration:none;font-weight:bold;}
-.balance-card{background:linear-gradient(135deg,#ff4d3d,#ff8a5c);color:white;padding:25px;border-radius:22px;box-shadow:0 10px 25px rgba(255,90,61,0.25);margin-bottom:20px;}
-.balance-title{font-size:18px;opacity:0.95;}
-.balance{font-size:42px;font-weight:bold;margin-top:10px;}
-.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;}
-a{text-decoration:none;}
-.action-btn{background:white;border:none;padding:14px;border-radius:14px;font-size:16px;font-weight:bold;box-shadow:0 4px 10px rgba(0,0,0,0.08);color:#111;text-align:center;display:block;}
-.history{background:white;padding:20px;border-radius:18px;box-shadow:0 4px 10px rgba(0,0,0,0.08);}
-.history h2{margin-top:0;font-size:24px;}
-.tx{padding:12px 0;border-bottom:1px solid #eee;}
-.tx:last-child{border-bottom:none;}
-.tx small{color:#777;}
+*{
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  margin:0;
+  background:#eef2f7;
+  padding:20px;
+  color:#111827;
+}
+
+.container{
+  max-width:430px;
+  margin:auto;
+}
+
+.back{
+  display:inline-block;
+  margin-bottom:16px;
+  color:#ff4d3d;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.logo{
+  font-size:30px;
+  font-weight:bold;
+  color:#ff5a3d;
+}
+
+.profile{
+  width:46px;
+  height:46px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#ff5a3d,#ff7a59);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:18px;
+  box-shadow:0 6px 16px rgba(255,90,61,0.25);
+}
+
+.balance-card{
+  background:linear-gradient(135deg,#047857,#10b981);
+  color:white;
+  border-radius:28px;
+  padding:24px;
+  box-shadow:0 12px 30px rgba(16,185,129,0.22);
+  margin-bottom:18px;
+}
+
+.balance-label{
+  font-size:16px;
+  opacity:0.95;
+}
+
+.balance-amount{
+  font-size:42px;
+  font-weight:bold;
+  margin-top:10px;
+}
+
+.balance-sub{
+  margin-top:10px;
+  font-size:14px;
+  opacity:0.95;
+}
+
+.quick-actions{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-top:20px;
+}
+
+.quick-btn{
+  background:rgba(255,255,255,0.18);
+  color:white;
+  padding:14px;
+  border-radius:18px;
+  text-align:center;
+  font-weight:bold;
+  text-decoration:none;
+  display:block;
+}
+
+.section{
+  background:white;
+  border-radius:22px;
+  padding:18px;
+  box-shadow:0 8px 18px rgba(0,0,0,0.06);
+  margin-bottom:18px;
+}
+
+.section h2{
+  margin:0 0 14px 0;
+  font-size:22px;
+}
+
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.stat-box{
+  background:#f8fafc;
+  border-radius:16px;
+  padding:14px;
+}
+
+.stat-title{
+  color:#6b7280;
+  font-size:13px;
+  margin-bottom:6px;
+}
+
+.stat-value{
+  font-size:20px;
+  font-weight:bold;
+  color:#111827;
+}
+
+.tx-item{
+  padding:12px 0;
+  border-bottom:1px solid #eee;
+}
+
+.tx-item:last-child{
+  border-bottom:none;
+}
+
+.tx-top{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+}
+
+.tx-name{
+  font-weight:bold;
+  font-size:15px;
+}
+
+.tx-amount{
+  font-weight:bold;
+  font-size:15px;
+  text-align:right;
+}
+
+.tx-date{
+  color:#6b7280;
+  font-size:13px;
+  margin-top:4px;
+}
+
+.tx-status{
+  display:inline-block;
+  margin-top:6px;
+  background:#fff7ed;
+  color:#c2410c;
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.empty{
+  color:#6b7280;
+  font-size:14px;
+}
+
+.main-btn{
+  display:block;
+  width:100%;
+  text-align:center;
+  padding:15px;
+  border-radius:16px;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:16px;
+  margin-top:12px;
+}
+
+.orange-btn{
+  background:#ff4d3d;
+  color:white;
+}
+
+.dark-btn{
+  background:#111827;
+  color:white;
+}
 </style>
 </head>
 <body>
+
 <div class="container">
+
 <a href="index.html" class="back">← Back Home</a>
 
+<div class="topbar">
+  <div class="logo">FastPay</div>
+  <div class="profile" id="profileLetter">L</div>
+</div>
+
 <div class="balance-card">
-<div class="balance-title">Solde disponib</div>
-<div class="balance">0 HTG</div>
+  <div class="balance-label">FastPay Wallet</div>
+  <div class="balance-amount" id="walletBalance">0 HTG</div>
+  <div class="balance-sub" id="walletOwner">Byenvini sou wallet ou</div>
+
+  <div class="quick-actions">
+    <a href="deposit.html" class="quick-btn">Depoze</a>
+    <a href="withdraw.html" class="quick-btn">Retire</a>
+    <a href="transfer.html" class="quick-btn">Transfere</a>
+    <a href="topup.html" class="quick-btn">Top Up</a>
+  </div>
 </div>
 
-<div class="actions">
-<a href="order.html?service=deposit" class="action-btn">Depoze</a>
-<a href="order.html?service=withdraw" class="action-btn">Retire</a>
-<a href="order.html?service=transfer" class="action-btn">Transfere</a>
-<a href="order.html?service=deposit" class="action-btn">Demande</a>
+<div class="section">
+  <h2>Rezime Wallet</h2>
+
+  <div class="stat-grid">
+    <div class="stat-box">
+      <div class="stat-title">Total Tranzaksyon</div>
+      <div class="stat-value" id="totalTransactions">0</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-title">Dènye Aktivite</div>
+      <div class="stat-value" id="lastActivity">Pa gen</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-title">Dènye Top Up</div>
+      <div class="stat-value" id="lastTopup">0 HTG</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-title">Dènye Recharge</div>
+      <div class="stat-value" id="lastRecharge">0</div>
+    </div>
+  </div>
 </div>
 
-<div class="history">
-<h2>Dènye tranzaksyon</h2>
-
-<div class="tx">
-<strong>Depo MonCash</strong><br>
-<small>+0 HTG</small>
+<div class="section">
+  <h2>Dènye Tranzaksyon</h2>
+  <div id="transactionsBox" class="empty">Pa gen tranzaksyon pou kounye a.</div>
 </div>
 
-<div class="tx">
-<strong>Transfè kliyan</strong><br>
-<small>-0 HTG</small>
+<div class="section">
+  <h2>Sèvis dènye yo</h2>
+  <div id="recentOrdersBox" class="empty">Pa gen aktivite sèvis pou kounye a.</div>
+
+  <a href="dashboard.html" class="main-btn orange-btn">Ale sou Dashboard</a>
+  <a href="admin.html" class="main-btn dark-btn">Admin Dashboard</a>
 </div>
 
-<div class="tx">
-<strong>Retrè wallet</strong><br>
-<small>-0 HTG</small>
 </div>
-</div>
-</div>
+
+<script>
+const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
+const transactions = JSON.parse(localStorage.getItem("fastpay_transactions")) || [];
+const topups = JSON.parse(localStorage.getItem("fastpay_topups")) || [];
+const socialOrders = JSON.parse(localStorage.getItem("fastpay_social_orders")) || [];
+const rechargeCards = JSON.parse(localStorage.getItem("fastpay_recharge_cards")) || [];
+const cardRequests = JSON.parse(localStorage.getItem("fastpay_card_requests")) || [];
+const walletBalance = localStorage.getItem("fastpay_balance") || 0;
+
+const profileLetter = document.getElementById("profileLetter");
+const walletOwner = document.getElementById("walletOwner");
+const walletBalanceEl = document.getElementById("walletBalance");
+
+walletBalanceEl.innerHTML = walletBalance + " HTG";
+
+if(savedUser && savedUser.fullname){
+  profileLetter.innerHTML = savedUser.fullname.charAt(0).toUpperCase();
+  walletOwner.innerHTML = savedUser.fullname + " - Wallet principal";
+}
+
+document.getElementById("totalTransactions").innerHTML = transactions.length;
+
+if(transactions.length > 0){
+  document.getElementById("lastActivity").innerHTML = transactions[0].service || "Wi";
+} else {
+  document.getElementById("lastActivity").innerHTML = "Pa gen";
+}
+
+if(topups.length > 0){
+  document.getElementById("lastTopup").innerHTML = topups[0].amount || "0 HTG";
+}
+
+if(rechargeCards.length > 0){
+  document.getElementById("lastRecharge").innerHTML = rechargeCards[0].service || "Wi";
+}
+
+function loadTransactions(){
+  const box = document.getElementById("transactionsBox");
+
+  if(transactions.length === 0){
+    box.innerHTML = "Pa gen tranzaksyon pou kounye a.";
+    return;
+  }
+
+  box.innerHTML = "";
+
+  transactions.slice(0,6).forEach(function(tx){
+    box.innerHTML += `
+      <div class="tx-item">
+        <div class="tx-top">
+          <div>
+            <div class="tx-name">${tx.service || 'Tranzaksyon'}</div>
+            <div class="tx-date">${tx.date || ''}</div>
+          </div>
+          <div class="tx-amount">${tx.amount || '0'}</div>
+        </div>
+        <div class="tx-status">Completed</div>
+      </div>
+    `;
+  });
+}
+
+function loadRecentOrders(){
+  const box = document.getElementById("recentOrdersBox");
+  const allOrders = [...topups, ...socialOrders, ...rechargeCards, ...cardRequests];
+
+  if(allOrders.length === 0){
+    box.innerHTML = "Pa gen aktivite sèvis pou kounye a.";
+    return;
+  }
+
+  box.innerHTML = "";
+
+  allOrders.slice(0,6).forEach(function(order){
+    const name =
+      order.service ||
+      order.operator ||
+      order.cardType ||
+      order.type ||
+      "Service";
+
+    const amount = order.amount || "0";
+    const date = order.date || "";
+    const status = order.status || "Pending";
+
+    box.innerHTML += `
+      <div class="tx-item">
+        <div class="tx-top">
+          <div>
+            <div class="tx-name">${name}</div>
+            <div class="tx-date">${date}</div>
+          </div>
+          <div class="tx-amount">${amount}</div>
+        </div>
+        <div class="tx-status">${status}</div>
+      </div>
+    `;
+  });
+}
+
+loadTransactions();
+loadRecentOrders();
+</script>
+
 </body>
-</html>
+  </html>
