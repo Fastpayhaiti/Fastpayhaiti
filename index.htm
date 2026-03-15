@@ -1,559 +1,549 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FastPay v2</title>
-<style>
-*{
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FastPay Premium Home</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      font-family:Arial,sans-serif;
+    }
 
-body{
-  margin:0;
-  background:#eef2f7;
-  padding:20px;
-  color:#111827;
-}
+    body{
+      background:#05070c;
+      color:#ffffff;
+      min-height:100vh;
+    }
 
-.app{
-  max-width:430px;
-  margin:auto;
-  position:relative;
-}
+    .app{
+      max-width:430px;
+      margin:auto;
+      min-height:100vh;
+      padding:18px 18px 110px;
+      background:
+        radial-gradient(circle at top left, rgba(59,130,246,0.10), transparent 30%),
+        radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 28%),
+        #05070c;
+    }
 
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:22px;
+    }
 
-.left-top{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
 
-.menu-btn{
-  width:46px;
-  height:46px;
-  border:none;
-  border-radius:14px;
-  background:#111827;
-  color:white;
-  font-size:22px;
-  font-weight:bold;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 6px 16px rgba(17,24,39,0.20);
-}
+    .logo{
+      width:46px;
+      height:46px;
+      border-radius:16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,#2f3cff,#5d6bff);
+      box-shadow:0 16px 30px rgba(47,60,255,0.30);
+      font-size:20px;
+      font-weight:800;
+    }
 
-.logo{
-  font-size:32px;
-  font-weight:bold;
-  color:#ff5a3d;
-}
+    .brand-name{
+      font-size:24px;
+      font-weight:800;
+    }
 
-.profile{
-  width:46px;
-  height:46px;
-  border-radius:14px;
-  background:linear-gradient(135deg,#ff5a3d,#ff7a59);
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  font-size:18px;
-  box-shadow:0 6px 16px rgba(255,90,61,0.25);
-}
+    .top-actions{
+      display:flex;
+      gap:10px;
+    }
 
-.welcome{
-  background:#ecfdf3;
-  color:#166534;
-  padding:12px;
-  border-radius:12px;
-  font-weight:bold;
-  margin-bottom:18px;
-  display:none;
-  line-height:1.6;
-}
+    .top-btn{
+      width:44px;
+      height:44px;
+      border:none;
+      border-radius:14px;
+      background:rgba(255,255,255,0.06);
+      color:#ffffff;
+      font-size:18px;
+      text-decoration:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(255,255,255,0.08);
+    }
 
-.balance-card{
-  background:linear-gradient(135deg,#ff4d3d,#ff8a5c);
-  color:white;
-  border-radius:30px;
-  padding:24px;
-  box-shadow:0 12px 30px rgba(255,90,61,0.25);
-  margin-bottom:20px;
-}
+    .hero{
+      margin-bottom:24px;
+    }
 
-.balance-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-}
+    .hero-title{
+      font-size:40px;
+      font-weight:900;
+      line-height:1.08;
+      margin-bottom:14px;
+    }
 
-.balance-card h2{
-  margin:0;
-  font-size:18px;
-  font-weight:normal;
-}
+    .hero-sub{
+      color:#8b93a7;
+      font-size:15px;
+      line-height:1.65;
+      margin-bottom:20px;
+    }
 
-.notify-pill{
-  display:none;
-  align-items:center;
-  justify-content:center;
-  min-width:28px;
-  height:28px;
-  padding:0 10px;
-  border-radius:999px;
-  background:#ef4444;
-  color:white;
-  font-size:12px;
-  font-weight:bold;
-}
+    .hero-buttons{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-bottom:22px;
+    }
 
-.balance{
-  font-size:48px;
-  font-weight:bold;
-  margin:14px 0 10px;
-}
+    .btn{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      text-align:center;
+      padding:16px;
+      border-radius:18px;
+      color:#ffffff;
+      font-weight:800;
+      font-size:15px;
+      border:none;
+      cursor:pointer;
+    }
 
-.balance-sub{
-  font-size:14px;
-  opacity:0.96;
-  margin-bottom:20px;
-  word-break:break-word;
-}
+    .btn-blue{
+      background:#2f3cff;
+      box-shadow:0 14px 30px rgba(47,60,255,0.35);
+    }
 
-.wallet-mini{
-  background:rgba(255,255,255,0.14);
-  border-radius:20px;
-  padding:14px;
-  margin-bottom:18px;
-}
+    .btn-dark{
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.08);
+    }
 
-.wallet-mini-top{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:8px;
-}
+    .premium-card-box{
+      position:relative;
+      margin:10px 0 30px;
+      min-height:240px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
 
-.wallet-icon{
-  width:42px;
-  height:42px;
-  border-radius:14px;
-  background:rgba(255,255,255,0.18);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:22px;
-}
+    .card-back{
+      position:absolute;
+      width:220px;
+      height:135px;
+      border-radius:22px;
+      background:linear-gradient(135deg,#243bff,#3e5cff);
+      top:20px;
+      left:75px;
+      transform:rotate(-12deg);
+      box-shadow:0 20px 40px rgba(37,59,255,0.25);
+      border:1px solid rgba(255,255,255,0.18);
+      overflow:hidden;
+    }
 
-.wallet-title{
-  font-size:16px;
-  font-weight:bold;
-}
+    .card-back::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.12), transparent 30%),
+        linear-gradient(120deg, transparent 10%, rgba(255,255,255,0.05) 40%, transparent 70%);
+    }
 
-.wallet-text{
-  font-size:13px;
-  line-height:1.5;
-  opacity:0.95;
-}
+    .card-front{
+      position:absolute;
+      width:255px;
+      height:155px;
+      border-radius:24px;
+      background:linear-gradient(135deg,#0e1118,#2b2f39);
+      top:44px;
+      left:115px;
+      transform:rotate(-8deg);
+      box-shadow:0 24px 50px rgba(0,0,0,0.45);
+      border:1px solid rgba(255,255,255,0.15);
+      overflow:hidden;
+      padding:18px;
+    }
 
-.actions{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-}
+    .card-front::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 60% 40%, rgba(255,255,255,0.08), transparent 24%),
+        linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.04) 35%, transparent 60%);
+      pointer-events:none;
+    }
 
-a{
-  text-decoration:none;
-}
+    .chip{
+      width:42px;
+      height:32px;
+      border-radius:10px;
+      background:linear-gradient(135deg,#f4f4f5,#b6b7bc);
+      margin-bottom:18px;
+      position:relative;
+      z-index:2;
+    }
 
-.action-btn{
-  background:rgba(255,255,255,0.18);
-  color:white;
-  padding:16px;
-  border-radius:18px;
-  font-size:16px;
-  font-weight:bold;
-  text-align:center;
-  display:block;
-}
+    .card-brand{
+      position:absolute;
+      right:18px;
+      top:18px;
+      z-index:2;
+      font-size:18px;
+      font-weight:700;
+      opacity:0.95;
+    }
 
-.small-note{
-  font-size:13px;
-  color:#6b7280;
-  line-height:1.5;
-  margin-bottom:18px;
-}
+    .card-balance{
+      position:relative;
+      z-index:2;
+      font-size:15px;
+      color:#aeb5c7;
+      margin-bottom:8px;
+    }
 
-.section-title{
-  font-size:28px;
-  font-weight:bold;
-  margin:18px 0 14px;
-  color:#111827;
-}
+    .card-amount{
+      position:relative;
+      z-index:2;
+      font-size:26px;
+      font-weight:800;
+      margin-bottom:16px;
+    }
 
-.services{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:14px;
-  margin-bottom:20px;
-}
+    .card-number{
+      position:relative;
+      z-index:2;
+      font-size:20px;
+      font-weight:800;
+      letter-spacing:1.5px;
+      margin-bottom:14px;
+    }
 
-.service-box{
-  border-radius:24px;
-  padding:18px;
-  box-shadow:0 8px 18px rgba(0,0,0,0.08);
-  min-height:170px;
-  display:block;
-  overflow:hidden;
-  color:white;
-}
+    .card-meta{
+      position:relative;
+      z-index:2;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+    }
 
-.service-box h3{
-  margin:0 0 10px 0;
-  font-size:22px;
-  line-height:1.15;
-}
+    .meta-small{
+      font-size:11px;
+      color:#aeb5c7;
+      margin-bottom:4px;
+      text-transform:uppercase;
+    }
 
-.service-box p{
-  margin:0;
-  font-size:15px;
-  line-height:1.55;
-}
+    .meta-big{
+      font-size:13px;
+      font-weight:700;
+    }
 
-.service-icon{
-  font-size:28px;
-  margin-bottom:12px;
-  display:block;
-}
+    .mc-circles{
+      display:flex;
+      z-index:2;
+    }
 
-.card-service{
-  background:linear-gradient(135deg,#111827,#374151);
-}
+    .mc-circles span{
+      width:26px;
+      height:26px;
+      border-radius:50%;
+      display:block;
+    }
 
-.wallet-service{
-  background:linear-gradient(135deg,#047857,#10b981);
-}
+    .mc-circles span:first-child{
+      background:#ea001b;
+      margin-right:-7px;
+      opacity:0.95;
+    }
 
-.wallet-badge{
-  display:inline-block;
-  margin-top:12px;
-  padding:6px 12px;
-  border-radius:999px;
-  background:rgba(255,255,255,0.18);
-  font-size:12px;
-  font-weight:bold;
-}
+    .mc-circles span:last-child{
+      background:#f79e1b;
+      opacity:0.95;
+    }
 
-.dashboard-section{
-  margin-top:14px;
-}
+    .section{
+      margin-bottom:24px;
+    }
 
-.main-btn{
-  display:block;
-  margin-bottom:12px;
-  padding:16px;
-  border-radius:18px;
-  font-weight:bold;
-  text-align:center;
-  font-size:16px;
-  color:white;
-  box-shadow:0 8px 18px rgba(0,0,0,0.08);
-  border:none;
-  cursor:pointer;
-}
+    .section-title{
+      font-size:24px;
+      font-weight:800;
+      margin-bottom:14px;
+    }
 
-.dashboard-btn{
-  background:#ff4d3d;
-}
+    .section-sub{
+      color:#8b93a7;
+      font-size:14px;
+      line-height:1.6;
+      margin-bottom:14px;
+    }
 
-.admin-btn{
-  background:#111827;
-}
+    .feature-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
 
-.logout-btn{
-  background:#374151;
-}
+    .feature-card{
+      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:22px;
+      padding:18px 16px;
+      min-height:125px;
+    }
 
-.auth-footer{
-  margin-top:24px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
+    .feature-card i{
+      font-size:22px;
+      color:#c9d1ff;
+      margin-bottom:12px;
+    }
 
-.auth-btn{
-  display:block;
-  text-align:center;
-  padding:15px;
-  border-radius:16px;
-  font-weight:bold;
-  text-decoration:none;
-  font-size:16px;
-}
+    .feature-title{
+      font-size:17px;
+      font-weight:800;
+      margin-bottom:8px;
+    }
 
-.login-btn{
-  background:#111827;
-  color:white;
-}
+    .feature-text{
+      color:#8b93a7;
+      font-size:13px;
+      line-height:1.5;
+    }
 
-.register-btn{
-  background:#ff4d3d;
-  color:white;
-}
+    .promo-box{
+      background:linear-gradient(135deg,#0d1117,#1c2330);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:28px;
+      padding:22px;
+      box-shadow:0 22px 45px rgba(0,0,0,0.35);
+      position:relative;
+      overflow:hidden;
+    }
 
-/* side menu */
-.menu-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.35);
-  z-index:999;
-  display:none;
-}
+    .promo-box::before{
+      content:"";
+      position:absolute;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:rgba(17,156,103,0.10);
+      top:-40px;
+      right:-40px;
+    }
 
-.side-menu{
-  position:fixed;
-  top:0;
-  left:-320px;
-  width:295px;
-  height:100%;
-  background:white;
-  z-index:1000;
-  box-shadow:0 10px 30px rgba(0,0,0,0.18);
-  transition:0.25s ease;
-  padding:20px 16px;
-  overflow-y:auto;
-}
+    .promo-title{
+      position:relative;
+      z-index:2;
+      font-size:28px;
+      font-weight:900;
+      line-height:1.15;
+      margin-bottom:12px;
+    }
 
-.side-menu.active{
-  left:0;
-}
+    .promo-text{
+      position:relative;
+      z-index:2;
+      color:#8b93a7;
+      font-size:14px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
 
-.menu-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
+    .promo-buttons{
+      position:relative;
+      z-index:2;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
 
-.menu-title{
-  font-size:24px;
-  font-weight:bold;
-  color:#111827;
-}
+    .bottom-nav{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:0;
+      width:100%;
+      max-width:430px;
+      background:#04060a;
+      border-top:1px solid rgba(255,255,255,0.08);
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      padding:12px 8px 14px;
+      z-index:1000;
+    }
 
-.close-menu{
-  width:40px;
-  height:40px;
-  border:none;
-  border-radius:12px;
-  background:#111827;
-  color:white;
-  font-size:18px;
-  cursor:pointer;
-}
+    .nav-item{
+      text-decoration:none;
+      color:#8b93a7;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+      font-size:12px;
+      font-weight:600;
+    }
 
-.menu-user{
-  background:#f8fafc;
-  border-radius:16px;
-  padding:14px;
-  margin-bottom:16px;
-}
+    .nav-item i{
+      font-size:23px;
+    }
 
-.menu-user-name{
-  font-weight:bold;
-  font-size:16px;
-  color:#111827;
-}
-
-.menu-user-mail{
-  margin-top:4px;
-  font-size:13px;
-  color:#6b7280;
-  word-break:break-word;
-}
-
-.menu-link{
-  display:block;
-  text-decoration:none;
-  color:#111827;
-  background:#f8fafc;
-  padding:14px 16px;
-  border-radius:14px;
-  margin-bottom:10px;
-  font-weight:bold;
-}
-
-.menu-link.logout{
-  background:#111827;
-  color:white;
-}
-</style>
+    .nav-item.active{
+      color:#3b4cff;
+    }
+  </style>
 </head>
 <body>
 
-<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
-
-<div class="side-menu" id="sideMenu">
-  <div class="menu-header">
-    <div class="menu-title">FastPay Menu</div>
-    <button class="close-menu" onclick="closeMenu()">✕</button>
-  </div>
-
-  <div class="menu-user">
-    <div class="menu-user-name" id="menuUserName">FastPay User</div>
-    <div class="menu-user-mail" id="menuUserMail">Not connected</div>
-  </div>
-
-  <a href="index.html" class="menu-link">🏠 Home</a>
-  <a href="dashboard.html" class="menu-link">📊 Dashboard</a>
-  <a href="wallet.html" class="menu-link">👛 Wallet</a>
-  <a href="statement.html" class="menu-link">📄 Statement</a>
-  <a href="notification.html" class="menu-link">🔔 Notifications</a>
-  <a href="create-card.html" class="menu-link">💳 Create Card</a>
-  <a href="card-dashboard.html" class="menu-link">🏦 Card Dashboard</a>
-  <a href="topup.html" class="menu-link">📱 Top Up</a>
-  <a href="netflix.html" class="menu-link">🎬 Netflix</a>
-  <a href="primevideo.html" class="menu-link">▶️ Prime Video</a>
-  <a href="recharge-card.html" class="menu-link">💠 Recharge Card</a>
-  <a href="social-media.html" class="menu-link">🚀 Social Media</a>
-  <a href="deposit-history.html" class="menu-link">💰 Deposit History</a>
-  <a href="withdraw-history.html" class="menu-link">💸 Withdraw History</a>
-  <a href="transfer-history.html" class="menu-link">🔁 Transfer History</a>
-  <a href="admin.html" class="menu-link">🛠️ Admin</a>
-  <a href="#" class="menu-link logout" onclick="logoutUser()">🚪 Logout</a>
-</div>
-
 <div class="app">
-
   <div class="topbar">
-    <div class="left-top">
-      <button class="menu-btn" onclick="openMenu()">☰</button>
-      <div class="logo">FastPay</div>
-    </div>
-    <div class="profile" id="profileLetter">F</div>
-  </div>
-
-  <div class="welcome" id="welcomeBox"></div>
-
-  <div class="balance-card">
-    <div class="balance-row">
-      <h2>Solde disponib</h2>
-      <div class="notify-pill" id="notificationBadge">0</div>
+    <div class="brand">
+      <div class="logo">F</div>
+      <div class="brand-name">FastPay</div>
     </div>
 
-    <div class="balance" id="homeBalance">0 HTG</div>
-    <div class="balance-sub" id="balanceSub">Byenvini sou FastPay v2</div>
-
-    <div class="actions">
-      <a href="deposit.html" class="action-btn">Depoze</a>
-      <a href="withdraw.html" class="action-btn">Retire</a>
-      <a href="transfer.html" class="action-btn">Transfere</a>
-      <a href="wallet.html" class="action-btn">Demande</a>
+    <div class="top-actions">
+      <a href="login.html" class="top-btn"><i class="fa-solid fa-right-to-bracket"></i></a>
+      <a href="register.html" class="top-btn"><i class="fa-regular fa-user"></i></a>
     </div>
   </div>
 
-  <div class="small-note">
-    FastPay v2 pèmèt ou jere wallet ou, kat ou, sèvis dijital yo, ak tout mouvman finans ou yo nan yon sèl espas.
+  <div class="hero">
+    <div class="hero-title">Wallet. Cards. Services. All in one place.</div>
+    <div class="hero-sub">
+      FastPay se espas dijital ou pou jere wallet ou, mande kat virtual, fè depo ak retrè, voye transfè, epi itilize sèvis dijital yo fasil.
+    </div>
+
+    <div class="hero-buttons">
+      <a href="register.html" class="btn btn-blue">Get Started</a>
+      <a href="login.html" class="btn btn-dark">Login</a>
+    </div>
   </div>
 
-  <div class="section-title">Sèvis prensipal yo</div>
+  <div class="premium-card-box">
+    <div class="card-back"></div>
 
-  <div class="services">
-    <a href="create-card.html" class="service-box card-service">
-      <span class="service-icon">💳</span>
-      <h3>Create Card</h3>
-      <p>Mande yon nouvo kat FastPay fasil epi byen vit.</p>
-    </a>
-
-    <a href="wallet.html" class="service-box wallet-service">
-      <span class="service-icon">👛</span>
-      <h3>Wallet</h3>
-      <p>Digital wallet ou pou balanse, tranzaksyon, depo, retrè ak transfè yo.</p>
-      <div class="wallet-badge">Digital Wallet</div>
-    </a>
+    <div class="card-front">
+      <div class="card-brand">FastPay</div>
+      <div class="chip"></div>
+      <div class="card-balance">Digital balance</div>
+      <div class="card-amount">0 HTG</div>
+      <div class="card-number">**** **** **** 4587</div>
+      <div class="card-meta">
+        <div>
+          <div class="meta-small">Holder</div>
+          <div class="meta-big">FASTPAY USER</div>
+        </div>
+        <div>
+          <div class="meta-small">Exp</div>
+          <div class="meta-big">12/29</div>
+        </div>
+        <div class="mc-circles">
+          <span></span><span></span>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="dashboard-section">
-    <a href="dashboard.html" class="main-btn dashboard-btn">My Dashboard</a>
-    <a href="admin.html" class="main-btn admin-btn">Admin Dashboard</a>
-    <button class="main-btn logout-btn" id="logoutBtn" style="display:none;" onclick="logoutUser()">Logout</button>
+  <div class="section">
+    <div class="section-title">What you can do</div>
+    <div class="section-sub">Tout fonksyon prensipal yo deja pare pou kliyan yo itilize sou FastPay.</div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <i class="fa-solid fa-wallet"></i>
+        <div class="feature-title">Wallet</div>
+        <div class="feature-text">Kenbe balans ou, swiv mouvman yo, epi jere lajan ou fasil.</div>
+      </div>
+
+      <div class="feature-card">
+        <i class="fa-regular fa-credit-card"></i>
+        <div class="feature-title">Virtual Cards</div>
+        <div class="feature-text">Kreye kat virtual ou, wè detay yo, freeze oswa activate yo.</div>
+      </div>
+
+      <div class="feature-card">
+        <i class="fa-solid fa-download"></i>
+        <div class="feature-title">Deposits & Withdraws</div>
+        <div class="feature-text">Soumèt demann depo ak retrè ak yon eksperyans pwofesyonèl.</div>
+      </div>
+
+      <div class="feature-card">
+        <i class="fa-regular fa-paper-plane"></i>
+        <div class="feature-title">Transfers</div>
+        <div class="feature-text">Voye lajan bay lòt itilizatè FastPay dirèkteman nan wallet la.</div>
+      </div>
+
+      <div class="feature-card">
+        <i class="fa-solid fa-gift"></i>
+        <div class="feature-title">Gift Cards</div>
+        <div class="feature-text">Achte gift cards dijital tankou Amazon, Apple, Google Play ak plis.</div>
+      </div>
+
+      <div class="feature-card">
+        <i class="fa-regular fa-bell"></i>
+        <div class="feature-title">Notifications</div>
+        <div class="feature-text">Resevwa alèt sou chak aktivite enpòtan sou kont ou.</div>
+      </div>
+    </div>
   </div>
 
-  <div class="auth-footer" id="authFooter">
-    <a href="login.html" class="auth-btn login-btn">Login</a>
-    <a href="register.html" class="auth-btn register-btn">Register</a>
-  </div>
+  <div class="section">
+    <div class="promo-box">
+      <div class="promo-title">Create your account and start today.</div>
+      <div class="promo-text">
+        Louvri kont ou sou FastPay, konekte, epi jwenn aksè ak wallet, transactions, services, ak kat ou yo.
+      </div>
 
+      <div class="promo-buttons">
+        <a href="register.html" class="btn btn-blue">Create Account</a>
+        <a href="dashboard.html" class="btn btn-dark">Open App</a>
+      </div>
+    </div>
+  </div>
 </div>
 
-<script src="app.js"></script>
-<script>
-function openMenu(){
-  document.getElementById("sideMenu").classList.add("active");
-  document.getElementById("menuOverlay").style.display = "block";
-}
+<div class="bottom-nav">
+  <a href="index.html" class="nav-item active">
+    <i class="fa-solid fa-house"></i>
+    <span>Home</span>
+  </a>
 
-function closeMenu(){
-  document.getElementById("sideMenu").classList.remove("active");
-  document.getElementById("menuOverlay").style.display = "none";
-}
+  <a href="statement.html" class="nav-item">
+    <i class="fa-solid fa-arrow-rotate-left"></i>
+    <span>Transactions</span>
+  </a>
 
-const currentUser = FastPayV2.getCurrentUser();
-const welcomeBox = document.getElementById("welcomeBox");
-const profileLetter = document.getElementById("profileLetter");
-const homeBalance = document.getElementById("homeBalance");
-const balanceSub = document.getElementById("balanceSub");
-const logoutBtn = document.getElementById("logoutBtn");
-const notificationBadge = document.getElementById("notificationBadge");
-const authFooter = document.getElementById("authFooter");
+  <a href="giftcard.html" class="nav-item">
+    <i class="fa-brands fa-bitcoin"></i>
+    <span>Services</span>
+  </a>
 
-if(currentUser){
-  welcomeBox.style.display = "block";
-  welcomeBox.innerHTML = "Byenvini, " + currentUser.fullname + "!";
-  profileLetter.innerHTML = currentUser.fullname.charAt(0).toUpperCase();
-  homeBalance.innerHTML = (currentUser.balance || 0) + " HTG";
-  balanceSub.innerHTML = currentUser.email || "FastPay Wallet";
+  <a href="card-dashboard.html" class="nav-item">
+    <i class="fa-regular fa-credit-card"></i>
+    <span>Cards</span>
+  </a>
 
-  document.getElementById("menuUserName").innerHTML = currentUser.fullname || "FastPay User";
-  document.getElementById("menuUserMail").innerHTML = currentUser.email || "No email";
-
-  logoutBtn.style.display = "block";
-  authFooter.style.display = "none";
-
-  const unreadCount = FastPayV2.getUnreadCount(currentUser.id);
-  if(unreadCount > 0){
-    notificationBadge.style.display = "inline-flex";
-    notificationBadge.innerHTML = unreadCount;
-  } else {
-    notificationBadge.style.display = "none";
-  }
-} else {
-  welcomeBox.style.display = "none";
-  logoutBtn.style.display = "none";
-  authFooter.style.display = "grid";
-  homeBalance.innerHTML = "0 HTG";
-  balanceSub.innerHTML = "Login pou wè balans ou";
-  document.getElementById("menuUserName").innerHTML = "Guest User";
-  document.getElementById("menuUserMail").innerHTML = "Login pou plis opsyon";
-}
-
-function logoutUser(){
-  FastPayV2.logoutUser();
-  window.location.href = "login.html";
-}
-</script>
+  <a href="wallet.html" class="nav-item">
+    <i class="fa-solid fa-wallet"></i>
+    <span>Wallet</span>
+  </a>
+</div>
 
 </body>
   </html>
