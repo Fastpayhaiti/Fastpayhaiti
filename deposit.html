@@ -1,395 +1,429 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FastPay Deposit v2</title>
-<style>
-*{
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FastPay Premium Deposit</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      font-family:Arial,sans-serif;
+    }
 
-body{
-  margin:0;
-  background:#eef2f7;
-  padding:20px;
-  color:#111827;
-}
+    body{
+      background:#05070c;
+      color:#ffffff;
+      min-height:100vh;
+    }
 
-.container{
-  max-width:430px;
-  margin:auto;
-}
+    .app{
+      max-width:430px;
+      margin:auto;
+      min-height:100vh;
+      padding:18px 18px 110px;
+      background:
+        radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
+        radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
+        #05070c;
+    }
 
-.back{
-  display:inline-block;
-  margin-bottom:16px;
-  color:#ff4d3d;
-  text-decoration:none;
-  font-weight:bold;
-}
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:18px;
+    }
 
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
+    .left-top{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
 
-.logo{
-  font-size:30px;
-  font-weight:bold;
-  color:#ff5a3d;
-}
+    .back-btn{
+      width:48px;
+      height:48px;
+      border:none;
+      border-radius:14px;
+      background:rgba(255,255,255,0.06);
+      color:#ffffff;
+      font-size:22px;
+      text-decoration:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
 
-.profile{
-  width:46px;
-  height:46px;
-  border-radius:14px;
-  background:linear-gradient(135deg,#ff5a3d,#ff7a59);
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  font-size:18px;
-  box-shadow:0 6px 16px rgba(255,90,61,0.25);
-}
+    .page-title{
+      font-size:24px;
+      font-weight:800;
+    }
 
-.hero{
-  background:linear-gradient(135deg,#047857,#10b981);
-  color:white;
-  border-radius:26px;
-  padding:24px;
-  margin-bottom:18px;
-  box-shadow:0 12px 28px rgba(16,185,129,0.22);
-}
+    .profile-avatar{
+      width:48px;
+      height:48px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.08);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      font-weight:700;
+    }
 
-.hero h1{
-  margin:0 0 10px 0;
-  font-size:28px;
-  line-height:1.2;
-}
+    .hero-card{
+      background:linear-gradient(135deg,#0d1117,#1c2330);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:28px;
+      padding:22px;
+      margin-bottom:22px;
+      box-shadow:0 22px 45px rgba(0,0,0,0.35);
+      position:relative;
+      overflow:hidden;
+    }
 
-.hero p{
-  margin:0;
-  font-size:15px;
-  line-height:1.6;
-  opacity:0.98;
-}
+    .hero-card::before{
+      content:"";
+      position:absolute;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:rgba(59,130,246,0.10);
+      top:-40px;
+      right:-40px;
+    }
 
-.section{
-  background:white;
-  border-radius:22px;
-  padding:18px;
-  box-shadow:0 8px 18px rgba(0,0,0,0.06);
-  margin-bottom:18px;
-}
+    .hero-label{
+      color:#9ca3af;
+      font-size:14px;
+      margin-bottom:8px;
+      position:relative;
+      z-index:2;
+    }
 
-.section h2{
-  margin:0 0 14px 0;
-  font-size:22px;
-}
+    .hero-balance{
+      font-size:36px;
+      font-weight:800;
+      position:relative;
+      z-index:2;
+    }
 
-label{
-  display:block;
-  margin-bottom:8px;
-  font-weight:bold;
-  color:#111827;
-}
+    .hero-sub{
+      margin-top:10px;
+      color:#8b93a7;
+      font-size:14px;
+      position:relative;
+      z-index:2;
+    }
 
-input, select, textarea{
-  width:100%;
-  padding:14px;
-  border:1px solid #d1d5db;
-  border-radius:14px;
-  font-size:16px;
-  background:white;
-  margin-bottom:16px;
-}
+    .section{
+      margin-bottom:24px;
+    }
 
-.summary{
-  background:#f8fafc;
-  border-radius:16px;
-  padding:16px;
-}
+    .section-title{
+      font-size:22px;
+      font-weight:800;
+      margin-bottom:14px;
+    }
 
-.summary-row{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:10px;
-  font-size:14px;
-}
+    .glass-box{
+      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:22px;
+      padding:16px;
+    }
 
-.summary-row:last-child{
-  margin-bottom:0;
-}
+    label{
+      display:block;
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:8px;
+      color:#d7deee;
+    }
 
-.summary-label{
-  color:#6b7280;
-}
+    input, select, textarea{
+      width:100%;
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;
+      color:#ffffff;
+      padding:14px;
+      font-size:15px;
+      margin-bottom:14px;
+      outline:none;
+    }
 
-.summary-value{
-  font-weight:bold;
-  text-align:right;
-}
+    input::placeholder,
+    textarea::placeholder{
+      color:#7f879b;
+    }
 
-.main-btn{
-  display:block;
-  width:100%;
-  text-align:center;
-  padding:15px;
-  border:none;
-  border-radius:16px;
-  text-decoration:none;
-  font-weight:bold;
-  font-size:16px;
-  margin-top:12px;
-  cursor:pointer;
-}
+    select option{
+      background:#0f131b;
+      color:#ffffff;
+    }
 
-.green-btn{
-  background:#10b981;
-  color:white;
-}
+    .summary-box{
+      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:22px;
+      padding:16px;
+    }
 
-.dark-btn{
-  background:#111827;
-  color:white;
-}
+    .summary-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 0;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      font-size:14px;
+    }
 
-.notice{
-  display:none;
-  padding:14px;
-  border-radius:14px;
-  font-weight:bold;
-  line-height:1.5;
-  margin-bottom:14px;
-}
+    .summary-row:last-child{
+      border-bottom:none;
+    }
 
-.notice.success{
-  background:#ecfdf3;
-  color:#166534;
-}
+    .summary-label{
+      color:#8b93a7;
+    }
 
-.notice.error{
-  background:#fee2e2;
-  color:#991b1b;
-}
+    .summary-value{
+      font-weight:800;
+      text-align:right;
+    }
 
-.info-box{
-  background:#eff6ff;
-  color:#1d4ed8;
-  border-radius:14px;
-  padding:14px;
-  font-size:14px;
-  line-height:1.5;
-  margin-bottom:16px;
-}
-</style>
+    .toolbar{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+      margin-top:16px;
+    }
+
+    .btn{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      text-align:center;
+      padding:16px;
+      border-radius:18px;
+      color:#ffffff;
+      font-weight:700;
+      font-size:15px;
+      border:none;
+      cursor:pointer;
+    }
+
+    .btn-blue{
+      background:#2f3cff;
+      box-shadow:0 14px 30px rgba(47,60,255,0.35);
+    }
+
+    .btn-dark{
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .bottom-nav{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:0;
+      width:100%;
+      max-width:430px;
+      background:#04060a;
+      border-top:1px solid rgba(255,255,255,0.08);
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      padding:12px 8px 14px;
+      z-index:1000;
+    }
+
+    .nav-item{
+      text-decoration:none;
+      color:#8b93a7;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .nav-item i{
+      font-size:23px;
+    }
+
+    .nav-item.active{
+      color:#3b4cff;
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-
-<a href="wallet.html" class="back">← Back Wallet</a>
-
-<div class="topbar">
-  <div class="logo">FastPay</div>
-  <div class="profile" id="profileLetter">U</div>
-</div>
-
-<div class="hero">
-  <h1>Deposit Funds</h1>
-  <p>Soumèt yon demann depo pou ajoute lajan sou wallet FastPay ou a.</p>
-</div>
-
-<div class="section">
-  <h2>Enfòmasyon depo a</h2>
-
-  <div id="noticeBox" class="notice"></div>
-
-  <div class="info-box">
-    Apre ou soumèt demann depo a, admin lan ap verifye li. Lè yo apwouve li, balans wallet ou ap kapab mete ajou.
+<div class="app">
+  <div class="topbar">
+    <div class="left-top">
+      <a href="wallet.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+      <div class="page-title">Deposit</div>
+    </div>
+    <div class="profile-avatar" id="profileLetter">A</div>
   </div>
 
-  <label>Non konplè</label>
-  <input type="text" id="clientName" placeholder="Antre non ou">
+  <div class="hero-card">
+    <div class="hero-label">Wallet Balance</div>
+    <div class="hero-balance" id="walletBalance">0 HTG</div>
+    <div class="hero-sub">Ajoute lajan sou wallet ou fasil.</div>
+  </div>
 
-  <label>Email</label>
-  <input type="email" id="email" placeholder="Antre email ou">
+  <div class="section">
+    <div class="section-title">Deposit Details</div>
+    <div class="glass-box">
+      <label>Amount (HTG)</label>
+      <input type="number" id="amount" placeholder="Antre montan an" oninput="updateSummary()">
 
-  <label>Metòd depo</label>
-  <select id="method" onchange="updateSummary()">
-    <option>Bank</option>
-    <option>MonCash</option>
-    <option>NatCash</option>
-    <option>Cash</option>
-    <option>Wallet Transfer</option>
-  </select>
+      <label>Method</label>
+      <select id="method" onchange="updateSummary()">
+        <option>MonCash</option>
+        <option>NatCash</option>
+        <option>Bank Transfer</option>
+        <option>Cash</option>
+        <option>Wallet Agent</option>
+      </select>
 
-  <label>Bank / sèvis</label>
-  <input type="text" id="bank" placeholder="Eg: Unibank, MonCash, NatCash">
-
-  <label>Currency</label>
-  <select id="currency" onchange="updateSummary()">
-    <option>HTG</option>
-    <option>USD</option>
-    <option>EUR</option>
-  </select>
-
-  <label>Montan</label>
-  <input type="number" id="amount" placeholder="Antre montan an" oninput="updateSummary()">
-
-  <label>Nimewo referans / tranzaksyon</label>
-  <input type="text" id="reference" placeholder="Eg: TRX-458799">
-
-  <label>Detay / nòt</label>
-  <textarea id="details" rows="4" placeholder="Mete detay sou depo a"></textarea>
-</div>
-
-<div class="section">
-  <h2>Rezime demann lan</h2>
-
-  <div class="summary">
-    <div class="summary-row">
-      <div class="summary-label">Client</div>
-      <div class="summary-value" id="summaryClient">N/A</div>
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-label">Method</div>
-      <div class="summary-value" id="summaryMethod">Bank</div>
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-label">Currency</div>
-      <div class="summary-value" id="summaryCurrency">HTG</div>
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-label">Amount</div>
-      <div class="summary-value" id="summaryAmount">0 HTG</div>
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-label">Wallet Balance</div>
-      <div class="summary-value" id="summaryWallet">0 HTG</div>
+      <label>Reference / Note</label>
+      <textarea id="note" placeholder="Mete referans oswa detay peman an" oninput="updateSummary()"></textarea>
     </div>
   </div>
 
-  <button class="main-btn green-btn" onclick="submitDeposit()">Soumèt Demand Depo</button>
-  <a href="deposit-history.html" class="main-btn dark-btn">Deposit History</a>
+  <div class="section">
+    <div class="section-title">Summary</div>
+    <div class="summary-box">
+      <div class="summary-row">
+        <div class="summary-label">Amount</div>
+        <div class="summary-value" id="summaryAmount">0 HTG</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-label">Method</div>
+        <div class="summary-value" id="summaryMethod">MonCash</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-label">Status</div>
+        <div class="summary-value">Pending</div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn btn-blue" onclick="submitDeposit()">Submit Deposit</button>
+      <a href="deposit-history.html" class="btn btn-dark">Deposit History</a>
+    </div>
+  </div>
 </div>
 
+<div class="bottom-nav">
+  <a href="dashboard.html" class="nav-item">
+    <i class="fa-solid fa-house"></i>
+    <span>Home</span>
+  </a>
+  <a href="statement.html" class="nav-item">
+    <i class="fa-solid fa-arrow-rotate-left"></i>
+    <span>Transactions</span>
+  </a>
+  <a href="giftcard.html" class="nav-item">
+    <i class="fa-brands fa-bitcoin"></i>
+    <span>Services</span>
+  </a>
+  <a href="card-dashboard.html" class="nav-item">
+    <i class="fa-regular fa-credit-card"></i>
+    <span>Cards</span>
+  </a>
+  <a href="wallet.html" class="nav-item active">
+    <i class="fa-solid fa-wallet"></i>
+    <span>Wallet</span>
+  </a>
 </div>
 
 <script src="app.js"></script>
 <script>
-function showNotice(message, type){
-  const box = document.getElementById("noticeBox");
-  box.style.display = "block";
-  box.className = "notice " + type;
-  box.innerHTML = message;
-}
-
-const currentUser = FastPayV2.getCurrentUser();
-
-if(!currentUser){
-  showNotice("Ou pa konekte. Tanpri login anvan.", "error");
-  setTimeout(() => {
-    window.location.href = "login.html";
-  }, 1200);
-} else {
-  document.getElementById("profileLetter").innerHTML = currentUser.fullname.charAt(0).toUpperCase();
-  document.getElementById("clientName").value = currentUser.fullname || "";
-  document.getElementById("email").value = currentUser.email || "";
-  document.getElementById("summaryWallet").innerHTML = (currentUser.balance || 0) + " HTG";
-  document.getElementById("summaryClient").innerHTML = currentUser.fullname || "N/A";
-}
-
-function updateSummary(){
-  const clientName = document.getElementById("clientName").value.trim() || "N/A";
-  const method = document.getElementById("method").value;
-  const currency = document.getElementById("currency").value;
-  const amount = document.getElementById("amount").value || "0";
-
-  document.getElementById("summaryClient").innerHTML = clientName;
-  document.getElementById("summaryMethod").innerHTML = method;
-  document.getElementById("summaryCurrency").innerHTML = currency;
-  document.getElementById("summaryAmount").innerHTML = amount + " " + currency;
-}
-
-function submitDeposit(){
-  if(!currentUser){
-    showNotice("Ou pa konekte.", "error");
-    return;
+  const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
+  if(savedUser && savedUser.fullname){
+    document.getElementById("profileLetter").innerText = savedUser.fullname.charAt(0).toUpperCase();
+    document.getElementById("walletBalance").innerText = (savedUser.balance || 0) + " HTG";
   }
 
-  const clientName = document.getElementById("clientName").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const method = document.getElementById("method").value;
-  const bank = document.getElementById("bank").value.trim();
-  const currency = document.getElementById("currency").value;
-  const amount = document.getElementById("amount").value.trim();
-  const reference = document.getElementById("reference").value.trim();
-  const details = document.getElementById("details").value.trim();
-
-  if(!clientName || !email || !bank || !amount || !reference){
-    showNotice("Tanpri ranpli tout enfòmasyon enpòtan yo.", "error");
-    return;
-  }
-
-  const depositRequest = {
-    id: FastPayV2.generateId("DEP"),
-    userId: currentUser.id,
-    clientName,
-    email,
-    method,
-    bank,
-    currency,
-    amount: amount + " " + currency,
-    amountValue: parseInt(amount),
-    reference,
-    details,
-    status: "Pending Verification",
-    date: new Date().toLocaleString()
-  };
-
-  const existingDeposits = FastPayDB.get("fastpay_deposits", []);
-  existingDeposits.unshift(depositRequest);
-  FastPayDB.set("fastpay_deposits", existingDeposits);
-
-  FastPayV2.addNotification({
-    userId: currentUser.id,
-    title: "Deposit request submitted",
-    text: "Nou resevwa demann depo ou a pou " + amount + " " + currency + ".",
-    type: "info"
-  });
-
-  FastPayV2.addTransaction({
-    userId: currentUser.id,
-    service: "Deposit Request",
-    amount: "+" + amount + " " + currency,
-    type: "deposit-request",
-    status: "pending",
-    meta: {
-      reference: reference,
-      method: method,
-      depositId: depositRequest.id
+  function getCurrentUser(){
+    if(window.FastPayV2 && FastPayV2.getCurrentUser){
+      return FastPayV2.getCurrentUser();
     }
-  });
+    return savedUser;
+  }
 
-  showNotice("Demann depo a anrejistre avèk siksè.", "success");
+  function updateSummary(){
+    const amount = document.getElementById("amount").value || 0;
+    const method = document.getElementById("method").value;
+    document.getElementById("summaryAmount").innerText = amount + " HTG";
+    document.getElementById("summaryMethod").innerText = method;
+  }
 
-  setTimeout(() => {
+  function submitDeposit(){
+    const user = getCurrentUser();
+    if(!user){
+      alert("Ou pa konekte.");
+      return;
+    }
+
+    const amount = parseInt(document.getElementById("amount").value || "0");
+    const method = document.getElementById("method").value;
+    const note = document.getElementById("note").value.trim();
+
+    if(!amount || amount <= 0){
+      alert("Tanpri mete yon montan ki valab.");
+      return;
+    }
+
+    const deposits = JSON.parse(localStorage.getItem("fastpay_deposits") || "[]");
+    const newDeposit = {
+      id: "DEP_" + Date.now(),
+      userId: user.id,
+      amount: amount + " HTG",
+      amountValue: amount,
+      method: method,
+      note: note,
+      status: "Pending",
+      date: new Date().toLocaleString()
+    };
+
+    deposits.unshift(newDeposit);
+    localStorage.setItem("fastpay_deposits", JSON.stringify(deposits));
+
+    if(window.FastPayV2 && FastPayV2.addTransaction){
+      FastPayV2.addTransaction({
+        userId: user.id,
+        service: "Deposit Request",
+        amount: "+" + amount + " HTG",
+        type: "deposit",
+        status: "pending",
+        meta: { method, note }
+      });
+    }
+
+    if(window.FastPayV2 && FastPayV2.addNotification){
+      FastPayV2.addNotification({
+        userId: user.id,
+        title: "Deposit submitted",
+        text: "Nou resevwa demann depo ou a.",
+        type: "info"
+      });
+    }
+
+    alert("Demann depo a anrejistre avèk siksè.");
     window.location.href = "deposit-history.html";
-  }, 1000);
-}
+  }
 
-updateSummary();
+  updateSummary();
 </script>
 
 </body>
