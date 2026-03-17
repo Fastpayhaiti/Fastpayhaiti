@@ -6,281 +6,89 @@
   <title>FastPay Premium Transfer</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      font-family:Arial,sans-serif;
-    }
-
-    body{
-      background:#05070c;
-      color:#ffffff;
-      min-height:100vh;
-    }
-
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+    body{background:#05070c;color:#ffffff;min-height:100vh}
     .app{
-      max-width:430px;
-      margin:auto;
-      min-height:100vh;
-      padding:18px 18px 110px;
+      max-width:430px;margin:auto;min-height:100vh;padding:18px 18px 110px;
       background:
         radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
         radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
         #05070c;
     }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:18px;
-    }
-
-    .left-top{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .left-top{display:flex;align-items:center;gap:12px}
     .back-btn{
-      width:48px;
-      height:48px;
-      border:none;
-      border-radius:14px;
-      background:rgba(255,255,255,0.06);
-      color:#ffffff;
-      font-size:22px;
-      text-decoration:none;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      width:48px;height:48px;border:none;border-radius:14px;background:rgba(255,255,255,0.06);
+      color:#ffffff;font-size:22px;text-decoration:none;display:flex;align-items:center;justify-content:center;
     }
-
-    .page-title{
-      font-size:24px;
-      font-weight:800;
-    }
-
+    .page-title{font-size:24px;font-weight:800}
     .profile-avatar{
-      width:48px;
-      height:48px;
-      border-radius:50%;
-      background:rgba(255,255,255,0.08);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:22px;
-      font-weight:700;
+      width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.08);
+      display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;
     }
-
     .hero-card{
       background:linear-gradient(135deg,#0d1117,#1c2330);
       border:1px solid rgba(255,255,255,0.08);
-      border-radius:28px;
-      padding:22px;
-      margin-bottom:22px;
-      box-shadow:0 22px 45px rgba(0,0,0,0.35);
-      position:relative;
-      overflow:hidden;
+      border-radius:28px;padding:22px;margin-bottom:22px;box-shadow:0 22px 45px rgba(0,0,0,0.35);
+      position:relative;overflow:hidden;
     }
-
     .hero-card::before{
-      content:"";
-      position:absolute;
-      width:180px;
-      height:180px;
-      border-radius:50%;
-      background:rgba(47,60,255,0.10);
-      top:-40px;
-      right:-40px;
+      content:"";position:absolute;width:180px;height:180px;border-radius:50%;
+      background:rgba(47,60,255,0.10);top:-40px;right:-40px;
     }
-
-    .hero-label{
-      color:#9ca3af;
-      font-size:14px;
-      margin-bottom:8px;
-      position:relative;
-      z-index:2;
-    }
-
-    .hero-balance{
-      font-size:36px;
-      font-weight:800;
-      position:relative;
-      z-index:2;
-    }
-
-    .hero-sub{
-      margin-top:10px;
-      color:#8b93a7;
-      font-size:14px;
-      position:relative;
-      z-index:2;
-    }
-
-    .section{
-      margin-bottom:24px;
-    }
-
-    .section-title{
-      font-size:22px;
-      font-weight:800;
-      margin-bottom:14px;
-    }
-
+    .hero-label{color:#9ca3af;font-size:14px;margin-bottom:8px;position:relative;z-index:2}
+    .hero-balance{font-size:36px;font-weight:800;position:relative;z-index:2}
+    .hero-sub{margin-top:10px;color:#8b93a7;font-size:14px;position:relative;z-index:2}
+    .section{margin-bottom:24px}
+    .section-title{font-size:22px;font-weight:800;margin-bottom:14px}
     .glass-box{
       background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:22px;
-      padding:16px;
+      border:1px solid rgba(255,255,255,0.08);border-radius:22px;padding:16px;
     }
-
-    label{
-      display:block;
-      font-size:14px;
-      font-weight:700;
-      margin-bottom:8px;
-      color:#d7deee;
-    }
-
+    label{display:block;font-size:14px;font-weight:700;margin-bottom:8px;color:#d7deee}
     input, select, textarea{
-      width:100%;
-      background:rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:16px;
-      color:#ffffff;
-      padding:14px;
-      font-size:15px;
-      margin-bottom:14px;
-      outline:none;
+      width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;color:#ffffff;padding:14px;font-size:15px;margin-bottom:14px;outline:none;
     }
-
-    input::placeholder,
-    textarea::placeholder{
-      color:#7f879b;
-    }
-
-    select option{
-      background:#0f131b;
-      color:#ffffff;
-    }
-
-    textarea{
-      min-height:100px;
-      resize:none;
-    }
-
+    input::placeholder, textarea::placeholder{color:#7f879b}
+    select option{background:#0f131b;color:#ffffff}
+    textarea{min-height:100px;resize:none}
     .summary-box{
       background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:22px;
-      padding:16px;
+      border:1px solid rgba(255,255,255,0.08);border-radius:22px;padding:16px;
     }
-
     .summary-row{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      padding:12px 0;
-      border-bottom:1px solid rgba(255,255,255,0.06);
-      font-size:14px;
+      display:flex;justify-content:space-between;gap:12px;padding:12px 0;
+      border-bottom:1px solid rgba(255,255,255,0.06);font-size:14px;
     }
-
-    .summary-row:last-child{
-      border-bottom:none;
-    }
-
-    .summary-label{
-      color:#8b93a7;
-    }
-
-    .summary-value{
-      font-weight:800;
-      text-align:right;
-      word-break:break-word;
-    }
-
+    .summary-row:last-child{border-bottom:none}
+    .summary-label{color:#8b93a7}
+    .summary-value{font-weight:800;text-align:right;word-break:break-word}
     .info-box{
-      margin-top:14px;
-      padding:14px;
-      border-radius:16px;
-      background:rgba(47,60,255,0.14);
-      border:1px solid rgba(79,92,255,0.24);
-      color:#cfd5ff;
-      font-size:14px;
-      line-height:1.5;
+      margin-top:14px;padding:14px;border-radius:16px;background:rgba(47,60,255,0.14);
+      border:1px solid rgba(79,92,255,0.24);color:#cfd5ff;font-size:14px;line-height:1.5;
     }
-
-    .toolbar{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-      margin-top:16px;
-    }
-
+    .toolbar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
     .btn{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-decoration:none;
-      text-align:center;
-      padding:16px;
-      border-radius:18px;
-      color:#ffffff;
-      font-weight:700;
-      font-size:15px;
-      border:none;
-      cursor:pointer;
+      display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center;
+      padding:16px;border-radius:18px;color:#ffffff;font-weight:700;font-size:15px;border:none;cursor:pointer;
     }
-
-    .btn-blue{
-      background:#2f3cff;
-      box-shadow:0 14px 30px rgba(47,60,255,0.35);
-    }
-
-    .btn-dark{
-      background:rgba(255,255,255,0.08);
-      border:1px solid rgba(255,255,255,0.08);
-    }
-
+    .btn-blue{background:#2f3cff;box-shadow:0 14px 30px rgba(47,60,255,0.35)}
+    .btn-dark{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.08)}
     .bottom-nav{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:0;
-      width:100%;
-      max-width:430px;
-      background:#04060a;
-      border-top:1px solid rgba(255,255,255,0.08);
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      padding:12px 8px 14px;
-      z-index:1000;
+      position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:430px;
+      background:#04060a;border-top:1px solid rgba(255,255,255,0.08);display:grid;
+      grid-template-columns:repeat(5,1fr);padding:12px 8px 14px;z-index:1000;
     }
-
     .nav-item{
-      text-decoration:none;
-      color:#8b93a7;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:8px;
-      font-size:12px;
-      font-weight:600;
+      text-decoration:none;color:#8b93a7;display:flex;flex-direction:column;align-items:center;gap:8px;
+      font-size:12px;font-weight:600;
     }
-
-    .nav-item i{
-      font-size:23px;
-    }
-
-    .nav-item.active{
-      color:#3b4cff;
-    }
+    .nav-item i{font-size:23px}
+    .nav-item.active{color:#3b4cff}
   </style>
 </head>
 <body>
-
 <div class="app">
   <div class="topbar">
     <div class="left-top">
@@ -293,28 +101,47 @@
   <div class="hero-card">
     <div class="hero-label">Wallet Balance</div>
     <div class="hero-balance" id="walletBalance">0 HTG</div>
-    <div class="hero-sub">Voye lajan bay yon lòt kliyan FastPay fasil.</div>
+    <div class="hero-sub">Voye lajan fasil atravè FastPay, MonCash, NatCash, Wise, Zelle, Bank, Cash App oswa USDT.</div>
   </div>
 
   <div class="section">
-    <div class="section-title">Receiver Details</div>
+    <div class="section-title">Transfer Method</div>
     <div class="glass-box">
+      <label>Method</label>
+      <select id="method" onchange="updateSummary()">
+        <option value="FastPay Transfer">FastPay Transfer</option>
+        <option value="MonCash">MonCash</option>
+        <option value="NatCash">NatCash</option>
+        <option value="Wise">Wise</option>
+        <option value="Zelle">Zelle</option>
+        <option value="Cash App">Cash App</option>
+        <option value="Bank Transfer">Bank Transfer</option>
+        <option value="USDT">USDT</option>
+      </select>
+
       <label>Receiver Name</label>
       <input type="text" id="receiverName" placeholder="Antre non moun nan" oninput="updateSummary()">
 
-      <label>Receiver Email</label>
-      <input type="email" id="receiverEmail" placeholder="Antre email moun nan" oninput="updateSummary()">
+      <label>Receiver Email / Username</label>
+      <input type="text" id="receiverEmail" placeholder="Email, username, oswa identifier" oninput="updateSummary()">
 
-      <label>Receiver ID (optional)</label>
-      <input type="text" id="receiverId" placeholder="Eg: USER_xxx" oninput="updateSummary()">
+      <label>Receiver ID / Account / Wallet</label>
+      <input type="text" id="receiverId" placeholder="Eg: USER_xxx, phone, wallet address" oninput="updateSummary()">
     </div>
   </div>
 
   <div class="section">
     <div class="section-title">Transfer Details</div>
     <div class="glass-box">
-      <label>Amount (HTG)</label>
+      <label>Amount</label>
       <input type="number" id="amount" placeholder="Antre montan an" oninput="updateSummary()">
+
+      <label>Currency</label>
+      <select id="currency" onchange="updateSummary()">
+        <option value="HTG">HTG</option>
+        <option value="USD">USD</option>
+        <option value="USDT">USDT</option>
+      </select>
 
       <label>Reason / Note</label>
       <textarea id="note" placeholder="Mete detay transfer la" oninput="updateSummary()"></textarea>
@@ -325,6 +152,10 @@
     <div class="section-title">Summary</div>
     <div class="summary-box">
       <div class="summary-row">
+        <div class="summary-label">Method</div>
+        <div class="summary-value" id="summaryMethod">FastPay Transfer</div>
+      </div>
+      <div class="summary-row">
         <div class="summary-label">Receiver</div>
         <div class="summary-value" id="summaryReceiver">N/A</div>
       </div>
@@ -333,17 +164,13 @@
         <div class="summary-value" id="summaryAmount">0 HTG</div>
       </div>
       <div class="summary-row">
-        <div class="summary-label">Status</div>
-        <div class="summary-value">Pending</div>
-      </div>
-      <div class="summary-row">
         <div class="summary-label">Type</div>
-        <div class="summary-value">Wallet Transfer</div>
+        <div class="summary-value">Pending Approval</div>
       </div>
     </div>
 
     <div class="info-box">
-      FastPay ap verifye done yo avan li anrejistre transfer la. Asire enfòmasyon benefisyè a kòrèk.
+      Pou transfer lokal oswa entènasyonal, admin lan kapab verifye demann nan anvan tretman final la. Pou USDT, mete wallet address la byen kòrèk.
     </div>
 
     <div class="toolbar">
@@ -354,26 +181,11 @@
 </div>
 
 <div class="bottom-nav">
-  <a href="dashboard.html" class="nav-item">
-    <i class="fa-solid fa-house"></i>
-    <span>Home</span>
-  </a>
-  <a href="statement.html" class="nav-item">
-    <i class="fa-solid fa-arrow-rotate-left"></i>
-    <span>Transactions</span>
-  </a>
-  <a href="giftcard.html" class="nav-item">
-    <i class="fa-brands fa-bitcoin"></i>
-    <span>Services</span>
-  </a>
-  <a href="card-dashboard.html" class="nav-item">
-    <i class="fa-regular fa-credit-card"></i>
-    <span>Cards</span>
-  </a>
-  <a href="wallet.html" class="nav-item active">
-    <i class="fa-solid fa-wallet"></i>
-    <span>Wallet</span>
-  </a>
+  <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <a href="statement.html" class="nav-item"><i class="fa-solid fa-arrow-rotate-left"></i><span>Transactions</span></a>
+  <a href="giftcard.html" class="nav-item"><i class="fa-brands fa-bitcoin"></i><span>Services</span></a>
+  <a href="card-dashboard.html" class="nav-item"><i class="fa-regular fa-credit-card"></i><span>Cards</span></a>
+  <a href="wallet.html" class="nav-item active"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a>
 </div>
 
 <script src="app.js"></script>
@@ -392,9 +204,11 @@
   }
 
   function updateSummary(){
+    const method = document.getElementById("method").value;
     const receiverName = document.getElementById("receiverName").value.trim();
     const receiverEmail = document.getElementById("receiverEmail").value.trim();
     const amount = document.getElementById("amount").value || 0;
+    const currency = document.getElementById("currency").value;
 
     let receiver = "N/A";
     if(receiverName && receiverEmail){
@@ -405,8 +219,9 @@
       receiver = receiverEmail;
     }
 
+    document.getElementById("summaryMethod").innerText = method;
     document.getElementById("summaryReceiver").innerText = receiver;
-    document.getElementById("summaryAmount").innerText = amount + " HTG";
+    document.getElementById("summaryAmount").innerText = amount + " " + currency;
   }
 
   function submitTransfer(){
@@ -416,31 +231,22 @@
       return;
     }
 
+    const method = document.getElementById("method").value;
     const receiverName = document.getElementById("receiverName").value.trim();
     const receiverEmail = document.getElementById("receiverEmail").value.trim();
     const receiverId = document.getElementById("receiverId").value.trim();
-    const amount = parseInt(document.getElementById("amount").value || "0");
+    const amount = parseFloat(document.getElementById("amount").value || "0");
+    const currency = document.getElementById("currency").value;
     const note = document.getElementById("note").value.trim();
 
     if(!receiverName || !receiverEmail){
-      alert("Tanpri ranpli non ak email benefisyè a.");
+      alert("Tanpri ranpli non ak email/username benefisyè a.");
       return;
     }
 
     if(!amount || amount <= 0){
       alert("Tanpri mete yon montan ki valab.");
       return;
-    }
-
-    const users = JSON.parse(localStorage.getItem("fp_users") || "[]");
-    const senderIndex = users.findIndex(u => u.id === user.id);
-
-    if(senderIndex >= 0){
-      const walletBalance = parseInt(users[senderIndex].balance || 0);
-      if(walletBalance < amount){
-        alert("Wallet ou pa gen ase balans.");
-        return;
-      }
     }
 
     const transfers = JSON.parse(localStorage.getItem("fastpay_transfers") || "[]");
@@ -450,8 +256,10 @@
       receiverName: receiverName,
       receiverEmail: receiverEmail,
       receiverId: receiverId,
-      amount: amount + " HTG",
+      method: method,
+      amount: amount + " " + currency,
       amountValue: amount,
+      currency: currency,
       note: note,
       status: "Pending",
       date: new Date().toLocaleString()
@@ -463,16 +271,11 @@
     if(window.FastPayV2 && FastPayV2.addTransaction){
       FastPayV2.addTransaction({
         userId: user.id,
-        service: "Transfer Request",
-        amount: "-" + amount + " HTG",
+        service: method + " Transfer Request",
+        amount: "-" + amount + " " + currency,
         type: "transfer",
         status: "pending",
-        meta: {
-          receiverName,
-          receiverEmail,
-          receiverId,
-          note
-        }
+        meta: { receiverName, receiverEmail, receiverId, method, note }
       });
     }
 
@@ -480,7 +283,7 @@
       FastPayV2.addNotification({
         userId: user.id,
         title: "Transfer submitted",
-        text: "Nou resevwa demann transfer ou a.",
+        text: "Nou resevwa demann transfer ou a atravè " + method + ".",
         type: "info"
       });
     }
@@ -491,6 +294,5 @@
 
   updateSummary();
 </script>
-
 </body>
   </html>
