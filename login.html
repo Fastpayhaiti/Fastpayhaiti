@@ -3,127 +3,97 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FastPay Premium Login</title>
+  <title>FastPay Login</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
   <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      font-family:Arial,sans-serif;
-    }
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
 
     body{
-      min-height:100vh;
       background:#05070c;
       color:#fff;
-    }
-
-    .app{
-      max-width:430px;
-      margin:auto;
       min-height:100vh;
-      padding:24px 18px 30px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      background:
-        radial-gradient(circle at top left, rgba(59,130,246,0.10), transparent 30%),
-        radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 28%),
-        #05070c;
-    }
-
-    .brand-wrap{
-      text-align:center;
-      margin-bottom:28px;
-    }
-
-    .logo{
-      width:74px;
-      height:74px;
-      margin:0 auto 16px;
-      border-radius:22px;
       display:flex;
       align-items:center;
       justify-content:center;
-      background:linear-gradient(135deg,#2f3cff,#5d6bff);
-      box-shadow:0 20px 40px rgba(47,60,255,0.30);
-      font-size:30px;
-      font-weight:800;
     }
 
-    .title{
-      font-size:34px;
-      font-weight:800;
+    .container{
+      width:100%;
+      max-width:420px;
+      padding:20px;
+    }
+
+    .login-box{
+      background:linear-gradient(135deg,#0d1117,#1c2330);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:28px;
+      padding:28px 22px;
+      box-shadow:0 25px 60px rgba(0,0,0,0.4);
+      text-align:center;
+    }
+
+    .logo{
+      width:70px;
+      height:70px;
+      border-radius:20px;
+      background:linear-gradient(135deg,#4f5eff,#2f3cff);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:32px;
+      font-weight:900;
+      margin:0 auto 20px;
+      box-shadow:0 10px 30px rgba(47,60,255,0.4);
+    }
+
+    h1{
+      font-size:32px;
       margin-bottom:10px;
+      font-weight:900;
     }
 
-    .sub{
-      color:#8b93a7;
+    .subtitle{
       font-size:14px;
+      color:#9ca3af;
+      margin-bottom:22px;
       line-height:1.6;
     }
 
-    .form-box{
-      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:28px;
-      padding:18px;
-      box-shadow:0 22px 45px rgba(0,0,0,0.30);
-    }
-
-    .notice{
-      display:none;
-      margin-bottom:14px;
-      padding:14px;
-      border-radius:16px;
-      font-size:14px;
-      font-weight:700;
-      line-height:1.5;
-    }
-
-    .notice.err{
-      background:rgba(217,60,75,0.18);
-      border:1px solid rgba(217,60,75,0.35);
-      color:#ffb4bf;
-    }
-
-    .notice.ok{
-      background:rgba(17,156,103,0.18);
-      border:1px solid rgba(17,156,103,0.35);
-      color:#7ff0be;
+    .form-group{
+      text-align:left;
+      margin-bottom:18px;
     }
 
     label{
-      display:block;
       font-size:14px;
       font-weight:700;
-      margin-bottom:8px;
-      color:#d7deee;
+      margin-bottom:6px;
+      display:block;
+      color:#d1d5db;
     }
 
-    .input-wrap{
+    .input-box{
       position:relative;
-      margin-bottom:14px;
     }
 
-    .input-wrap i{
+    .input-box i{
       position:absolute;
       left:14px;
       top:50%;
       transform:translateY(-50%);
-      color:#7f879b;
-      font-size:15px;
+      color:#9ca3af;
+      font-size:16px;
     }
 
     input{
       width:100%;
-      background:rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 14px 14px 42px;
       border-radius:16px;
-      color:#ffffff;
-      padding:15px 14px 15px 42px;
-      font-size:15px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:rgba(255,255,255,0.05);
+      color:#fff;
+      font-size:14px;
       outline:none;
     }
 
@@ -133,74 +103,79 @@
 
     .btn{
       width:100%;
+      padding:16px;
       border:none;
       border-radius:18px;
       background:#2f3cff;
       color:#fff;
       font-size:16px;
       font-weight:800;
-      padding:16px;
       cursor:pointer;
-      box-shadow:0 14px 30px rgba(47,60,255,0.35);
-      margin-top:6px;
+      margin-top:10px;
+      box-shadow:0 15px 35px rgba(47,60,255,0.4);
+    }
+
+    .btn:hover{
+      opacity:0.9;
     }
 
     .extra{
-      margin-top:16px;
-      text-align:center;
-      color:#8b93a7;
+      margin-top:18px;
       font-size:14px;
-      line-height:1.6;
+      color:#9ca3af;
     }
 
     .extra a{
-      color:#cfd5ff;
-      text-decoration:none;
-      font-weight:800;
-    }
-
-    .mini-links{
-      margin-top:18px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-
-    .mini-link{
-      text-decoration:none;
-      text-align:center;
-      padding:14px;
-      border-radius:16px;
       color:#fff;
-      font-size:14px;
       font-weight:700;
-      background:rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.08);
+      text-decoration:none;
+    }
+
+    .extra a:hover{
+      text-decoration:underline;
+    }
+
+    .error{
+      display:none;
+      margin-bottom:14px;
+      padding:12px;
+      border-radius:12px;
+      background:rgba(217,60,75,0.2);
+      border:1px solid rgba(217,60,75,0.4);
+      color:#ffb4bf;
+      font-size:14px;
     }
   </style>
 </head>
+
 <body>
 
-<div class="app">
-  <div class="brand-wrap">
+<div class="container">
+  <div class="login-box">
+
     <div class="logo">F</div>
-    <div class="title">Login</div>
-    <div class="sub">Konekte sou FastPay pou jere wallet ou, kat ou, ak tout sèvis dijital ou yo.</div>
-  </div>
 
-  <div class="form-box">
-    <div id="noticeBox" class="notice err"></div>
-
-    <label>Email</label>
-    <div class="input-wrap">
-      <i class="fa-regular fa-envelope"></i>
-      <input type="email" id="email" placeholder="Antre email ou">
+    <h1>Login</h1>
+    <div class="subtitle">
+      Konekte sou FastPay pou jere wallet ou, kat ou, ak tout sèvis dijital ou yo.
     </div>
 
-    <label>Password</label>
-    <div class="input-wrap">
-      <i class="fa-solid fa-lock"></i>
-      <input type="password" id="password" placeholder="Antre modpas ou">
+    <div id="errorBox" class="error"></div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <div class="input-box">
+        <i class="fa-solid fa-envelope"></i>
+        <input type="email" id="email" placeholder="Antre email ou">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <div class="input-box">
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" id="password" placeholder="Antre modpas ou">
+      </div>
     </div>
 
     <button class="btn" onclick="loginUser()">Login</button>
@@ -209,62 +184,37 @@
       Ou poko gen kont? <a href="register.html">Kreye youn</a>
     </div>
 
-    <div class="mini-links">
-      <a href="index.html" class="mini-link">Home</a>
-      <a href="dashboard.html" class="mini-link">Dashboard</a>
-    </div>
   </div>
 </div>
 
-<script src="app.js"></script>
 <script>
-  function showNotice(message, isError = true){
-    const box = document.getElementById("noticeBox");
+  function showError(msg){
+    const box = document.getElementById("errorBox");
     box.style.display = "block";
-    box.className = isError ? "notice err" : "notice ok";
-    box.innerText = message;
+    box.innerText = msg;
   }
 
   function loginUser(){
-    const email = document.getElementById("email").value.trim().toLowerCase();
+    const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
 
     if(!email || !password){
-      showNotice("Tanpri ranpli email ak modpas la.");
-      return;
-    }
-
-    if(window.FastPayV2 && FastPayV2.loginUser){
-      const result = FastPayV2.loginUser(email, password);
-
-      if(result && result.success){
-        showNotice("Login reyisi.", false);
-        setTimeout(() => {
-          window.location.href = "dashboard.html";
-        }, 700);
-      } else {
-        showNotice((result && result.message) || "Email oswa modpas pa kòrèk.");
-      }
+      showError("Tanpri ranpli tout chan yo.");
       return;
     }
 
     const users = JSON.parse(localStorage.getItem("fp_users") || "[]");
-    const user = users.find(u =>
-      String(u.email || "").toLowerCase() === email &&
-      String(u.password || "") === password
-    );
+
+    const user = users.find(u => u.email === email && u.password === password);
 
     if(!user){
-      showNotice("Email oswa modpas pa kòrèk.");
+      showError("Email oswa modpas pa kòrèk.");
       return;
     }
 
     localStorage.setItem("fastpay_user", JSON.stringify(user));
-    showNotice("Login reyisi.", false);
 
-    setTimeout(() => {
-      window.location.href = "dashboard.html";
-    }, 700);
+    window.location.href = "dashboard.html";
   }
 </script>
 
