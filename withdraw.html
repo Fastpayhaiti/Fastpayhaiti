@@ -3,267 +3,94 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FastPay Premium Withdraw</title>
+  <title>FastPay Choose Withdraw Method</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      font-family:Arial,sans-serif;
-    }
-
-    body{
-      background:#05070c;
-      color:#ffffff;
-      min-height:100vh;
-    }
-
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+    body{background:#05070c;color:#fff;min-height:100vh}
     .app{
-      max-width:430px;
-      margin:auto;
-      min-height:100vh;
-      padding:18px 18px 110px;
+      max-width:430px;margin:auto;min-height:100vh;padding:18px 18px 110px;
       background:
-        radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
-        radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
+        radial-gradient(circle at top left, rgba(59,130,246,0.10), transparent 30%),
+        radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 28%),
         #05070c;
     }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:18px;
-    }
-
-    .left-top{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+    .left-top{display:flex;align-items:center;gap:12px}
     .back-btn{
-      width:48px;
-      height:48px;
-      border:none;
-      border-radius:14px;
-      background:rgba(255,255,255,0.06);
-      color:#ffffff;
-      font-size:22px;
-      text-decoration:none;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,0.06);
+      color:#fff;font-size:22px;text-decoration:none;display:flex;align-items:center;justify-content:center;
+      border:1px solid rgba(255,255,255,0.08);
     }
-
-    .page-title{
-      font-size:24px;
-      font-weight:800;
-    }
-
+    .page-title{font-size:24px;font-weight:800}
     .profile-avatar{
-      width:48px;
-      height:48px;
-      border-radius:50%;
-      background:rgba(255,255,255,0.08);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:22px;
-      font-weight:700;
+      width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.08);
+      display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;
     }
-
     .hero-card{
       background:linear-gradient(135deg,#0d1117,#1c2330);
       border:1px solid rgba(255,255,255,0.08);
-      border-radius:28px;
-      padding:22px;
-      margin-bottom:22px;
+      border-radius:28px;padding:22px;margin-bottom:24px;
       box-shadow:0 22px 45px rgba(0,0,0,0.35);
-      position:relative;
-      overflow:hidden;
+      position:relative;overflow:hidden;
     }
-
     .hero-card::before{
-      content:"";
-      position:absolute;
-      width:180px;
-      height:180px;
-      border-radius:50%;
-      background:rgba(217,60,75,0.12);
-      top:-40px;
-      right:-40px;
+      content:"";position:absolute;width:180px;height:180px;border-radius:50%;
+      background:rgba(217,60,75,0.10);top:-40px;right:-40px;
     }
-
-    .hero-label{
-      color:#9ca3af;
-      font-size:14px;
-      margin-bottom:8px;
-      position:relative;
-      z-index:2;
-    }
-
-    .hero-balance{
-      font-size:36px;
-      font-weight:800;
-      position:relative;
-      z-index:2;
-    }
-
-    .hero-sub{
-      margin-top:10px;
-      color:#8b93a7;
-      font-size:14px;
-      position:relative;
-      z-index:2;
-    }
-
-    .section{
-      margin-bottom:24px;
-    }
-
-    .section-title{
-      font-size:22px;
-      font-weight:800;
-      margin-bottom:14px;
-    }
-
-    .glass-box{
+    .hero-label{color:#9ca3af;font-size:14px;margin-bottom:8px;position:relative;z-index:2}
+    .hero-title{font-size:34px;font-weight:800;position:relative;z-index:2;line-height:1.1}
+    .hero-sub{margin-top:10px;color:#8b93a7;font-size:14px;line-height:1.6;position:relative;z-index:2}
+    .section-title{font-size:22px;font-weight:800;margin-bottom:14px}
+    .methods{display:grid;grid-template-columns:1fr;gap:16px}
+    .method-card{
+      display:block;text-decoration:none;color:#fff;
       background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
       border:1px solid rgba(255,255,255,0.08);
-      border-radius:22px;
-      padding:16px;
+      border-radius:24px;padding:20px;min-height:150px;box-shadow:0 18px 35px rgba(0,0,0,0.25);
     }
-
-    label{
-      display:block;
-      font-size:14px;
-      font-weight:700;
-      margin-bottom:8px;
-      color:#d7deee;
+    .method-top{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;
     }
-
-    input, select, textarea{
-      width:100%;
-      background:rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:16px;
-      color:#ffffff;
-      padding:14px;
-      font-size:15px;
-      margin-bottom:14px;
-      outline:none;
+    .icon-box{
+      width:56px;height:56px;border-radius:18px;display:flex;align-items:center;justify-content:center;
+      font-size:22px;font-weight:800;
     }
-
-    input::placeholder,
-    textarea::placeholder{
-      color:#7f879b;
+    .moncash-icon{background:rgba(17,156,103,0.18);color:#7ff0be;border:1px solid rgba(17,156,103,0.30)}
+    .natcash-icon{background:rgba(245,158,11,0.18);color:#fcd34d;border:1px solid rgba(245,158,11,0.30)}
+    .wise-icon{background:rgba(0,201,167,0.18);color:#7ef7e2;border:1px solid rgba(0,201,167,0.30)}
+    .zelle-icon{background:rgba(126,87,255,0.18);color:#d5c6ff;border:1px solid rgba(126,87,255,0.30)}
+    .cashapp-icon{background:rgba(0,200,83,0.18);color:#83ffb4;border:1px solid rgba(0,200,83,0.30)}
+    .bank-icon{background:rgba(96,165,250,0.18);color:#b8d8ff;border:1px solid rgba(96,165,250,0.30)}
+    .usdt-icon{background:rgba(20,184,166,0.18);color:#99fff3;border:1px solid rgba(20,184,166,0.30)}
+    .status-pill{
+      padding:8px 12px;border-radius:999px;font-size:12px;font-weight:800;
+      background:rgba(255,255,255,0.06);color:#d1d5db;border:1px solid rgba(255,255,255,0.08);
     }
-
-    select option{
-      background:#0f131b;
-      color:#ffffff;
-    }
-
-    .summary-box{
-      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:22px;
-      padding:16px;
-    }
-
-    .summary-row{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      padding:12px 0;
-      border-bottom:1px solid rgba(255,255,255,0.06);
-      font-size:14px;
-    }
-
-    .summary-row:last-child{
-      border-bottom:none;
-    }
-
-    .summary-label{
-      color:#8b93a7;
-    }
-
-    .summary-value{
-      font-weight:800;
-      text-align:right;
-    }
-
-    .toolbar{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-      margin-top:16px;
-    }
-
+    .method-title{font-size:22px;font-weight:900;margin-bottom:8px}
+    .method-text{color:#8b93a7;font-size:14px;line-height:1.6;margin-bottom:14px}
+    .method-note{font-size:13px;color:#d1d5db;font-weight:700}
+    .toolbar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
     .btn{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-decoration:none;
-      text-align:center;
-      padding:16px;
-      border-radius:18px;
-      color:#ffffff;
-      font-weight:700;
-      font-size:15px;
-      border:none;
-      cursor:pointer;
+      display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center;
+      padding:16px;border-radius:18px;color:#fff;font-weight:800;font-size:15px;border:none;cursor:pointer;
     }
-
-    .btn-red{
-      background:#d93c4b;
-      box-shadow:0 14px 30px rgba(217,60,75,0.28);
-    }
-
-    .btn-dark{
-      background:rgba(255,255,255,0.08);
-      border:1px solid rgba(255,255,255,0.08);
-    }
-
+    .btn-blue{background:#2f3cff;box-shadow:0 14px 30px rgba(47,60,255,0.35)}
+    .btn-dark{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.08)}
     .bottom-nav{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:0;
-      width:100%;
-      max-width:430px;
-      background:#04060a;
-      border-top:1px solid rgba(255,255,255,0.08);
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      padding:12px 8px 14px;
-      z-index:1000;
+      position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:430px;
+      background:#04060a;border-top:1px solid rgba(255,255,255,0.08);display:grid;
+      grid-template-columns:repeat(5,1fr);padding:12px 8px 14px;z-index:1000;
     }
-
     .nav-item{
-      text-decoration:none;
-      color:#8b93a7;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:8px;
-      font-size:12px;
-      font-weight:600;
+      text-decoration:none;color:#8b93a7;display:flex;flex-direction:column;align-items:center;gap:8px;
+      font-size:12px;font-weight:600;
     }
-
-    .nav-item i{
-      font-size:23px;
-    }
-
-    .nav-item.active{
-      color:#3b4cff;
-    }
+    .nav-item i{font-size:23px}
+    .nav-item.active{color:#3b4cff}
   </style>
 </head>
 <body>
-
 <div class="app">
   <div class="topbar">
     <div class="left-top">
@@ -274,183 +101,106 @@
   </div>
 
   <div class="hero-card">
-    <div class="hero-label">Wallet Balance</div>
-    <div class="hero-balance" id="walletBalance">0 HTG</div>
-    <div class="hero-sub">Retire lajan sou kont ou fasil.</div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Withdraw Details</div>
-    <div class="glass-box">
-      <label>Amount (HTG)</label>
-      <input type="number" id="amount" placeholder="Antre montan an" oninput="updateSummary()">
-
-      <label>Method</label>
-      <select id="method" onchange="updateSummary()">
-        <option>MonCash</option>
-        <option>NatCash</option>
-        <option>Bank Transfer</option>
-        <option>Cash Pickup</option>
-      </select>
-
-      <label>Account Name</label>
-      <input type="text" id="accountName" placeholder="Antre non kont lan">
-
-      <label>Account Number</label>
-      <input type="text" id="accountNumber" placeholder="Antre nimewo kont lan">
-
-      <label>Reference / Note</label>
-      <textarea id="note" placeholder="Mete detay retrè a" oninput="updateSummary()"></textarea>
+    <div class="hero-label">FastPay Withdraw Center</div>
+    <div class="hero-title">Choose withdraw method</div>
+    <div class="hero-sub">
+      Chwazi metòd retrè ki pi bon pou ou. FastPay sipòte plizyè fason pou retire lajan lokalman ak entènasyonalman.
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-title">Summary</div>
-    <div class="summary-box">
-      <div class="summary-row">
-        <div class="summary-label">Amount</div>
-        <div class="summary-value" id="summaryAmount">0 HTG</div>
-      </div>
-      <div class="summary-row">
-        <div class="summary-label">Method</div>
-        <div class="summary-value" id="summaryMethod">MonCash</div>
-      </div>
-      <div class="summary-row">
-        <div class="summary-label">Status</div>
-        <div class="summary-value">Pending</div>
-      </div>
-    </div>
+  <div class="section-title">Available Methods</div>
 
-    <div class="toolbar">
-      <button class="btn btn-red" onclick="submitWithdraw()">Submit Withdraw</button>
-      <a href="withdraw-history.html" class="btn btn-dark">Withdraw History</a>
-    </div>
+  <div class="methods">
+    <a href="withdraw.html?method=MonCash" class="method-card">
+      <div class="method-top">
+        <div class="icon-box moncash-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+        <div class="status-pill">Popular</div>
+      </div>
+      <div class="method-title">MonCash Withdraw</div>
+      <div class="method-text">Retire kòb sou MonCash byen rapid ak fasil.</div>
+      <div class="method-note">Lokal Ayiti</div>
+    </a>
+
+    <a href="withdraw.html?method=NatCash" class="method-card">
+      <div class="method-top">
+        <div class="icon-box natcash-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
+        <div class="status-pill">Available</div>
+      </div>
+      <div class="method-title">NatCash Withdraw</div>
+      <div class="method-text">Retire kòb sou NatCash ak tout detay kont ou.</div>
+      <div class="method-note">Lokal Ayiti</div>
+    </a>
+
+    <a href="withdraw.html?method=Wise" class="method-card">
+      <div class="method-top">
+        <div class="icon-box wise-icon"><i class="fa-solid fa-globe"></i></div>
+        <div class="status-pill">International</div>
+      </div>
+      <div class="method-title">Wise Withdraw</div>
+      <div class="method-text">Retire sou kont Wise ou si w ap itilize sèvis entènasyonal.</div>
+      <div class="method-note">Global transfer</div>
+    </a>
+
+    <a href="withdraw.html?method=Zelle" class="method-card">
+      <div class="method-top">
+        <div class="icon-box zelle-icon"><i class="fa-solid fa-bolt"></i></div>
+        <div class="status-pill">US</div>
+      </div>
+      <div class="method-title">Zelle Withdraw</div>
+      <div class="method-text">Resevwa lajan atravè Zelle sou email oswa nimewo ki konekte a.</div>
+      <div class="method-note">USA only</div>
+    </a>
+
+    <a href="withdraw.html?method=CashApp" class="method-card">
+      <div class="method-top">
+        <div class="icon-box cashapp-icon"><i class="fa-solid fa-dollar-sign"></i></div>
+        <div class="status-pill">Fast</div>
+      </div>
+      <div class="method-title">Cash App Withdraw</div>
+      <div class="method-text">Retire lajan dirèk sou Cash App tag ou.</div>
+      <div class="method-note">Quick payout</div>
+    </a>
+
+    <a href="withdraw.html?method=BankTransfer" class="method-card">
+      <div class="method-top">
+        <div class="icon-box bank-icon"><i class="fa-solid fa-building-columns"></i></div>
+        <div class="status-pill">Bank</div>
+      </div>
+      <div class="method-title">Bank Transfer</div>
+      <div class="method-text">Retire sou kont labank kliyan an atravè transfè bankè.</div>
+      <div class="method-note">Bank payout</div>
+    </a>
+
+    <a href="withdraw.html?method=USDT" class="method-card">
+      <div class="method-top">
+        <div class="icon-box usdt-icon"><i class="fa-brands fa-bitcoin"></i></div>
+        <div class="status-pill">Crypto</div>
+      </div>
+      <div class="method-title">USDT Withdraw</div>
+      <div class="method-text">Retire lajan an an USDT sou wallet crypto kliyan an.</div>
+      <div class="method-note">TRC20 / ERC20 / BEP20</div>
+    </a>
+  </div>
+
+  <div class="toolbar">
+    <a href="withdraw-history.html" class="btn btn-dark">Withdraw History</a>
+    <a href="wallet.html" class="btn btn-blue">Back to Wallet</a>
   </div>
 </div>
 
 <div class="bottom-nav">
-  <a href="dashboard.html" class="nav-item">
-    <i class="fa-solid fa-house"></i>
-    <span>Home</span>
-  </a>
-  <a href="statement.html" class="nav-item">
-    <i class="fa-solid fa-arrow-rotate-left"></i>
-    <span>Transactions</span>
-  </a>
-  <a href="giftcard.html" class="nav-item">
-    <i class="fa-brands fa-bitcoin"></i>
-    <span>Services</span>
-  </a>
-  <a href="card-dashboard.html" class="nav-item">
-    <i class="fa-regular fa-credit-card"></i>
-    <span>Cards</span>
-  </a>
-  <a href="wallet.html" class="nav-item active">
-    <i class="fa-solid fa-wallet"></i>
-    <span>Wallet</span>
-  </a>
+  <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <a href="statement.html" class="nav-item"><i class="fa-solid fa-arrow-rotate-left"></i><span>Transactions</span></a>
+  <a href="giftcard.html" class="nav-item"><i class="fa-brands fa-bitcoin"></i><span>Services</span></a>
+  <a href="card-dashboard.html" class="nav-item"><i class="fa-regular fa-credit-card"></i><span>Cards</span></a>
+  <a href="wallet.html" class="nav-item active"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a>
 </div>
 
-<script src="app.js"></script>
 <script>
   const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
   if(savedUser && savedUser.fullname){
     document.getElementById("profileLetter").innerText = savedUser.fullname.charAt(0).toUpperCase();
-    document.getElementById("walletBalance").innerText = (savedUser.balance || 0) + " HTG";
   }
-
-  function getCurrentUser(){
-    if(window.FastPayV2 && FastPayV2.getCurrentUser){
-      return FastPayV2.getCurrentUser();
-    }
-    return savedUser;
-  }
-
-  function updateSummary(){
-    const amount = document.getElementById("amount").value || 0;
-    const method = document.getElementById("method").value;
-    document.getElementById("summaryAmount").innerText = amount + " HTG";
-    document.getElementById("summaryMethod").innerText = method;
-  }
-
-  function submitWithdraw(){
-    const user = getCurrentUser();
-    if(!user){
-      alert("Ou pa konekte.");
-      return;
-    }
-
-    const amount = parseInt(document.getElementById("amount").value || "0");
-    const method = document.getElementById("method").value;
-    const accountName = document.getElementById("accountName").value.trim();
-    const accountNumber = document.getElementById("accountNumber").value.trim();
-    const note = document.getElementById("note").value.trim();
-
-    if(!amount || amount <= 0){
-      alert("Tanpri mete yon montan ki valab.");
-      return;
-    }
-
-    if(!accountName || !accountNumber){
-      alert("Tanpri ranpli non kont ak nimewo kont lan.");
-      return;
-    }
-
-    const users = JSON.parse(localStorage.getItem("fp_users") || "[]");
-    const idx = users.findIndex(u => u.id === user.id);
-
-    if(idx >= 0){
-      const walletBalance = parseInt(users[idx].balance || 0);
-      if(walletBalance < amount){
-        alert("Wallet ou pa gen ase balans.");
-        return;
-      }
-    }
-
-    const withdraws = JSON.parse(localStorage.getItem("fastpay_withdraws") || "[]");
-    const newWithdraw = {
-      id: "WDR_" + Date.now(),
-      userId: user.id,
-      amount: amount + " HTG",
-      amountValue: amount,
-      method: method,
-      accountName: accountName,
-      accountNumber: accountNumber,
-      bank: method,
-      details: note,
-      status: "Pending",
-      date: new Date().toLocaleString()
-    };
-
-    withdraws.unshift(newWithdraw);
-    localStorage.setItem("fastpay_withdraws", JSON.stringify(withdraws));
-
-    if(window.FastPayV2 && FastPayV2.addTransaction){
-      FastPayV2.addTransaction({
-        userId: user.id,
-        service: "Withdraw Request",
-        amount: "-" + amount + " HTG",
-        type: "withdraw",
-        status: "pending",
-        meta: { method, accountName, accountNumber, note }
-      });
-    }
-
-    if(window.FastPayV2 && FastPayV2.addNotification){
-      FastPayV2.addNotification({
-        userId: user.id,
-        title: "Withdraw submitted",
-        text: "Nou resevwa demann retrè ou a.",
-        type: "info"
-      });
-    }
-
-    alert("Demann retrè a anrejistre avèk siksè.");
-    window.location.href = "withdraw-history.html";
-  }
-
-  updateSummary();
 </script>
-
 </body>
-</html>
+    </html>
