@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FastPay Admin Transfers</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+    body{background:#05070c;color:#fff;min-height:100vh}
+    .app{
+      max-width:430px;margin:auto;min-height:100vh;padding:18px 18px 110px;
+      background:
+        radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
+        radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
+        #05070c;
+    }
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .left-top{display:flex;align-items:center;gap:12px}
+    .back-btn{
+      width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,0.06);
+      color:#fff;font-size:22px;text-decoration:none;display:flex;align-items:center;justify-content:center;
+    }
+    .page-title{font-size:24px;font-weight:800}
+    .profile-avatar{
+      width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.08);
+      display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;
+    }
+
+    .hero-card{
+      background:linear-gradient(135deg,#0d1117,#1c2330);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:28px;padding:22px;margin-bottom:22px;
+      box-shadow:0 22px 45px rgba(0,0,0,0.35);
+      position:relative;overflow:hidden;
+    }
+    .hero-card::before{
+      content:"";position:absolute;width:180px;height:180px;border-radius:50%;
+      background:rgba(47,60,255,0.12);top:-40px;right:-40px;
+    }
+    .hero-label{color:#9ca3af;font-size:14px;margin-bottom:8px;position:relative;z-index:2}
+    .hero-title{font-size:34px;font-weight:800;position:relative;z-index:2}
+    .hero-sub{margin-top:10px;color:#8b93a7;font-size:14px;position:relative;z-index:2;line-height:1.5}
+
+    .stats-grid{
+      margin-top:18px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px;position:relative;z-index:2;
+    }
+    .mini-box{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.05);
+      border-radius:18px;padding:14px;
+    }
+    .mini-label{color:#8b93a7;font-size:12px;margin-bottom:6px}
+    .mini-value{font-size:20px;font-weight:800}
+
+    .section-title{font-size:22px;font-weight:800;margin-bottom:14px}
+
+    .toolbar{
+      display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;
+    }
+    .toolbar-btn{
+      display:flex;align-items:center;justify-content:center;
+      text-decoration:none;text-align:center;padding:15px;border-radius:18px;
+      color:#fff;font-weight:800;font-size:15px;border:none;cursor:pointer;
+    }
+    .blue{background:#2f3cff;box-shadow:0 14px 30px rgba(47,60,255,0.35)}
+    .dark{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.08)}
+
+    .list-box{
+      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border:1px solid rgba(255,255,255,0.08);border-radius:22px;padding:10px 16px;
+    }
+
+    .list-item{
+      padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.06);
+    }
+    .list-item:last-child{border-bottom:none}
+
+    .item-top{
+      display:flex;justify-content:space-between;gap:12px;align-items:flex-start;
+    }
+
+    .item-title{
+      font-size:15px;font-weight:800;margin-bottom:6px;line-height:1.35;
+    }
+
+    .item-sub{
+      color:#8b93a7;font-size:13px;line-height:1.45;margin-bottom:4px;word-break:break-word;
+    }
+
+    .item-amount{
+      font-size:18px;font-weight:900;white-space:nowrap;text-align:right;
+    }
+
+    .badge{
+      display:inline-flex;align-items:center;justify-content:center;padding:6px 10px;border-radius:999px;
+      font-size:11px;font-weight:800;margin-top:8px;
+    }
+    .badge-success{background:rgba(17,156,103,0.18);color:#7ff0be}
+    .badge-warning{background:rgba(245,158,11,0.18);color:#fcd34d}
+    .badge-danger{background:rgba(217,60,75,0.18);color:#ffb4bf}
+
+    .details-grid{
+      display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;
+    }
+
+    .detail-box{
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.05);
+      border-radius:14px;padding:12px;
+    }
+
+    .detail-label{
+      color:#8b93a7;font-size:11px;font-weight:700;margin-bottom:5px;text-transform:uppercase;
+    }
+
+    .detail-value{
+      font-size:13px;font-weight:800;line-height:1.4;word-break:break-word;
+    }
+
+    .action-row{
+      display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;
+    }
+
+    .action-btn{
+      border:none;border-radius:14px;padding:12px;color:#fff;font-size:13px;font-weight:800;cursor:pointer;
+    }
+    .green{background:#119c67}
+    .red{background:#d93c4b}
+
+    .empty{
+      color:#8b93a7;font-size:14px;padding:10px 0;
+    }
+
+    .bottom-nav{
+      position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:430px;
+      background:#04060a;border-top:1px solid rgba(255,255,255,0.08);display:grid;
+      grid-template-columns:repeat(5,1fr);padding:12px 8px 14px;z-index:1000;
+    }
+    .nav-item{
+      text-decoration:none;color:#8b93a7;display:flex;flex-direction:column;align-items:center;gap:8px;
+      font-size:12px;font-weight:600;
+    }
+    .nav-item i{font-size:23px}
+    .nav-item.active{color:#3b4cff}
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <div class="topbar">
+    <div class="left-top">
+      <a href="admin.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+      <div class="page-title">Admin Transfers</div>
+    </div>
+    <div class="profile-avatar" id="profileLetter">A</div>
+  </div>
+
+  <div class="hero-card">
+    <div class="hero-label">FastPay Transfer Requests</div>
+    <div class="hero-title" id="transferCount">0</div>
+    <div class="hero-sub">Verifye tout demann transfer kliyan yo epi apwouve oswa rejte yo.</div>
+
+    <div class="stats-grid">
+      <div class="mini-box">
+        <div class="mini-label">Pending</div>
+        <div class="mini-value" id="pendingCount">0</div>
+      </div>
+      <div class="mini-box">
+        <div class="mini-label">Approved</div>
+        <div class="mini-value" id="approvedCount">0</div>
+      </div>
+      <div class="mini-box">
+        <div class="mini-label">Rejected</div>
+        <div class="mini-value" id="rejectedCount">0</div>
+      </div>
+      <div class="mini-box">
+        <div class="mini-label">Latest Amount</div>
+        <div class="mini-value" id="latestAmount">0 HTG</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button class="toolbar-btn blue" onclick="loadTransfers()">Refresh</button>
+    <a href="transfer-history.html" class="toolbar-btn dark">History</a>
+  </div>
+
+  <div class="section-title">Transfer Requests</div>
+  <div class="list-box" id="transferBox">
+    <div class="empty">Pa gen demann transfer pou kounye a.</div>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <a href="dashboard.html" class="nav-item">
+    <i class="fa-solid fa-house"></i>
+    <span>Home</span>
+  </a>
+  <a href="statement.html" class="nav-item">
+    <i class="fa-solid fa-arrow-rotate-left"></i>
+    <span>Transactions</span>
+  </a>
+  <a href="giftcard.html" class="nav-item">
+    <i class="fa-brands fa-bitcoin"></i>
+    <span>Services</span>
+  </a>
+  <a href="card-dashboard.html" class="nav-item">
+    <i class="fa-regular fa-credit-card"></i>
+    <span>Cards</span>
+  </a>
+  <a href="admin.html" class="nav-item active">
+    <i class="fa-solid fa-user-shield"></i>
+    <span>Admin</span>
+  </a>
+</div>
+
+<script src="app.js"></script>
+<script>
+  const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
+  if(savedUser && savedUser.fullname){
+    document.getElementById("profileLetter").innerText = savedUser.fullname.charAt(0).toUpperCase();
+  }
+
+  function getTransfers(){
+    return JSON.parse(localStorage.getItem("fastpay_transfers") || "[]");
+  }
+
+  function saveTransfers(transfers){
+    localStorage.setItem("fastpay_transfers", JSON.stringify(transfers));
+  }
+
+  function getBadgeClass(status){
+    const s = String(status || "").toLowerCase();
+    if(s.includes("approved") || s.includes("completed") || s.includes("paid")) return "badge-success";
+    if(s.includes("rejected") || s.includes("failed")) return "badge-danger";
+    return "badge-warning";
+  }
+
+  function approveTransfer(id){
+    const transfers = getTransfers();
+    const idx = transfers.findIndex(item => item.id === id);
+    if(idx === -1) return;
+
+    if(String(transfers[idx].status || "").toLowerCase() === "approved"){
+      alert("Transfer sa deja apwouve.");
+      return;
+    }
+
+    transfers[idx].status = "Approved";
+    transfers[idx].approvedAt = new Date().toLocaleString();
+    saveTransfers(transfers);
+
+    if(window.FastPayV2 && FastPayV2.addNotification){
+      FastPayV2.addNotification({
+        userId: transfers[idx].userId,
+        title: "Transfer approved",
+        text: "Demann transfer ou a apwouve. Li pare pou tretman.",
+        type: "success"
+      });
+    }
+
+    if(window.FastPayV2 && FastPayV2.addTransaction){
+      FastPayV2.addTransaction({
+        userId: transfers[idx].userId,
+        service: "Transfer Approved",
+        amount: "-" + (transfers[idx].amountValue || 0) + " HTG",
+        type: "transfer-approved",
+        status: "approved",
+        meta: {
+          receiverName: transfers[idx].receiverName || "",
+          receiverEmail: transfers[idx].receiverEmail || ""
+        }
+      });
+    }
+
+    loadTransfers();
+    alert("Transfer la apwouve avèk siksè.");
+  }
+
+  function rejectTransfer(id){
+    const transfers = getTransfers();
+    const idx = transfers.findIndex(item => item.id === id);
+    if(idx === -1) return;
+
+    transfers[idx].status = "Rejected";
+    transfers[idx].rejectedAt = new Date().toLocaleString();
+    saveTransfers(transfers);
+
+    if(window.FastPayV2 && FastPayV2.addNotification){
+      FastPayV2.addNotification({
+        userId: transfers[idx].userId,
+        title: "Transfer rejected",
+        text: "Demann transfer ou a rejte. Verifye enfòmasyon yo epi eseye ankò.",
+        type: "warning"
+      });
+    }
+
+    loadTransfers();
+    alert("Transfer la rejte.");
+  }
+
+  function loadTransfers(){
+    const transfers = getTransfers();
+
+    document.getElementById("transferCount").innerText = transfers.length;
+    document.getElementById("pendingCount").innerText =
+      transfers.filter(item => String(item.status || "").toLowerCase().includes("pending")).length;
+    document.getElementById("approvedCount").innerText =
+      transfers.filter(item => String(item.status || "").toLowerCase().includes("approved")).length;
+    document.getElementById("rejectedCount").innerText =
+      transfers.filter(item => String(item.status || "").toLowerCase().includes("rejected")).length;
+
+    if(transfers.length > 0){
+      document.getElementById("latestAmount").innerText = transfers[0].amount || "0 HTG";
+    } else {
+      document.getElementById("latestAmount").innerText = "0 HTG";
+    }
+
+    const box = document.getElementById("transferBox");
+
+    if(transfers.length === 0){
+      box.innerHTML = '<div class="empty">Pa gen demann transfer pou kounye a.</div>';
+      return;
+    }
+
+    box.innerHTML = "";
+    transfers.forEach(item => {
+      box.innerHTML += `
+        <div class="list-item">
+          <div class="item-top">
+            <div>
+              <div class="item-title">${item.receiverName || "Receiver"} ${item.receiverEmail ? "• " + item.receiverEmail : ""}</div>
+              <div class="item-sub">${item.date || ""}</div>
+              <div class="badge ${getBadgeClass(item.status)}">${item.status || "Pending"}</div>
+            </div>
+            <div class="item-amount">${item.amount || "0 HTG"}</div>
+          </div>
+
+          <div class="details-grid">
+            <div class="detail-box">
+              <div class="detail-label">Receiver Name</div>
+              <div class="detail-value">${item.receiverName || "N/A"}</div>
+            </div>
+
+            <div class="detail-box">
+              <div class="detail-label">Receiver Email</div>
+              <div class="detail-value">${item.receiverEmail || "N/A"}</div>
+            </div>
+
+            <div class="detail-box">
+              <div class="detail-label">Receiver ID</div>
+              <div class="detail-value">${item.receiverId || "N/A"}</div>
+            </div>
+
+            <div class="detail-box">
+              <div class="detail-label">Amount</div>
+              <div class="detail-value">${item.amount || "0 HTG"}</div>
+            </div>
+          </div>
+
+          <div class="item-sub" style="margin-top:10px;">${item.note || "Pa gen nòt"}</div>
+
+          <div class="action-row">
+            <button class="action-btn green" onclick="approveTransfer('${item.id}')">Approve</button>
+            <button class="action-btn red" onclick="rejectTransfer('${item.id}')">Reject</button>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  loadTransfers();
+</script>
+
+</body>
+  </html>
