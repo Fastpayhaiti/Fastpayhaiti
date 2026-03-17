@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FastPay MonCash Deposit</title>
+  <title>FastPay Choose Deposit Method</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
@@ -11,15 +11,16 @@
     .app{
       max-width:430px;margin:auto;min-height:100vh;padding:18px 18px 110px;
       background:
-        radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
-        radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
+        radial-gradient(circle at top left, rgba(59,130,246,0.10), transparent 30%),
+        radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 28%),
         #05070c;
     }
-    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
     .left-top{display:flex;align-items:center;gap:12px}
     .back-btn{
       width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,0.06);
       color:#fff;font-size:22px;text-decoration:none;display:flex;align-items:center;justify-content:center;
+      border:1px solid rgba(255,255,255,0.08);
     }
     .page-title{font-size:24px;font-weight:800}
     .profile-avatar{
@@ -29,67 +30,54 @@
     .hero-card{
       background:linear-gradient(135deg,#0d1117,#1c2330);
       border:1px solid rgba(255,255,255,0.08);
-      border-radius:28px;padding:22px;margin-bottom:22px;
-      box-shadow:0 22px 45px rgba(0,0,0,0.35);position:relative;overflow:hidden;
+      border-radius:28px;padding:22px;margin-bottom:24px;
+      box-shadow:0 22px 45px rgba(0,0,0,0.35);
+      position:relative;overflow:hidden;
     }
     .hero-card::before{
       content:"";position:absolute;width:180px;height:180px;border-radius:50%;
-      background:rgba(17,156,103,0.12);top:-40px;right:-40px;
+      background:rgba(47,60,255,0.10);top:-40px;right:-40px;
     }
     .hero-label{color:#9ca3af;font-size:14px;margin-bottom:8px;position:relative;z-index:2}
-    .hero-balance{font-size:36px;font-weight:800;position:relative;z-index:2}
-    .hero-sub{margin-top:10px;color:#8b93a7;font-size:14px;position:relative;z-index:2;line-height:1.5}
-    .section{margin-bottom:24px}
+    .hero-title{font-size:34px;font-weight:800;position:relative;z-index:2;line-height:1.1}
+    .hero-sub{margin-top:10px;color:#8b93a7;font-size:14px;line-height:1.6;position:relative;z-index:2}
     .section-title{font-size:22px;font-weight:800;margin-bottom:14px}
-    .glass-box{
+    .methods{display:grid;grid-template-columns:1fr;gap:16px}
+    .method-card{
+      display:block;text-decoration:none;color:#fff;
       background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);border-radius:22px;padding:16px;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:24px;padding:20px;min-height:150px;box-shadow:0 18px 35px rgba(0,0,0,0.25);
     }
-    label{display:block;font-size:14px;font-weight:700;margin-bottom:8px;color:#d7deee}
-    input, select, textarea{
-      width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);
-      border-radius:16px;color:#fff;padding:14px;font-size:15px;margin-bottom:14px;outline:none;
+    .method-top{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;
     }
-    input::placeholder, textarea::placeholder{color:#7f879b}
-    textarea{min-height:100px;resize:none}
-    .pay-box{
-      background:rgba(47,60,255,0.14);
-      border:1px solid rgba(79,92,255,0.24);
-      border-radius:18px;padding:16px;margin-bottom:14px;
+    .icon-box{
+      width:56px;height:56px;border-radius:18px;display:flex;align-items:center;justify-content:center;
+      font-size:22px;font-weight:800;
     }
-    .pay-title{font-size:15px;font-weight:800;margin-bottom:8px}
-    .pay-text{font-size:14px;color:#dbe2ff;line-height:1.6}
-    .pay-number{
-      margin-top:10px;font-size:24px;font-weight:900;letter-spacing:1px;color:#fff;
+    .moncash-icon{background:rgba(17,156,103,0.18);color:#7ff0be;border:1px solid rgba(17,156,103,0.30)}
+    .natcash-icon{background:rgba(245,158,11,0.18);color:#fcd34d;border:1px solid rgba(245,158,11,0.30)}
+    .wise-icon{background:rgba(0,201,167,0.18);color:#7ef7e2;border:1px solid rgba(0,201,167,0.30)}
+    .zelle-icon{background:rgba(126,87,255,0.18);color:#d5c6ff;border:1px solid rgba(126,87,255,0.30)}
+    .cashapp-icon{background:rgba(0,200,83,0.18);color:#83ffb4;border:1px solid rgba(0,200,83,0.30)}
+    .bank-icon{background:rgba(96,165,250,0.18);color:#b8d8ff;border:1px solid rgba(96,165,250,0.30)}
+    .usdt-icon{background:rgba(20,184,166,0.18);color:#99fff3;border:1px solid rgba(20,184,166,0.30)}
+    .status-pill{
+      padding:8px 12px;border-radius:999px;font-size:12px;font-weight:800;
+      background:rgba(255,255,255,0.06);color:#d1d5db;border:1px solid rgba(255,255,255,0.08);
     }
-    .file-box{
-      background:rgba(255,255,255,0.04);
-      border:1px dashed rgba(255,255,255,0.18);
-      border-radius:16px;padding:14px;margin-bottom:14px;
-    }
-    .summary-box{
-      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);border-radius:22px;padding:16px;
-    }
-    .summary-row{
-      display:flex;justify-content:space-between;gap:12px;padding:12px 0;
-      border-bottom:1px solid rgba(255,255,255,0.06);font-size:14px;
-    }
-    .summary-row:last-child{border-bottom:none}
-    .summary-label{color:#8b93a7}
-    .summary-value{font-weight:800;text-align:right;word-break:break-word}
-    .toolbar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+    .method-title{font-size:22px;font-weight:900;margin-bottom:8px}
+    .method-text{color:#8b93a7;font-size:14px;line-height:1.6;margin-bottom:14px}
+    .method-number{font-size:20px;font-weight:900;letter-spacing:1px}
+    .method-name{font-size:13px;color:#d1d5db;margin-top:6px;font-weight:700}
+    .toolbar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
     .btn{
       display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center;
-      padding:16px;border-radius:18px;color:#fff;font-weight:700;font-size:15px;border:none;cursor:pointer;
+      padding:16px;border-radius:18px;color:#fff;font-weight:800;font-size:15px;border:none;cursor:pointer;
     }
     .btn-blue{background:#2f3cff;box-shadow:0 14px 30px rgba(47,60,255,0.35)}
     .btn-dark{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.08)}
-    .notice{
-      display:none;margin-bottom:14px;padding:14px;border-radius:16px;font-size:14px;font-weight:700;line-height:1.5;
-    }
-    .notice.err{background:rgba(217,60,75,0.18);border:1px solid rgba(217,60,75,0.35);color:#ffb4bf}
-    .notice.ok{background:rgba(17,156,103,0.18);border:1px solid rgba(17,156,103,0.35);color:#7ff0be}
     .bottom-nav{
       position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:430px;
       background:#04060a;border-top:1px solid rgba(255,255,255,0.08);display:grid;
@@ -104,243 +92,123 @@
   </style>
 </head>
 <body>
-
 <div class="app">
   <div class="topbar">
     <div class="left-top">
       <a href="wallet.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
-      <div class="page-title">MonCash Deposit</div>
+      <div class="page-title">Deposit</div>
     </div>
     <div class="profile-avatar" id="profileLetter">A</div>
   </div>
 
-  <div id="noticeBox" class="notice err"></div>
-
   <div class="hero-card">
-    <div class="hero-label">Wallet Balance</div>
-    <div class="hero-balance" id="walletBalance">0 HTG</div>
-    <div class="hero-sub">Voye lajan pa MonCash epi upload prèv la pou admin verifye li.</div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Peman MonCash</div>
-    <div class="pay-box">
-      <div class="pay-title">Voye kòb sou nimewo sa a</div>
-      <div class="pay-text">Apre ou fin voye lajan an, mete montan an, referans lan, epi upload screenshot la.</div>
-      <div class="pay-number">3636-3927</div>
+    <div class="hero-label">FastPay Deposit Center</div>
+    <div class="hero-title">Choose deposit method</div>
+    <div class="hero-sub">
+      Chwazi metòd depo ki pi bon pou ou. FastPay sipòte plizyè metòd lokal ak entènasyonal.
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-title">Deposit Details</div>
-    <div class="glass-box">
-      <label>Amount (HTG)</label>
-      <input type="number" id="amount" placeholder="Antre montan an" oninput="updateSummary()">
+  <div class="section-title">Available Methods</div>
 
-      <label>Non moun ki voye a</label>
-      <input type="text" id="senderName" placeholder="Antre non moun ki voye MonCash la" oninput="updateSummary()">
-
-      <label>Nimewo moun ki voye a</label>
-      <input type="text" id="senderPhone" placeholder="Eg: 50936363927" oninput="updateSummary()">
-
-      <label>Reference MonCash</label>
-      <input type="text" id="reference" placeholder="Antre kòd / referans tranzaksyon an" oninput="updateSummary()">
-
-      <label>Prèv peman / Screenshot</label>
-      <div class="file-box">
-        <input type="file" id="proofFile" accept="image/*">
+  <div class="methods">
+    <a href="deposit.html?method=MonCash" class="method-card">
+      <div class="method-top">
+        <div class="icon-box moncash-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+        <div class="status-pill">Recommended</div>
       </div>
+      <div class="method-title">MonCash</div>
+      <div class="method-text">Depo rapid ak MonCash. Mete referans lan epi upload prèv peman an.</div>
+      <div class="method-number">3636-3927</div>
+      <div class="method-name">Anelus Lucson</div>
+    </a>
 
-      <label>Nòt</label>
-      <textarea id="note" placeholder="Mete nenpòt detay sou peman an" oninput="updateSummary()"></textarea>
-    </div>
+    <a href="natcash-deposit.html?method=NatCash" class="method-card">
+      <div class="method-top">
+        <div class="icon-box natcash-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
+        <div class="status-pill">Popular</div>
+      </div>
+      <div class="method-title">NatCash</div>
+      <div class="method-text">Fè depo ak NatCash epi upload screenshot tranzaksyon an pou verifikasyon.</div>
+      <div class="method-number">4277-8505</div>
+      <div class="method-name">Sjfnf ckfkf</div>
+    </a>
+
+    <a href="deposit.html?method=Wise" class="method-card">
+      <div class="method-top">
+        <div class="icon-box wise-icon"><i class="fa-solid fa-globe"></i></div>
+        <div class="status-pill">International</div>
+      </div>
+      <div class="method-title">Wise</div>
+      <div class="method-text">Depo atravè Wise pou kliyan entènasyonal oswa diaspora.</div>
+      <div class="method-number">Wise Transfer</div>
+      <div class="method-name">Ajoute detay kont Wise ou</div>
+    </a>
+
+    <a href="deposit.html?method=Zelle" class="method-card">
+      <div class="method-top">
+        <div class="icon-box zelle-icon"><i class="fa-solid fa-bolt"></i></div>
+        <div class="status-pill">US</div>
+      </div>
+      <div class="method-title">Zelle</div>
+      <div class="method-text">Fè top up rapid ak Zelle pou kliyan ki Ozetazini.</div>
+      <div class="method-number">Zelle Payment</div>
+      <div class="method-name">Ajoute email oswa nimewo Zelle ou</div>
+    </a>
+
+    <a href="deposit.html?method=CashApp" class="method-card">
+      <div class="method-top">
+        <div class="icon-box cashapp-icon"><i class="fa-solid fa-dollar-sign"></i></div>
+        <div class="status-pill">Fast</div>
+      </div>
+      <div class="method-title">Cash App</div>
+      <div class="method-text">Kliyan yo ka voye lajan sou Cash App epi upload prèv la sou FastPay.</div>
+      <div class="method-number">$YourCashtag</div>
+      <div class="method-name">Ajoute Cash App tag ou</div>
+    </a>
+
+    <a href="deposit.html?method=BankTransfer" class="method-card">
+      <div class="method-top">
+        <div class="icon-box bank-icon"><i class="fa-solid fa-building-columns"></i></div>
+        <div class="status-pill">Bank</div>
+      </div>
+      <div class="method-title">Bank Transfer</div>
+      <div class="method-text">Depo pa transfè bankè pou kliyan ki itilize kont labank.</div>
+      <div class="method-number">Bank Deposit</div>
+      <div class="method-name">Ajoute non bank ak nimewo kont ou</div>
+    </a>
+
+    <a href="deposit.html?method=USDT" class="method-card">
+      <div class="method-top">
+        <div class="icon-box usdt-icon"><i class="fa-brands fa-bitcoin"></i></div>
+        <div class="status-pill">Crypto</div>
+      </div>
+      <div class="method-title">USDT</div>
+      <div class="method-text">Fè depo ak USDT sou rezo ou sipòte a epi mete TXID oswa hash tranzaksyon an.</div>
+      <div class="method-number">USDT Wallet</div>
+      <div class="method-name">Ajoute adrès TRC20/ERC20 ou</div>
+    </a>
   </div>
 
-  <div class="section">
-    <div class="section-title">Summary</div>
-    <div class="summary-box">
-      <div class="summary-row">
-        <div class="summary-label">Amount</div>
-        <div class="summary-value" id="summaryAmount">0 HTG</div>
-      </div>
-      <div class="summary-row">
-        <div class="summary-label">Sender</div>
-        <div class="summary-value" id="summarySender">N/A</div>
-      </div>
-      <div class="summary-row">
-        <div class="summary-label">Reference</div>
-        <div class="summary-value" id="summaryReference">N/A</div>
-      </div>
-      <div class="summary-row">
-        <div class="summary-label">Method</div>
-        <div class="summary-value">MonCash</div>
-      </div>
-      <div class="summary-row">
-        <div class="summary-label">Status</div>
-        <div class="summary-value">Pending Approval</div>
-      </div>
-    </div>
-
-    <div class="toolbar">
-      <button class="btn btn-blue" onclick="submitMonCashDeposit()">Submit Deposit</button>
-      <a href="deposit-history.html" class="btn btn-dark">Deposit History</a>
-    </div>
+  <div class="toolbar">
+    <a href="deposit-history.html" class="btn btn-dark">Deposit History</a>
+    <a href="wallet.html" class="btn btn-blue">Back to Wallet</a>
   </div>
 </div>
 
 <div class="bottom-nav">
-  <a href="dashboard.html" class="nav-item">
-    <i class="fa-solid fa-house"></i>
-    <span>Home</span>
-  </a>
-  <a href="statement.html" class="nav-item">
-    <i class="fa-solid fa-arrow-rotate-left"></i>
-    <span>Transactions</span>
-  </a>
-  <a href="giftcard.html" class="nav-item">
-    <i class="fa-brands fa-bitcoin"></i>
-    <span>Services</span>
-  </a>
-  <a href="card-dashboard.html" class="nav-item">
-    <i class="fa-regular fa-credit-card"></i>
-    <span>Cards</span>
-  </a>
-  <a href="wallet.html" class="nav-item active">
-    <i class="fa-solid fa-wallet"></i>
-    <span>Wallet</span>
-  </a>
+  <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <a href="statement.html" class="nav-item"><i class="fa-solid fa-arrow-rotate-left"></i><span>Transactions</span></a>
+  <a href="giftcard.html" class="nav-item"><i class="fa-brands fa-bitcoin"></i><span>Services</span></a>
+  <a href="card-dashboard.html" class="nav-item"><i class="fa-regular fa-credit-card"></i><span>Cards</span></a>
+  <a href="wallet.html" class="nav-item active"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a>
 </div>
 
-<script src="app.js"></script>
 <script>
   const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
   if(savedUser && savedUser.fullname){
     document.getElementById("profileLetter").innerText = savedUser.fullname.charAt(0).toUpperCase();
-    document.getElementById("walletBalance").innerText = (savedUser.balance || 0) + " HTG";
   }
-
-  function showNotice(message, isError = true){
-    const box = document.getElementById("noticeBox");
-    box.style.display = "block";
-    box.className = isError ? "notice err" : "notice ok";
-    box.innerText = message;
-  }
-
-  function getCurrentUser(){
-    if(window.FastPayV2 && FastPayV2.getCurrentUser){
-      return FastPayV2.getCurrentUser();
-    }
-    return savedUser;
-  }
-
-  function updateSummary(){
-    const amount = document.getElementById("amount").value || 0;
-    const senderName = document.getElementById("senderName").value.trim();
-    const senderPhone = document.getElementById("senderPhone").value.trim();
-    const reference = document.getElementById("reference").value.trim();
-
-    document.getElementById("summaryAmount").innerText = amount + " HTG";
-    document.getElementById("summarySender").innerText =
-      senderName || senderPhone ? ((senderName || "N/A") + (senderPhone ? " / " + senderPhone : "")) : "N/A";
-    document.getElementById("summaryReference").innerText = reference || "N/A";
-  }
-
-  function fileToBase64(file){
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  }
-
-  async function submitMonCashDeposit(){
-    const user = getCurrentUser();
-    if(!user){
-      showNotice("Ou pa konekte.");
-      return;
-    }
-
-    const amount = parseInt(document.getElementById("amount").value || "0");
-    const senderName = document.getElementById("senderName").value.trim();
-    const senderPhone = document.getElementById("senderPhone").value.trim();
-    const reference = document.getElementById("reference").value.trim();
-    const note = document.getElementById("note").value.trim();
-    const proofFile = document.getElementById("proofFile").files[0];
-
-    if(!amount || amount <= 0){
-      showNotice("Tanpri mete yon montan ki valab.");
-      return;
-    }
-
-    if(!senderName || !senderPhone || !reference){
-      showNotice("Tanpri ranpli non moun nan, nimewo a, ak referans lan.");
-      return;
-    }
-
-    if(!proofFile){
-      showNotice("Tanpri upload screenshot peman an.");
-      return;
-    }
-
-    let proofBase64 = "";
-    try{
-      proofBase64 = await fileToBase64(proofFile);
-    }catch(e){
-      showNotice("Pa rive li imaj la. Eseye ankò.");
-      return;
-    }
-
-    const deposits = JSON.parse(localStorage.getItem("fastpay_deposits") || "[]");
-    const newDeposit = {
-      id: "DEP_" + Date.now(),
-      userId: user.id,
-      fullname: user.fullname || "",
-      userEmail: user.email || "",
-      amount: amount + " HTG",
-      amountValue: amount,
-      method: "MonCash",
-      senderName,
-      senderPhone,
-      reference,
-      note,
-      proofImage: proofBase64,
-      status: "Pending",
-      date: new Date().toLocaleString()
-    };
-
-    deposits.unshift(newDeposit);
-    localStorage.setItem("fastpay_deposits", JSON.stringify(deposits));
-
-    if(window.FastPayV2 && FastPayV2.addTransaction){
-      FastPayV2.addTransaction({
-        userId: user.id,
-        service: "MonCash Deposit Request",
-        amount: "+" + amount + " HTG",
-        type: "deposit",
-        status: "pending",
-        meta: { method: "MonCash", reference }
-      });
-    }
-
-    if(window.FastPayV2 && FastPayV2.addNotification){
-      FastPayV2.addNotification({
-        userId: user.id,
-        title: "Deposit submitted",
-        text: "Nou resevwa demann depo MonCash ou a. Li ap tann apwobasyon admin.",
-        type: "info"
-      });
-    }
-
-    showNotice("Demann depo MonCash la anrejistre avèk siksè.", false);
-
-    setTimeout(() => {
-      window.location.href = "deposit-history.html";
-    }, 900);
-  }
-
-  updateSummary();
 </script>
-
 </body>
-  </html>
+          </html>
