@@ -2,210 +2,74 @@
 <html lang="ht">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FastPay - Topup</title>
-  <style>
-    * { box-sizing: border-box; font-family: Arial, sans-serif; }
-    body {
-      margin: 0;
-      background: #0f172a;
-      color: #fff;
-      padding: 20px;
-    }
-    .container {
-      max-width: 520px;
-      margin: 0 auto;
-    }
-    .card {
-      background: #111827;
-      border: 1px solid #1f2937;
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 16px;
-    }
-    h1 {
-      margin: 0 0 8px;
-      font-size: 28px;
-      text-align: center;
-    }
-    p.sub {
-      margin: 0 0 18px;
-      text-align: center;
-      color: #cbd5e1;
-      font-size: 14px;
-    }
-    label {
-      display: block;
-      margin: 12px 0 6px;
-      font-size: 14px;
-      color: #e5e7eb;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: none;
-      font-size: 16px;
-    }
-    input, select {
-      background: #1f2937;
-      color: #fff;
-      outline: none;
-    }
-    button {
-      background: #2563eb;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 14px;
-    }
-    button:hover {
-      opacity: 0.95;
-    }
-    .muted {
-      color: #cbd5e1;
-      font-size: 13px;
-    }
-    .result {
-      background: #020617;
-      color: #dbeafe;
-      border-radius: 12px;
-      padding: 14px;
-      min-height: 80px;
-      white-space: pre-wrap;
-      word-break: break-word;
-      font-size: 13px;
-    }
-    .inline {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .badge {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: #1d4ed8;
-      font-size: 12px;
-      margin-bottom: 10px;
-    }
-    a.toplink {
-      color: #93c5fd;
-      text-decoration: none;
-      font-size: 14px;
-      display: inline-block;
-      margin-bottom: 14px;
-    }
-    .small {
-      font-size: 12px;
-      color: #94a3b8;
-      margin-top: 8px;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Topup - FastPay</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div class="container">
-    <a class="toplink" href="/">← Retounen</a>
+  <div id="menu-root"></div>
 
-    <div class="card">
-      <div class="badge">Sandbox Test</div>
-      <h1>Topup Airtime</h1>
-      <p class="sub">Recharge kliyan, retire lajan nan wallet, epi kenbe benefis ou.</p>
-
-      <label for="userId">User ID</label>
-      <input id="userId" type="number" value="1" />
-
-      <div class="inline">
-        <div>
-          <label for="countryCode">Country Code</label>
-          <select id="countryCode">
-            <option value="HT">HT</option>
-            <option value="US">US</option>
-            <option value="DO">DO</option>
-          </select>
-        </div>
-        <div>
-          <label for="amount">Amount</label>
-          <input id="amount" type="number" step="0.01" placeholder="Eg: 5" />
-        </div>
-      </div>
-
-      <label for="phone">Nimewo telefòn</label>
-      <input id="phone" type="text" placeholder="Eg: 36363927" />
-
-      <label for="operatorId">Operator ID</label>
-      <input id="operatorId" type="number" placeholder="Eg: 173" />
-
-      <button id="topupBtn">Fè Topup</button>
-
-      <div class="small">
-        Si ou poko konnen operator ID a, teste route operators yo sou backend la anvan.
-      </div>
+  <div class="page-content">
+    <div class="header-card">
+      <h1>Topup</h1>
+      <div class="sub">Recharge kliyan pa Airtime API.</div>
     </div>
 
-    <div class="card">
-      <label>Rezilta</label>
+    <div class="panel">
+      <label>User ID</label>
+      <input id="userId" value="1" />
+
+      <label>Country Code</label>
+      <select id="countryCode">
+        <option value="HT">HT</option>
+        <option value="US">US</option>
+        <option value="DO">DO</option>
+      </select>
+
+      <label>Operator ID</label>
+      <input id="operatorId" placeholder="Eg: 173" />
+
+      <label>Amount</label>
+      <input id="amount" placeholder="Eg: 5" />
+
+      <label>Phone</label>
+      <input id="phone" placeholder="Eg: 36363927" />
+
+      <button onclick="sendTopup()">Fè Topup</button>
+    </div>
+
+    <div class="panel">
       <div id="result" class="result">Rezilta ap parèt isit...</div>
     </div>
   </div>
 
+  <div id="nav-root"></div>
+
+  <script src="js/app.js"></script>
   <script>
-    const API_BASE = "https://fastpayhaiti.onrender.com";
+    injectLayout("services");
 
-    const userIdInput = document.getElementById("userId");
-    const countryCodeInput = document.getElementById("countryCode");
-    const amountInput = document.getElementById("amount");
-    const phoneInput = document.getElementById("phone");
-    const operatorIdInput = document.getElementById("operatorId");
-    const resultBox = document.getElementById("result");
-    const topupBtn = document.getElementById("topupBtn");
-
-    function showResult(data) {
-      resultBox.textContent =
-        typeof data === "string" ? data : JSON.stringify(data, null, 2);
-    }
-
-    async function doTopup() {
-      const userId = Number(userIdInput.value);
-      const countryCode = countryCodeInput.value.trim();
-      const amount = Number(amountInput.value);
-      const phone = phoneInput.value.trim();
-      const operatorId = Number(operatorIdInput.value);
-
-      if (!userId || !countryCode || !amount || !phone || !operatorId) {
-        showResult("Tanpri ranpli tout chan yo.");
-        return;
-      }
-
-      topupBtn.disabled = true;
-      topupBtn.textContent = "Ap voye...";
+    async function sendTopup() {
+      const body = {
+        userId: document.getElementById("userId").value,
+        operatorId: document.getElementById("operatorId").value,
+        amount: document.getElementById("amount").value,
+        phone: document.getElementById("phone").value,
+        countryCode: document.getElementById("countryCode").value
+      };
 
       try {
-        const response = await fetch(`${API_BASE}/api/topup`, {
+        const res = await fetch(`${API_BASE}/api/topup`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            userId,
-            operatorId,
-            amount,
-            phone,
-            countryCode
-          })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
         });
-
-        const data = await response.json();
-        showResult(data);
+        const data = await res.json();
+        document.getElementById("result").textContent = JSON.stringify(data, null, 2);
       } catch (error) {
-        showResult({ error: error.message });
-      } finally {
-        topupBtn.disabled = false;
-        topupBtn.textContent = "Fè Topup";
+        document.getElementById("result").textContent = error.message;
       }
     }
-
-    topupBtn.addEventListener("click", doTopup);
   </script>
 </body>
 </html>
