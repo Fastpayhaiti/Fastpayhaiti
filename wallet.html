@@ -32,12 +32,7 @@
     </div>
   </div>
 
-  <div id="nav-root"></div>
-
-  <script src="/Fastpayhaiti/js/app.js"></script>
   <script>
-    loadPageNav("wallet");
-
     async function loadWallet() {
       const id = document.getElementById("userId").value;
       const res = await fetch("https://fastpayhaiti.onrender.com/api/wallet/" + id);
