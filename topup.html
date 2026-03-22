@@ -1,52 +1,209 @@
-<script>
-const API = "https://fastpayhaiti.onrender.com";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FastPay Topup</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body {
+      background: #0b1020;
+      color: white;
+      padding: 20px;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+    }
+    .card {
+      background: #11182d;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+    p.sub {
+      text-align: center;
+      color: #aab3c5;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      font-size: 14px;
+      color: #d9e1f2;
+    }
+    select, input, button {
+      width: 100%;
+      border-radius: 12px;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+    }
+    select, input {
+      background: #1a2340;
+      color: white;
+      outline: none;
+    }
+    button {
+      background: #4f6bff;
+      color: white;
+      font-weight: bold;
+      margin-top: 18px;
+      cursor: pointer;
+    }
+    button:hover {
+      opacity: 0.95;
+    }
+    .result {
+      margin-top: 18px;
+      background: #0f1530;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #dce6ff;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .topbar {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .home-link {
+      color: #8eb2ff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <a class="home-link" href="dashboard.html">← Retounen Dashboard</a>
+    </div>
 
-async function loadOperators(){
-  const country = document.getElementById("country").value;
+    <div class="card">
+      <h1>Topup Airtime</h1>
+      <p class="sub">Recharge Digicel, Natcom, ak lòt operatè.</p>
 
-  const res = await fetch(`${API}/api/reloadly/operators/${country}`);
-  const data = await res.json();
+      <label for="countryCode">Peyi</label>
+      <select id="countryCode">
+        <option value="HT">Haiti</option>
+        <option value="US">USA</option>
+        <option value="DO">Dominican Republic</option>
+      </select>
 
-  const select = document.getElementById("operator");
-  select.innerHTML = "";
+      <label for="operatorId">Operatè</label>
+      <select id="operatorId">
+        <option value="">Chaje operatè yo...</option>
+      </select>
 
-  data.forEach(op => {
-    let opt = document.createElement("option");
-    opt.value = op.id;
-    opt.textContent = op.name;
-    select.appendChild(opt);
-  });
-}
+      <div class="row">
+        <div>
+          <label for="amount">Montan</label>
+          <input type="number" id="amount" placeholder="Eg: 5" />
+        </div>
+        <div>
+          <label for="useLocalAmount">Local amount?</label>
+          <select id="useLocalAmount">
+            <option value="false">No</option>
+            <option value="true">Yes</option>
+          </select>
+        </div>
+      </div>
 
-async function sendTopup(){
-  const body = {
-    operatorId: document.getElementById("operator").value,
-    amount: document.getElementById("amount").value,
-    phone: document.getElementById("phone").value,
-    country: document.getElementById("country").value
-  };
+      <label for="phone">Nimewo telefòn</label>
+      <input type="text" id="phone" placeholder="Eg: 36363927" />
 
-  const res = await fetch(`${API}/api/reloadly/topup`, {
-    method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify(body)
-  });
+      <button onclick="sendTopup()">Fè Topup</button>
 
-  const data = await res.json();
+      <div class="result" id="resultBox">Rezilta ap parèt isit...</div>
+    </div>
+  </div>
 
-  alert("Topup fini ✔️");
-  console.log(data);
-}
-</script>
+  <script>
+    const API_BASE = "https://fastpayhaiti.onrender.com";
 
-<select id="country" onchange="loadOperators()">
-  <option value="HT">Haiti</option>
-  <option value="US">USA</option>
-</select>
+    async function loadOperators() {
+      const countryCode = document.getElementById("countryCode").value;
+      const operatorSelect = document.getElementById("operatorId");
+      const resultBox = document.getElementById("resultBox");
 
-<select id="operator"></select>
+      operatorSelect.innerHTML = "<option value=''>Ap chaje operatè yo...</option>";
 
-<input id="phone" placeholder="Phone">
-<input id="amount" placeholder="Amount">
+      try {
+        const res = await fetch(`${API_BASE}/api/reloadly/operators/${countryCode}`);
+        const data = await res.json();
 
-<button onclick="sendTopup()">Topup</button>
+        operatorSelect.innerHTML = "";
+
+        if (!Array.isArray(data) || data.length === 0) {
+          operatorSelect.innerHTML = "<option value=''>Pa gen operatè jwenn</option>";
+          resultBox.innerText = JSON.stringify(data, null, 2);
+          return;
+        }
+
+        data.forEach(op => {
+          const option = document.createElement("option");
+          option.value = op.operatorId || op.id;
+          option.textContent = `${op.name} (${op.country?.isoName || countryCode})`;
+          operatorSelect.appendChild(option);
+        });
+
+        resultBox.innerText = "Operatè yo chaje avèk siksè.";
+      } catch (error) {
+        resultBox.innerText = "Erè pandan chajman operatè yo: " + error.message;
+      }
+    }
+
+    async function sendTopup() {
+      const operatorId = document.getElementById("operatorId").value;
+      const amount = document.getElementById("amount").value;
+      const countryCode = document.getElementById("countryCode").value;
+      const phone = document.getElementById("phone").value;
+      const useLocalAmount = document.getElementById("useLocalAmount").value === "true";
+      const resultBox = document.getElementById("resultBox");
+
+      if (!operatorId || !amount || !phone || !countryCode) {
+        resultBox.innerText = "Tanpri ranpli tout chan yo.";
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/api/reloadly/topup`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            operatorId,
+            amount,
+            useLocalAmount,
+            countryCode,
+            phone,
+            customIdentifier: "FP-" + Date.now()
+          })
+        });
+
+        const data = await res.json();
+        resultBox.innerText = JSON.stringify(data, null, 2);
+      } catch (error) {
+        resultBox.innerText = "Erè pandan topup la: " + error.message;
+      }
+    }
+
+    document.getElementById("countryCode").addEventListener("change", loadOperators);
+    loadOperators();
+  </script>
+</body>
+</html>
