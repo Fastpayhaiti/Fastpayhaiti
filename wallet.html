@@ -4,28 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Wallet - FastPay</title>
-  <link rel="stylesheet" href="/Fastpayhaiti/css/style.css" />
+  <link rel="stylesheet" href="/Fastpayhaiti/css/style.css">
 </head>
 <body>
-  <div id="menu-root"></div>
-
   <div class="page-content">
     <div class="header-card">
-      <h1>FastPay Wallet</h1>
-      <div class="sub">Gade balans ou epi jere lajan ou.</div>
+      <h1>Wallet</h1>
+      <div class="sub">Gade balans ou epi ajoute lajan.</div>
     </div>
 
     <div class="panel">
       <label>User ID</label>
-      <input id="userId" value="1" />
+      <input id="userId" value="1">
       <button onclick="loadWallet()">Chaje Wallet</button>
-      <div id="balanceBox" class="balance-box">$0.00</div>
+      <div id="balance" class="balance-box">$0.00</div>
       <div id="userInfo" class="sub"></div>
     </div>
 
     <div class="panel">
       <label>Ajoute lajan</label>
-      <input id="amount" placeholder="Eg: 20" />
+      <input id="amount" placeholder="Eg: 20">
       <button onclick="addMoney()">Ajoute Lajan</button>
     </div>
 
@@ -38,37 +36,30 @@
 
   <script src="/Fastpayhaiti/js/app.js"></script>
   <script>
-    injectLayout("wallet");
+    loadPageNav("wallet");
 
     async function loadWallet() {
-      const userId = document.getElementById("userId").value;
-      const res = await fetch(`https://fastpayhaiti.onrender.com/api/wallet/${userId}`);
+      const id = document.getElementById("userId").value;
+      const res = await fetch("https://fastpayhaiti.onrender.com/api/wallet/" + id);
       const data = await res.json();
 
-      document.getElementById("balanceBox").textContent =
-        `$${Number(data.balance || 0).toFixed(2)}`;
-
-      document.getElementById("userInfo").textContent =
-        `${data.name || ""} | ${data.email || ""}`;
-
-      document.getElementById("result").textContent =
-        JSON.stringify(data, null, 2);
+      document.getElementById("balance").innerText = "$" + Number(data.balance || 0).toFixed(2);
+      document.getElementById("userInfo").innerText = `${data.name || ""} | ${data.email || ""}`;
+      document.getElementById("result").innerText = JSON.stringify(data, null, 2);
     }
 
     async function addMoney() {
-      const userId = document.getElementById("userId").value;
+      const id = document.getElementById("userId").value;
       const amount = document.getElementById("amount").value;
 
-      const res = await fetch(`https://fastpayhaiti.onrender.com/api/deposit`, {
+      const res = await fetch("https://fastpayhaiti.onrender.com/api/deposit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, amount })
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ userId: id, amount })
       });
 
       const data = await res.json();
-      document.getElementById("result").textContent =
-        JSON.stringify(data, null, 2);
-
+      document.getElementById("result").innerText = JSON.stringify(data, null, 2);
       loadWallet();
     }
 
