@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ht">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -18,10 +18,10 @@
     h1{margin-bottom:10px;text-align:center}
     p.sub{color:#aab3c5;text-align:center;margin-bottom:18px}
     label{display:block;margin:12px 0 6px}
-    input,select,button{
+    input,button{
       width:100%;padding:14px;border:none;border-radius:12px;font-size:16px
     }
-    input,select{background:#1a2340;color:white}
+    input{background:#1a2340;color:white}
     button{background:#4f6bff;color:#fff;font-weight:bold;margin-top:14px}
     .result{
       background:#0f1530;
@@ -43,7 +43,7 @@
   <div class="container">
     <div class="card">
       <h1>FastPay Wallet</h1>
-      <p class="sub">Wallet + Topup + Deduction + Benefis</p>
+      <p class="sub">Wallet sèlman</p>
 
       <label>User ID</label>
       <input id="userId" value="1" />
@@ -58,27 +58,6 @@
       <label>Ajoute lajan nan wallet</label>
       <input id="addAmount" type="number" placeholder="Eg: 20" />
       <button onclick="addMoney()">Ajoute Lajan</button>
-    </div>
-
-    <div class="card">
-      <label>Peyi</label>
-      <select id="countryCode">
-        <option value="HT">Haiti</option>
-        <option value="US">USA</option>
-        <option value="DO">Dominican Republic</option>
-      </select>
-
-      <label>Operatè</label>
-      <select id="operatorId"></select>
-
-      <label>Montan</label>
-      <input id="amount" type="number" placeholder="Eg: 5" />
-
-      <label>Nimewo telefòn</label>
-      <input id="phone" placeholder="Eg: 36363927" />
-
-      <button onclick="loadOperators()">Chaje Operatè</button>
-      <button onclick="sendTopup()">Fè Topup + Deduction</button>
     </div>
 
     <div class="card">
@@ -108,7 +87,7 @@
       const userId = document.getElementById("userId").value;
       const amount = document.getElementById("addAmount").value;
 
-      const res = await fetch(`${API}/api/wallet/add`, {
+      const res = await fetch(`${API}/api/deposit`, {
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify({ userId, amount })
@@ -119,52 +98,7 @@
       loadWallet();
     }
 
-    async function loadOperators() {
-      const countryCode = document.getElementById("countryCode").value;
-      const res = await fetch(`${API}/api/reloadly/operators/${countryCode}`);
-      const data = await res.json();
-
-      const select = document.getElementById("operatorId");
-      select.innerHTML = "";
-
-      if (!Array.isArray(data)) {
-        document.getElementById("resultBox").innerText = JSON.stringify(data, null, 2);
-        return;
-      }
-
-      data.forEach(op => {
-        const option = document.createElement("option");
-        option.value = op.operatorId || op.id;
-        option.textContent = op.name;
-        select.appendChild(option);
-      });
-
-      document.getElementById("resultBox").innerText = "Operatè yo chaje ✅";
-    }
-
-    async function sendTopup() {
-      const body = {
-        userId: document.getElementById("userId").value,
-        operatorId: document.getElementById("operatorId").value,
-        amount: document.getElementById("amount").value,
-        phone: document.getElementById("phone").value,
-        countryCode: document.getElementById("countryCode").value,
-        useLocalAmount: false
-      };
-
-      const res = await fetch(`${API}/api/topup`, {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify(body)
-      });
-
-      const data = await res.json();
-      document.getElementById("resultBox").innerText = JSON.stringify(data, null, 2);
-      loadWallet();
-    }
-
     loadWallet();
-    loadOperators();
   </script>
 </body>
 </html>
