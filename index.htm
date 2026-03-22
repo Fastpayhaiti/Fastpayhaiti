@@ -4,46 +4,49 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FastPay Dashboard</title>
-  <link rel="stylesheet" href="/Fastpayhaiti/css/style.css">
+  <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
   <div class="page-content">
     <div class="header-card">
       <h1>FastPay Dashboard</h1>
-      <div class="sub">Wallet, topup, gift cards, streaming ak lòt sèvis ou yo nan yon sèl kote.</div>
+      <div class="sub">Byenveni sou FastPay.</div>
     </div>
 
-    <div class="grid">
-      <a class="quick-card" href="/Fastpayhaiti/wallet.html">
-        <div class="quick-title">👛 Wallet</div>
-        <div class="quick-sub">Gade balans ou epi ajoute lajan.</div>
-      </a>
+    <div class="panel">
+      <h2>Services</h2>
+      <div class="grid">
+        <a class="service-card" href="./topup.html">
+          <div class="service-title">📱 Topup</div>
+          <div class="service-text">Recharge airtime ak done.</div>
+        </a>
 
-      <a class="quick-card" href="/Fastpayhaiti/services.html">
-        <div class="quick-title">🛠️ Services</div>
-        <div class="quick-sub">Gade tout sèvis yo nan yon sèl paj.</div>
-      </a>
+        <a class="service-card" href="./giftcards.html">
+          <div class="service-title">🎁 Giftcard</div>
+          <div class="service-text">Achte gift cards fasil.</div>
+        </a>
 
-      <a class="quick-card" href="/Fastpayhaiti/transactions.html">
-        <div class="quick-title">🔄 Transactions</div>
-        <div class="quick-sub">Swiv tout tranzaksyon yo.</div>
-      </a>
+        <a class="service-card" href="./netflix.html">
+          <div class="service-title">🎬 Netflix</div>
+          <div class="service-text">Achte plan Netflix.</div>
+        </a>
 
-      <a class="quick-card" href="/Fastpayhaiti/cards.html">
-        <div class="quick-title">💳 Cards</div>
-        <div class="quick-sub">Jere kat yo fasil.</div>
-      </a>
-    </div>
+        <a class="service-card" href="./primevideo.html">
+          <div class="service-title">📺 Prime Video</div>
+          <div class="service-text">Abònman Prime Video.</div>
+        </a>
 
-    <div class="info-card">
-      <h2>Recent Notifications</h2>
-      <div class="sub">Pa gen notifikasyon pou kounya.</div>
+        <a class="service-card" href="./freefire.html">
+          <div class="service-title">🔥 FreeFire</div>
+          <div class="service-text">Recharge diamond FreeFire.</div>
+        </a>
+      </div>
     </div>
   </div>
 
   <div id="nav-root"></div>
 
-  <script src="/Fastpayhaiti/js/app.js"></script>
+  <script src="./js/app.js"></script>
   <script>
     loadPageNav("home");
   </script>
