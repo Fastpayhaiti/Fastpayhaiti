@@ -1,36 +1,16 @@
-<!DOCTYPE html>
-<html lang="ht">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FastPay <!DOCTYPE html>
-<html lang="ht">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FastPay Dashboard</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      font-family:Arial,sans-serif;
-    }
+function nav(active = "") {
+  return `
+    <div class="bottom-nav">
+      <a href="./dashboard.html" class="${active === "home" ? "active" : ""}">🏠<span>Home</span></a>
+      <a href="./transactions.html" class="${active === "transactions" ? "active" : ""}">🔄<span>Transactions</span></a>
+      <a href="./services.html" class="${active === "services" ? "active" : ""}">₿<span>Services</span></a>
+      <a href="./cards.html" class="${active === "cards" ? "active" : ""}">💳<span>Cards</span></a>
+      <a href="./wallet.html" class="${active === "wallet" ? "active" : ""}">👛<span>Wallet</span></a>
+    </div>
+  `;
+}
 
-    body{
-      background:#f3f4f6;
-      color:#111827;
-    }
-
-    .header{
-      background:#111111;
-      padding:18px 16px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      position:sticky;
-      top:0;
-      z-index:100;
-    }
-
+function loadPageNav(active = "") {
+  const navRoot = document.getElementById("nav-root");
+  if (navRoot) navRoot.innerHTML = nav(active);
+}
