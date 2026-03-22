@@ -2,34 +2,41 @@
 <html lang="ht">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FastPay Dashboard</title>
-
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
-
 <body>
-
   <div class="page-content">
+    <div class="topbar">
+      <button class="menu-toggle-btn">☰</button>
+      <div class="badge">A</div>
+    </div>
 
-    <!-- HEADER -->
     <div class="header-card">
-      <h1>FastPay</h1>
-      <div class="sub">Byenveni sou dashboard ou.</div>
+      <div class="sub">Hi,</div>
+      <h1>Anelus lucson! 👋</h1>
     </div>
 
-    <!-- BALANCE -->
+    <div class="panel" style="text-align:center;">
+      <h2>Obtenez votre première carte</h2>
+      <div class="sub">Créez votre première carte pour activer votre compte.</div>
+      <button style="margin-top:16px;">Commencer</button>
+    </div>
+
     <div class="panel">
-      <h2>Available balance</h2>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="sub">Available balance</div>
+        <div class="badge">Active</div>
+      </div>
       <div class="balance-box">0 HTG</div>
+      <div class="sub">aneluslucson@gmail.com</div>
     </div>
 
-    <!-- SERVICES DIRECT SOU HOME -->
     <div class="panel">
       <h2>Services</h2>
 
       <div class="grid">
-
         <a class="service-card" href="./topup.html">
           <div class="service-title">📱 Topup</div>
           <div class="service-text">Recharge airtime ak done.</div>
@@ -54,19 +61,15 @@
           <div class="service-title">🔥 FreeFire</div>
           <div class="service-text">Recharge diamond FreeFire.</div>
         </a>
-
       </div>
     </div>
-
   </div>
 
-  <!-- NAVBAR -->
   <div id="nav-root"></div>
 
   <script src="./js/app.js"></script>
   <script>
     loadPageNav("home");
   </script>
-
 </body>
 </html>
