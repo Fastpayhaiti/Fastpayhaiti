@@ -43,9 +43,14 @@
       const res = await fetch("https://fastpayhaiti.onrender.com/api/wallet/" + id);
       const data = await res.json();
 
-      document.getElementById("balance").innerText = "$" + Number(data.balance || 0).toFixed(2);
-      document.getElementById("userInfo").innerText = `${data.name || ""} | ${data.email || ""}`;
-      document.getElementById("result").innerText = JSON.stringify(data, null, 2);
+      document.getElementById("balance").innerText =
+        "$" + Number(data.balance || 0).toFixed(2);
+
+      document.getElementById("userInfo").innerText =
+        `${data.name || ""} | ${data.email || ""}`;
+
+      document.getElementById("result").innerText =
+        JSON.stringify(data, null, 2);
     }
 
     async function addMoney() {
