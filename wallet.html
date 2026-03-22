@@ -3,98 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FastPay Wallet</title>
-  <style>
-    *{box-sizing:border-box;font-family:Arial,sans-serif}
-    body{margin:0;background:#0b1020;color:#fff;padding:20px}
-    .container{max-width:550px;margin:auto}
-    .card{
-      background:#11182d;
-      border-radius:18px;
-      padding:20px;
-      margin-bottom:18px;
-      border:1px solid rgba(255,255,255,.08)
-    }
-    h1{margin-bottom:10px;text-align:center}
-    p.sub{color:#aab3c5;text-align:center;margin-bottom:18px}
-    label{display:block;margin:12px 0 6px}
-    input,button{
-      width:100%;padding:14px;border:none;border-radius:12px;font-size:16px
-    }
-    input{background:#1a2340;color:white}
-    button{background:#4f6bff;color:#fff;font-weight:bold;margin-top:14px}
-    .result{
-      background:#0f1530;
-      padding:14px;
-      border-radius:12px;
-      white-space:pre-wrap;
-      word-break:break-word;
-      font-size:14px;
-      color:#dce6ff
-    }
-    .balance{
-      font-size:32px;
-      font-weight:bold;
-      margin-top:8px
-    }
-  </style>
+  <title>Wallet - FastPay</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div class="container">
-    <div class="card">
-      <h1>FastPay Wallet</h1>
-      <p class="sub">Wallet sèlman</p>
+  <div id="menu-root"></div>
 
-      <label>User ID</label>
-      <input id="userId" value="1" />
-
-      <button onclick="loadWallet()">Chaje Wallet</button>
-
-      <div class="balance" id="balanceBox">$0.00</div>
-      <div id="userInfo"></div>
+  <div class="page-content">
+    <div class="header-card">
+      <h1>Wallet</h1>
+      <div class="sub">Gade balans ou epi ajoute lajan.</div>
     </div>
 
-    <div class="card">
-      <label>Ajoute lajan nan wallet</label>
-      <input id="addAmount" type="number" placeholder="Eg: 20" />
+    <div class="panel">
+      <label>User ID</label>
+      <input id="userId" value="1" />
+      <button onclick="loadWallet()">Chaje Wallet</button>
+      <div id="balanceBox" class="balance-box">$0.00</div>
+      <div id="userInfo" class="sub"></div>
+    </div>
+
+    <div class="panel">
+      <label>Ajoute lajan</label>
+      <input id="amount" placeholder="Eg: 20" />
       <button onclick="addMoney()">Ajoute Lajan</button>
     </div>
 
-    <div class="card">
-      <div class="result" id="resultBox">Rezilta ap parèt isit...</div>
+    <div class="panel">
+      <div id="result" class="result">Rezilta ap parèt isit...</div>
     </div>
   </div>
 
+  <div id="nav-root"></div>
+
+  <script src="js/app.js"></script>
   <script>
-    const API = "https://fastpayhaiti.onrender.com";
+    injectLayout("wallet");
 
     async function loadWallet() {
       const userId = document.getElementById("userId").value;
-      const res = await fetch(`${API}/api/wallet/${userId}`);
+      const res = await fetch(`${API_BASE}/api/wallet/${userId}`);
       const data = await res.json();
-
-      if (data.error) {
-        document.getElementById("resultBox").innerText = JSON.stringify(data, null, 2);
-        return;
-      }
-
-      document.getElementById("balanceBox").innerText = `$${Number(data.balance).toFixed(2)}`;
-      document.getElementById("userInfo").innerText = `${data.name} | ${data.email}`;
-      document.getElementById("resultBox").innerText = JSON.stringify(data, null, 2);
+      document.getElementById("balanceBox").textContent = `$${Number(data.balance || 0).toFixed(2)}`;
+      document.getElementById("userInfo").textContent = `${data.name || ""} | ${data.email || ""}`;
+      document.getElementById("result").textContent = JSON.stringify(data, null, 2);
     }
 
     async function addMoney() {
       const userId = document.getElementById("userId").value;
-      const amount = document.getElementById("addAmount").value;
-
-      const res = await fetch(`${API}/api/deposit`, {
+      const amount = document.getElementById("amount").value;
+      const res = await fetch(`${API_BASE}/api/deposit`, {
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify({ userId, amount })
       });
-
       const data = await res.json();
-      document.getElementById("resultBox").innerText = JSON.stringify(data, null, 2);
+      document.getElementById("result").textContent = JSON.stringify(data, null, 2);
       loadWallet();
     }
 
