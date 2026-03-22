@@ -1,29 +1,29 @@
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
   background: #050816;
   color: white;
 }
 
+/* Layout */
 .page-content {
-  padding: 20px;
+  padding: 20px 20px 90px;
 }
 
-.header-card {
+/* Cards */
+.header-card, .panel {
   background: #0b1020;
-  padding: 20px;
+  padding: 18px;
   border-radius: 15px;
   margin-bottom: 15px;
 }
 
-.panel {
-  background: #0f1530;
-  padding: 15px;
-  border-radius: 15px;
-  margin-bottom: 15px;
-}
-
-input {
+/* Inputs */
+input, select {
   width: 100%;
   padding: 12px;
   border-radius: 10px;
@@ -33,6 +33,7 @@ input {
   color: white;
 }
 
+/* Buttons */
 button {
   width: 100%;
   padding: 12px;
@@ -43,11 +44,67 @@ button {
   font-weight: bold;
 }
 
+/* Balance */
 .balance-box {
-  font-size: 28px;
+  font-size: 30px;
   margin-top: 10px;
 }
 
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.service-card {
+  background: #0f1530;
+  padding: 15px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: white;
+  text-align: center;
+}
+
+/* MENU */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 80%;
+  height: 100%;
+  background: #050816;
+  padding: 20px;
+  transition: 0.3s;
+  z-index: 9999;
+}
+
+.side-menu.open {
+  left: 0;
+}
+
+.menu-link {
+  display: block;
+  padding: 12px;
+  margin: 8px 0;
+  background: #0f1530;
+  border-radius: 10px;
+  color: white;
+  text-decoration: none;
+}
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+}
+
+.menu-overlay.show {
+  display: block;
+}
+
+/* NAV */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -56,4 +113,11 @@ button {
   display: flex;
   justify-content: space-around;
   padding: 10px;
+  border-top: 1px solid #111;
+}
+
+.bottom-nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 12px;
 }
