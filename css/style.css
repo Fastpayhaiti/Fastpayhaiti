@@ -120,88 +120,6 @@ button {
   font-size: 14px;
 }
 
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 18px;
-}
-
-.menu-toggle-btn,
-.close-btn {
-  background: transparent;
-  border: none;
-  color: white;
-  cursor: pointer;
-  width: auto;
-  padding: 0;
-}
-
-.menu-toggle-btn {
-  font-size: 28px;
-}
-
-.close-btn {
-  font-size: 26px;
-}
-
-.side-menu {
-  position: fixed;
-  top: 0;
-  left: -100%;
-  width: 85%;
-  max-width: 360px;
-  height: 100%;
-  background: #050816;
-  color: white;
-  z-index: 99999;
-  overflow-y: auto;
-  transition: left 0.3s ease;
-  padding: 20px;
-  border-right: 1px solid rgba(255,255,255,0.08);
-}
-
-.side-menu.open {
-  left: 0;
-}
-
-.menu-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  z-index: 99998;
-  display: none;
-}
-
-.menu-overlay.show {
-  display: block;
-}
-
-.menu-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 18px;
-}
-
-.menu-title {
-  font-size: 22px;
-  font-weight: 800;
-}
-
-.menu-link {
-  display: block;
-  text-decoration: none;
-  color: white;
-  background: linear-gradient(180deg, #101826, #0b121d);
-  border: 1px solid rgba(255,255,255,0.06);
-  padding: 16px 18px;
-  border-radius: 18px;
-  margin-bottom: 12px;
-  font-size: 18px;
-  font-weight: 700;
-}
-
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -230,4 +148,4 @@ button {
 .bottom-nav a.active {
   color: #4f6bff;
   font-weight: bold;
-  }
+}
