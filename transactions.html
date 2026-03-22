@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Transactions - FastPay</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="menu-root"></div>
+
+  <div class="page-content">
+    <div class="header-card">
+      <h1>Transactions</h1>
+      <div class="sub">Istwa tranzaksyon yo.</div>
+    </div>
+
+    <div class="panel">
+      <label>User ID</label>
+      <input id="userId" value="1" />
+      <button onclick="loadTransactions()">Chaje Transactions</button>
+    </div>
+
+    <div class="panel">
+      <div id="result" class="result">Rezilta ap parèt isit...</div>
+    </div>
+  </div>
+
+  <div id="nav-root"></div>
+
+  <script src="js/app.js"></script>
+  <script>
+    injectLayout("transactions");
+
+    async function loadTransactions() {
+      const userId = document.getElementById("userId").value;
+      const res = await fetch(`${API_BASE}/api/transactions/${userId}`);
+      const data = await res.json();
+      document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+    }
+
+    loadTransactions();
+  </script>
+</body>
+</html>
