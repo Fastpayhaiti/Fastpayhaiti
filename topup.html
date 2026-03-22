@@ -3,73 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Topup - FastPay</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <title>Topup</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-  <div id="menu-root"></div>
-
   <div class="page-content">
     <div class="header-card">
       <h1>Topup</h1>
-      <div class="sub">Recharge kliyan pa Airtime API.</div>
-    </div>
-
-    <div class="panel">
-      <label>User ID</label>
-      <input id="userId" value="1" />
-
-      <label>Country Code</label>
-      <select id="countryCode">
-        <option value="HT">HT</option>
-        <option value="US">US</option>
-        <option value="DO">DO</option>
-      </select>
-
-      <label>Operator ID</label>
-      <input id="operatorId" placeholder="Eg: 173" />
-
-      <label>Amount</label>
-      <input id="amount" placeholder="Eg: 5" />
-
-      <label>Phone</label>
-      <input id="phone" placeholder="Eg: 36363927" />
-
-      <button onclick="sendTopup()">Fè Topup</button>
-    </div>
-
-    <div class="panel">
-      <div id="result" class="result">Rezilta ap parèt isit...</div>
+      <div class="sub">Paj Topup la pare.</div>
     </div>
   </div>
 
   <div id="nav-root"></div>
-
-  <script src="js/app.js"></script>
-  <script>
-    injectLayout("services");
-
-    async function sendTopup() {
-      const body = {
-        userId: document.getElementById("userId").value,
-        operatorId: document.getElementById("operatorId").value,
-        amount: document.getElementById("amount").value,
-        phone: document.getElementById("phone").value,
-        countryCode: document.getElementById("countryCode").value
-      };
-
-      try {
-        const res = await fetch(`${API_BASE}/api/topup`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
-        });
-        const data = await res.json();
-        document.getElementById("result").textContent = JSON.stringify(data, null, 2);
-      } catch (error) {
-        document.getElementById("result").textContent = error.message;
-      }
-    }
-  </script>
+  <script src="/js/app.js"></script>
+  <script>loadPageNav("services");</script>
 </body>
 </html>
