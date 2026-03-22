@@ -1,43 +1,182 @@
-<script>
-const API = "https://fastpayhaiti.onrender.com";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FastPay Gift Cards</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body {
+      background: #0b1020;
+      color: white;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+    .sub {
+      text-align: center;
+      color: #aab3c5;
+      margin-bottom: 20px;
+    }
+    .topbar {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .home-link {
+      color: #8eb2ff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .card {
+      background: #11182d;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    .title {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+    .meta {
+      color: #c5d0e6;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+    button {
+      background: #4f6bff;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 14px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      opacity: 0.95;
+    }
+    .result {
+      margin-top: 18px;
+      background: #0f1530;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #dce6ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <a class="home-link" href="dashboard.html">← Retounen Dashboard</a>
+    </div>
 
-async function loadCards(){
-  const res = await fetch(`${API}/api/reloadly/giftcards`);
-  const data = await res.json();
+    <h1>Gift Cards</h1>
+    <p class="sub">Achte kat kado dijital sou FastPay.</p>
 
-  const list = document.getElementById("list");
-  list.innerHTML = "";
+    <div class="grid" id="giftcardsList"></div>
 
-  data.content.forEach(item => {
-    list.innerHTML += `
-      <div>
-        <b>${item.name}</b>
-        <button onclick="buy(${item.productId})">Buy</button>
-      </div>
-    `;
-  });
-}
+    <div class="result" id="resultBox">Rezilta ap parèt isit...</div>
+  </div>
 
-async function buy(id){
-  const email = prompt("Email:");
-  const name = prompt("Name:");
-  const amount = prompt("Amount:");
+  <script>
+    const API_BASE = "https://fastpayhaiti.onrender.com";
 
-  const res = await fetch(`${API}/api/reloadly/giftcards`, {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({
-      productId:id,
-      email,
-      name,
-      amount
-    })
-  });
+    async function loadGiftCards() {
+      const list = document.getElementById("giftcardsList");
+      const resultBox = document.getElementById("resultBox");
+      list.innerHTML = "<div class='card'>Ap chaje gift cards yo...</div>";
 
-  alert("Gift card achte ✔️");
-}
+      try {
+        const res = await fetch(`${API_BASE}/api/reloadly/giftcards/products`);
+        const data = await res.json();
 
-loadCards();
-</script>
+        const products = data.content || data || [];
 
-<div id="list"></div>
+        list.innerHTML = "";
+
+        if (!Array.isArray(products) || products.length === 0) {
+          list.innerHTML = "<div class='card'>Pa gen gift cards jwenn.</div>";
+          resultBox.innerText = JSON.stringify(data, null, 2);
+          return;
+        }
+
+        products.slice(0, 20).forEach(product => {
+          const div = document.createElement("div");
+          div.className = "card";
+
+          div.innerHTML = `
+            <div class="title">${product.productName || product.name || "Gift Card"}</div>
+            <div class="meta">
+              Product ID: ${product.productId || product.id || "N/A"}<br>
+              Country: ${product.country?.name || product.countryCode || "N/A"}<br>
+              Sender fee supported: ${product.senderFee ? "Yes" : "No"}
+            </div>
+            <button onclick="buyGiftCard('${product.productId || product.id}', '${(product.productName || product.name || "Gift Card").replace(/'/g, "\\'")}')">
+              Achte
+            </button>
+          `;
+
+          list.appendChild(div);
+        });
+
+        resultBox.innerText = "Gift cards yo chaje avèk siksè.";
+      } catch (error) {
+        resultBox.innerText = "Erè pandan chajman gift cards yo: " + error.message;
+      }
+    }
+
+    async function buyGiftCard(productId, productName) {
+      const recipientEmail = prompt(`Mete email moun k ap resevwa ${productName} la:`);
+      if (!recipientEmail) return;
+
+      const recipientName = prompt("Mete non moun k ap resevwa a:");
+      if (!recipientName) return;
+
+      const unitPrice = prompt("Mete montan gift card la:");
+      if (!unitPrice) return;
+
+      const resultBox = document.getElementById("resultBox");
+
+      try {
+        const res = await fetch(`${API_BASE}/api/reloadly/giftcards/order`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            productId,
+            quantity: 1,
+            unitPrice,
+            recipientEmail,
+            recipientName,
+            senderName: "FastPay Haiti",
+            customIdentifier: "GC-" + Date.now()
+          })
+        });
+
+        const data = await res.json();
+        resultBox.innerText = JSON.stringify(data, null, 2);
+      } catch (error) {
+        resultBox.innerText = "Erè pandan acha gift card la: " + error.message;
+      }
+    }
+
+    loadGiftCards();
+  </script>
+</body>
+</html>
