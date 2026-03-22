@@ -1,42 +1,27 @@
 const express = require("express");
-const fetch = require("node-fetch");
+const path = require("path");
 require("dotenv").config();
 
+const reloadlyRoutes = require("./routes/reloadly");
+
 const app = express();
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname));
 
+// Home
 app.get("/", (req, res) => {
-  res.send("FastPay API is running 🚀");
+  res.sendFile(path.join(__dirname, "index.htm"));
 });
 
+// Test Reloadly token
 app.get("/test-reloadly", async (req, res) => {
-  try {
-    const response = await fetch("https://auth.reloadly.com/oauth/token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        client_id: process.env.RELOADLY_CLIENT_ID,
-        client_secret: process.env.RELOADLY_CLIENT_SECRET,
-        grant_type: "client_credentials",
-        audience: "https://topups-sandbox.reloadly.com"
-      })
-    });
-
-    const data = await response.json();
-
-    res.status(response.ok ? 200 : 400).json({
-      http_ok: response.ok,
-      data
-    });
-  } catch (error) {
-    res.status(500).json({
-      http_ok: false,
-      error: error.message
-    });
-  }
+  res.redirect("/api/reloadly/test-airtime");
 });
+
+// Reloadly routes
+app.use("/api/reloadly", reloadlyRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
