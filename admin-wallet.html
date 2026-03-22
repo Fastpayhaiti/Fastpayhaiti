@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FastPay Admin Wallet</title>
+  <style>
+    *{box-sizing:border-box;font-family:Arial,sans-serif}
+    body{margin:0;background:#0b1020;color:#fff;padding:20px}
+    .container{max-width:900px;margin:auto}
+    .card{
+      background:#11182d;
+      border-radius:18px;
+      padding:20px;
+      margin-bottom:18px;
+      border:1px solid rgba(255,255,255,.08)
+    }
+    h1{text-align:center;margin-bottom:10px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .stat{
+      background:#1a2340;
+      border-radius:14px;
+      padding:16px
+    }
+    .stat h3{font-size:14px;color:#aab3c5;margin-bottom:8px}
+    .stat p{font-size:24px;font-weight:bold}
+    button{
+      padding:12px 14px;
+      border:none;
+      border-radius:12px;
+      background:#4f6bff;
+      color:#fff;
+      font-weight:bold;
+      cursor:pointer
+    }
+    .result{
+      background:#0f1530;
+      padding:14px;
+      border-radius:12px;
+      white-space:pre-wrap;
+      word-break:break-word;
+      font-size:14px;
+      color:#dce6ff
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>FastPay Admin Dashboard</h1>
+      <button onclick="loadAdmin()">Refresh</button>
+    </div>
+
+    <div class="grid">
+      <div class="stat">
+        <h3>Total Profit</h3>
+        <p id="profitBox">$0.00</p>
+      </div>
+      <div class="stat">
+        <h3>Total Revenue</h3>
+        <p id="revenueBox">$0.00</p>
+      </div>
+      <div class="stat">
+        <h3>Total Transactions</h3>
+        <p id="txBox">0</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="result" id="transactionsBox">Transactions ap parèt isit...</div>
+    </div>
+  </div>
+
+  <script>
+    const API = "https://fastpayhaiti.onrender.com";
+
+    async function loadAdmin() {
+      const profitRes = await fetch(`${API}/api/profit`);
+      const profitData = await profitRes.json();
+
+      document.getElementById("profitBox").innerText = `$${Number(profitData.totalProfit || 0).toFixed(2)}`;
+      document.getElementById("revenueBox").innerText = `$${Number(profitData.totalRevenue || 0).toFixed(2)}`;
+      document.getElementById("txBox").innerText = profitData.totalTransactions || 0;
+
+      const txRes = await fetch(`${API}/api/transactions`);
+      const txData = await txRes.json();
+
+      document.getElementById("transactionsBox").innerText = JSON.stringify(txData, null, 2);
+    }
+
+    loadAdmin();
+  </script>
+</body>
+</html>
