@@ -5,12 +5,12 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 
-// ✅ Route test
+// ✅ Home route
 app.get("/", (req, res) => {
   res.send("FastPay API is running 🚀");
 });
 
-// ✅ TEST RELOADLY TOKEN
+// ✅ TEST RELOADLY (VERSION FIX)
 app.get("/test-reloadly", async (req, res) => {
   try {
     const response = await fetch("https://auth.reloadly.com/oauth/token", {
@@ -22,7 +22,7 @@ app.get("/test-reloadly", async (req, res) => {
         client_id: process.env.RELOADLY_CLIENT_ID,
         client_secret: process.env.RELOADLY_CLIENT_SECRET,
         grant_type: "client_credentials",
-        audience: "https://topups.reloadly.com"
+        audience: "https://giftcards.reloadly.com"
       })
     });
 
@@ -41,7 +41,7 @@ app.get("/test-reloadly", async (req, res) => {
   }
 });
 
-// ✅ START SERVER
+// ✅ Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
