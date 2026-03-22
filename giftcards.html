@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ht">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FastPay Gift Cards</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    * { box-sizing: border-box; font-family: Arial, sans-serif; }
     body {
+      margin: 0;
       background: #0b1020;
       color: white;
       padding: 20px;
@@ -17,79 +18,47 @@
     }
     h1 {
       text-align: center;
-      font-size: 28px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
-    .sub {
+    p.sub {
       text-align: center;
       color: #aab3c5;
       margin-bottom: 20px;
     }
-    .topbar {
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .home-link {
-      color: #8eb2ff;
-      text-decoration: none;
-      font-size: 14px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
     .card {
       background: #11182d;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
     }
-    .title {
-      font-size: 20px;
-      margin-bottom: 6px;
-    }
-    .meta {
-      color: #c5d0e6;
-      font-size: 14px;
-      margin-bottom: 12px;
+    .result {
+      background: #0f1530;
+      border-radius: 12px;
+      padding: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 13px;
+      color: #dce6ff;
+      margin-top: 20px;
     }
     button {
+      padding: 12px 14px;
       background: #4f6bff;
       color: white;
       border: none;
       border-radius: 12px;
-      padding: 12px 14px;
-      cursor: pointer;
       font-weight: bold;
-    }
-    button:hover {
-      opacity: 0.95;
-    }
-    .result {
-      margin-top: 18px;
-      background: #0f1530;
-      border-radius: 12px;
-      padding: 14px;
-      font-size: 14px;
-      white-space: pre-wrap;
-      word-break: break-word;
-      color: #dce6ff;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="topbar">
-      <a class="home-link" href="dashboard.html">← Retounen Dashboard</a>
-    </div>
-
     <h1>Gift Cards</h1>
-    <p class="sub">Achte kat kado dijital sou FastPay.</p>
+    <p class="sub">Lis gift cards yo</p>
 
-    <div class="grid" id="giftcardsList"></div>
-
+    <div id="giftcardsList"></div>
     <div class="result" id="resultBox">Rezilta ap parèt isit...</div>
   </div>
 
@@ -104,13 +73,12 @@
       try {
         const res = await fetch(`${API_BASE}/api/reloadly/giftcards/products`);
         const data = await res.json();
-
         const products = data.content || data || [];
 
         list.innerHTML = "";
 
         if (!Array.isArray(products) || products.length === 0) {
-          list.innerHTML = "<div class='card'>Pa gen gift cards jwenn.</div>";
+          list.innerHTML = "<div class='card'>Pa gen gift card jwenn.</div>";
           resultBox.innerText = JSON.stringify(data, null, 2);
           return;
         }
@@ -118,39 +86,30 @@
         products.slice(0, 20).forEach(product => {
           const div = document.createElement("div");
           div.className = "card";
-
           div.innerHTML = `
-            <div class="title">${product.productName || product.name || "Gift Card"}</div>
-            <div class="meta">
-              Product ID: ${product.productId || product.id || "N/A"}<br>
-              Country: ${product.country?.name || product.countryCode || "N/A"}<br>
-              Sender fee supported: ${product.senderFee ? "Yes" : "No"}
-            </div>
-            <button onclick="buyGiftCard('${product.productId || product.id}', '${(product.productName || product.name || "Gift Card").replace(/'/g, "\\'")}')">
-              Achte
-            </button>
+            <h3>${product.productName || product.name || "Gift Card"}</h3>
+            <p>Product ID: ${product.productId || product.id || "N/A"}</p>
+            <p>Country: ${product.country?.name || product.countryCode || "N/A"}</p>
+            <button onclick="buyGiftCard('${product.productId || product.id}')">Achte</button>
           `;
-
           list.appendChild(div);
         });
 
-        resultBox.innerText = "Gift cards yo chaje avèk siksè.";
+        resultBox.innerText = "Gift cards yo chaje byen.";
       } catch (error) {
-        resultBox.innerText = "Erè pandan chajman gift cards yo: " + error.message;
+        resultBox.innerText = "Erè: " + error.message;
       }
     }
 
-    async function buyGiftCard(productId, productName) {
-      const recipientEmail = prompt(`Mete email moun k ap resevwa ${productName} la:`);
+    async function buyGiftCard(productId) {
+      const recipientEmail = prompt("Mete email kliyan an:");
       if (!recipientEmail) return;
 
-      const recipientName = prompt("Mete non moun k ap resevwa a:");
+      const recipientName = prompt("Mete non kliyan an:");
       if (!recipientName) return;
 
       const unitPrice = prompt("Mete montan gift card la:");
       if (!unitPrice) return;
-
-      const resultBox = document.getElementById("resultBox");
 
       try {
         const res = await fetch(`${API_BASE}/api/reloadly/giftcards/order`, {
@@ -170,9 +129,9 @@
         });
 
         const data = await res.json();
-        resultBox.innerText = JSON.stringify(data, null, 2);
+        document.getElementById("resultBox").innerText = JSON.stringify(data, null, 2);
       } catch (error) {
-        resultBox.innerText = "Erè pandan acha gift card la: " + error.message;
+        document.getElementById("resultBox").innerText = "Erè acha gift card: " + error.message;
       }
     }
 
