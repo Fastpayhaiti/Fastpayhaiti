@@ -1,33 +1,63 @@
-const express = require("express");
-const path = require("path");
-const fetch = require("node-fetch");
 require("dotenv").config();
+const express = require("express");
+const fetch = require("node-fetch");
+const { Pool } = require("pg");
 
 const app = express();
-
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname));
 
-/* =========================
-   DEMO DATA
-========================= */
-let users = [
-  {
-    id: 1,
-    name: "Luckystore",
-    email: "luckystore@example.com",
-    balance: 100.0 // USD demo wallet
+// ================= DATABASE =================
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
+
+// ================= TEST =================
+app.get("/", (req, res) => {
+  res.send("FastPay Backend Running 🚀");
+});
+
+// ================= REGISTER =================
+app.post("/api/register", async (req, res) => {
+  const { name, email } = req.body;
+
+  try {
+    const result = await pool.query(
+      "INSERT INTO users (name, email, balance) VALUES ($1, $2, 0) RETURNING *",
+      [name, email]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-];
+});
 
-let transactions = [];
+// ================= WALLET =================
+app.get("/api/wallet/:id", async (req, res) => {
+  const result = await pool.query("SELECT * FROM users WHERE id=$1", [req.params.id]);
+  res.json(result.rows[0]);
+});
 
-/* =========================
-   HELPERS
-========================= */
-async function getReloadlyToken() {
-  const response = await fetch("https://auth.reloadly.com/oauth/token", {
+// ================= DEPOSIT =================
+app.post("/api/deposit", async (req, res) => {
+  const { userId, amount } = req.body;
+
+  await pool.query(
+    "UPDATE users SET balance = balance + $1 WHERE id=$2",
+    [amount, userId]
+  );
+
+  await pool.query(
+    "INSERT INTO transactions (user_id, type, amount, final_amount, status) VALUES ($1,'deposit',$2,$2,'completed')",
+    [userId, amount]
+  );
+
+  res.json({ success: true });
+});
+
+// ================= RELOADLY TOKEN =================
+async function getToken() {
+  const res = await fetch("https://auth.reloadly.com/oauth/token", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -40,290 +70,108 @@ async function getReloadlyToken() {
     })
   });
 
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(JSON.stringify(data));
-  }
-
+  const data = await res.json();
   return data.access_token;
 }
 
-/* =========================
-   HOME
-========================= */
-app.get("/", (req, res) => {
-  if (require("fs").existsSync(path.join(__dirname, "index.htm"))) {
-    return res.sendFile(path.join(__dirname, "index.htm"));
-  }
-  res.send("FastPay API is running 🚀");
-});
-
-/* =========================
-   RELOADLY TEST ROUTES
-========================= */
-app.get("/test-reloadly", async (req, res) => {
-  try {
-    const token = await getReloadlyToken();
-    res.json({
-      http_ok: true,
-      access_token: token
-    });
-  } catch (error) {
-    res.status(400).json({
-      http_ok: false,
-      details: error.message
-    });
-  }
-});
-
+// ================= CHECK BALANCE =================
 app.get("/api/reloadly/balance", async (req, res) => {
-  try {
-    const token = await getReloadlyToken();
+  const token = await getToken();
 
-    const response = await fetch("https://topups-sandbox.reloadly.com/accounts/balance", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/com.reloadly.topups-v1+json"
-      }
-    });
-
-    const data = await response.json();
-    res.status(response.ok ? 200 : 400).json(data);
-  } catch (error) {
-    res.status(500).json({
-      error: "Balance error ❌",
-      details: error.message
-    });
-  }
-});
-
-app.get("/api/reloadly/operators/:countryCode", async (req, res) => {
-  try {
-    const token = await getReloadlyToken();
-    const { countryCode } = req.params;
-
-    const response = await fetch(
-      `https://topups-sandbox.reloadly.com/operators/countries/${countryCode}?includeBundles=true&includeData=true&includePin=true`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/com.reloadly.topups-v1+json"
-        }
-      }
-    );
-
-    const data = await response.json();
-    res.status(response.ok ? 200 : 400).json(data);
-  } catch (error) {
-    res.status(500).json({
-      error: "Operators error ❌",
-      details: error.message
-    });
-  }
-});
-
-/* =========================
-   WALLET ROUTES
-========================= */
-app.get("/api/wallet/:userId", (req, res) => {
-  const user = users.find(u => u.id == req.params.userId);
-
-  if (!user) {
-    return res.status(404).json({ error: "User not found" });
-  }
-
-  res.json({
-    userId: user.id,
-    name: user.name,
-    email: user.email,
-    balance: user.balance
+  const response = await fetch("https://topups-sandbox.reloadly.com/accounts/balance", {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   });
+
+  const data = await response.json();
+  res.json(data);
 });
 
-app.post("/api/wallet/add", (req, res) => {
-  const { userId, amount } = req.body;
-  const user = users.find(u => u.id == userId);
+// ================= TOPUP =================
+app.post("/api/topup", async (req, res) => {
+  const { userId, operatorId, amount, phone, countryCode } = req.body;
 
-  if (!user) {
-    return res.status(404).json({ error: "User not found" });
+  const fee = 0.5;
+  const total = amount + fee;
+
+  const user = await pool.query("SELECT * FROM users WHERE id=$1", [userId]);
+
+  if (!user.rows.length) {
+    return res.json({ error: "User not found" });
   }
 
-  const amt = Number(amount);
-  if (!amt || amt <= 0) {
-    return res.status(400).json({ error: "Invalid amount" });
+  if (user.rows[0].balance < total) {
+    return res.json({ error: "Insufficient balance" });
   }
 
-  user.balance += amt;
+  const token = await getToken();
 
-  transactions.push({
-    id: Date.now(),
-    type: "deposit",
-    userId: user.id,
-    amount: amt,
-    fee: 0,
-    profit: 0,
-    finalCharged: amt,
-    status: "completed",
-    date: new Date().toISOString()
+  const response = await fetch("https://topups-sandbox.reloadly.com/topups", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+      Accept: "application/com.reloadly.topups-v1+json"
+    },
+    body: JSON.stringify({
+      operatorId,
+      amount,
+      useLocalAmount: false,
+      recipientPhone: {
+        countryCode,
+        number: phone
+      }
+    })
   });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    return res.json(data);
+  }
+
+  // Deduct money
+  await pool.query(
+    "UPDATE users SET balance = balance - $1 WHERE id=$2",
+    [total, userId]
+  );
+
+  // Save transaction
+  await pool.query(
+    `INSERT INTO transactions 
+    (user_id, type, amount, fee, profit, final_amount, phone, status)
+    VALUES ($1,'topup',$2,$3,$3,$4,$5,'completed')`,
+    [userId, amount, fee, total, phone]
+  );
 
   res.json({
     success: true,
-    message: "Wallet rechaje avèk siksè ✅",
-    newBalance: user.balance
+    message: "Topup successful",
+    charged: total,
+    profit: fee
   });
 });
 
-/* =========================
-   TOPUP + DEDUCTION + PROFIT
-========================= */
-app.post("/api/topup", async (req, res) => {
-  try {
-    const {
-      userId,
-      operatorId,
-      amount,
-      phone,
-      countryCode,
-      useLocalAmount
-    } = req.body;
+// ================= TRANSACTIONS =================
+app.get("/api/transactions/:userId", async (req, res) => {
+  const result = await pool.query(
+    "SELECT * FROM transactions WHERE user_id=$1 ORDER BY id DESC",
+    [req.params.userId]
+  );
 
-    const user = users.find(u => u.id == userId);
-
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    const amt = Number(amount);
-    if (!operatorId || !amt || !phone || !countryCode) {
-      return res.status(400).json({ error: "Tanpri ranpli tout chan yo." });
-    }
-
-    // BENEFIS OU
-    const fee = 0.5; // $0.50 sou chak topup
-    const total = amt + fee;
-
-    if (user.balance < total) {
-      return res.status(400).json({
-        error: "Balans pa sifi.",
-        currentBalance: user.balance,
-        needed: total
-      });
-    }
-
-    // pran token reloadly
-    const token = await getReloadlyToken();
-
-    // voye topup sandbox
-    const response = await fetch("https://topups-sandbox.reloadly.com/topups", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/com.reloadly.topups-v1+json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        operatorId: Number(operatorId),
-        amount: amt,
-        useLocalAmount: Boolean(useLocalAmount),
-        customIdentifier: `FP-${Date.now()}`,
-        recipientPhone: {
-          countryCode,
-          number: phone
-        }
-      })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      return res.status(400).json({
-        success: false,
-        error: "Topup la pa pase.",
-        details: data
-      });
-    }
-
-    // retire lajan sou wallet user la
-    user.balance -= total;
-
-    // anrejistre tranzaksyon
-    transactions.push({
-      id: Date.now(),
-      type: "topup",
-      userId: user.id,
-      operatorId: Number(operatorId),
-      phone,
-      countryCode,
-      amount: amt,
-      fee,
-      profit: fee,
-      finalCharged: total,
-      reloadlyResponse: data,
-      status: "completed",
-      date: new Date().toISOString()
-    });
-
-    res.json({
-      success: true,
-      message: "Topup fèt avèk siksè ✅",
-      walletBefore: Number((user.balance + total).toFixed(2)),
-      amount: amt,
-      fee,
-      totalCharged: total,
-      newBalance: Number(user.balance.toFixed(2)),
-      topupResponse: data
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: "Topup error ❌",
-      details: error.message
-    });
-  }
+  res.json(result.rows);
 });
 
-/* =========================
-   PROFIT + TRANSACTIONS
-========================= */
-app.get("/api/transactions", (req, res) => {
-  res.json(transactions);
+// ================= PROFIT =================
+app.get("/api/profit", async (req, res) => {
+  const result = await pool.query(
+    "SELECT SUM(profit) as total_profit FROM transactions"
+  );
+
+  res.json(result.rows[0]);
 });
 
-app.get("/api/transactions/:userId", (req, res) => {
-  const userTx = transactions.filter(t => t.userId == req.params.userId);
-  res.json(userTx);
-});
-
-app.get("/api/profit", (req, res) => {
-  const totalProfit = transactions.reduce((sum, t) => sum + Number(t.profit || 0), 0);
-  const totalRevenue = transactions.reduce((sum, t) => sum + Number(t.finalCharged || 0), 0);
-
-  res.json({
-    totalProfit: Number(totalProfit.toFixed(2)),
-    totalRevenue: Number(totalRevenue.toFixed(2)),
-    totalTransactions: transactions.length
-  });
-});
-
-/* =========================
-   DEMO PAGES
-========================= */
-app.get("/wallet.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "wallet.html"));
-});
-
-app.get("/admin-wallet.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "admin-wallet.html"));
-});
-
-/* =========================
-   START SERVER
-========================= */
+// ================= SERVER =================
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log("Server running 🚀"));
