@@ -9,94 +9,167 @@ body {
   color: white;
 }
 
-/* Layout */
 .page-content {
-  padding: 20px 20px 90px;
+  padding: 20px 20px 95px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-/* Cards */
-.header-card, .panel {
-  background: #0b1020;
+.header-card,
+.panel,
+.service-card,
+.quick-card,
+.info-card {
+  background: linear-gradient(180deg, #0b1020, #090d18);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.22);
+}
+
+.header-card,
+.panel,
+.info-card {
   padding: 18px;
-  border-radius: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
-/* Inputs */
-input, select {
+h1, h2, h3 {
+  margin-top: 0;
+}
+
+.sub {
+  color: #aeb9d6;
+  line-height: 1.45;
+}
+
+input, select, button {
   width: 100%;
-  padding: 12px;
-  border-radius: 10px;
+  padding: 14px;
   border: none;
-  margin: 10px 0;
+  border-radius: 12px;
+  font-size: 16px;
+}
+
+input, select {
   background: #1a2340;
   color: white;
+  outline: none;
+  margin: 10px 0;
 }
 
-/* Buttons */
 button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
   background: #4f6bff;
   color: white;
   font-weight: bold;
+  cursor: pointer;
 }
 
-/* Balance */
 .balance-box {
-  font-size: 30px;
+  font-size: 34px;
+  font-weight: 800;
   margin-top: 10px;
 }
 
-/* Grid */
+.result {
+  background: #0f1530;
+  border-radius: 12px;
+  padding: 14px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 13px;
+  color: #dce6ff;
+}
+
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 14px;
 }
 
-.service-card {
-  background: #0f1530;
-  padding: 15px;
-  border-radius: 12px;
+.service-card,
+.quick-card {
+  display: block;
   text-decoration: none;
   color: white;
-  text-align: center;
+  padding: 18px;
+  min-height: 120px;
 }
 
-/* MENU */
+.quick-title,
+.service-title {
+  font-size: 24px;
+  font-weight: 800;
+  margin-top: 12px;
+}
+
+.quick-sub,
+.service-text {
+  color: #b8c4e0;
+  font-size: 14px;
+  line-height: 1.4;
+  margin-top: 8px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(56, 189, 98, 0.18);
+  color: #7CFF9B;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.menu-toggle-btn,
+.close-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  width: auto;
+  padding: 0;
+}
+
+.menu-toggle-btn {
+  font-size: 28px;
+}
+
+.close-btn {
+  font-size: 26px;
+}
+
 .side-menu {
   position: fixed;
   top: 0;
   left: -100%;
-  width: 80%;
+  width: 85%;
+  max-width: 360px;
   height: 100%;
   background: #050816;
+  color: white;
+  z-index: 99999;
+  overflow-y: auto;
+  transition: left 0.3s ease;
   padding: 20px;
-  transition: 0.3s;
-  z-index: 9999;
+  border-right: 1px solid rgba(255,255,255,0.08);
 }
 
 .side-menu.open {
   left: 0;
 }
 
-.menu-link {
-  display: block;
-  padding: 12px;
-  margin: 8px 0;
-  background: #0f1530;
-  border-radius: 10px;
-  color: white;
-  text-decoration: none;
-}
-
 .menu-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.45);
+  z-index: 99998;
   display: none;
 }
 
@@ -104,20 +177,57 @@ button {
   display: block;
 }
 
-/* NAV */
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.menu-title {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.menu-link {
+  display: block;
+  text-decoration: none;
+  color: white;
+  background: linear-gradient(180deg, #101826, #0b121d);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 16px 18px;
+  border-radius: 18px;
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
 .bottom-nav {
   position: fixed;
   bottom: 0;
+  left: 0;
   width: 100%;
   background: #050816;
+  border-top: 1px solid rgba(255,255,255,0.08);
   display: flex;
   justify-content: space-around;
-  padding: 10px;
-  border-top: 1px solid #111;
+  align-items: center;
+  padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
+  z-index: 9999;
 }
 
 .bottom-nav a {
-  color: white;
   text-decoration: none;
+  color: #a7b0c5;
   font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 58px;
 }
+
+.bottom-nav a.active {
+  color: #4f6bff;
+  font-weight: bold;
+  }
