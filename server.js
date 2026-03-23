@@ -15,6 +15,17 @@ const RELOADLY_CLIENT_SECRET = process.env.RELOADLY_CLIENT_SECRET;
 const RELOADLY_ENV = process.env.RELOADLY_ENV || "sandbox";
 
 const RELOADLY_AUTH_URL = "https://auth.reloadly.com/oauth/token";
+
+const RELOADLY_TOPUP_AUDIENCE =
+  RELOADLY_ENV === "live"
+    ? "https://topups.reloadly.com"
+    : "https://topups-sandbox.reloadly.com";
+
+const RELOADLY_GIFTCARD_AUDIENCE =
+  RELOADLY_ENV === "live"
+    ? "https://giftcards.reloadly.com"
+    : "https://giftcards-sandbox.reloadly.com";
+
 const RELOADLY_TOPUP_BASE =
   RELOADLY_ENV === "live"
     ? "https://topups.reloadly.com"
@@ -49,7 +60,7 @@ async function getReloadlyToken(audience) {
 }
 
 async function deliverTopup(order) {
-  const token = await getReloadlyToken("https://topups.reloadly.com");
+  const token = await getReloadlyToken(RELOADLY_TOPUP_AUDIENCE);
   const customer = JSON.parse(order.customer_data || "{}");
 
   const payload = {
@@ -86,7 +97,7 @@ async function deliverTopup(order) {
 }
 
 async function deliverGiftcard(order) {
-  const token = await getReloadlyToken("https://giftcards.reloadly.com");
+  const token = await getReloadlyToken(RELOADLY_GIFTCARD_AUDIENCE);
   const customer = JSON.parse(order.customer_data || "{}");
 
   const payload = {
@@ -132,7 +143,7 @@ async function deliverService(order) {
     return await deliverTopup(order);
   }
 
-  if (service === "giftcard") {
+  if (service === "giftcard" || service === "giftcards") {
     return await deliverGiftcard(order);
   }
 
@@ -157,12 +168,14 @@ app.get("/", (req, res) => {
 // TEST RELOADLY
 app.get("/test-reloadly", async (req, res) => {
   try {
-    const token = await getReloadlyToken("https://topups.reloadly.com");
+    const token = await getReloadlyToken(RELOADLY_TOPUP_AUDIENCE);
 
     res.json({
       success: true,
       message: "Reloadly token generated successfully",
-      token: token ? "OK" : "NO TOKEN"
+      token: token ? "OK" : "NO TOKEN",
+      env: RELOADLY_ENV,
+      audience: RELOADLY_TOPUP_AUDIENCE
     });
   } catch (err) {
     res.status(500).json({
