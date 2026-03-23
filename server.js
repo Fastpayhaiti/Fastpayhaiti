@@ -6,7 +6,6 @@ const { Pool } = require("pg");
 const app = express();
 app.use(express.json());
 
-// DATABASE
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
@@ -17,62 +16,17 @@ app.get("/", (req, res) => {
   res.send("FastPay Backend Running 🚀");
 });
 
-// REGISTER
-app.post("/api/register", async (req, res) => {
-  const { name, email } = req.body;
-
-  try {
-    const result = await pool.query(
-      "INSERT INTO users (name, email, balance) VALUES ($1, $2, 0) RETURNING *",
-      [name, email]
-    );
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
 // WALLET
 app.get("/api/wallet/:id", async (req, res) => {
   try {
-    const result = await pool.query(
-      "SELECT * FROM users WHERE id=$1",
-      [req.params.id]
-    );
+    const result = await pool.query("SELECT * FROM users WHERE id=$1", [req.params.id]);
     res.json(result.rows[0] || { error: "User not found" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// TEST DEPOSIT
-app.get("/api/test-deposit", async (req, res) => {
-  try {
-    const amount = 50;
-
-    await pool.query(
-      "UPDATE users SET balance = balance + $1 WHERE id = $2",
-      [amount, 1]
-    );
-
-    await pool.query(
-      `INSERT INTO transactions
-      (user_id, type, amount, final_amount, status)
-      VALUES ($1, 'deposit', $2, $2, 'completed')`,
-      [1, amount]
-    );
-
-    res.json({
-      success: true,
-      message: "Deposit added",
-      amount
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// NORMAL DEPOSIT
+// DEPOSIT
 app.post("/api/deposit", async (req, res) => {
   try {
     const { userId, amount } = req.body;
@@ -89,119 +43,156 @@ app.post("/api/deposit", async (req, res) => {
       [userId, amount]
     );
 
-    res.json({ success: true });
+    res.json({ success: true, message: "Deposit added" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// RELOADLY TOKEN
-async function getToken() {
-  const res = await fetch("https://auth.reloadly.com/oauth/token", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      client_id: process.env.RELOADLY_CLIENT_ID,
-      client_secret: process.env.RELOADLY_CLIENT_SECRET,
-      grant_type: "client_credentials",
-      audience: "https://topups-sandbox.reloadly.com"
-    })
-  });
-
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(JSON.stringify(data));
-  }
-
-  return data.access_token;
-}
-
-// RELOADLY BALANCE
-app.get("/api/reloadly/balance", async (req, res) => {
+// CREATE CHECKOUT ORDER
+app.post("/api/checkout/create", async (req, res) => {
   try {
-    const token = await getToken();
+    const { userId, service, productName, amount, customerData } = req.body;
 
-    const response = await fetch("https://topups-sandbox.reloadly.com/accounts/balance", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    const data = await response.json();
-    res.json(data);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// TOPUP
-app.post("/api/topup", async (req, res) => {
-  try {
-    const { userId, operatorId, amount, phone, countryCode } = req.body;
-
-    const fee = 0.5;
-    const total = Number(amount) + fee;
-
-    const user = await pool.query(
-      "SELECT * FROM users WHERE id=$1",
-      [userId]
-    );
-
-    if (!user.rows.length) {
-      return res.json({ error: "User not found" });
+    if (!userId || !service || !productName || !amount) {
+      return res.status(400).json({ error: "Missing fields" });
     }
 
-    if (Number(user.rows[0].balance) < total) {
-      return res.json({ error: "Insufficient balance" });
+    const userResult = await pool.query("SELECT * FROM users WHERE id=$1", [userId]);
+    const user = userResult.rows[0];
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
 
-    const token = await getToken();
-
-    const response = await fetch("https://topups-sandbox.reloadly.com/topups", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/com.reloadly.topups-v1+json"
-      },
-      body: JSON.stringify({
-        operatorId: Number(operatorId),
-        amount: Number(amount),
-        useLocalAmount: false,
-        recipientPhone: {
-          countryCode,
-          number: phone
-        }
-      })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      return res.json(data);
-    }
-
-    await pool.query(
-      "UPDATE users SET balance = balance - $1 WHERE id=$2",
-      [total, userId]
-    );
-
-    await pool.query(
-      `INSERT INTO transactions
-      (user_id, type, amount, fee, profit, final_amount, phone, status)
-      VALUES ($1,'topup',$2,$3,$3,$4,$5,'completed')`,
-      [userId, amount, fee, total, phone]
+    const orderResult = await pool.query(
+      `INSERT INTO orders (user_id, service, product_name, amount, status, customer_data)
+       VALUES ($1, $2, $3, $4, 'pending', $5)
+       RETURNING *`,
+      [userId, service, productName, amount, JSON.stringify(customerData || {})]
     );
 
     res.json({
       success: true,
-      message: "Topup successful",
-      charged: total,
-      profit: fee
+      order: orderResult.rows[0]
     });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PAY ORDER WITH WALLET
+app.post("/api/checkout/pay", async (req, res) => {
+  try {
+    const { orderId } = req.body;
+
+    if (!orderId) {
+      return res.status(400).json({ error: "orderId required" });
+    }
+
+    const orderResult = await pool.query("SELECT * FROM orders WHERE id=$1", [orderId]);
+    const order = orderResult.rows[0];
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    if (order.status !== "pending") {
+      return res.status(400).json({ error: "Order already processed" });
+    }
+
+    const userResult = await pool.query("SELECT * FROM users WHERE id=$1", [order.user_id]);
+    const user = userResult.rows[0];
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const amount = Number(order.amount);
+
+    if (Number(user.balance) < amount) {
+      return res.status(400).json({ error: "Insufficient balance" });
+    }
+
+    // retire lajan nan wallet
+    await pool.query(
+      "UPDATE users SET balance = balance - $1 WHERE id=$2",
+      [amount, order.user_id]
+    );
+
+    // make order paid first
+    await pool.query(
+      "UPDATE orders SET status='paid' WHERE id=$1",
+      [orderId]
+    );
+
+    // log transaction
+    await pool.query(
+      `INSERT INTO transactions
+      (user_id, type, amount, final_amount, status)
+      VALUES ($1, 'payment', $2, $2, 'completed')`,
+      [order.user_id, amount]
+    );
+
+    res.json({
+      success: true,
+      message: "Order paid successfully",
+      orderId: orderId
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// AUTO DELIVERY SIMULATION
+app.post("/api/orders/deliver", async (req, res) => {
+  try {
+    const { orderId } = req.body;
+
+    const orderResult = await pool.query("SELECT * FROM orders WHERE id=$1", [orderId]);
+    const order = orderResult.rows[0];
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    if (order.status !== "paid") {
+      return res.status(400).json({ error: "Order not ready for delivery" });
+    }
+
+    // simulation delivery
+    let providerReference = "FP-" + Date.now();
+
+    await pool.query(
+      "UPDATE orders SET status='delivered', provider_reference=$1 WHERE id=$2",
+      [providerReference, orderId]
+    );
+
+    await pool.query(
+      `INSERT INTO transactions
+      (user_id, type, amount, final_amount, status)
+      VALUES ($1, 'delivery', $2, $2, 'completed')`,
+      [order.user_id, order.amount]
+    );
+
+    res.json({
+      success: true,
+      message: "Service delivered successfully",
+      providerReference
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET ORDERS BY USER
+app.get("/api/orders/:userId", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM orders WHERE user_id=$1 ORDER BY id DESC",
+      [req.params.userId]
+    );
+    res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -220,18 +211,5 @@ app.get("/api/transactions/:userId", async (req, res) => {
   }
 });
 
-// PROFIT
-app.get("/api/profit", async (req, res) => {
-  try {
-    const result = await pool.query(
-      "SELECT COALESCE(SUM(profit),0) as total_profit FROM transactions"
-    );
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// SERVER
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Server running 🚀"));
