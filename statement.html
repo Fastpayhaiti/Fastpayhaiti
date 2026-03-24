@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FastPay Premium Statement</title>
+  <title>Statement - FastPay</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     *{
@@ -23,8 +23,7 @@
       max-width:430px;
       margin:auto;
       min-height:100vh;
-      padding:18px 18px 110px;
-      position:relative;
+      padding:18px 18px 120px;
       background:
         radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
         radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
@@ -38,249 +37,202 @@
       margin-bottom:18px;
     }
 
-    .left-top{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .back-btn{
-      width:48px;
-      height:48px;
-      border:none;
+    .back-btn,.avatar{
+      width:46px;
+      height:46px;
       border-radius:14px;
-      background:rgba(255,255,255,0.06);
-      color:#ffffff;
-      font-size:22px;
-      cursor:pointer;
       display:flex;
       align-items:center;
       justify-content:center;
+      background:rgba(255,255,255,0.06);
+      color:#ffffff;
       text-decoration:none;
+      font-size:18px;
+    }
+
+    .card{
+      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:22px;
+      padding:18px;
+      margin-bottom:18px;
       backdrop-filter:blur(10px);
     }
 
-    .page-title{
-      font-size:24px;
+    .title{
+      font-size:30px;
       font-weight:800;
+      margin-bottom:10px;
     }
 
-    .profile-avatar{
-      width:48px;
-      height:48px;
-      border-radius:50%;
-      background:rgba(255,255,255,0.08);
-      color:#ffffff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:22px;
-      font-weight:700;
-    }
-
-    .hero-card{
-      background:linear-gradient(135deg,#0d1117,#1c2330);
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:28px;
-      padding:22px;
-      margin-bottom:22px;
-      box-shadow:0 22px 45px rgba(0,0,0,0.35);
-      overflow:hidden;
-      position:relative;
-    }
-
-    .hero-card::before{
-      content:"";
-      position:absolute;
-      width:180px;
-      height:180px;
-      border-radius:50%;
-      background:rgba(59,130,246,0.10);
-      top:-40px;
-      right:-40px;
-    }
-
-    .hero-top{
-      position:relative;
-      z-index:2;
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:12px;
-      margin-bottom:14px;
-    }
-
-    .hero-label{
-      color:#9ca3af;
-      font-size:14px;
-      margin-bottom:6px;
-    }
-
-    .hero-balance{
-      font-size:36px;
-      font-weight:800;
-      line-height:1.1;
-    }
-
-    .hero-sub{
-      margin-top:10px;
+    .sub{
       color:#8b93a7;
       font-size:14px;
-      word-break:break-word;
-      position:relative;
-      z-index:2;
+      line-height:1.5;
     }
 
-    .hero-badge{
-      padding:8px 14px;
-      border-radius:999px;
-      background:rgba(47,60,255,0.18);
-      color:#b9c2ff;
-      font-size:12px;
-      font-weight:700;
-      white-space:nowrap;
-    }
-
-    .stats-grid{
-      margin-top:18px;
+    .filters{
       display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:12px;
-      position:relative;
-      z-index:2;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:14px;
     }
 
-    .mini-box{
-      background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.05);
+    .input,.select{
+      width:100%;
+      padding:14px;
+      border-radius:16px;
+      background:#11172a;
+      border:1px solid rgba(255,255,255,0.08);
+      color:#fff;
+      outline:none;
+    }
+
+    .primary-btn,.secondary-btn{
+      display:block;
+      width:100%;
+      border:none;
+      border-radius:18px;
+      font-size:16px;
+      font-weight:700;
+      padding:15px;
+      cursor:pointer;
+      text-align:center;
+      margin-top:12px;
+    }
+
+    .primary-btn{
+      background:#2f3cff;
+      color:#fff;
+      box-shadow:0 14px 30px rgba(47,60,255,0.35);
+    }
+
+    .secondary-btn{
+      background:#11172a;
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .summary-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .summary-box{
+      background:#11172a;
+      border:1px solid rgba(255,255,255,0.08);
       border-radius:18px;
       padding:14px;
     }
 
-    .mini-label{
+    .summary-label{
       color:#8b93a7;
-      font-size:12px;
-      margin-bottom:6px;
+      font-size:13px;
+      margin-bottom:8px;
     }
 
-    .mini-value{
-      font-size:20px;
-      font-weight:800;
-    }
-
-    .section{
-      margin-bottom:24px;
-    }
-
-    .section-title{
+    .summary-value{
       font-size:22px;
       font-weight:800;
-      margin-bottom:14px;
-    }
-
-    .filter-row{
-      display:flex;
-      gap:10px;
-      overflow-x:auto;
-      padding-bottom:4px;
-      margin-bottom:14px;
-    }
-
-    .filter-row::-webkit-scrollbar{
-      display:none;
-    }
-
-    .filter-btn{
-      border:none;
-      border-radius:999px;
-      padding:10px 14px;
-      background:rgba(255,255,255,0.06);
-      color:#cdd4e3;
-      font-size:13px;
-      font-weight:700;
-      white-space:nowrap;
-      cursor:pointer;
-      border:1px solid rgba(255,255,255,0.08);
-    }
-
-    .filter-btn.active{
-      background:#2f3cff;
-      color:#ffffff;
-      border-color:transparent;
     }
 
     .list-box{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .tx-card{
       background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
       border:1px solid rgba(255,255,255,0.08);
-      border-radius:22px;
-      padding:10px 16px;
+      border-radius:20px;
+      padding:16px;
     }
 
-    .list-item{
-      padding:14px 0;
-      border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-
-    .list-item:last-child{
-      border-bottom:none;
-    }
-
-    .item-top{
+    .tx-top{
       display:flex;
       justify-content:space-between;
-      gap:12px;
       align-items:flex-start;
+      gap:12px;
+      margin-bottom:10px;
     }
 
-    .item-title{
-      font-size:15px;
-      font-weight:700;
-      margin-bottom:5px;
+    .tx-title{
+      font-size:16px;
+      font-weight:800;
+      margin-bottom:4px;
     }
 
-    .item-sub{
+    .tx-sub{
       color:#8b93a7;
       font-size:13px;
       line-height:1.45;
     }
 
-    .item-amount{
-      font-size:15px;
+    .tx-amount{
+      font-size:16px;
       font-weight:800;
       white-space:nowrap;
-      text-align:right;
     }
 
-    .item-badge{
+    .tx-bottom{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-top:10px;
+      flex-wrap:wrap;
+    }
+
+    .badge{
       display:inline-flex;
       align-items:center;
-      justify-content:center;
-      padding:6px 10px;
+      gap:6px;
+      padding:7px 12px;
       border-radius:999px;
-      font-size:11px;
-      font-weight:800;
-      margin-top:8px;
+      font-size:12px;
+      font-weight:700;
     }
 
     .badge-success{
-      background:rgba(17,156,103,0.18);
-      color:#7ff0be;
+      background:rgba(34,197,94,0.12);
+      color:#4ade80;
     }
 
-    .badge-warning{
-      background:rgba(245,158,11,0.18);
-      color:#fcd34d;
+    .badge-pending{
+      background:rgba(250,204,21,0.12);
+      color:#facc15;
     }
 
-    .badge-danger{
-      background:rgba(217,60,75,0.18);
-      color:#ffb4bf;
+    .badge-failed{
+      background:rgba(239,68,68,0.12);
+      color:#f87171;
+    }
+
+    .badge-info{
+      background:rgba(59,130,246,0.12);
+      color:#60a5fa;
+    }
+
+    .tx-id{
+      color:#8b93a7;
+      font-size:12px;
     }
 
     .empty{
       color:#8b93a7;
+      text-align:center;
+      padding:30px 10px;
       font-size:14px;
-      padding:10px 0;
+    }
+
+    .loading{
+      color:#8b93a7;
+      text-align:center;
+      padding:24px 10px;
+      font-size:14px;
     }
 
     .bottom-nav{
@@ -319,64 +271,47 @@
   </style>
 </head>
 <body>
-
 <div class="app">
+
   <div class="topbar">
-    <div class="left-top">
-      <a href="dashboard.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
-      <div class="page-title">Statement</div>
-    </div>
-    <div class="profile-avatar" id="profileLetter">A</div>
+    <a href="dashboard.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+    <div class="avatar" id="avatar">A</div>
   </div>
 
-  <div class="hero-card">
-    <div class="hero-top">
-      <div>
-        <div class="hero-label">Wallet Balance</div>
-        <div class="hero-balance" id="walletBalance">0 HTG</div>
-      </div>
-      <div class="hero-badge">Transactions</div>
+  <div class="card">
+    <div class="title">Statement</div>
+    <div class="sub">Gade tout tranzaksyon kliyan an sou FastPay.</div>
+
+    <div class="filters">
+      <input id="userId" class="input" type="number" value="1" placeholder="User ID">
+      <select id="typeFilter" class="select">
+        <option value="all">Tout kalite</option>
+        <option value="deposit">Deposit</option>
+        <option value="payment">Payment</option>
+        <option value="delivery">Delivery</option>
+      </select>
     </div>
 
-    <div class="hero-sub" id="walletSub">FastPay Wallet</div>
+    <button class="primary-btn" onclick="loadTransactions()">Chaje tranzaksyon yo</button>
+    <button class="secondary-btn" onclick="loadOrders()">Chaje orders yo</button>
 
-    <div class="stats-grid">
-      <div class="mini-box">
-        <div class="mini-label">Total Transactions</div>
-        <div class="mini-value" id="totalTransactions">0</div>
+    <div class="summary-grid">
+      <div class="summary-box">
+        <div class="summary-label">Total Tranzaksyon</div>
+        <div class="summary-value" id="totalCount">0</div>
       </div>
 
-      <div class="mini-box">
-        <div class="mini-label">Deposits</div>
-        <div class="mini-value" id="totalDeposits">0</div>
-      </div>
-
-      <div class="mini-box">
-        <div class="mini-label">Withdrawals</div>
-        <div class="mini-value" id="totalWithdrawals">0</div>
-      </div>
-
-      <div class="mini-box">
-        <div class="mini-label">Transfers</div>
-        <div class="mini-value" id="totalTransfers">0</div>
+      <div class="summary-box">
+        <div class="summary-label">Total Montan</div>
+        <div class="summary-value" id="totalAmount">0</div>
       </div>
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-title">Filters</div>
-    <div class="filter-row">
-      <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-      <button class="filter-btn" onclick="setFilter('deposit', this)">Deposits</button>
-      <button class="filter-btn" onclick="setFilter('withdraw', this)">Withdrawals</button>
-      <button class="filter-btn" onclick="setFilter('transfer', this)">Transfers</button>
-      <button class="filter-btn" onclick="setFilter('card', this)">Cards</button>
-    </div>
-
-    <div class="list-box" id="statementBox">
-      <div class="empty">Pa gen tranzaksyon pou kounye a.</div>
-    </div>
+  <div class="list-box" id="statementBox">
+    <div class="loading">Ap tann chajman...</div>
   </div>
+
 </div>
 
 <div class="bottom-nav">
@@ -390,7 +325,7 @@
     <span>Transactions</span>
   </a>
 
-  <a href="giftcard.html" class="nav-item">
+  <a href="services.html" class="nav-item">
     <i class="fa-brands fa-bitcoin"></i>
     <span>Services</span>
   </a>
@@ -406,124 +341,157 @@
   </a>
 </div>
 
-<script src="app.js"></script>
 <script>
-  let currentFilter = "all";
+  const API_BASE = "https://fastpayhaiti.onrender.com";
+  const savedUser = JSON.parse(localStorage.getItem("fastpay_user") || "{}");
 
-  const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
-  const profileLetter = document.getElementById("profileLetter");
-  const walletBalance = document.getElementById("walletBalance");
-  const walletSub = document.getElementById("walletSub");
-
-  function getCurrentUser(){
-    if(window.FastPayV2 && FastPayV2.getCurrentUser){
-      return FastPayV2.getCurrentUser();
+  if(savedUser.fullname){
+    document.getElementById("avatar").innerText = savedUser.fullname[0].toUpperCase();
+    if(savedUser.id){
+      document.getElementById("userId").value = savedUser.id;
     }
-    return savedUser;
   }
 
-  function getTransactions(userId){
-    if(window.FastPayV2 && FastPayV2.getUserTransactions){
-      return FastPayV2.getUserTransactions(userId) || [];
-    }
-    return [];
-  }
-
-  function setFilter(type, el){
-    currentFilter = type;
-    document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
-    el.classList.add("active");
-    renderStatement();
+  function formatAmount(value){
+    return Number(value || 0).toFixed(2) + " HTG";
   }
 
   function getBadgeClass(status){
-    const s = String(status || "").toLowerCase();
-    if(s.includes("completed") || s.includes("approved") || s.includes("paid")) return "badge-success";
-    if(s.includes("rejected") || s.includes("failed")) return "badge-danger";
-    return "badge-warning";
+    const s = (status || "").toLowerCase();
+
+    if (s.includes("completed") || s.includes("delivered") || s.includes("success")) {
+      return "badge badge-success";
+    }
+
+    if (s.includes("pending") || s.includes("manual")) {
+      return "badge badge-pending";
+    }
+
+    if (s.includes("failed") || s.includes("error")) {
+      return "badge badge-failed";
+    }
+
+    return "badge badge-info";
   }
 
-  function getFilteredTransactions(transactions){
-    if(currentFilter === "all") return transactions;
-
-    if(currentFilter === "deposit"){
-      return transactions.filter(tx =>
-        String(tx.type || "").toLowerCase().includes("deposit")
-      );
-    }
-
-    if(currentFilter === "withdraw"){
-      return transactions.filter(tx =>
-        String(tx.type || "").toLowerCase().includes("withdraw")
-      );
-    }
-
-    if(currentFilter === "transfer"){
-      return transactions.filter(tx =>
-        String(tx.type || "").toLowerCase().includes("transfer")
-      );
-    }
-
-    if(currentFilter === "card"){
-      return transactions.filter(tx =>
-        String(tx.type || "").toLowerCase().includes("card")
-      );
-    }
-
-    return transactions;
-  }
-
-  function renderStats(transactions){
-    document.getElementById("totalTransactions").innerText = transactions.length;
-    document.getElementById("totalDeposits").innerText =
-      transactions.filter(tx => String(tx.type || "").toLowerCase().includes("deposit")).length;
-    document.getElementById("totalWithdrawals").innerText =
-      transactions.filter(tx => String(tx.type || "").toLowerCase().includes("withdraw")).length;
-    document.getElementById("totalTransfers").innerText =
-      transactions.filter(tx => String(tx.type || "").toLowerCase().includes("transfer")).length;
-  }
-
-  function renderStatement(){
-    const currentUser = getCurrentUser();
-    if(!currentUser || !currentUser.id) return;
-
-    const allTransactions = getTransactions(currentUser.id);
-    renderStats(allTransactions);
-
-    const transactions = getFilteredTransactions(allTransactions);
+  function renderTransactions(items){
     const box = document.getElementById("statementBox");
+    const typeFilter = document.getElementById("typeFilter").value;
 
-    if(transactions.length === 0){
-      box.innerHTML = `<div class="empty">Pa gen tranzaksyon pou filtè sa a.</div>`;
+    let filtered = items || [];
+    if(typeFilter !== "all"){
+      filtered = filtered.filter(item => (item.type || "").toLowerCase() === typeFilter);
+    }
+
+    document.getElementById("totalCount").innerText = filtered.length;
+
+    let total = 0;
+    filtered.forEach(item => {
+      total += Number(item.final_amount || item.amount || 0);
+    });
+    document.getElementById("totalAmount").innerText = formatAmount(total);
+
+    if(!filtered.length){
+      box.innerHTML = `<div class="empty">Pa gen tranzaksyon pou montre.</div>`;
       return;
     }
 
-    box.innerHTML = "";
-    transactions.forEach(function(tx){
-      box.innerHTML += `
-        <div class="list-item">
-          <div class="item-top">
-            <div>
-              <div class="item-title">${tx.service || "Transaction"}</div>
-              <div class="item-sub">${tx.date || ""}</div>
-              <div class="item-sub">${tx.type || "general"}</div>
-              <div class="item-badge ${getBadgeClass(tx.status)}">${tx.status || "completed"}</div>
+    box.innerHTML = filtered.map(item => `
+      <div class="tx-card">
+        <div class="tx-top">
+          <div>
+            <div class="tx-title">${(item.type || "transaction").toUpperCase()}</div>
+            <div class="tx-sub">
+              ${item.created_at || item.date || "No date"}<br>
+              Status: ${item.status || "unknown"}
             </div>
-            <div class="item-amount">${tx.amount || "0"}</div>
           </div>
+          <div class="tx-amount">${formatAmount(item.final_amount || item.amount || 0)}</div>
         </div>
-      `;
+
+        <div class="tx-bottom">
+          <div class="${getBadgeClass(item.status)}">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>${item.status || "unknown"}</span>
+          </div>
+          <div class="tx-id">TX ID: ${item.id || "--"}</div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function renderOrders(items){
+    const box = document.getElementById("statementBox");
+
+    document.getElementById("totalCount").innerText = items.length;
+
+    let total = 0;
+    items.forEach(item => {
+      total += Number(item.amount || 0);
     });
+    document.getElementById("totalAmount").innerText = formatAmount(total);
+
+    if(!items.length){
+      box.innerHTML = `<div class="empty">Pa gen orders pou montre.</div>`;
+      return;
+    }
+
+    box.innerHTML = items.map(item => `
+      <div class="tx-card">
+        <div class="tx-top">
+          <div>
+            <div class="tx-title">${item.product_name || item.service || "Order"}</div>
+            <div class="tx-sub">
+              Service: ${item.service || "--"}<br>
+              ${item.created_at || "No date"}
+            </div>
+          </div>
+          <div class="tx-amount">${formatAmount(item.amount || 0)}</div>
+        </div>
+
+        <div class="tx-bottom">
+          <div class="${getBadgeClass(item.status)}">
+            <i class="fa-solid fa-bolt"></i>
+            <span>${item.status || "unknown"}</span>
+          </div>
+          <div class="tx-id">Order ID: ${item.id || "--"}</div>
+        </div>
+      </div>
+    `).join("");
   }
 
-  if(savedUser && savedUser.fullname){
-    profileLetter.innerText = savedUser.fullname.charAt(0).toUpperCase();
-    walletBalance.innerText = (savedUser.balance || 0) + " HTG";
-    walletSub.innerText = savedUser.email || "FastPay Wallet";
+  async function loadTransactions(){
+    const userId = document.getElementById("userId").value;
+    const box = document.getElementById("statementBox");
+
+    box.innerHTML = `<div class="loading">Ap chaje tranzaksyon yo...</div>`;
+
+    try{
+      const res = await fetch(`${API_BASE}/api/transactions/${userId}`);
+      const data = await res.json();
+      renderTransactions(Array.isArray(data) ? data : []);
+    }catch(error){
+      box.innerHTML = `<div class="empty">Erè pandan chajman tranzaksyon yo.</div>`;
+    }
   }
 
-  renderStatement();
+  async function loadOrders(){
+    const userId = document.getElementById("userId").value;
+    const box = document.getElementById("statementBox");
+
+    box.innerHTML = `<div class="loading">Ap chaje orders yo...</div>`;
+
+    try{
+      const res = await fetch(`${API_BASE}/api/orders/${userId}`);
+      const data = await res.json();
+      renderOrders(Array.isArray(data) ? data : []);
+    }catch(error){
+      box.innerHTML = `<div class="empty">Erè pandan chajman orders yo.</div>`;
+    }
+  }
+
+  loadTransactions();
 </script>
 
 </body>
-  </html>
+</html>
