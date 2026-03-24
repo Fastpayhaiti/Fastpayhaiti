@@ -3,204 +3,512 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FastPay Choose Withdraw Method</title>
+  <title>Withdraw - FastPay</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-    body{background:#05070c;color:#fff;min-height:100vh}
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      font-family:Arial,sans-serif;
+    }
+
+    body{
+      background:#05070c;
+      color:#fff;
+      min-height:100vh;
+    }
+
     .app{
-      max-width:430px;margin:auto;min-height:100vh;padding:18px 18px 110px;
+      max-width:430px;
+      margin:auto;
+      min-height:100vh;
+      padding:18px 18px 120px;
       background:
-        radial-gradient(circle at top left, rgba(59,130,246,0.10), transparent 30%),
-        radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 28%),
+        radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
+        radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
         #05070c;
     }
-    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-    .left-top{display:flex;align-items:center;gap:12px}
-    .back-btn{
-      width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,0.06);
-      color:#fff;font-size:22px;text-decoration:none;display:flex;align-items:center;justify-content:center;
-      border:1px solid rgba(255,255,255,0.08);
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:18px;
     }
-    .page-title{font-size:24px;font-weight:800}
-    .profile-avatar{
-      width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.08);
-      display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;
+
+    .back-btn,.avatar{
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(255,255,255,0.06);
+      color:#fff;
+      text-decoration:none;
+      font-size:18px;
     }
-    .hero-card{
-      background:linear-gradient(135deg,#0d1117,#1c2330);
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:28px;padding:22px;margin-bottom:24px;
-      box-shadow:0 22px 45px rgba(0,0,0,0.35);
-      position:relative;overflow:hidden;
-    }
-    .hero-card::before{
-      content:"";position:absolute;width:180px;height:180px;border-radius:50%;
-      background:rgba(217,60,75,0.10);top:-40px;right:-40px;
-    }
-    .hero-label{color:#9ca3af;font-size:14px;margin-bottom:8px;position:relative;z-index:2}
-    .hero-title{font-size:34px;font-weight:800;position:relative;z-index:2;line-height:1.1}
-    .hero-sub{margin-top:10px;color:#8b93a7;font-size:14px;line-height:1.6;position:relative;z-index:2}
-    .section-title{font-size:22px;font-weight:800;margin-bottom:14px}
-    .methods{display:grid;grid-template-columns:1fr;gap:16px}
-    .method-card{
-      display:block;text-decoration:none;color:#fff;
+
+    .card{
       background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
       border:1px solid rgba(255,255,255,0.08);
-      border-radius:24px;padding:20px;min-height:150px;box-shadow:0 18px 35px rgba(0,0,0,0.25);
+      border-radius:22px;
+      padding:18px;
+      margin-bottom:18px;
+      backdrop-filter:blur(10px);
     }
-    .method-top{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;
+
+    .title{
+      font-size:30px;
+      font-weight:800;
+      margin-bottom:10px;
     }
-    .icon-box{
-      width:56px;height:56px;border-radius:18px;display:flex;align-items:center;justify-content:center;
-      font-size:22px;font-weight:800;
+
+    .sub{
+      color:#8b93a7;
+      font-size:14px;
+      line-height:1.5;
     }
-    .moncash-icon{background:rgba(17,156,103,0.18);color:#7ff0be;border:1px solid rgba(17,156,103,0.30)}
-    .natcash-icon{background:rgba(245,158,11,0.18);color:#fcd34d;border:1px solid rgba(245,158,11,0.30)}
-    .wise-icon{background:rgba(0,201,167,0.18);color:#7ef7e2;border:1px solid rgba(0,201,167,0.30)}
-    .zelle-icon{background:rgba(126,87,255,0.18);color:#d5c6ff;border:1px solid rgba(126,87,255,0.30)}
-    .cashapp-icon{background:rgba(0,200,83,0.18);color:#83ffb4;border:1px solid rgba(0,200,83,0.30)}
-    .bank-icon{background:rgba(96,165,250,0.18);color:#b8d8ff;border:1px solid rgba(96,165,250,0.30)}
-    .usdt-icon{background:rgba(20,184,166,0.18);color:#99fff3;border:1px solid rgba(20,184,166,0.30)}
-    .status-pill{
-      padding:8px 12px;border-radius:999px;font-size:12px;font-weight:800;
-      background:rgba(255,255,255,0.06);color:#d1d5db;border:1px solid rgba(255,255,255,0.08);
+
+    .balance-box{
+      margin-top:14px;
+      background:#11172a;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:18px;
+      padding:16px;
     }
-    .method-title{font-size:22px;font-weight:900;margin-bottom:8px}
-    .method-text{color:#8b93a7;font-size:14px;line-height:1.6;margin-bottom:14px}
-    .method-note{font-size:13px;color:#d1d5db;font-weight:700}
-    .toolbar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
-    .btn{
-      display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center;
-      padding:16px;border-radius:18px;color:#fff;font-weight:800;font-size:15px;border:none;cursor:pointer;
+
+    .balance-label{
+      color:#8b93a7;
+      font-size:13px;
+      margin-bottom:8px;
     }
-    .btn-blue{background:#2f3cff;box-shadow:0 14px 30px rgba(47,60,255,0.35)}
-    .btn-dark{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.08)}
+
+    .balance-value{
+      font-size:28px;
+      font-weight:800;
+    }
+
+    .field{
+      margin-top:16px;
+    }
+
+    .field label{
+      display:block;
+      font-size:14px;
+      color:#c7cfdd;
+      margin-bottom:8px;
+      font-weight:600;
+    }
+
+    .input,.select{
+      width:100%;
+      padding:14px;
+      border-radius:16px;
+      background:#11172a;
+      border:1px solid rgba(255,255,255,0.08);
+      color:#fff;
+      outline:none;
+    }
+
+    .input::placeholder{
+      color:#7f8798;
+    }
+
+    .method-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .method-card{
+      background:#11172a;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:18px;
+      padding:16px;
+      cursor:pointer;
+    }
+
+    .method-card.active{
+      background:#ff3c3c;
+      border-color:transparent;
+      box-shadow:0 12px 24px rgba(255,60,60,0.28);
+    }
+
+    .method-title{
+      font-size:16px;
+      font-weight:800;
+      margin-bottom:6px;
+    }
+
+    .method-text{
+      font-size:13px;
+      color:#dbe4ff;
+      line-height:1.4;
+    }
+
+    .amount-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .amount-chip{
+      border:none;
+      border-radius:16px;
+      padding:14px 10px;
+      background:#11172a;
+      color:#fff;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .amount-chip.active{
+      background:#ff3c3c;
+      border-color:transparent;
+      box-shadow:0 12px 24px rgba(255,60,60,0.28);
+    }
+
+    .summary-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 0;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+    }
+
+    .summary-row:last-child{
+      border-bottom:none;
+    }
+
+    .summary-label{
+      color:#8b93a7;
+      font-size:14px;
+    }
+
+    .summary-value{
+      font-size:15px;
+      font-weight:700;
+      text-align:right;
+      word-break:break-word;
+      max-width:58%;
+    }
+
+    .primary-btn,.secondary-btn{
+      display:block;
+      width:100%;
+      border:none;
+      border-radius:18px;
+      font-size:17px;
+      font-weight:700;
+      padding:17px;
+      cursor:pointer;
+      text-align:center;
+      margin-top:12px;
+    }
+
+    .primary-btn{
+      background:#ff3c3c;
+      color:#fff;
+      box-shadow:0 14px 30px rgba(255,60,60,0.30);
+    }
+
+    .secondary-btn{
+      background:#11172a;
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .result-box{
+      white-space:pre-wrap;
+      word-break:break-word;
+      font-size:13px;
+      color:#dbe4ff;
+      line-height:1.5;
+    }
+
+    .hint{
+      color:#8b93a7;
+      font-size:13px;
+      line-height:1.5;
+      margin-top:8px;
+    }
+
+    .warn{
+      color:#ffb4b4;
+      font-size:13px;
+      line-height:1.5;
+      margin-top:8px;
+    }
+
     .bottom-nav{
-      position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:430px;
-      background:#04060a;border-top:1px solid rgba(255,255,255,0.08);display:grid;
-      grid-template-columns:repeat(5,1fr);padding:12px 8px 14px;z-index:1000;
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:0;
+      width:100%;
+      max-width:430px;
+      background:#04060a;
+      border-top:1px solid rgba(255,255,255,0.08);
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      padding:12px 8px 14px;
+      z-index:1000;
     }
+
     .nav-item{
-      text-decoration:none;color:#8b93a7;display:flex;flex-direction:column;align-items:center;gap:8px;
-      font-size:12px;font-weight:600;
+      text-decoration:none;
+      color:#8b93a7;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+      font-size:12px;
+      font-weight:600;
     }
-    .nav-item i{font-size:23px}
-    .nav-item.active{color:#3b4cff}
+
+    .nav-item i{
+      font-size:23px;
+    }
+
+    .nav-item.active{
+      color:#ff3c3c;
+    }
   </style>
 </head>
 <body>
 <div class="app">
+
   <div class="topbar">
-    <div class="left-top">
-      <a href="wallet.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
-      <div class="page-title">Withdraw</div>
+    <a href="wallet.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+    <div class="avatar" id="avatar">A</div>
+  </div>
+
+  <div class="card">
+    <div class="title">Withdraw</div>
+    <div class="sub">Retire lajan sou wallet ou epi voye li sou metòd retrè kliyan an.</div>
+
+    <div class="balance-box">
+      <div class="balance-label">Balans Disponib</div>
+      <div class="balance-value" id="walletBalance">0 HTG</div>
     </div>
-    <div class="profile-avatar" id="profileLetter">A</div>
   </div>
 
-  <div class="hero-card">
-    <div class="hero-label">FastPay Withdraw Center</div>
-    <div class="hero-title">Choose withdraw method</div>
-    <div class="hero-sub">
-      Chwazi metòd retrè ki pi bon pou ou. FastPay sipòte plizyè fason pou retire lajan lokalman ak entènasyonalman.
+  <div class="card">
+    <div class="field">
+      <label>User ID</label>
+      <input id="userId" class="input" type="number" value="1">
+    </div>
+
+    <div class="field">
+      <label>Chwazi metòd retrè</label>
+      <div class="method-grid">
+        <div class="method-card" onclick="selectMethod(this, 'MonCash')">
+          <div class="method-title">MonCash</div>
+          <div class="method-text">Retrè sou nimewo MonCash</div>
+        </div>
+
+        <div class="method-card" onclick="selectMethod(this, 'NatCash')">
+          <div class="method-title">NatCash</div>
+          <div class="method-text">Retrè sou NatCash</div>
+        </div>
+
+        <div class="method-card" onclick="selectMethod(this, 'Bank')">
+          <div class="method-title">Bank</div>
+          <div class="method-text">Vireman bankè</div>
+        </div>
+
+        <div class="method-card" onclick="selectMethod(this, 'Wise')">
+          <div class="method-title">Wise</div>
+          <div class="method-text">Transfè Wise</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Montan retrè</label>
+      <input id="amount" class="input" type="number" placeholder="Eg: 100">
+      <div class="amount-grid">
+        <button type="button" class="amount-chip" onclick="setAmount(100, this)">100</button>
+        <button type="button" class="amount-chip" onclick="setAmount(250, this)">250</button>
+        <button type="button" class="amount-chip" onclick="setAmount(500, this)">500</button>
+        <button type="button" class="amount-chip" onclick="setAmount(1000, this)">1000</button>
+        <button type="button" class="amount-chip" onclick="setAmount(2500, this)">2500</button>
+        <button type="button" class="amount-chip" onclick="setAmount(5000, this)">5000</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Nimewo / Kont destinasyon</label>
+      <input id="destination" class="input" type="text" placeholder="Eg: 509xxxxxxx / numero kont">
+    </div>
+
+    <div class="field">
+      <label>Nòt / Referans</label>
+      <input id="note" class="input" type="text" placeholder="Eg: retrè kliyan / nòt admin">
+      <div class="hint">Paj sa a se UI pwofesyonèl. Si backend retrè a poko la, nou ka konekte li apre ak validation pwofesyonèl.</div>
+      <div class="warn">Pa fè kliyan itilize retrè reyèl anvan backend la fin konekte nèt.</div>
     </div>
   </div>
 
-  <div class="section-title">Available Methods</div>
+  <div class="card">
+    <div class="summary-row">
+      <div class="summary-label">Metòd</div>
+      <div class="summary-value" id="summaryMethod">--</div>
+    </div>
 
-  <div class="methods">
-    <a href="withdraw.html?method=MonCash" class="method-card">
-      <div class="method-top">
-        <div class="icon-box moncash-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
-        <div class="status-pill">Popular</div>
-      </div>
-      <div class="method-title">MonCash Withdraw</div>
-      <div class="method-text">Retire kòb sou MonCash byen rapid ak fasil.</div>
-      <div class="method-note">Lokal Ayiti</div>
-    </a>
+    <div class="summary-row">
+      <div class="summary-label">Montan</div>
+      <div class="summary-value" id="summaryAmount">0 HTG</div>
+    </div>
 
-    <a href="withdraw.html?method=NatCash" class="method-card">
-      <div class="method-top">
-        <div class="icon-box natcash-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
-        <div class="status-pill">Available</div>
-      </div>
-      <div class="method-title">NatCash Withdraw</div>
-      <div class="method-text">Retire kòb sou NatCash ak tout detay kont ou.</div>
-      <div class="method-note">Lokal Ayiti</div>
-    </a>
+    <div class="summary-row">
+      <div class="summary-label">Destinasyon</div>
+      <div class="summary-value" id="summaryDestination">--</div>
+    </div>
 
-    <a href="withdraw.html?method=Wise" class="method-card">
-      <div class="method-top">
-        <div class="icon-box wise-icon"><i class="fa-solid fa-globe"></i></div>
-        <div class="status-pill">International</div>
-      </div>
-      <div class="method-title">Wise Withdraw</div>
-      <div class="method-text">Retire sou kont Wise ou si w ap itilize sèvis entènasyonal.</div>
-      <div class="method-note">Global transfer</div>
-    </a>
+    <div class="summary-row">
+      <div class="summary-label">User ID</div>
+      <div class="summary-value" id="summaryUser">1</div>
+    </div>
 
-    <a href="withdraw.html?method=Zelle" class="method-card">
-      <div class="method-top">
-        <div class="icon-box zelle-icon"><i class="fa-solid fa-bolt"></i></div>
-        <div class="status-pill">US</div>
-      </div>
-      <div class="method-title">Zelle Withdraw</div>
-      <div class="method-text">Resevwa lajan atravè Zelle sou email oswa nimewo ki konekte a.</div>
-      <div class="method-note">USA only</div>
-    </a>
-
-    <a href="withdraw.html?method=CashApp" class="method-card">
-      <div class="method-top">
-        <div class="icon-box cashapp-icon"><i class="fa-solid fa-dollar-sign"></i></div>
-        <div class="status-pill">Fast</div>
-      </div>
-      <div class="method-title">Cash App Withdraw</div>
-      <div class="method-text">Retire lajan dirèk sou Cash App tag ou.</div>
-      <div class="method-note">Quick payout</div>
-    </a>
-
-    <a href="withdraw.html?method=BankTransfer" class="method-card">
-      <div class="method-top">
-        <div class="icon-box bank-icon"><i class="fa-solid fa-building-columns"></i></div>
-        <div class="status-pill">Bank</div>
-      </div>
-      <div class="method-title">Bank Transfer</div>
-      <div class="method-text">Retire sou kont labank kliyan an atravè transfè bankè.</div>
-      <div class="method-note">Bank payout</div>
-    </a>
-
-    <a href="withdraw.html?method=USDT" class="method-card">
-      <div class="method-top">
-        <div class="icon-box usdt-icon"><i class="fa-brands fa-bitcoin"></i></div>
-        <div class="status-pill">Crypto</div>
-      </div>
-      <div class="method-title">USDT Withdraw</div>
-      <div class="method-text">Retire lajan an an USDT sou wallet crypto kliyan an.</div>
-      <div class="method-note">TRC20 / ERC20 / BEP20</div>
-    </a>
+    <button class="primary-btn" onclick="submitWithdraw()">Konfime Withdraw</button>
+    <button class="secondary-btn" onclick="window.location.href='wallet.html'">Retounen Wallet</button>
   </div>
 
-  <div class="toolbar">
-    <a href="withdraw-history.html" class="btn btn-dark">Withdraw History</a>
-    <a href="wallet.html" class="btn btn-blue">Back to Wallet</a>
-  </div>
+  <div class="card result-box" id="resultBox">Rezilta ap parèt isit...</div>
+
 </div>
 
 <div class="bottom-nav">
-  <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
-  <a href="statement.html" class="nav-item"><i class="fa-solid fa-arrow-rotate-left"></i><span>Transactions</span></a>
-  <a href="giftcard.html" class="nav-item"><i class="fa-brands fa-bitcoin"></i><span>Services</span></a>
-  <a href="card-dashboard.html" class="nav-item"><i class="fa-regular fa-credit-card"></i><span>Cards</span></a>
-  <a href="wallet.html" class="nav-item active"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a>
+  <a href="dashboard.html" class="nav-item">
+    <i class="fa-solid fa-house"></i>
+    <span>Home</span>
+  </a>
+
+  <a href="statement.html" class="nav-item">
+    <i class="fa-solid fa-arrow-rotate-left"></i>
+    <span>Transactions</span>
+  </a>
+
+  <a href="services.html" class="nav-item">
+    <i class="fa-brands fa-bitcoin"></i>
+    <span>Services</span>
+  </a>
+
+  <a href="card-dashboard.html" class="nav-item">
+    <i class="fa-regular fa-credit-card"></i>
+    <span>Cards</span>
+  </a>
+
+  <a href="wallet.html" class="nav-item active">
+    <i class="fa-solid fa-wallet"></i>
+    <span>Wallet</span>
+  </a>
 </div>
 
 <script>
-  const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
-  if(savedUser && savedUser.fullname){
-    document.getElementById("profileLetter").innerText = savedUser.fullname.charAt(0).toUpperCase();
+  const API_BASE = "https://fastpayhaiti.onrender.com";
+  const savedUser = JSON.parse(localStorage.getItem("fastpay_user") || "{}");
+
+  if(savedUser.fullname){
+    document.getElementById("avatar").innerText = savedUser.fullname[0].toUpperCase();
+    if(savedUser.id){
+      document.getElementById("userId").value = savedUser.id;
+      document.getElementById("summaryUser").innerText = savedUser.id;
+    }
   }
+
+  let selectedMethod = null;
+
+  const userIdEl = document.getElementById("userId");
+  const amountEl = document.getElementById("amount");
+  const destinationEl = document.getElementById("destination");
+
+  userIdEl.addEventListener("input", () => {
+    updateSummary();
+    loadWallet();
+  });
+
+  amountEl.addEventListener("input", updateSummary);
+  destinationEl.addEventListener("input", updateSummary);
+
+  function selectMethod(el, method){
+    document.querySelectorAll(".method-card").forEach(card => card.classList.remove("active"));
+    el.classList.add("active");
+    selectedMethod = method;
+    updateSummary();
+  }
+
+  function setAmount(value, btn){
+    amountEl.value = value;
+    document.querySelectorAll(".amount-chip").forEach(chip => chip.classList.remove("active"));
+    btn.classList.add("active");
+    updateSummary();
+  }
+
+  function updateSummary(){
+    document.getElementById("summaryMethod").innerText = selectedMethod || "--";
+    document.getElementById("summaryAmount").innerText = (amountEl.value || 0) + " HTG";
+    document.getElementById("summaryDestination").innerText = destinationEl.value || "--";
+    document.getElementById("summaryUser").innerText = userIdEl.value || "--";
+  }
+
+  async function loadWallet(){
+    const userId = userIdEl.value.trim();
+    if(!userId) return;
+
+    try{
+      const res = await fetch(`${API_BASE}/api/wallet/${userId}`);
+      const data = await res.json();
+
+      if(data && !data.error){
+        document.getElementById("walletBalance").innerText = (data.balance || 0) + " HTG";
+      }else{
+        document.getElementById("walletBalance").innerText = "0 HTG";
+      }
+    }catch(error){
+      document.getElementById("walletBalance").innerText = "0 HTG";
+    }
+  }
+
+  async function submitWithdraw(){
+    const userId = userIdEl.value.trim();
+    const amount = amountEl.value.trim();
+    const destination = destinationEl.value.trim();
+    const note = document.getElementById("note").value.trim();
+
+    if(!selectedMethod){
+      alert("Tanpri chwazi yon metòd retrè.");
+      return;
+    }
+
+    if(!userId || !amount || !destination){
+      alert("Tanpri ranpli tout enfòmasyon yo.");
+      return;
+    }
+
+    const payload = {
+      userId: Number(userId),
+      amount: Number(amount),
+      method: selectedMethod,
+      destination,
+      note
+    };
+
+    document.getElementById("resultBox").innerText =
+      "Retrè a poko konekte ak backend la nèt.\n\nDone yo pare pou route backend la:\n\n" +
+      JSON.stringify(payload, null, 2);
+  }
+
+  updateSummary();
+  loadWallet();
 </script>
+
 </body>
-    </html>
+  </html>
