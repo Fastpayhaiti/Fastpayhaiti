@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FastPay Premium Card Dashboard</title>
+  <title>Cards - FastPay</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     *{
@@ -15,7 +15,7 @@
 
     body{
       background:#05070c;
-      color:#ffffff;
+      color:#fff;
       min-height:100vh;
     }
 
@@ -23,8 +23,7 @@
       max-width:430px;
       margin:auto;
       min-height:100vh;
-      padding:18px 18px 110px;
-      position:relative;
+      padding:18px 18px 120px;
       background:
         radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
         radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
@@ -38,190 +37,119 @@
       margin-bottom:18px;
     }
 
-    .left-top{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .back-btn{
-      width:48px;
-      height:48px;
-      border:none;
+    .back-btn,.avatar{
+      width:46px;
+      height:46px;
       border-radius:14px;
-      background:rgba(255,255,255,0.06);
-      color:#ffffff;
-      font-size:22px;
-      cursor:pointer;
       display:flex;
       align-items:center;
       justify-content:center;
+      background:rgba(255,255,255,0.06);
+      color:#fff;
       text-decoration:none;
+      font-size:18px;
+    }
+
+    .hero-card,
+    .section-card,
+    .mini-card{
+      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:22px;
+      padding:18px;
+      margin-bottom:18px;
       backdrop-filter:blur(10px);
     }
 
-    .page-title{
-      font-size:24px;
-      font-weight:800;
-    }
-
-    .profile-avatar{
-      width:48px;
-      height:48px;
-      border-radius:50%;
-      background:rgba(255,255,255,0.08);
-      color:#ffffff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:22px;
-      font-weight:700;
-    }
-
-    .hero-text{
-      margin-bottom:18px;
-    }
-
-    .hero-title{
+    .title{
       font-size:30px;
       font-weight:800;
-      line-height:1.1;
-      margin-bottom:8px;
+      margin-bottom:10px;
     }
 
-    .hero-sub{
+    .sub{
       color:#8b93a7;
       font-size:14px;
       line-height:1.5;
     }
 
-    .premium-card-box{
+    .virtual-card{
+      margin-top:16px;
+      height:190px;
+      border-radius:24px;
+      padding:20px;
+      background:linear-gradient(135deg,#0d1018,#242938 55%,#2f3cff);
+      border:1px solid rgba(255,255,255,0.12);
+      box-shadow:0 18px 40px rgba(0,0,0,0.35);
       position:relative;
-      margin:8px 0 22px;
-      min-height:235px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    .card-back{
-      position:absolute;
-      width:220px;
-      height:135px;
-      border-radius:22px;
-      background:linear-gradient(135deg,#243bff,#3e5cff);
-      top:20px;
-      left:75px;
-      transform:rotate(-12deg);
-      box-shadow:0 20px 40px rgba(37,59,255,0.25);
-      border:1px solid rgba(255,255,255,0.18);
       overflow:hidden;
     }
 
-    .card-back::before{
+    .virtual-card::before{
       content:"";
       position:absolute;
       inset:0;
       background:
         radial-gradient(circle at 20% 20%, rgba(255,255,255,0.12), transparent 30%),
         linear-gradient(120deg, transparent 10%, rgba(255,255,255,0.05) 40%, transparent 70%);
-    }
-
-    .card-front{
-      position:absolute;
-      width:255px;
-      height:155px;
-      border-radius:24px;
-      background:linear-gradient(135deg,#0e1118,#2b2f39);
-      top:44px;
-      left:115px;
-      transform:rotate(-8deg);
-      box-shadow:0 24px 50px rgba(0,0,0,0.45);
-      border:1px solid rgba(255,255,255,0.15);
-      overflow:hidden;
-      padding:18px;
-    }
-
-    .card-front::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 60% 40%, rgba(255,255,255,0.08), transparent 24%),
-        linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.04) 35%, transparent 60%);
       pointer-events:none;
     }
 
+    .brand{
+      position:relative;
+      z-index:2;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:28px;
+      font-weight:700;
+      font-size:18px;
+    }
+
     .chip{
-      width:42px;
+      width:44px;
       height:32px;
       border-radius:10px;
       background:linear-gradient(135deg,#f4f4f5,#b6b7bc);
+      position:relative;
+      z-index:2;
       margin-bottom:18px;
-      position:relative;
-      z-index:2;
-    }
-
-    .card-brand{
-      position:absolute;
-      right:18px;
-      top:18px;
-      z-index:2;
-      font-size:18px;
-      font-weight:700;
-      opacity:0.95;
-    }
-
-    .card-balance{
-      position:relative;
-      z-index:2;
-      font-size:15px;
-      color:#aeb5c7;
-      margin-bottom:8px;
-    }
-
-    .card-amount{
-      position:relative;
-      z-index:2;
-      font-size:26px;
-      font-weight:800;
-      margin-bottom:16px;
     }
 
     .card-number{
       position:relative;
       z-index:2;
-      font-size:20px;
+      font-size:24px;
       font-weight:800;
-      letter-spacing:1.5px;
-      margin-bottom:14px;
-      word-break:break-word;
+      letter-spacing:2px;
+      margin-bottom:18px;
     }
 
-    .card-meta{
+    .card-bottom{
       position:relative;
       z-index:2;
       display:flex;
       justify-content:space-between;
       align-items:flex-end;
-      gap:10px;
     }
 
-    .meta-small{
+    .card-holder small,
+    .card-exp small{
+      display:block;
+      color:#c8cedf;
       font-size:11px;
-      color:#aeb5c7;
       margin-bottom:4px;
-      text-transform:uppercase;
     }
 
-    .meta-big{
-      font-size:13px;
-      font-weight:700;
+    .card-holder strong,
+    .card-exp strong{
+      font-size:14px;
+      letter-spacing:0.5px;
     }
 
     .mc-circles{
       display:flex;
-      z-index:2;
+      align-items:center;
     }
 
     .mc-circles span{
@@ -242,24 +170,75 @@
       opacity:0.95;
     }
 
-    .empty-card-text{
-      margin-top:238px;
-      text-align:center;
-      padding:0 10px;
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
     }
 
-    .empty-card-title{
+    .action-btn{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:10px;
+      text-decoration:none;
+      color:#fff;
+      background:#11172a;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:18px;
+      padding:16px;
+      min-height:110px;
+    }
+
+    .action-btn i{
+      font-size:22px;
+      color:#cfd6ff;
+    }
+
+    .action-btn span{
+      font-size:16px;
+      font-weight:800;
+    }
+
+    .action-btn small{
+      color:#8b93a7;
+      line-height:1.45;
+      font-size:13px;
+    }
+
+    .mini-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .mini-card{
+      margin-bottom:0;
+      background:#11172a;
+      border-radius:18px;
+    }
+
+    .mini-label{
+      color:#8b93a7;
+      font-size:13px;
+      margin-bottom:8px;
+    }
+
+    .mini-value{
       font-size:22px;
       font-weight:800;
-      line-height:1.2;
-      margin-bottom:12px;
     }
 
-    .empty-card-sub{
-      font-size:15px;
+    .empty-box{
+      background:#11172a;
+      border:1px dashed rgba(255,255,255,0.10);
+      border-radius:18px;
+      padding:18px;
+      text-align:center;
       color:#8b93a7;
+      margin-top:14px;
       line-height:1.5;
-      margin-bottom:20px;
     }
 
     .primary-btn{
@@ -276,155 +255,7 @@
       text-decoration:none;
       text-align:center;
       box-shadow:0 14px 30px rgba(47,60,255,0.35);
-    }
-
-    .detail-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:18px;
-      margin-bottom:22px;
-    }
-
-    .mini-btn{
-      flex:1;
-      min-width:140px;
-      border:none;
-      border-radius:16px;
-      background:rgba(255,255,255,0.06);
-      color:#ffffff;
-      padding:14px;
-      font-size:14px;
-      font-weight:700;
-      cursor:pointer;
-      border:1px solid rgba(255,255,255,0.08);
-    }
-
-    .mini-btn.blue{
-      background:#2f3cff;
-      border-color:transparent;
-    }
-
-    .secret-box{
-      display:none;
-      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:20px;
-      padding:16px;
-      margin-bottom:22px;
-    }
-
-    .secret-line{
-      font-size:14px;
-      color:#cfd5e3;
-      line-height:1.7;
-    }
-
-    .section{
-      margin-bottom:24px;
-    }
-
-    .section-title{
-      font-size:22px;
-      font-weight:800;
-      margin-bottom:14px;
-    }
-
-    .stats-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-    }
-
-    .stat-box{
-      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:20px;
-      padding:16px;
-    }
-
-    .stat-label{
-      color:#8b93a7;
-      font-size:13px;
-      margin-bottom:8px;
-    }
-
-    .stat-value{
-      font-size:22px;
-      font-weight:800;
-    }
-
-    .control-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-    }
-
-    .control-btn{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-decoration:none;
-      text-align:center;
-      padding:16px;
-      border-radius:18px;
-      color:#ffffff;
-      font-weight:700;
-      font-size:15px;
-      border:none;
-      cursor:pointer;
-    }
-
-    .bg-blue{ background:#2f3cff; }
-    .bg-green{ background:#119c67; }
-    .bg-red{ background:#d93c4b; }
-    .bg-dark{ background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.08); }
-
-    .list-box{
-      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:22px;
-      padding:10px 16px;
-    }
-
-    .list-item{
-      padding:14px 0;
-      border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-
-    .list-item:last-child{
-      border-bottom:none;
-    }
-
-    .item-top{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      align-items:flex-start;
-    }
-
-    .item-title{
-      font-size:15px;
-      font-weight:700;
-      margin-bottom:5px;
-    }
-
-    .item-sub{
-      color:#8b93a7;
-      font-size:13px;
-      line-height:1.45;
-    }
-
-    .item-amount{
-      font-size:15px;
-      font-weight:700;
-      white-space:nowrap;
-    }
-
-    .empty{
-      color:#8b93a7;
-      font-size:14px;
-      padding:10px 0;
+      margin-top:14px;
     }
 
     .bottom-nav{
@@ -463,76 +294,98 @@
   </style>
 </head>
 <body>
-
 <div class="app">
+
   <div class="topbar">
-    <div class="left-top">
-      <a href="dashboard.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
-      <div class="page-title">Cards</div>
-    </div>
-    <div class="profile-avatar" id="profileLetter">A</div>
+    <a href="dashboard.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+    <div class="avatar" id="avatar">A</div>
   </div>
 
-  <div class="hero-text">
-    <div class="hero-title">My FastPay Card</div>
-    <div class="hero-sub">Jere kat ou, detay li, balans li, ak tout aktivite li yo nan yon sèl espas.</div>
-  </div>
+  <div class="hero-card">
+    <div class="title">Cards</div>
+    <div class="sub">Jere kat ou yo, kreye nouvo kat, epi swiv limit ak estati yo.</div>
 
-  <div id="cardArea"></div>
-
-  <div class="detail-actions" id="detailActions" style="display:none;">
-    <button class="mini-btn" onclick="toggleCardDetails()">Show Details</button>
-    <button class="mini-btn blue" onclick="copyDisplayedCard()">Copy Number</button>
-  </div>
-
-  <div class="secret-box" id="secretBox">
-    <div class="secret-line">Expiry: <span id="secretExp">12/29</span></div>
-    <div class="secret-line">CVV: <span id="secretCvv">392</span></div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Overview</div>
-    <div class="stats-grid">
-      <div class="stat-box">
-        <div class="stat-label">Card Balance</div>
-        <div class="stat-value" id="cardBalance">0 HTG</div>
+    <div class="virtual-card">
+      <div class="brand">
+        <span>FastPay</span>
+        <span>Virtual</span>
       </div>
 
-      <div class="stat-box">
-        <div class="stat-label">Wallet Balance</div>
-        <div class="stat-value" id="walletBalance">0 HTG</div>
-      </div>
+      <div class="chip"></div>
 
-      <div class="stat-box">
-        <div class="stat-label">Daily Limit</div>
-        <div class="stat-value" id="dailyLimit">25,000 HTG</div>
-      </div>
+      <div class="card-number" id="cardNumber">**** **** **** 4588</div>
 
-      <div class="stat-box">
-        <div class="stat-label">Monthly Limit</div>
-        <div class="stat-value" id="monthlyLimit">150,000 HTG</div>
+      <div class="card-bottom">
+        <div class="card-holder">
+          <small>CARD HOLDER</small>
+          <strong id="cardHolder">FASTPAY USER</strong>
+        </div>
+
+        <div class="card-exp">
+          <small>EXPIRES</small>
+          <strong>12/28</strong>
+        </div>
+
+        <div class="mc-circles">
+          <span></span>
+          <span></span>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-title">Controls</div>
-    <div class="control-grid">
-      <button class="control-btn bg-red" onclick="freezeCard()">Freeze</button>
-      <button class="control-btn bg-green" onclick="unfreezeCard()">Unfreeze</button>
-      <button class="control-btn bg-blue" onclick="loadCard()">Load Card</button>
-      <a href="card-history.html" class="control-btn bg-dark">Card History</a>
-      <a href="card-settings.html" class="control-btn bg-dark">Card Settings</a>
-      <a href="create-card.html" class="control-btn bg-dark">New Card</a>
+  <div class="section-card">
+    <div class="title" style="font-size:22px;">Quick Actions</div>
+
+    <div class="grid">
+      <a href="create-card.html" class="action-btn">
+        <i class="fa-solid fa-plus"></i>
+        <span>Create Card</span>
+        <small>Kreye yon nouvo kat vityèl.</small>
+      </a>
+
+      <a href="wallet.html" class="action-btn">
+        <i class="fa-solid fa-wallet"></i>
+        <span>Fund Card</span>
+        <small>Ajoute lajan sou kat ou.</small>
+      </a>
+
+      <a href="statement.html" class="action-btn">
+        <i class="fa-solid fa-receipt"></i>
+        <span>Card Statement</span>
+        <small>Gade tout mouvman yo.</small>
+      </a>
+
+      <a href="services.html" class="action-btn">
+        <i class="fa-solid fa-bolt"></i>
+        <span>Use Services</span>
+        <small>Peye sèvis ak wallet la.</small>
+      </a>
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-title">Recent Card Activity</div>
-    <div class="list-box" id="activityBox">
-      <div class="empty">Pa gen aktivite kat pou kounye a.</div>
+  <div class="section-card">
+    <div class="title" style="font-size:22px;">Card Overview</div>
+
+    <div class="mini-grid">
+      <div class="mini-card">
+        <div class="mini-label">Card Balance</div>
+        <div class="mini-value" id="cardBalance">0 HTG</div>
+      </div>
+
+      <div class="mini-card">
+        <div class="mini-label">Status</div>
+        <div class="mini-value" style="color:#4ade80;">Active</div>
+      </div>
     </div>
+
+    <div class="empty-box">
+      Lòt fonksyon tankou freeze / unfreeze, card limits, CVV ak billing details ka ajoute apre.
+    </div>
+
+    <a href="create-card.html" class="primary-btn">Kreye / Jere Kat</a>
   </div>
+
 </div>
 
 <div class="bottom-nav">
@@ -546,7 +399,7 @@
     <span>Transactions</span>
   </a>
 
-  <a href="giftcard.html" class="nav-item">
+  <a href="services.html" class="nav-item">
     <i class="fa-brands fa-bitcoin"></i>
     <span>Services</span>
   </a>
@@ -562,337 +415,17 @@
   </a>
 </div>
 
-<script src="app.js"></script>
 <script>
-  let cardVisible = false;
-
-  const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
-  const profileLetter = document.getElementById("profileLetter");
-
-  if(savedUser && savedUser.fullname){
-    profileLetter.innerText = savedUser.fullname.charAt(0).toUpperCase();
+  const user = JSON.parse(localStorage.getItem("fastpay_user") || "{}");
+  if(user.fullname){
+    document.getElementById("avatar").innerText = user.fullname[0].toUpperCase();
+    document.getElementById("cardHolder").innerText = user.fullname.toUpperCase();
   }
 
-  function getCurrentUser(){
-    if(window.FastPayV2 && FastPayV2.getCurrentUser){
-      return FastPayV2.getCurrentUser();
-    }
-    return savedUser;
+  if(user.balance){
+    document.getElementById("cardBalance").innerText = user.balance + " HTG";
   }
-
-  function getStoredCard(userId){
-    const allCards = JSON.parse(localStorage.getItem("fp_cards") || "[]");
-    return allCards.find(card => card.userId === userId) || null;
-  }
-
-  function saveUserCard(updatedCard){
-    const allCards = JSON.parse(localStorage.getItem("fp_cards") || "[]");
-    const index = allCards.findIndex(card => card.userId === updatedCard.userId);
-
-    if(index >= 0){
-      allCards[index] = updatedCard;
-    } else {
-      allCards.unshift(updatedCard);
-    }
-
-    localStorage.setItem("fp_cards", JSON.stringify(allCards));
-  }
-
-  function createCardFromApprovedRequest(user, request){
-    const existing = getStoredCard(user.id);
-    if(existing) return existing;
-
-    const cardData = {
-      id: "CARD_" + Date.now(),
-      userId: user.id,
-      number: "**** **** **** " + Math.floor(Math.random() * 9000 + 1000),
-      realNumber: "4587 1234 9876 " + Math.floor(Math.random() * 9000 + 1000),
-      name: (request.fullname || user.fullname || "FASTPAY USER").toUpperCase(),
-      exp: "12/29",
-      cvv: "392",
-      brand: (request.network || "Mastercard"),
-      status: "Active",
-      balance: 0,
-      cardType: request.cardType || "Virtual",
-      currency: request.currency || "USD",
-      createdAt: request.date || new Date().toLocaleString(),
-      dailyLimit: 25000,
-      monthlyLimit: 150000
-    };
-
-    saveUserCard(cardData);
-    return cardData;
-  }
-
-  function getUserCardRequest(userId){
-    if(window.FastPayV2 && FastPayV2.getCardRequests){
-      const requests = FastPayV2.getCardRequests() || [];
-      const mine = requests.filter(item => item.userId === userId);
-      return mine.length ? mine[0] : null;
-    }
-
-    const requests = JSON.parse(localStorage.getItem("fp_card_requests_v2") || "[]");
-    const mine = requests.filter(item => item.userId === userId);
-    return mine.length ? mine[0] : null;
-  }
-
-  function renderCard(){
-    const currentUser = getCurrentUser();
-    if(!currentUser || !currentUser.id){
-      document.getElementById("cardArea").innerHTML = `
-        <div class="empty-card-text">
-          <div class="empty-card-title">Ou poko konekte</div>
-          <div class="empty-card-sub">Tanpri login anvan pou wè kat ou.</div>
-          <a href="login.html" class="primary-btn">Login</a>
-        </div>
-      `;
-      return;
-    }
-
-    let card = getStoredCard(currentUser.id);
-    const request = getUserCardRequest(currentUser.id);
-
-    if(!card && request && String(request.status || "").toLowerCase() === "approved"){
-      card = createCardFromApprovedRequest(currentUser, request);
-    }
-
-    if(!card && request){
-      document.getElementById("cardArea").innerHTML = `
-        <div class="premium-card-box">
-          <div class="card-back"></div>
-
-          <div class="card-front">
-            <div class="card-brand">${(request.network || "Mastercard")}</div>
-            <div class="chip"></div>
-            <div class="card-balance">Card request</div>
-            <div class="card-amount">${request.amount || "1500 HTG"}</div>
-            <div class="card-number">**** **** **** ****</div>
-            <div class="card-meta">
-              <div>
-                <div class="meta-small">Holder</div>
-                <div class="meta-big">${(request.fullname || currentUser.fullname || "FASTPAY USER").toUpperCase()}</div>
-              </div>
-              <div>
-                <div class="meta-small">Status</div>
-                <div class="meta-big">${request.status || "Pending"}</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="empty-card-text">
-            <div class="empty-card-title">Card request in progress</div>
-            <div class="empty-card-sub">Demann kat ou a deja voye. Tanpri tann apwobasyon an.</div>
-          </div>
-        </div>
-      `;
-      document.getElementById("detailActions").style.display = "none";
-      return;
-    }
-
-    if(!card){
-      document.getElementById("cardArea").innerHTML = `
-        <div class="premium-card-box">
-          <div class="card-back"></div>
-
-          <div class="card-front">
-            <div class="card-brand">FastPay</div>
-            <div class="chip"></div>
-            <div class="card-balance">Virtual card</div>
-            <div class="card-amount">0 HTG</div>
-            <div class="card-number">**** **** **** ****</div>
-            <div class="card-meta">
-              <div>
-                <div class="meta-small">Holder</div>
-                <div class="meta-big">${(currentUser.fullname || "FASTPAY USER").toUpperCase()}</div>
-              </div>
-              <div class="mc-circles">
-                <span></span><span></span>
-              </div>
-            </div>
-          </div>
-
-          <div class="empty-card-text">
-            <div class="empty-card-title">Obtenez votre première carte</div>
-            <div class="empty-card-sub">Créez votre première carte pour activer votre compte.</div>
-            <a href="create-card.html" class="primary-btn">Commencer</a>
-          </div>
-        </div>
-      `;
-      document.getElementById("detailActions").style.display = "none";
-      return;
-    }
-
-    document.getElementById("cardArea").innerHTML = `
-      <div class="premium-card-box">
-        <div class="card-back"></div>
-
-        <div class="card-front">
-          <div class="card-brand">${card.brand || "Mastercard"}</div>
-          <div class="chip"></div>
-          <div class="card-balance">Available on card</div>
-          <div class="card-amount">${card.balance || 0} HTG</div>
-          <div class="card-number" id="cardNumberDisplay" data-masked="${card.number}" data-full="${card.realNumber || card.number}">
-            ${card.number}
-          </div>
-          <div class="card-meta">
-            <div>
-              <div class="meta-small">Holder</div>
-              <div class="meta-big">${card.name || "FASTPAY USER"}</div>
-            </div>
-            <div>
-              <div class="meta-small">Exp</div>
-              <div class="meta-big">${card.exp || "12/29"}</div>
-            </div>
-            <div class="mc-circles">
-              <span></span><span></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-
-    document.getElementById("detailActions").style.display = "flex";
-    document.getElementById("secretExp").innerText = card.exp || "12/29";
-    document.getElementById("secretCvv").innerText = card.cvv || "392";
-    document.getElementById("cardBalance").innerText = (card.balance || 0) + " HTG";
-    document.getElementById("walletBalance").innerText = ((currentUser.balance) || 0) + " HTG";
-    document.getElementById("dailyLimit").innerText = (card.dailyLimit || 25000) + " HTG";
-    document.getElementById("monthlyLimit").innerText = (card.monthlyLimit || 150000) + " HTG";
-  }
-
-  function toggleCardDetails(){
-    const numberEl = document.getElementById("cardNumberDisplay");
-    const secretBox = document.getElementById("secretBox");
-    if(!numberEl) return;
-
-    const masked = numberEl.getAttribute("data-masked");
-    const full = numberEl.getAttribute("data-full");
-
-    if(!cardVisible){
-      numberEl.innerText = full;
-      secretBox.style.display = "block";
-      cardVisible = true;
-    } else {
-      numberEl.innerText = masked;
-      secretBox.style.display = "none";
-      cardVisible = false;
-    }
-  }
-
-  function copyDisplayedCard(){
-    const numberEl = document.getElementById("cardNumberDisplay");
-    if(!numberEl) return;
-
-    const full = numberEl.getAttribute("data-full") || numberEl.innerText;
-    navigator.clipboard.writeText(full).then(() => {
-      alert("Card number copied");
-    });
-  }
-
-  function freezeCard(){
-    const currentUser = getCurrentUser();
-    if(!currentUser) return;
-    const card = getStoredCard(currentUser.id);
-    if(!card) return;
-
-    card.status = "Frozen";
-    saveUserCard(card);
-    renderCard();
-    renderActivity();
-    alert("Kat la freeze avèk siksè.");
-  }
-
-  function unfreezeCard(){
-    const currentUser = getCurrentUser();
-    if(!currentUser) return;
-    const card = getStoredCard(currentUser.id);
-    if(!card) return;
-
-    card.status = "Active";
-    saveUserCard(card);
-    renderCard();
-    renderActivity();
-    alert("Kat la aktive ankò avèk siksè.");
-  }
-
-  function loadCard(){
-    const currentUser = getCurrentUser();
-    if(!currentUser) return;
-    const card = getStoredCard(currentUser.id);
-    if(!card) return;
-
-    const amountText = prompt("Antre montan ou vle mete sou kat la (HTG):");
-    if(amountText === null) return;
-
-    const amount = parseInt(amountText);
-    if(!amount || amount <= 0){
-      alert("Montan an pa valab.");
-      return;
-    }
-
-    const users = JSON.parse(localStorage.getItem("fp_users") || "[]");
-    const userIndex = users.findIndex(u => u.id === currentUser.id);
-
-    if(userIndex >= 0){
-      const walletBalance = parseInt(users[userIndex].balance || 0);
-      if(walletBalance < amount){
-        alert("Wallet ou pa gen ase balans.");
-        return;
-      }
-      users[userIndex].balance = walletBalance - amount;
-      localStorage.setItem("fp_users", JSON.stringify(users));
-      localStorage.setItem("fastpay_user", JSON.stringify(users[userIndex]));
-    }
-
-    card.balance = parseInt(card.balance || 0) + amount;
-    saveUserCard(card);
-    renderCard();
-    renderActivity();
-    alert("Kat la rechaje avèk siksè.");
-  }
-
-  function renderActivity(){
-    const currentUser = getCurrentUser();
-    if(!currentUser || !window.FastPayV2 || !FastPayV2.getUserTransactions){
-      return;
-    }
-
-    const allTx = FastPayV2.getUserTransactions(currentUser.id) || [];
-    const cardTx = allTx.filter(tx =>
-      tx.type === "card-load" ||
-      tx.type === "card-request" ||
-      tx.type === "card-approved" ||
-      tx.type === "card-freeze" ||
-      tx.type === "card-unfreeze" ||
-      tx.type === "card-issued"
-    );
-
-    const box = document.getElementById("activityBox");
-
-    if(cardTx.length === 0){
-      box.innerHTML = `<div class="empty">Pa gen aktivite kat pou kounye a.</div>`;
-      return;
-    }
-
-    box.innerHTML = "";
-    cardTx.slice(0,5).forEach(function(tx){
-      box.innerHTML += `
-        <div class="list-item">
-          <div class="item-top">
-            <div>
-              <div class="item-title">${tx.service || "Card activity"}</div>
-              <div class="item-sub">${tx.date || ""}</div>
-            </div>
-            <div class="item-amount">${tx.amount || "0"}</div>
-          </div>
-        </div>
-      `;
-    });
-  }
-
-  renderCard();
-  renderActivity();
 </script>
 
 </body>
-      </html>
+  </html>
