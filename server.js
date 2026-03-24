@@ -479,7 +479,250 @@ app.get("/api/test-topup-pay", async (req, res) => {
       success: false,
       error: err.message
     });
+  }// CREATE WITHDRAW REQUEST
+app.post("/api/withdraw/request", async (req, res) => {
+  try {
+    const { userId, amount, method, destination, note } = req.body;
+
+    if (!userId || !amount || !method || !destination) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const userResult = await pool.query("SELECT * FROM users WHERE id=$1", [userId]);
+    const user = userResult.rows[0];
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (Number(amount) <= 0) {
+      return res.status(400).json({ error: "Invalid amount" });
+    }
+
+    if (Number(user.balance) < Number(amount)) {
+      return res.status(400).json({ error: "Insufficient balance" });
+    }
+
+    const result = await pool.query(
+      `INSERT INTO withdrawals (user_id, amount, method, destination, note, status)
+       VALUES ($1,$2,$3,$4,$5,'pending')
+       RETURNING *`,
+      [userId, amount, method, destination, note || ""]
+    );
+
+    res.json({
+      success: true,
+      message: "Withdraw request created",
+      withdrawal: result.rows[0]
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
+});
+
+// APPROVE WITHDRAW
+app.post("/api/withdraw/approve", async (req, res) => {
+  try {
+    const { withdrawalId } = req.body;
+
+    if (!withdrawalId) {
+      return res.status(400).json({ error: "withdrawalId required" });
+    }
+
+    const wdResult = await pool.query(
+      "SELECT * FROM withdrawals WHERE id=$1",
+      [withdrawalId]
+    );
+    const withdrawal = wdResult.rows[0];
+
+    if (!withdrawal) {
+      return res.status(404).json({ error: "Withdrawal not found" });
+    }
+
+    if (withdrawal.status !== "pending") {
+      return res.status(400).json({ error: `Withdrawal already ${withdrawal.status}` });
+    }
+
+    const userResult = await pool.query(
+      "SELECT * FROM users WHERE id=$1",
+      [withdrawal.user_id]
+    );
+    const user = userResult.rows[0];
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (Number(user.balance) < Number(withdrawal.amount)) {
+      return res.status(400).json({ error: "Insufficient balance at approval time" });
+    }
+
+    await pool.query(
+      "UPDATE users SET balance = balance - $1 WHERE id=$2",
+      [withdrawal.amount, withdrawal.user_id]
+    );
+
+    await pool.query(
+      "UPDATE withdrawals SET status='approved', approved_at=CURRENT_TIMESTAMP WHERE id=$1",
+      [withdrawalId]
+    );
+
+    await pool.query(
+      `INSERT INTO transactions (user_id, type, amount, final_amount, status)
+       VALUES ($1,'withdraw',$2,$2,'completed')`,
+      [withdrawal.user_id, withdrawal.amount]
+    );
+
+    res.json({
+      success: true,
+      message: "Withdrawal approved and balance deducted",
+      withdrawalId
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// REJECT WITHDRAW
+app.post("/api/withdraw/reject", async (req, res) => {
+  try {
+    const { withdrawalId } = req.body;
+
+    if (!withdrawalId) {
+      return res.status(400).json({ error: "withdrawalId required" });
+    }
+
+    const wdResult = await pool.query(
+      "SELECT * FROM withdrawals WHERE id=$1",
+      [withdrawalId]
+    );
+    const withdrawal = wdResult.rows[0];
+
+    if (!withdrawal) {
+      return res.status(404).json({ error: "Withdrawal not found" });
+    }
+
+    if (withdrawal.status !== "pending") {
+      return res.status(400).json({ error: `Withdrawal already ${withdrawal.status}` });
+    }
+
+    await pool.query(
+      "UPDATE withdrawals SET status='rejected', rejected_at=CURRENT_TIMESTAMP WHERE id=$1",
+      [withdrawalId]
+    );
+
+    res.json({
+      success: true,
+      message: "Withdrawal rejected",
+      withdrawalId
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET USER WITHDRAWALS
+app.get("/api/withdrawals/:userId", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM withdrawals WHERE user_id=$1 ORDER BY id DESC",
+      [req.params.userId]
+    );
+
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// TEST WITHDRAW REQUEST FOR CHROME
+app.get("/api/test-withdraw-request", async (req, res) => {
+  try {
+    const userId = 1;
+    const amount = 100;
+    const method = "MonCash";
+    const destination = "50937000000";
+    const note = "Test withdraw request";
+
+    const userResult = await pool.query("SELECT * FROM users WHERE id=$1", [userId]);
+    const user = userResult.rows[0];
+
+    if (!user) {
+      return res.status(404).json({ error: "User 1 not found" });
+    }
+
+    if (Number(user.balance) < Number(amount)) {
+      return res.status(400).json({ error: "Insufficient balance" });
+    }
+
+    const result = await pool.query(
+      `INSERT INTO withdrawals (user_id, amount, method, destination, note, status)
+       VALUES ($1,$2,$3,$4,$5,'pending')
+       RETURNING *`,
+      [userId, amount, method, destination, note]
+    );
+
+    res.json({
+      success: true,
+      message: "Withdraw request created",
+      withdrawal: result.rows[0]
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// TEST WITHDRAW APPROVE FOR CHROME
+app.get("/api/test-withdraw-approve", async (req, res) => {
+  try {
+    const wdResult = await pool.query(
+      "SELECT * FROM withdrawals WHERE user_id=1 AND status='pending' ORDER BY id DESC LIMIT 1"
+    );
+    const withdrawal = wdResult.rows[0];
+
+    if (!withdrawal) {
+      return res.status(404).json({ error: "No pending withdrawal found" });
+    }
+
+    const userResult = await pool.query(
+      "SELECT * FROM users WHERE id=$1",
+      [withdrawal.user_id]
+    );
+    const user = userResult.rows[0];
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (Number(user.balance) < Number(withdrawal.amount)) {
+      return res.status(400).json({ error: "Insufficient balance" });
+    }
+
+    await pool.query(
+      "UPDATE users SET balance = balance - $1 WHERE id=$2",
+      [withdrawal.amount, withdrawal.user_id]
+    );
+
+    await pool.query(
+      "UPDATE withdrawals SET status='approved', approved_at=CURRENT_TIMESTAMP WHERE id=$1",
+      [withdrawal.id]
+    );
+
+    await pool.query(
+      `INSERT INTO transactions (user_id, type, amount, final_amount, status)
+       VALUES ($1,'withdraw',$2,$2,'completed')`,
+      [withdrawal.user_id, withdrawal.amount]
+    );
+
+    res.json({
+      success: true,
+      message: "Withdrawal approved",
+      withdrawalId: withdrawal.id
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 });
 
 const PORT = process.env.PORT || 3000;
