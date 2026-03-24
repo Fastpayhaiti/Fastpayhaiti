@@ -160,12 +160,10 @@ async function deliverService(order) {
   throw new Error("Unsupported service");
 }
 
-// HOME
 app.get("/", (req, res) => {
   res.send("FastPay Backend Running 🚀");
 });
 
-// TEST RELOADLY
 app.get("/test-reloadly", async (req, res) => {
   try {
     const token = await getReloadlyToken(RELOADLY_TOPUP_AUDIENCE);
@@ -185,7 +183,6 @@ app.get("/test-reloadly", async (req, res) => {
   }
 });
 
-// GET WALLET
 app.get("/api/wallet/:id", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM users WHERE id=$1", [req.params.id]);
@@ -195,7 +192,6 @@ app.get("/api/wallet/:id", async (req, res) => {
   }
 });
 
-// DEPOSIT
 app.post("/api/deposit", async (req, res) => {
   try {
     const { userId, amount } = req.body;
@@ -218,7 +214,6 @@ app.post("/api/deposit", async (req, res) => {
   }
 });
 
-// CREATE ORDER
 app.post("/api/checkout/create", async (req, res) => {
   try {
     const { userId, service, productName, amount, customerData } = req.body;
@@ -250,7 +245,6 @@ app.post("/api/checkout/create", async (req, res) => {
   }
 });
 
-// PAY + AUTO DELIVER
 app.post("/api/checkout/pay-and-deliver", async (req, res) => {
   try {
     const { orderId } = req.body;
@@ -328,4 +322,167 @@ app.post("/api/checkout/pay-and-deliver", async (req, res) => {
         providerReference: delivery.providerReference,
         delivery: delivery.providerResponse
       });
-                                 }
+    } catch (deliveryErr) {
+      await pool.query(
+        "UPDATE orders SET status='delivery_failed' WHERE id=$1",
+        [order.id]
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: "Payment success but delivery failed",
+        orderId: order.id,
+        error: deliveryErr.message
+      });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/orders/:userId", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM orders WHERE user_id=$1 ORDER BY id DESC",
+      [req.params.userId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/transactions/:userId", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM transactions WHERE user_id=$1 ORDER BY id DESC",
+      [req.params.userId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/test-topup-create", async (req, res) => {
+  try {
+    const userResult = await pool.query("SELECT * FROM users WHERE id=1");
+    const user = userResult.rows[0];
+
+    if (!user) {
+      return res.status(404).json({ error: "User 1 not found" });
+    }
+
+    const orderResult = await pool.query(
+      `INSERT INTO orders (user_id, service, product_name, amount, status, customer_data)
+       VALUES (1,'topup','Digicel Haiti',10,'pending',$1)
+       RETURNING *`,
+      [
+        JSON.stringify({
+          operatorId: 173,
+          countryCode: "HT",
+          phone: "50912345678"
+        })
+      ]
+    );
+
+    res.json({
+      success: true,
+      message: "Topup test order created",
+      order: orderResult.rows[0]
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
+  }
+});
+
+app.get("/api/test-topup-pay", async (req, res) => {
+  try {
+    const orderResult = await pool.query(
+      "SELECT * FROM orders WHERE user_id=1 AND service='topup' ORDER BY id DESC LIMIT 1"
+    );
+
+    const order = orderResult.rows[0];
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        error: "No topup order found"
+      });
+    }
+
+    if (order.status !== "pending") {
+      return res.status(400).json({
+        success: false,
+        error: `Latest topup order is '${order.status}', not pending`
+      });
+    }
+
+    const userResult = await pool.query("SELECT * FROM users WHERE id=1");
+    const user = userResult.rows[0];
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        error: "User 1 not found"
+      });
+    }
+
+    if (Number(user.balance) < Number(order.amount)) {
+      return res.status(400).json({
+        success: false,
+        error: "Insufficient balance"
+      });
+    }
+
+    await pool.query(
+      "UPDATE users SET balance = balance - $1 WHERE id = $2",
+      [order.amount, order.user_id]
+    );
+
+    await pool.query(
+      "UPDATE orders SET status='paid' WHERE id=$1",
+      [order.id]
+    );
+
+    await pool.query(
+      `INSERT INTO transactions (user_id, type, amount, final_amount, status)
+       VALUES ($1,'payment',$2,$2,'completed')`,
+      [order.user_id, order.amount]
+    );
+
+    const delivery = await deliverTopup(order);
+
+    await pool.query(
+      "UPDATE orders SET status='delivered', provider_reference=$1 WHERE id=$2",
+      [delivery.providerReference, order.id]
+    );
+
+    await pool.query(
+      `INSERT INTO transactions (user_id, type, amount, final_amount, status)
+       VALUES ($1,'delivery',$2,$2,'completed')`,
+      [order.user_id, order.amount]
+    );
+
+    res.json({
+      success: true,
+      message: "Topup delivered 🚀",
+      orderId: order.id,
+      providerReference: delivery.providerReference,
+      delivery: delivery.providerResponse
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`);
+});
