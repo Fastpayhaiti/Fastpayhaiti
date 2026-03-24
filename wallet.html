@@ -1,69 +1,161 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wallet - FastPay</title>
-  <link rel="stylesheet" href="/Fastpayhaiti/css/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    body{
+      background:#05070c;
+      color:white;
+      font-family:Arial;
+      margin:0;
+    }
+
+    .app{
+      max-width:430px;
+      margin:auto;
+      padding:20px;
+    }
+
+    .title{
+      font-size:28px;
+      font-weight:bold;
+      margin-bottom:20px;
+    }
+
+    .card{
+      background:#11172a;
+      padding:20px;
+      border-radius:20px;
+      margin-bottom:20px;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .balance{
+      font-size:32px;
+      font-weight:bold;
+    }
+
+    .label{
+      color:#8b93a7;
+      font-size:14px;
+    }
+
+    .actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:15px;
+    }
+
+    .btn{
+      padding:15px;
+      border-radius:15px;
+      text-align:center;
+      text-decoration:none;
+      font-weight:bold;
+    }
+
+    .deposit{background:#2f3cff;}
+    .withdraw{background:#ff3c3c;}
+
+    .list{
+      margin-top:10px;
+    }
+
+    .tx{
+      background:#11172a;
+      padding:15px;
+      border-radius:15px;
+      margin-bottom:10px;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .bottom-nav{
+      position:fixed;
+      bottom:0;
+      width:100%;
+      max-width:430px;
+      background:#04060a;
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      padding:10px;
+    }
+
+    .nav-item{
+      text-align:center;
+      color:#8b93a7;
+      font-size:12px;
+      text-decoration:none;
+    }
+
+    .nav-item.active{
+      color:#3b4cff;
+    }
+  </style>
 </head>
+
 <body>
-  <div class="page-content">
-    <div class="header-card">
-      <h1>Wallet</h1>
-      <div class="sub">Gade balans ou epi ajoute lajan.</div>
-    </div>
 
-    <div class="panel">
-      <label>User ID</label>
-      <input id="userId" value="1">
-      <button onclick="loadWallet()">Chaje Wallet</button>
-      <div id="balance" class="balance-box">$0.00</div>
-      <div id="userInfo" class="sub"></div>
-    </div>
+<div class="app">
 
-    <div class="panel">
-      <label>Ajoute lajan</label>
-      <input id="amount" placeholder="Eg: 20">
-      <button onclick="addMoney()">Ajoute Lajan</button>
-    </div>
+  <div class="title">Wallet</div>
 
-    <div class="panel">
-      <div id="result" class="result">Rezilta ap parèt isit...</div>
+  <div class="card">
+    <div class="label">Balans</div>
+    <div class="balance" id="balance">0 HTG</div>
+
+    <div class="actions">
+      <a href="deposit.html" class="btn deposit">Deposit</a>
+      <a href="withdraw.html" class="btn withdraw">Withdraw</a>
     </div>
   </div>
 
-  <script>
-    async function loadWallet() {
-      const id = document.getElementById("userId").value;
-      const res = await fetch("https://fastpayhaiti.onrender.com/api/wallet/" + id);
-      const data = await res.json();
+  <div class="card">
+    <div class="label">Dènye tranzaksyon</div>
+    <div id="txList" class="list">Loading...</div>
+  </div>
 
-      document.getElementById("balance").innerText =
-        "$" + Number(data.balance || 0).toFixed(2);
+</div>
 
-      document.getElementById("userInfo").innerText =
-        `${data.name || ""} | ${data.email || ""}`;
+<div class="bottom-nav">
+  <a href="dashboard.html" class="nav-item">Home</a>
+  <a href="statement.html" class="nav-item">Tx</a>
+  <a href="services.html" class="nav-item">Services</a>
+  <a href="card-dashboard.html" class="nav-item">Cards</a>
+  <a href="wallet.html" class="nav-item active">Wallet</a>
+</div>
 
-      document.getElementById("result").innerText =
-        JSON.stringify(data, null, 2);
-    }
+<script>
+const API = "https://fastpayhaiti.onrender.com";
+const user = JSON.parse(localStorage.getItem("fastpay_user") || "{}");
 
-    async function addMoney() {
-      const id = document.getElementById("userId").value;
-      const amount = document.getElementById("amount").value;
+async function loadWallet(){
+  const res = await fetch(`${API}/api/wallet/${user.id || 1}`);
+  const data = await res.json();
 
-      const res = await fetch("https://fastpayhaiti.onrender.com/api/deposit", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ userId: id, amount })
-      });
+  document.getElementById("balance").innerText = (data.balance || 0)+" HTG";
+}
 
-      const data = await res.json();
-      document.getElementById("result").innerText = JSON.stringify(data, null, 2);
-      loadWallet();
-    }
+async function loadTx(){
+  const res = await fetch(`${API}/api/transactions/${user.id || 1}`);
+  const data = await res.json();
 
-    loadWallet();
-  </script>
+  document.getElementById("txList").innerHTML = data.map(tx => `
+    <div class="tx">
+      <strong>${tx.type}</strong><br>
+      ${tx.amount} HTG<br>
+      <small>${tx.status}</small>
+    </div>
+  `).join("");
+}
+
+loadWallet();
+loadTx();
+</script>
+
 </body>
 </html>
