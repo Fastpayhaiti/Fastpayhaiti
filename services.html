@@ -1,69 +1,124 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Services - FastPay</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    body{
+      background:#05070c;
+      color:white;
+      font-family:Arial;
+      margin:0;
+    }
+
+    .app{
+      max-width:430px;
+      margin:auto;
+      padding:20px;
+    }
+
+    .title{
+      font-size:28px;
+      font-weight:bold;
+      margin-bottom:20px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:15px;
+    }
+
+    .card{
+      background:#11172a;
+      padding:20px;
+      border-radius:20px;
+      text-decoration:none;
+      color:white;
+      text-align:center;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .card:hover{
+      background:#2f3cff;
+    }
+
+    .card i{
+      font-size:28px;
+      margin-bottom:10px;
+    }
+
+    .bottom-nav{
+      position:fixed;
+      bottom:0;
+      width:100%;
+      max-width:430px;
+      background:#04060a;
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      padding:10px;
+    }
+
+    .nav-item{
+      text-align:center;
+      color:#8b93a7;
+      font-size:12px;
+      text-decoration:none;
+    }
+
+    .nav-item.active{
+      color:#3b4cff;
+    }
+  </style>
 </head>
+
 <body>
 
-  <div class="page-content">
+<div class="app">
 
-    <div class="topbar">
-      <button class="menu-toggle-btn">☰</button>
-      <div class="avatar-circle">A</div>
-    </div>
+  <div class="title">Services</div>
 
-    <div class="header-card">
-      <div class="sub">FastPay</div>
-      <h1 class="hero-title">Services ⚡</h1>
-      <div class="sub">Chwazi sèvis ou vle itilize fasil.</div>
-    </div>
+  <div class="grid">
 
-    <div class="panel">
-      <div class="grid services-grid">
+    <a href="topup.html" class="card">
+      <i class="fa-solid fa-mobile"></i>
+      <div>Topup</div>
+    </a>
 
-        <a href="./topup.html" class="service-card pro-card">
-          <div class="service-icon">📱</div>
-          <div class="service-title">Topup</div>
-          <div class="service-text">Recharge airtime ak done.</div>
-        </a>
+    <a href="giftcards.html" class="card">
+      <i class="fa-solid fa-gift"></i>
+      <div>Giftcards</div>
+    </a>
 
-        <a href="./giftcards.html" class="service-card pro-card">
-          <div class="service-icon">🎁</div>
-          <div class="service-title">Giftcard</div>
-          <div class="service-text">Achte gift cards fasil.</div>
-        </a>
+    <a href="freefire.html" class="card">
+      <i class="fa-solid fa-gamepad"></i>
+      <div>FreeFire</div>
+    </a>
 
-        <a href="./netflix.html" class="service-card pro-card">
-          <div class="service-icon">🎬</div>
-          <div class="service-title">Netflix</div>
-          <div class="service-text">Achte plan Netflix.</div>
-        </a>
+    <a href="netflix.html" class="card">
+      <i class="fa-solid fa-film"></i>
+      <div>Netflix</div>
+    </a>
 
-        <a href="./primevideo.html" class="service-card pro-card">
-          <div class="service-icon">📺</div>
-          <div class="service-title">Prime Video</div>
-          <div class="service-text">Abònman Prime Video.</div>
-        </a>
-
-        <a href="./freefire.html" class="service-card pro-card">
-          <div class="service-icon">🔥</div>
-          <div class="service-title">FreeFire</div>
-          <div class="service-text">Recharge diamond FreeFire.</div>
-        </a>
-
-      </div>
-    </div>
+    <a href="primevideo.html" class="card">
+      <i class="fa-solid fa-tv"></i>
+      <div>Prime Video</div>
+    </a>
 
   </div>
 
-  <div id="nav-root"></div>
+</div>
 
-  <script src="js/app.js"></script>
-  <script>
-    loadPageNav("services");
-  </script>
+<div class="bottom-nav">
+  <a href="dashboard.html" class="nav-item">Home</a>
+  <a href="statement.html" class="nav-item">Tx</a>
+  <a href="services.html" class="nav-item active">Services</a>
+  <a href="card-dashboard.html" class="nav-item">Cards</a>
+  <a href="wallet.html" class="nav-item">Wallet</a>
+</div>
+
 </body>
 </html>
