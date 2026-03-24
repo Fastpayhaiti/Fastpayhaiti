@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreeFire - FastPay</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}
+    body{background:#05070c;color:#fff;}
+    .app{
+      max-width:430px;margin:auto;padding:18px 18px 120px;
+      background:
+      radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
+      radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
+      #05070c;
+    }
+
+    .topbar{display:flex;justify-content:space-between;margin-bottom:18px;}
+    .back-btn,.avatar{
+      width:46px;height:46px;border-radius:14px;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,0.06);color:#fff;
+    }
+
+    .card{
+      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:22px;padding:18px;margin-bottom:18px;
+    }
+
+    .title{font-size:30px;font-weight:800;margin-bottom:10px;}
+    .sub{color:#8b93a7;font-size:14px;margin-bottom:10px;}
+
+    .field{margin-bottom:14px;}
+    .field label{font-size:14px;color:#c7cfdd;margin-bottom:6px;display:block;}
+    .input{
+      width:100%;padding:14px;border-radius:14px;
+      background:#11172a;border:1px solid rgba(255,255,255,0.08);color:#fff;
+    }
+
+    .grid{
+      display:grid;grid-template-columns:1fr 1fr;gap:10px;
+    }
+
+    .chip{
+      padding:16px;border-radius:16px;
+      background:#11172a;border:1px solid rgba(255,255,255,0.08);
+      cursor:pointer;
+    }
+
+    .chip.active{
+      background:#2f3cff;
+      box-shadow:0 10px 20px rgba(47,60,255,0.3);
+    }
+
+    .primary-btn{
+      width:100%;padding:16px;border-radius:16px;
+      background:#2f3cff;color:#fff;font-weight:bold;
+      border:none;margin-top:10px;
+    }
+
+    .summary-row{
+      display:flex;justify-content:space-between;
+      padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);
+    }
+
+    .bottom-nav{
+      position:fixed;bottom:0;width:100%;max-width:430px;
+      background:#04060a;display:grid;grid-template-columns:repeat(5,1fr);
+      padding:10px;
+    }
+
+    .nav-item{
+      text-align:center;color:#8b93a7;font-size:12px;text-decoration:none;
+    }
+
+    .nav-item.active{color:#3b4cff;}
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <a href="services.html" class="back-btn"><i class="fa fa-arrow-left"></i></a>
+    <div class="avatar" id="avatar">A</div>
+  </div>
+
+  <div class="card">
+    <div class="title">FreeFire</div>
+    <div class="sub">Recharge diamonds FreeFire fasil ak FastPay</div>
+  </div>
+
+  <div class="card">
+    <div class="field">
+      <label>User ID</label>
+      <input id="userId" class="input" value="1">
+    </div>
+
+    <div class="field">
+      <label>Player ID</label>
+      <input id="playerId" class="input" placeholder="Eg: 123456789">
+    </div>
+
+    <div class="field">
+      <label>Chwazi Diamonds</label>
+
+      <div class="grid">
+        <div class="chip" onclick="selectPack(this, 1, '100 Diamonds', 5)">100 💎</div>
+        <div class="chip" onclick="selectPack(this, 2, '310 Diamonds', 10)">310 💎</div>
+        <div class="chip" onclick="selectPack(this, 3, '520 Diamonds', 15)">520 💎</div>
+        <div class="chip" onclick="selectPack(this, 4, '1060 Diamonds', 30)">1060 💎</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="summary-row">
+      <span>Pack</span>
+      <span id="packName">--</span>
+    </div>
+
+    <div class="summary-row">
+      <span>Player ID</span>
+      <span id="playerText">--</span>
+    </div>
+
+    <div class="summary-row">
+      <span>Montan</span>
+      <span id="amountText">0 HTG</span>
+    </div>
+
+    <button class="primary-btn" onclick="goCheckout()">Kontinye</button>
+  </div>
+
+</div>
+
+<div class="bottom-nav">
+  <a href="dashboard.html" class="nav-item">Home</a>
+  <a href="statement.html" class="nav-item">Tx</a>
+  <a href="services.html" class="nav-item active">Services</a>
+  <a href="card-dashboard.html" class="nav-item">Cards</a>
+  <a href="wallet.html" class="nav-item">Wallet</a>
+</div>
+
+<script>
+const user = JSON.parse(localStorage.getItem("fastpay_user") || "{}");
+if(user.fullname){
+  document.getElementById("avatar").innerText = user.fullname[0];
+  document.getElementById("userId").value = user.id || 1;
+}
+
+let selected = null;
+
+function selectPack(el,id,name,amount){
+  document.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"));
+  el.classList.add("active");
+
+  selected = {id,name,amount};
+  update();
+}
+
+function update(){
+  document.getElementById("packName").innerText = selected?.name || "--";
+  document.getElementById("playerText").innerText =
+    document.getElementById("playerId").value || "--";
+  document.getElementById("amountText").innerText =
+    (selected?.amount || 0)+" HTG";
+}
+
+document.getElementById("playerId").addEventListener("input",update);
+
+function goCheckout(){
+  const playerId = document.getElementById("playerId").value;
+
+  if(!selected) return alert("Chwazi pack");
+  if(!playerId) return alert("Mete Player ID");
+
+  const data = {
+    userId: Number(document.getElementById("userId").value),
+    service:"freefire",
+    productName:selected.name,
+    amount:selected.amount,
+    customerData:{
+      productId:selected.id,
+      playerId:playerId
+    }
+  };
+
+  localStorage.setItem("fastpay_checkout", JSON.stringify(data));
+  window.location.href="checkout.html";
+}
+</script>
+
+</body>
+  </html>
