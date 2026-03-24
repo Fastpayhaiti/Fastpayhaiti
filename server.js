@@ -12,27 +12,27 @@ const pool = new Pool({
 
 const RELOADLY_CLIENT_ID = process.env.RELOADLY_CLIENT_ID;
 const RELOADLY_CLIENT_SECRET = process.env.RELOADLY_CLIENT_SECRET;
-const RELOADLY_ENV = process.env.RELOADLY_ENV || "sandbox";
+const RELOADLY_ENV = (process.env.RELOADLY_ENV || "sandbox").toLowerCase();
 
 const RELOADLY_AUTH_URL = "https://auth.reloadly.com/oauth/token";
 
 const RELOADLY_TOPUP_AUDIENCE =
-  RELOADLY_ENV === "live"
+  RELOADLY_ENV === "live" || RELOADLY_ENV === "production"
     ? "https://topups.reloadly.com"
     : "https://topups-sandbox.reloadly.com";
 
 const RELOADLY_GIFTCARD_AUDIENCE =
-  RELOADLY_ENV === "live"
+  RELOADLY_ENV === "live" || RELOADLY_ENV === "production"
     ? "https://giftcards.reloadly.com"
     : "https://giftcards-sandbox.reloadly.com";
 
 const RELOADLY_TOPUP_BASE =
-  RELOADLY_ENV === "live"
+  RELOADLY_ENV === "live" || RELOADLY_ENV === "production"
     ? "https://topups.reloadly.com"
     : "https://topups-sandbox.reloadly.com";
 
 const RELOADLY_GIFTCARD_BASE =
-  RELOADLY_ENV === "live"
+  RELOADLY_ENV === "live" || RELOADLY_ENV === "production"
     ? "https://giftcards.reloadly.com"
     : "https://giftcards-sandbox.reloadly.com";
 
@@ -53,7 +53,12 @@ async function getReloadlyToken(audience) {
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.message || data.error_description || "Reloadly auth failed");
+    throw new Error(
+      data.message ||
+      data.error_description ||
+      data.error ||
+      "Reloadly auth failed"
+    );
   }
 
   return data.access_token;
@@ -86,12 +91,20 @@ async function deliverTopup(order) {
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.message || "Topup delivery failed");
+    throw new Error(
+      data.message ||
+      data.errorCode ||
+      data.error ||
+      "Topup delivery failed"
+    );
   }
 
   return {
     providerReference:
-      data.transactionId || data.transaction_id || data.customIdentifier || `TOPUP-${order.id}`,
+      data.transactionId ||
+      data.transaction_id ||
+      data.customIdentifier ||
+      `TOPUP-${order.id}`,
     providerResponse: data
   };
 }
@@ -122,12 +135,20 @@ async function deliverGiftcard(order) {
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.message || "Giftcard delivery failed");
+    throw new Error(
+      data.message ||
+      data.errorCode ||
+      data.error ||
+      "Giftcard delivery failed"
+    );
   }
 
   return {
     providerReference:
-      data.orderId || data.id || data.customIdentifier || `GIFT-${order.id}`,
+      data.orderId ||
+      data.id ||
+      data.customIdentifier ||
+      `GIFT-${order.id}`,
     providerResponse: data
   };
 }
@@ -160,10 +181,12 @@ async function deliverService(order) {
   throw new Error("Unsupported service");
 }
 
+// HOME
 app.get("/", (req, res) => {
   res.send("FastPay Backend Running 🚀");
 });
 
+// TEST RELOADLY
 app.get("/test-reloadly", async (req, res) => {
   try {
     const token = await getReloadlyToken(RELOADLY_TOPUP_AUDIENCE);
@@ -183,6 +206,7 @@ app.get("/test-reloadly", async (req, res) => {
   }
 });
 
+// GET WALLET
 app.get("/api/wallet/:id", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM users WHERE id=$1", [req.params.id]);
@@ -192,9 +216,25 @@ app.get("/api/wallet/:id", async (req, res) => {
   }
 });
 
+// DEPOSIT
 app.post("/api/deposit", async (req, res) => {
   try {
     const { userId, amount } = req.body;
+
+    if (!userId || !amount) {
+      return res.status(400).json({ error: "userId and amount required" });
+    }
+
+    if (Number(amount) <= 0) {
+      return res.status(400).json({ error: "Invalid amount" });
+    }
+
+    const userResult = await pool.query("SELECT * FROM users WHERE id=$1", [userId]);
+    const user = userResult.rows[0];
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
     await pool.query(
       "UPDATE users SET balance = balance + $1 WHERE id=$2",
@@ -214,6 +254,7 @@ app.post("/api/deposit", async (req, res) => {
   }
 });
 
+// CREATE ORDER
 app.post("/api/checkout/create", async (req, res) => {
   try {
     const { userId, service, productName, amount, customerData } = req.body;
@@ -245,6 +286,7 @@ app.post("/api/checkout/create", async (req, res) => {
   }
 });
 
+// PAY + AUTO DELIVER
 app.post("/api/checkout/pay-and-deliver", async (req, res) => {
   try {
     const { orderId } = req.body;
@@ -340,6 +382,7 @@ app.post("/api/checkout/pay-and-deliver", async (req, res) => {
   }
 });
 
+// GET USER ORDERS
 app.get("/api/orders/:userId", async (req, res) => {
   try {
     const result = await pool.query(
@@ -352,6 +395,7 @@ app.get("/api/orders/:userId", async (req, res) => {
   }
 });
 
+// GET USER TRANSACTIONS
 app.get("/api/transactions/:userId", async (req, res) => {
   try {
     const result = await pool.query(
@@ -364,6 +408,7 @@ app.get("/api/transactions/:userId", async (req, res) => {
   }
 });
 
+// TEST CREATE TOPUP FOR CHROME
 app.get("/api/test-topup-create", async (req, res) => {
   try {
     const userResult = await pool.query("SELECT * FROM users WHERE id=1");
@@ -399,6 +444,7 @@ app.get("/api/test-topup-create", async (req, res) => {
   }
 });
 
+// TEST PAY + DELIVERY FOR CHROME
 app.get("/api/test-topup-pay", async (req, res) => {
   try {
     const orderResult = await pool.query(
@@ -479,7 +525,10 @@ app.get("/api/test-topup-pay", async (req, res) => {
       success: false,
       error: err.message
     });
-  }// CREATE WITHDRAW REQUEST
+  }
+});
+
+// CREATE WITHDRAW REQUEST
 app.post("/api/withdraw/request", async (req, res) => {
   try {
     const { userId, amount, method, destination, note } = req.body;
@@ -488,7 +537,10 @@ app.post("/api/withdraw/request", async (req, res) => {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    const userResult = await pool.query("SELECT * FROM users WHERE id=$1", [userId]);
+    const userResult = await pool.query(
+      "SELECT * FROM users WHERE id=$1",
+      [userId]
+    );
     const user = userResult.rows[0];
 
     if (!user) {
@@ -516,7 +568,10 @@ app.post("/api/withdraw/request", async (req, res) => {
       withdrawal: result.rows[0]
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
   }
 });
 
@@ -540,7 +595,9 @@ app.post("/api/withdraw/approve", async (req, res) => {
     }
 
     if (withdrawal.status !== "pending") {
-      return res.status(400).json({ error: `Withdrawal already ${withdrawal.status}` });
+      return res.status(400).json({
+        error: `Withdrawal already ${withdrawal.status}`
+      });
     }
 
     const userResult = await pool.query(
@@ -554,7 +611,9 @@ app.post("/api/withdraw/approve", async (req, res) => {
     }
 
     if (Number(user.balance) < Number(withdrawal.amount)) {
-      return res.status(400).json({ error: "Insufficient balance at approval time" });
+      return res.status(400).json({
+        error: "Insufficient balance at approval time"
+      });
     }
 
     await pool.query(
@@ -579,7 +638,10 @@ app.post("/api/withdraw/approve", async (req, res) => {
       withdrawalId
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
   }
 });
 
@@ -603,7 +665,9 @@ app.post("/api/withdraw/reject", async (req, res) => {
     }
 
     if (withdrawal.status !== "pending") {
-      return res.status(400).json({ error: `Withdrawal already ${withdrawal.status}` });
+      return res.status(400).json({
+        error: `Withdrawal already ${withdrawal.status}`
+      });
     }
 
     await pool.query(
@@ -617,7 +681,10 @@ app.post("/api/withdraw/reject", async (req, res) => {
       withdrawalId
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
   }
 });
 
@@ -631,7 +698,10 @@ app.get("/api/withdrawals/:userId", async (req, res) => {
 
     res.json(result.rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
   }
 });
 
@@ -644,7 +714,10 @@ app.get("/api/test-withdraw-request", async (req, res) => {
     const destination = "50937000000";
     const note = "Test withdraw request";
 
-    const userResult = await pool.query("SELECT * FROM users WHERE id=$1", [userId]);
+    const userResult = await pool.query(
+      "SELECT * FROM users WHERE id=$1",
+      [userId]
+    );
     const user = userResult.rows[0];
 
     if (!user) {
@@ -668,7 +741,10 @@ app.get("/api/test-withdraw-request", async (req, res) => {
       withdrawal: result.rows[0]
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
   }
 });
 
@@ -720,9 +796,11 @@ app.get("/api/test-withdraw-approve", async (req, res) => {
       withdrawalId: withdrawal.id
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
   }
-});
 });
 
 const PORT = process.env.PORT || 3000;
