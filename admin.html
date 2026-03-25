@@ -1,503 +1,288 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FastPay Premium Admin</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - FastPay</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      font-family:Arial,sans-serif;
-    }
-
-    body{
-      background:#05070c;
-      color:#ffffff;
-      min-height:100vh;
-    }
-
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+    body{background:#05070c;color:#fff;min-height:100vh}
     .app{
-      max-width:430px;
-      margin:auto;
-      min-height:100vh;
-      padding:18px 18px 110px;
+      max-width:430px;margin:auto;min-height:100vh;padding:18px 18px 120px;
       background:
         radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
         radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
         #05070c;
     }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:18px;
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .back-btn,.avatar{
+      width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,0.06);color:#fff;text-decoration:none;font-size:18px
     }
-
-    .left-top{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .back-btn{
-      width:48px;
-      height:48px;
-      border-radius:14px;
-      background:rgba(255,255,255,0.06);
-      color:#ffffff;
-      font-size:22px;
-      text-decoration:none;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    .page-title{
-      font-size:24px;
-      font-weight:800;
-    }
-
-    .profile-avatar{
-      width:48px;
-      height:48px;
-      border-radius:50%;
-      background:rgba(255,255,255,0.08);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:22px;
-      font-weight:700;
-    }
-
-    .hero-card{
-      background:linear-gradient(135deg,#0d1117,#1c2330);
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:28px;
-      padding:22px;
-      margin-bottom:22px;
-      box-shadow:0 22px 45px rgba(0,0,0,0.35);
-      position:relative;
-      overflow:hidden;
-    }
-
-    .hero-card::before{
-      content:"";
-      position:absolute;
-      width:180px;
-      height:180px;
-      border-radius:50%;
-      background:rgba(217,60,75,0.10);
-      top:-40px;
-      right:-40px;
-    }
-
-    .hero-label{
-      color:#9ca3af;
-      font-size:14px;
-      margin-bottom:8px;
-      position:relative;
-      z-index:2;
-    }
-
-    .hero-title{
-      font-size:34px;
-      font-weight:800;
-      position:relative;
-      z-index:2;
-    }
-
-    .hero-sub{
-      margin-top:10px;
-      color:#8b93a7;
-      font-size:14px;
-      position:relative;
-      z-index:2;
-      line-height:1.5;
-    }
-
-    .stats-grid{
-      margin-top:18px;
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:12px;
-      position:relative;
-      z-index:2;
-    }
-
-    .mini-box{
-      background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.05);
-      border-radius:18px;
-      padding:14px;
-    }
-
-    .mini-label{
-      color:#8b93a7;
-      font-size:12px;
-      margin-bottom:6px;
-    }
-
-    .mini-value{
-      font-size:20px;
-      font-weight:800;
-    }
-
-    .section{
-      margin-bottom:24px;
-    }
-
-    .section-title{
-      font-size:22px;
-      font-weight:800;
-      margin-bottom:14px;
-    }
-
-    .quick-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-    }
-
-    .quick-card{
+    .card{
       background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:20px;
-      padding:18px 16px;
-      text-decoration:none;
-      color:#ffffff;
-      min-height:100px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      gap:12px;
+      border:1px solid rgba(255,255,255,0.08);border-radius:22px;padding:18px;margin-bottom:18px;
+      backdrop-filter:blur(10px)
     }
-
-    .quick-card i{
-      font-size:22px;
-      color:#c9d1ff;
+    .title{font-size:30px;font-weight:800;margin-bottom:10px}
+    .sub{color:#8b93a7;font-size:14px;line-height:1.5}
+    .tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+    .tab-btn{
+      border:none;border-radius:16px;padding:14px;background:#11172a;color:#fff;font-weight:800;cursor:pointer;
+      border:1px solid rgba(255,255,255,0.08)
     }
-
-    .quick-card span{
-      font-size:17px;
-      font-weight:700;
-      line-height:1.25;
+    .tab-btn.active{background:#2f3cff;border-color:transparent}
+    .list{display:flex;flex-direction:column;gap:12px}
+    .item{
+      background:#11172a;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:16px
     }
-
-    .list-box{
-      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:22px;
-      padding:10px 16px;
-    }
-
-    .list-item{
-      padding:14px 0;
-      border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-
-    .list-item:last-child{
-      border-bottom:none;
-    }
-
-    .item-top{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      align-items:flex-start;
-    }
-
-    .item-title{
-      font-size:15px;
-      font-weight:700;
-      margin-bottom:5px;
-    }
-
-    .item-sub{
-      color:#8b93a7;
-      font-size:13px;
-      line-height:1.45;
-    }
-
-    .item-amount{
-      font-size:15px;
-      font-weight:800;
-      white-space:nowrap;
-      text-align:right;
-    }
-
+    .item-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}
+    .item-title{font-size:16px;font-weight:800;margin-bottom:4px}
+    .item-sub{color:#8b93a7;font-size:13px;line-height:1.45}
+    .item-amount{font-size:16px;font-weight:800;white-space:nowrap}
+    .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
     .badge{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:11px;
-      font-weight:800;
-      margin-top:8px;
+      display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;font-size:12px;font-weight:700
     }
-
-    .badge-success{
-      background:rgba(17,156,103,0.18);
-      color:#7ff0be;
+    .success{background:rgba(34,197,94,0.12);color:#4ade80}
+    .pending{background:rgba(250,204,21,0.12);color:#facc15}
+    .failed{background:rgba(239,68,68,0.12);color:#f87171}
+    .info{background:rgba(59,130,246,0.12);color:#60a5fa}
+    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+    .btn{
+      border:none;border-radius:14px;padding:13px 10px;font-weight:800;cursor:pointer
     }
-
-    .badge-warning{
-      background:rgba(245,158,11,0.18);
-      color:#fcd34d;
-    }
-
-    .badge-danger{
-      background:rgba(217,60,75,0.18);
-      color:#ffb4bf;
-    }
-
-    .empty{
-      color:#8b93a7;
-      font-size:14px;
-      padding:10px 0;
-    }
-
+    .approve{background:#1f9d55;color:#fff}
+    .reject{background:#c0392b;color:#fff}
+    .refresh{background:#2f3cff;color:#fff;width:100%;margin-top:14px;border:none;border-radius:16px;padding:15px;font-weight:800;cursor:pointer}
+    .empty{color:#8b93a7;text-align:center;padding:24px 10px;font-size:14px}
+    .result{white-space:pre-wrap;word-break:break-word;font-size:13px;color:#dbe4ff;line-height:1.5}
     .bottom-nav{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:0;
-      width:100%;
-      max-width:430px;
-      background:#04060a;
-      border-top:1px solid rgba(255,255,255,0.08);
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      padding:12px 8px 14px;
-      z-index:1000;
+      position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:430px;background:#04060a;
+      border-top:1px solid rgba(255,255,255,0.08);display:grid;grid-template-columns:repeat(5,1fr);
+      padding:12px 8px 14px;z-index:1000
     }
-
-    .nav-item{
-      text-decoration:none;
-      color:#8b93a7;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:8px;
-      font-size:12px;
-      font-weight:600;
-    }
-
-    .nav-item i{
-      font-size:23px;
-    }
-
-    .nav-item.active{
-      color:#3b4cff;
-    }
+    .nav-item{text-decoration:none;color:#8b93a7;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;font-weight:600}
+    .nav-item i{font-size:23px}
+    .nav-item.active{color:#3b4cff}
   </style>
 </head>
 <body>
-
 <div class="app">
   <div class="topbar">
-    <div class="left-top">
-      <a href="dashboard.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
-      <div class="page-title">Admin</div>
-    </div>
-    <div class="profile-avatar" id="profileLetter">A</div>
+    <a href="dashboard.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+    <div class="avatar" id="avatar">A</div>
   </div>
 
-  <div class="hero-card">
-    <div class="hero-label">FastPay Control Center</div>
-    <div class="hero-title">Admin Panel</div>
-    <div class="hero-sub">Jere itilizatè yo, kat yo, demann depo/retrè, ak tout tranzaksyon yo nan yon sèl espas.</div>
+  <div class="card">
+    <div class="title">Admin Panel</div>
+    <div class="sub">Kontwole orders manual yo ak retrè kliyan yo.</div>
 
-    <div class="stats-grid">
-      <div class="mini-box">
-        <div class="mini-label">Users</div>
-        <div class="mini-value" id="totalUsers">0</div>
+    <div class="tabs">
+      <button class="tab-btn active" id="ordersTab" onclick="showTab('orders')">Orders</button>
+      <button class="tab-btn" id="withdrawsTab" onclick="showTab('withdraws')">Withdraws</button>
+    </div>
+
+    <button class="refresh" onclick="refreshCurrentTab()">Refresh</button>
+  </div>
+
+  <div class="card">
+    <div id="ordersSection">
+      <div class="list" id="ordersList">
+        <div class="empty">Ap chaje orders yo...</div>
       </div>
+    </div>
 
-      <div class="mini-box">
-        <div class="mini-label">Card Requests</div>
-        <div class="mini-value" id="totalCardRequests">0</div>
-      </div>
-
-      <div class="mini-box">
-        <div class="mini-label">Deposits</div>
-        <div class="mini-value" id="totalDeposits">0</div>
-      </div>
-
-      <div class="mini-box">
-        <div class="mini-label">Withdraws</div>
-        <div class="mini-value" id="totalWithdraws">0</div>
+    <div id="withdrawsSection" style="display:none;">
+      <div class="list" id="withdrawsList">
+        <div class="empty">Ap chaje withdraws yo...</div>
       </div>
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-title">Quick Admin Actions</div>
-    <div class="quick-grid">
-      <a href="admin-cards.html" class="quick-card">
-        <i class="fa-regular fa-credit-card"></i>
-        <span>Manage Cards</span>
-      </a>
-
-      <a href="issue-card.html" class="quick-card">
-        <i class="fa-solid fa-plus"></i>
-        <span>Issue Card</span>
-      </a>
-
-      <a href="deposit-history.html" class="quick-card">
-        <i class="fa-solid fa-wallet"></i>
-        <span>Deposits</span>
-      </a>
-
-      <a href="withdraw-history.html" class="quick-card">
-        <i class="fa-solid fa-download"></i>
-        <span>Withdraws</span>
-      </a>
-
-      <a href="transfer-history.html" class="quick-card">
-        <i class="fa-regular fa-paper-plane"></i>
-        <span>Transfers</span>
-      </a>
-
-      <a href="statement.html" class="quick-card">
-        <i class="fa-regular fa-file-lines"></i>
-        <span>Statements</span>
-      </a>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Recent Card Requests</div>
-    <div class="list-box" id="requestsBox">
-      <div class="empty">Pa gen card requests pou kounye a.</div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Recent Transactions</div>
-    <div class="list-box" id="transactionsBox">
-      <div class="empty">Pa gen tranzaksyon pou kounye a.</div>
-    </div>
-  </div>
+  <div class="card result" id="resultBox">Rezilta ap parèt isit...</div>
 </div>
 
 <div class="bottom-nav">
-  <a href="dashboard.html" class="nav-item">
-    <i class="fa-solid fa-house"></i>
-    <span>Home</span>
-  </a>
-
-  <a href="statement.html" class="nav-item">
-    <i class="fa-solid fa-arrow-rotate-left"></i>
-    <span>Transactions</span>
-  </a>
-
-  <a href="giftcard.html" class="nav-item">
-    <i class="fa-brands fa-bitcoin"></i>
-    <span>Services</span>
-  </a>
-
-  <a href="card-dashboard.html" class="nav-item">
-    <i class="fa-regular fa-credit-card"></i>
-    <span>Cards</span>
-  </a>
-
-  <a href="admin.html" class="nav-item active">
-    <i class="fa-solid fa-user-shield"></i>
-    <span>Admin</span>
-  </a>
+  <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <a href="statement.html" class="nav-item"><i class="fa-solid fa-arrow-rotate-left"></i><span>Transactions</span></a>
+  <a href="services.html" class="nav-item"><i class="fa-brands fa-bitcoin"></i><span>Services</span></a>
+  <a href="card-dashboard.html" class="nav-item"><i class="fa-regular fa-credit-card"></i><span>Cards</span></a>
+  <a href="admin.html" class="nav-item active"><i class="fa-solid fa-user-shield"></i><span>Admin</span></a>
 </div>
 
-<script src="app.js"></script>
 <script>
-  const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
-  if(savedUser && savedUser.fullname){
-    document.getElementById("profileLetter").innerText = savedUser.fullname.charAt(0).toUpperCase();
+  const API_BASE = "https://fastpayhaiti.onrender.com";
+  const savedUser = JSON.parse(localStorage.getItem("fastpay_user") || "{}");
+  let currentTab = "orders";
+
+  if(savedUser.fullname){
+    document.getElementById("avatar").innerText = savedUser.fullname[0].toUpperCase();
   }
 
-  function getAllUsers(){
-    return JSON.parse(localStorage.getItem("fp_users") || "[]");
+  function badgeClass(status){
+    const s = (status || "").toLowerCase();
+    if (s.includes("approved") || s.includes("completed") || s.includes("delivered")) return "badge success";
+    if (s.includes("pending") || s.includes("manual")) return "badge pending";
+    if (s.includes("rejected") || s.includes("failed")) return "badge failed";
+    return "badge info";
   }
 
-  function getCardRequests(){
-    if(window.FastPayV2 && FastPayV2.getCardRequests){
-      return FastPayV2.getCardRequests() || [];
+  function showTab(tab){
+    currentTab = tab;
+    document.getElementById("ordersSection").style.display = tab === "orders" ? "block" : "none";
+    document.getElementById("withdrawsSection").style.display = tab === "withdraws" ? "block" : "none";
+    document.getElementById("ordersTab").classList.toggle("active", tab === "orders");
+    document.getElementById("withdrawsTab").classList.toggle("active", tab === "withdraws");
+    refreshCurrentTab();
+  }
+
+  function refreshCurrentTab(){
+    if(currentTab === "orders") loadOrders();
+    else loadWithdraws();
+  }
+
+  async function loadOrders(){
+    const box = document.getElementById("ordersList");
+    box.innerHTML = `<div class="empty">Ap chaje orders yo...</div>`;
+
+    try{
+      const usersToCheck = [1];
+      let allOrders = [];
+
+      for(const userId of usersToCheck){
+        const res = await fetch(`${API_BASE}/api/orders/${userId}`);
+        const data = await res.json();
+        if(Array.isArray(data)) allOrders = allOrders.concat(data);
+      }
+
+      allOrders.sort((a,b) => (b.id || 0) - (a.id || 0));
+
+      if(!allOrders.length){
+        box.innerHTML = `<div class="empty">Pa gen order pou montre.</div>`;
+        return;
+      }
+
+      box.innerHTML = allOrders.map(order => `
+        <div class="item">
+          <div class="item-top">
+            <div>
+              <div class="item-title">${order.product_name || order.service || "Order"}</div>
+              <div class="item-sub">
+                Service: ${order.service || "--"}<br>
+                User ID: ${order.user_id || "--"}<br>
+                Order ID: ${order.id || "--"}
+              </div>
+            </div>
+            <div class="item-amount">${Number(order.amount || 0).toFixed(2)} HTG</div>
+          </div>
+
+          <div class="badges">
+            <div class="${badgeClass(order.status)}">
+              <i class="fa-solid fa-bolt"></i>
+              <span>${order.status || "unknown"}</span>
+            </div>
+            <div class="badge info">
+              <i class="fa-solid fa-hashtag"></i>
+              <span>${order.provider_reference || "No ref"}</span>
+            </div>
+          </div>
+        </div>
+      `).join("");
+    }catch(error){
+      box.innerHTML = `<div class="empty">Erè pandan chajman orders yo.</div>`;
     }
-    return JSON.parse(localStorage.getItem("fp_card_requests_v2") || "[]");
   }
 
-  function getDeposits(){
-    return JSON.parse(localStorage.getItem("fastpay_deposits") || "[]");
-  }
+  async function loadWithdraws(){
+    const box = document.getElementById("withdrawsList");
+    box.innerHTML = `<div class="empty">Ap chaje withdraws yo...</div>`;
 
-  function getWithdraws(){
-    return JSON.parse(localStorage.getItem("fastpay_withdraws") || "[]");
-  }
+    try{
+      const usersToCheck = [1];
+      let allWithdraws = [];
 
-  function getAllTransactions(){
-    return JSON.parse(localStorage.getItem("fp_transactions") || "[]");
-  }
+      for(const userId of usersToCheck){
+        const res = await fetch(`${API_BASE}/api/withdrawals/${userId}`);
+        const data = await res.json();
+        if(Array.isArray(data)) allWithdraws = allWithdraws.concat(data);
+      }
 
-  function getBadgeClass(status){
-    const s = String(status || "").toLowerCase();
-    if(s.includes("completed") || s.includes("approved") || s.includes("paid")) return "badge-success";
-    if(s.includes("rejected") || s.includes("failed")) return "badge-danger";
-    return "badge-warning";
-  }
+      allWithdraws.sort((a,b) => (b.id || 0) - (a.id || 0));
 
-  const users = getAllUsers();
-  const cardRequests = getCardRequests();
-  const deposits = getDeposits();
-  const withdraws = getWithdraws();
-  const transactions = getAllTransactions();
+      if(!allWithdraws.length){
+        box.innerHTML = `<div class="empty">Pa gen withdraw request pou montre.</div>`;
+        return;
+      }
 
-  document.getElementById("totalUsers").innerText = users.length;
-  document.getElementById("totalCardRequests").innerText = cardRequests.length;
-  document.getElementById("totalDeposits").innerText = deposits.length;
-  document.getElementById("totalWithdraws").innerText = withdraws.length;
-
-  const requestBox = document.getElementById("requestsBox");
-  if(cardRequests.length > 0){
-    requestBox.innerHTML = "";
-    cardRequests.slice(0,5).forEach(function(req){
-      requestBox.innerHTML += `
-        <div class="list-item">
+      box.innerHTML = allWithdraws.map(w => `
+        <div class="item">
           <div class="item-top">
             <div>
-              <div class="item-title">${req.fullname || "Client"} - ${req.cardType || "Card"}</div>
-              <div class="item-sub">${req.email || ""}</div>
-              <div class="badge ${getBadgeClass(req.status)}">${req.status || "Pending"}</div>
+              <div class="item-title">${w.method || "Withdraw"}</div>
+              <div class="item-sub">
+                User ID: ${w.user_id || "--"}<br>
+                Destinasyon: ${w.destination || "--"}<br>
+                Withdraw ID: ${w.id || "--"}
+              </div>
             </div>
-            <div class="item-amount">${req.amount || "0 HTG"}</div>
+            <div class="item-amount">${Number(w.amount || 0).toFixed(2)} HTG</div>
           </div>
+
+          <div class="badges">
+            <div class="${badgeClass(w.status)}">
+              <i class="fa-solid fa-money-bill-transfer"></i>
+              <span>${w.status || "unknown"}</span>
+            </div>
+          </div>
+
+          ${String(w.status).toLowerCase() === "pending" ? `
+            <div class="actions">
+              <button class="btn approve" onclick="approveWithdraw(${w.id})">Apwouve</button>
+              <button class="btn reject" onclick="rejectWithdraw(${w.id})">Rejte</button>
+            </div>
+          ` : ""}
         </div>
-      `;
-    });
+      `).join("");
+    }catch(error){
+      box.innerHTML = `<div class="empty">Erè pandan chajman withdraws yo.</div>`;
+    }
   }
 
-  const txBox = document.getElementById("transactionsBox");
-  if(transactions.length > 0){
-    txBox.innerHTML = "";
-    transactions.slice(0,6).forEach(function(tx){
-      txBox.innerHTML += `
-        <div class="list-item">
-          <div class="item-top">
-            <div>
-              <div class="item-title">${tx.service || "Transaction"}</div>
-              <div class="item-sub">${tx.date || ""}</div>
-              <div class="badge ${getBadgeClass(tx.status)}">${tx.status || "pending"}</div>
-            </div>
-            <div class="item-amount">${tx.amount || "0"}</div>
-          </div>
-        </div>
-      `;
-    });
+  async function approveWithdraw(withdrawalId){
+    try{
+      document.getElementById("resultBox").innerText = "Ap apwouve retrè a...";
+      const res = await fetch(`${API_BASE}/api/withdraw/approve`, {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({ withdrawalId })
+      });
+      const data = await res.json();
+      document.getElementById("resultBox").innerText = JSON.stringify(data, null, 2);
+      loadWithdraws();
+    }catch(error){
+      document.getElementById("resultBox").innerText = error.message;
+    }
   }
+
+  async function rejectWithdraw(withdrawalId){
+    try{
+      document.getElementById("resultBox").innerText = "Ap rejte retrè a...";
+      const res = await fetch(`${API_BASE}/api/withdraw/reject`, {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({ withdrawalId })
+      });
+      const data = await res.json();
+      document.getElementById("resultBox").innerText = JSON.stringify(data, null, 2);
+      loadWithdraws();
+    }catch(error){
+      document.getElementById("resultBox").innerText = error.message;
+    }
+  }
+
+  loadOrders();
 </script>
-
 </body>
 </html>
