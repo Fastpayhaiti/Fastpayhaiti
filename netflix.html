@@ -6,93 +6,64 @@
   <title>Netflix - FastPay</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif;}
-    body{background:#05070c;color:#fff;min-height:100vh;}
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+    body{background:#05070c;color:#fff;min-height:100vh}
     .app{
       max-width:430px;margin:auto;min-height:100vh;padding:18px 18px 120px;
       background:
-      radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
-      radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
-      #05070c;
+        radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
+        radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
+        #05070c;
     }
-    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
     .back-btn,.avatar{
-      width:46px;height:46px;border-radius:14px;
-      display:flex;align-items:center;justify-content:center;
-      background:rgba(255,255,255,0.06);color:#fff;text-decoration:none;
-      font-size:18px;
+      width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,0.06);color:#fff;text-decoration:none;font-size:18px
     }
     .card{
       background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:22px;padding:18px;margin-bottom:18px;
-      backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,0.08);border-radius:22px;padding:18px;margin-bottom:18px;
+      backdrop-filter:blur(10px)
     }
-    .title{font-size:30px;font-weight:800;margin-bottom:10px;}
-    .sub{color:#8b93a7;font-size:14px;line-height:1.5;margin-bottom:10px;}
-    .field{margin-bottom:14px;}
-    .field label{
-      display:block;font-size:14px;color:#c7cfdd;
-      margin-bottom:8px;font-weight:600;
+    .title{font-size:30px;font-weight:800;margin-bottom:10px}
+    .sub{color:#8b93a7;font-size:14px;line-height:1.5}
+    .field{margin-top:16px}
+    .field label{display:block;font-size:14px;color:#c7cfdd;margin-bottom:8px;font-weight:600}
+    .input{
+      width:100%;padding:14px;border-radius:16px;background:#11172a;border:1px solid rgba(255,255,255,0.08);
+      color:#fff;outline:none
     }
-    .input,.select{
-      width:100%;padding:14px;border-radius:16px;
-      background:#11172a;border:1px solid rgba(255,255,255,0.08);
-      color:#fff;outline:none;
-    }
-    .input::placeholder{color:#7f8798;}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .input::placeholder{color:#7f8798}
+    .plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
     .plan-card{
-      background:#11172a;
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:18px;
-      padding:16px 14px;
-      cursor:pointer;
+      background:#11172a;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:16px;cursor:pointer
     }
-    .plan-card.active{
-      background:#e50914;
-      border-color:transparent;
-      box-shadow:0 12px 24px rgba(229,9,20,0.30);
+    .plan-card.active{background:#e50914;border-color:transparent;box-shadow:0 12px 24px rgba(229,9,20,0.30)}
+    .plan-title{font-size:16px;font-weight:800;margin-bottom:6px}
+    .plan-text{font-size:13px;color:#dbe4ff;line-height:1.4}
+    .summary-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+    .summary-row:last-child{border-bottom:none}
+    .summary-label{color:#8b93a7;font-size:14px}
+    .summary-value{font-size:15px;font-weight:700;text-align:right;word-break:break-word;max-width:58%}
+    .primary-btn,.secondary-btn{
+      display:block;width:100%;border:none;border-radius:18px;font-size:17px;font-weight:700;padding:17px;
+      cursor:pointer;text-align:center;margin-top:12px
     }
-    .plan-title{font-size:16px;font-weight:800;margin-bottom:6px;}
-    .plan-text{font-size:13px;color:#dbe4ff;line-height:1.4;}
-    .summary-row{
-      display:flex;justify-content:space-between;gap:12px;
-      padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-    .summary-row:last-child{border-bottom:none;}
-    .summary-label{color:#8b93a7;font-size:14px;}
-    .summary-value{
-      font-size:15px;font-weight:700;text-align:right;
-      word-break:break-word;max-width:58%;
-    }
-    .primary-btn{
-      display:block;width:100%;border:none;border-radius:18px;
-      background:#e50914;color:#fff;font-size:18px;font-weight:700;
-      padding:18px;cursor:pointer;text-align:center;
-      box-shadow:0 14px 30px rgba(229,9,20,0.35);
-      margin-top:12px;
-    }
-    .hint{color:#8b93a7;font-size:13px;line-height:1.5;margin-top:6px;}
+    .primary-btn{background:#e50914;color:#fff;box-shadow:0 14px 30px rgba(229,9,20,0.35)}
+    .secondary-btn{background:#11172a;color:#fff;border:1px solid rgba(255,255,255,0.08)}
+    .hint{color:#8b93a7;font-size:13px;line-height:1.5;margin-top:8px}
     .bottom-nav{
-      position:fixed;left:50%;transform:translateX(-50%);
-      bottom:0;width:100%;max-width:430px;background:#04060a;
-      border-top:1px solid rgba(255,255,255,0.08);
-      display:grid;grid-template-columns:repeat(5,1fr);
-      padding:12px 8px 14px;z-index:1000;
+      position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:430px;background:#04060a;
+      border-top:1px solid rgba(255,255,255,0.08);display:grid;grid-template-columns:repeat(5,1fr);
+      padding:12px 8px 14px;z-index:1000
     }
-    .nav-item{
-      text-decoration:none;color:#8b93a7;
-      display:flex;flex-direction:column;align-items:center;
-      gap:8px;font-size:12px;font-weight:600;
-    }
-    .nav-item i{font-size:23px;}
-    .nav-item.active{color:#e50914;}
+    .nav-item{text-decoration:none;color:#8b93a7;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;font-weight:600}
+    .nav-item i{font-size:23px}
+    .nav-item.active{color:#e50914}
   </style>
 </head>
 <body>
 <div class="app">
-
   <div class="topbar">
     <a href="services.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
     <div class="avatar" id="avatar">A</div>
@@ -100,7 +71,7 @@
 
   <div class="card">
     <div class="title">Netflix</div>
-    <div class="sub">Chwazi plan Netflix kliyan an epi kontinye nan checkout.</div>
+    <div class="sub">Chwazi plan Netflix kliyan an epi kontinye sou checkout.</div>
   </div>
 
   <div class="card">
@@ -111,17 +82,18 @@
 
     <div class="field">
       <label>Email kliyan an</label>
-      <input id="email" class="input" type="email" placeholder="Eg: client@gmail.com">
+      <input id="email" class="input" type="email" placeholder="Eg: client@gmail.com" oninput="updateSummary()">
     </div>
 
     <div class="field">
       <label>Non kliyan an</label>
       <input id="name" class="input" type="text" placeholder="Eg: Jean Pierre">
+      <div class="hint">Netflix ap rete manual delivery sou backend la pou kounya.</div>
     </div>
 
     <div class="field">
-      <label>Chwazi plan Netflix</label>
-      <div class="grid">
+      <label>Chwazi plan</label>
+      <div class="plan-grid">
         <div class="plan-card" onclick="selectPlan(this, 'Netflix Basic 1 mois', 8)">
           <div class="plan-title">Basic</div>
           <div class="plan-text">1 mwa, yon ekran</div>
@@ -142,7 +114,6 @@
           <div class="plan-text">Pi bon pou kliyan regilye</div>
         </div>
       </div>
-      <div class="hint">Netflix ap pase kòm manual delivery sou backend la pou kounya.</div>
     </div>
   </div>
 
@@ -151,109 +122,93 @@
       <div class="summary-label">Sèvis</div>
       <div class="summary-value">Netflix</div>
     </div>
-
     <div class="summary-row">
       <div class="summary-label">Plan</div>
       <div class="summary-value" id="summaryPlan">--</div>
     </div>
-
     <div class="summary-row">
       <div class="summary-label">Email</div>
       <div class="summary-value" id="summaryEmail">--</div>
     </div>
-
     <div class="summary-row">
       <div class="summary-label">Montan</div>
       <div class="summary-value" id="summaryAmount">0 HTG</div>
     </div>
 
-    <button class="primary-btn" onclick="goCheckout()">Kontinye nan checkout</button>
+    <button class="primary-btn" onclick="goCheckout()">Kontinye sou Checkout</button>
+    <button class="secondary-btn" onclick="window.location.href='services.html'">Retounen</button>
   </div>
-
 </div>
 
 <div class="bottom-nav">
-  <a href="dashboard.html" class="nav-item">
-    <i class="fa-solid fa-house"></i>
-    <span>Home</span>
-  </a>
-
-  <a href="statement.html" class="nav-item">
-    <i class="fa-solid fa-arrow-rotate-left"></i>
-    <span>Transactions</span>
-  </a>
-
-  <a href="services.html" class="nav-item active">
-    <i class="fa-brands fa-bitcoin"></i>
-    <span>Services</span>
-  </a>
-
-  <a href="card-dashboard.html" class="nav-item">
-    <i class="fa-regular fa-credit-card"></i>
-    <span>Cards</span>
-  </a>
-
-  <a href="wallet.html" class="nav-item">
-    <i class="fa-solid fa-wallet"></i>
-    <span>Wallet</span>
-  </a>
+  <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <a href="statement.html" class="nav-item"><i class="fa-solid fa-arrow-rotate-left"></i><span>Transactions</span></a>
+  <a href="services.html" class="nav-item active"><i class="fa-brands fa-bitcoin"></i><span>Services</span></a>
+  <a href="card-dashboard.html" class="nav-item"><i class="fa-regular fa-credit-card"></i><span>Cards</span></a>
+  <a href="wallet.html" class="nav-item"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a>
 </div>
 
 <script>
-  const user = JSON.parse(localStorage.getItem("fastpay_user") || "{}");
-  if(user.fullname){
-    document.getElementById("avatar").innerText = user.fullname[0].toUpperCase();
-    if(user.id){
-      document.getElementById("userId").value = user.id;
+  const savedUser = JSON.parse(localStorage.getItem("fastpay_user") || "{}");
+
+  if(savedUser.fullname){
+    document.getElementById("avatar").innerText = savedUser.fullname[0].toUpperCase();
+    if(savedUser.id){
+      document.getElementById("userId").value = savedUser.id;
     }
   }
 
   let selectedPlan = null;
 
-  function selectPlan(el, name, amount){
+  function selectPlan(el, productName, amount){
     document.querySelectorAll(".plan-card").forEach(card => card.classList.remove("active"));
     el.classList.add("active");
 
-    selectedPlan = { name, amount };
+    selectedPlan = { productName, amount };
     updateSummary();
   }
 
   function updateSummary(){
     document.getElementById("summaryPlan").innerText =
-      selectedPlan ? selectedPlan.name : "--";
+      selectedPlan ? selectedPlan.productName : "--";
 
     document.getElementById("summaryEmail").innerText =
-      document.getElementById("email").value.trim() || "--";
+      document.getElementById("email").value || "--";
 
     document.getElementById("summaryAmount").innerText =
       (selectedPlan ? selectedPlan.amount : 0) + " HTG";
   }
-
-  document.getElementById("email").addEventListener("input", updateSummary);
 
   function goCheckout(){
     const userId = Number(document.getElementById("userId").value);
     const email = document.getElementById("email").value.trim();
     const name = document.getElementById("name").value.trim();
 
-    if(!selectedPlan) return alert("Chwazi yon plan.");
-    if(!email) return alert("Tanpri mete email kliyan an.");
+    if(!selectedPlan){
+      alert("Tanpri chwazi yon plan.");
+      return;
+    }
 
-    const data = {
+    if(!email){
+      alert("Tanpri mete email kliyan an.");
+      return;
+    }
+
+    localStorage.setItem("fastpay_checkout", JSON.stringify({
       userId,
       service: "netflix",
-      productName: selectedPlan.name,
+      productName: selectedPlan.productName,
       amount: selectedPlan.amount,
       customerData: {
         email,
         name
       }
-    };
+    }));
 
-    localStorage.setItem("fastpay_checkout", JSON.stringify(data));
     window.location.href = "checkout.html";
   }
-</script>
 
+  updateSummary();
+</script>
 </body>
-</html>
+                                                                                       </html>
