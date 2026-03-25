@@ -6,258 +6,69 @@
   <title>Deposit - FastPay</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      font-family:Arial,sans-serif;
-    }
-
-    body{
-      background:#05070c;
-      color:#fff;
-      min-height:100vh;
-    }
-
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+    body{background:#05070c;color:#fff;min-height:100vh}
     .app{
-      max-width:430px;
-      margin:auto;
-      min-height:100vh;
-      padding:18px 18px 120px;
+      max-width:430px;margin:auto;min-height:100vh;padding:18px 18px 120px;
       background:
         radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
         radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
         #05070c;
     }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:18px;
-    }
-
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
     .back-btn,.avatar{
-      width:46px;
-      height:46px;
-      border-radius:14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(255,255,255,0.06);
-      color:#fff;
-      text-decoration:none;
-      font-size:18px;
+      width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,0.06);color:#fff;text-decoration:none;font-size:18px
     }
-
     .card{
       background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:22px;
-      padding:18px;
-      margin-bottom:18px;
-      backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,0.08);border-radius:22px;padding:18px;margin-bottom:18px;
+      backdrop-filter:blur(10px)
     }
-
-    .title{
-      font-size:30px;
-      font-weight:800;
-      margin-bottom:10px;
-    }
-
-    .sub{
-      color:#8b93a7;
-      font-size:14px;
-      line-height:1.5;
-    }
-
-    .field{
-      margin-top:16px;
-    }
-
-    .field label{
-      display:block;
-      font-size:14px;
-      color:#c7cfdd;
-      margin-bottom:8px;
-      font-weight:600;
-    }
-
-    .input,.select{
-      width:100%;
-      padding:14px;
-      border-radius:16px;
-      background:#11172a;
-      border:1px solid rgba(255,255,255,0.08);
-      color:#fff;
-      outline:none;
-    }
-
-    .input::placeholder{
-      color:#7f8798;
-    }
-
-    .method-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-      margin-top:12px;
-    }
-
+    .title{font-size:30px;font-weight:800;margin-bottom:10px}
+    .sub{color:#8b93a7;font-size:14px;line-height:1.5}
+    .field{margin-top:16px}
+    .field label{display:block;font-size:14px;color:#c7cfdd;margin-bottom:8px;font-weight:600}
+    .input{width:100%;padding:14px;border-radius:16px;background:#11172a;border:1px solid rgba(255,255,255,0.08);color:#fff;outline:none}
+    .input::placeholder{color:#7f8798}
+    .method-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
     .method-card{
-      background:#11172a;
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:18px;
-      padding:16px;
-      cursor:pointer;
+      background:#11172a;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:16px;cursor:pointer
     }
-
-    .method-card.active{
-      background:#2f3cff;
-      border-color:transparent;
-      box-shadow:0 12px 24px rgba(47,60,255,0.30);
-    }
-
-    .method-title{
-      font-size:16px;
-      font-weight:800;
-      margin-bottom:6px;
-    }
-
-    .method-text{
-      font-size:13px;
-      color:#dbe4ff;
-      line-height:1.4;
-    }
-
-    .amount-grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:10px;
-      margin-top:10px;
-    }
-
+    .method-card.active{background:#2f3cff;border-color:transparent;box-shadow:0 12px 24px rgba(47,60,255,0.30)}
+    .method-title{font-size:16px;font-weight:800;margin-bottom:6px}
+    .method-text{font-size:13px;color:#dbe4ff;line-height:1.4}
+    .amount-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
     .amount-chip{
-      border:none;
-      border-radius:16px;
-      padding:14px 10px;
-      background:#11172a;
-      color:#fff;
-      font-size:15px;
-      font-weight:700;
-      cursor:pointer;
-      border:1px solid rgba(255,255,255,0.08);
+      border:none;border-radius:16px;padding:14px 10px;background:#11172a;color:#fff;font-size:15px;font-weight:700;
+      cursor:pointer;border:1px solid rgba(255,255,255,0.08)
     }
-
-    .amount-chip.active{
-      background:#2f3cff;
-      border-color:transparent;
-      box-shadow:0 12px 24px rgba(47,60,255,0.28);
-    }
-
-    .summary-row{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      padding:12px 0;
-      border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-
-    .summary-row:last-child{
-      border-bottom:none;
-    }
-
-    .summary-label{
-      color:#8b93a7;
-      font-size:14px;
-    }
-
-    .summary-value{
-      font-size:15px;
-      font-weight:700;
-      text-align:right;
-      word-break:break-word;
-      max-width:58%;
-    }
-
+    .amount-chip.active{background:#2f3cff;border-color:transparent;box-shadow:0 12px 24px rgba(47,60,255,0.28)}
+    .summary-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+    .summary-row:last-child{border-bottom:none}
+    .summary-label{color:#8b93a7;font-size:14px}
+    .summary-value{font-size:15px;font-weight:700;text-align:right;word-break:break-word;max-width:58%}
     .primary-btn,.secondary-btn{
-      display:block;
-      width:100%;
-      border:none;
-      border-radius:18px;
-      font-size:17px;
-      font-weight:700;
-      padding:17px;
-      cursor:pointer;
-      text-align:center;
-      margin-top:12px;
+      display:block;width:100%;border:none;border-radius:18px;font-size:17px;font-weight:700;padding:17px;
+      cursor:pointer;text-align:center;margin-top:12px
     }
-
-    .primary-btn{
-      background:#2f3cff;
-      color:#fff;
-      box-shadow:0 14px 30px rgba(47,60,255,0.35);
-    }
-
-    .secondary-btn{
-      background:#11172a;
-      color:#fff;
-      border:1px solid rgba(255,255,255,0.08);
-    }
-
-    .result-box{
-      white-space:pre-wrap;
-      word-break:break-word;
-      font-size:13px;
-      color:#dbe4ff;
-      line-height:1.5;
-    }
-
-    .hint{
-      color:#8b93a7;
-      font-size:13px;
-      line-height:1.5;
-      margin-top:8px;
-    }
-
+    .primary-btn{background:#2f3cff;color:#fff;box-shadow:0 14px 30px rgba(47,60,255,0.35)}
+    .primary-btn:disabled{opacity:.6;cursor:not-allowed}
+    .secondary-btn{background:#11172a;color:#fff;border:1px solid rgba(255,255,255,0.08)}
+    .result-box{white-space:pre-wrap;word-break:break-word;font-size:13px;color:#dbe4ff;line-height:1.5}
+    .hint{color:#8b93a7;font-size:13px;line-height:1.5;margin-top:8px}
     .bottom-nav{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:0;
-      width:100%;
-      max-width:430px;
-      background:#04060a;
-      border-top:1px solid rgba(255,255,255,0.08);
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      padding:12px 8px 14px;
-      z-index:1000;
+      position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:430px;background:#04060a;
+      border-top:1px solid rgba(255,255,255,0.08);display:grid;grid-template-columns:repeat(5,1fr);
+      padding:12px 8px 14px;z-index:1000
     }
-
-    .nav-item{
-      text-decoration:none;
-      color:#8b93a7;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:8px;
-      font-size:12px;
-      font-weight:600;
-    }
-
-    .nav-item i{
-      font-size:23px;
-    }
-
-    .nav-item.active{
-      color:#3b4cff;
-    }
+    .nav-item{text-decoration:none;color:#8b93a7;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;font-weight:600}
+    .nav-item i{font-size:23px}
+    .nav-item.active{color:#3b4cff}
   </style>
 </head>
 <body>
 <div class="app">
-
   <div class="topbar">
     <a href="wallet.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
     <div class="avatar" id="avatar">A</div>
@@ -281,17 +92,14 @@
           <div class="method-title">MonCash</div>
           <div class="method-text">Depoze pa MonCash</div>
         </div>
-
         <div class="method-card" onclick="selectMethod(this, 'NatCash')">
           <div class="method-title">NatCash</div>
           <div class="method-text">Depoze pa NatCash</div>
         </div>
-
         <div class="method-card" onclick="selectMethod(this, 'Wallet')">
           <div class="method-title">Wallet</div>
           <div class="method-text">Demo entèn</div>
         </div>
-
         <div class="method-card" onclick="selectMethod(this, 'Wise')">
           <div class="method-title">Wise</div>
           <div class="method-text">Transfè manyèl</div>
@@ -324,50 +132,28 @@
       <div class="summary-label">Metòd</div>
       <div class="summary-value" id="summaryMethod">--</div>
     </div>
-
     <div class="summary-row">
       <div class="summary-label">Montan</div>
       <div class="summary-value" id="summaryAmount">0 HTG</div>
     </div>
-
     <div class="summary-row">
       <div class="summary-label">User ID</div>
       <div class="summary-value" id="summaryUser">1</div>
     </div>
 
-    <button class="primary-btn" onclick="submitDeposit()">Konfime Deposit</button>
+    <button class="primary-btn" id="depositBtn" onclick="submitDeposit()">Konfime Deposit</button>
     <button class="secondary-btn" onclick="window.location.href='wallet.html'">Retounen Wallet</button>
   </div>
 
   <div class="card result-box" id="resultBox">Rezilta ap parèt isit...</div>
-
 </div>
 
 <div class="bottom-nav">
-  <a href="dashboard.html" class="nav-item">
-    <i class="fa-solid fa-house"></i>
-    <span>Home</span>
-  </a>
-
-  <a href="statement.html" class="nav-item">
-    <i class="fa-solid fa-arrow-rotate-left"></i>
-    <span>Transactions</span>
-  </a>
-
-  <a href="services.html" class="nav-item">
-    <i class="fa-brands fa-bitcoin"></i>
-    <span>Services</span>
-  </a>
-
-  <a href="card-dashboard.html" class="nav-item">
-    <i class="fa-regular fa-credit-card"></i>
-    <span>Cards</span>
-  </a>
-
-  <a href="wallet.html" class="nav-item active">
-    <i class="fa-solid fa-wallet"></i>
-    <span>Wallet</span>
-  </a>
+  <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <a href="statement.html" class="nav-item"><i class="fa-solid fa-arrow-rotate-left"></i><span>Transactions</span></a>
+  <a href="services.html" class="nav-item"><i class="fa-brands fa-bitcoin"></i><span>Services</span></a>
+  <a href="card-dashboard.html" class="nav-item"><i class="fa-regular fa-credit-card"></i><span>Cards</span></a>
+  <a href="wallet.html" class="nav-item active"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a>
 </div>
 
 <script>
@@ -383,9 +169,9 @@
   }
 
   let selectedMethod = null;
-
   const userIdEl = document.getElementById("userId");
   const amountEl = document.getElementById("amount");
+  const depositBtn = document.getElementById("depositBtn");
 
   userIdEl.addEventListener("input", updateSummary);
   amountEl.addEventListener("input", updateSummary);
@@ -399,10 +185,8 @@
 
   function setAmount(value, btn){
     amountEl.value = value;
-
     document.querySelectorAll(".amount-chip").forEach(chip => chip.classList.remove("active"));
     btn.classList.add("active");
-
     updateSummary();
   }
 
@@ -428,6 +212,9 @@
     }
 
     try{
+      depositBtn.disabled = true;
+      depositBtn.innerText = "Ap trete...";
+
       document.getElementById("resultBox").innerText = "Ap trete deposit la...";
 
       const res = await fetch(`${API_BASE}/api/deposit`, {
@@ -450,14 +237,18 @@
         setTimeout(() => {
           window.location.href = "wallet.html";
         }, 1200);
+      } else {
+        depositBtn.disabled = false;
+        depositBtn.innerText = "Konfime Deposit";
       }
-    }catch(error){
+    } catch(error){
       document.getElementById("resultBox").innerText = "Erè pandan deposit la:\n\n" + error.message;
+      depositBtn.disabled = false;
+      depositBtn.innerText = "Konfime Deposit";
     }
   }
 
   updateSummary();
 </script>
-
 </body>
-        </html>
+</html>
