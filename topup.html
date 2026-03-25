@@ -83,12 +83,10 @@
       <label>Operatè</label>
       <select id="operator" class="select" onchange="updateSummary()">
         <option value="">Chwazi operatè a</option>
-        <select id="operator">
-  <option value="digicel">Digicel Haiti</option>
-  <option value="natcom">Natcom Haiti</option>
-        </select>
+        <option value="digicel">Digicel Haiti</option>
+        <option value="natcom">Natcom Haiti</option>
       </select>
-      <div class="hint">Chwazi operatè a epi antre nimewo kliyan an..</div>
+      <div class="hint">Chwazi operatè a epi antre nimewo kliyan an.</div>
     </div>
 
     <div class="field">
@@ -144,6 +142,10 @@
 <script>
   const savedUser = JSON.parse(localStorage.getItem("fastpay_user") || "{}");
 
+  // Ranplase 2 valè sa yo ak vrè operatorId LIVE yo
+  const DIGICEL_OPERATOR_ID = 173;
+  const NATCOM_OPERATOR_ID = 0;
+
   if(savedUser.fullname){
     document.getElementById("avatar").innerText = savedUser.fullname[0].toUpperCase();
     if(savedUser.id){
@@ -161,6 +163,7 @@
   function updateSummary(){
     const operatorSelect = document.getElementById("operator");
     const operatorText = operatorSelect.options[operatorSelect.selectedIndex]?.text || "--";
+
     document.getElementById("summaryOperator").innerText =
       operatorSelect.value ? operatorText : "--";
 
@@ -173,19 +176,37 @@
 
   function goCheckout(){
     const userId = Number(document.getElementById("userId").value);
-    const operatorId = Number(document.getElementById("operator").value);
+    const operatorKey = document.getElementById("operator").value;
     const phone = document.getElementById("phone").value.trim();
     const amount = Number(document.getElementById("amount").value);
 
-    if(!userId || !operatorId || !phone || !amount){
+    if(!userId || !operatorKey || !phone || !amount){
       alert("Tanpri ranpli tout chan yo.");
+      return;
+    }
+
+    let operatorId = 0;
+    let productName = "";
+
+    if(operatorKey === "digicel"){
+      operatorId = DIGICEL_OPERATOR_ID;
+      productName = "Digicel Haiti";
+    }
+
+    if(operatorKey === "natcom"){
+      operatorId = NATCOM_OPERATOR_ID;
+      productName = "Natcom Haiti";
+    }
+
+    if(!operatorId){
+      alert("Operator ID la poko mete byen pou operatè sa a.");
       return;
     }
 
     localStorage.setItem("fastpay_checkout", JSON.stringify({
       userId,
       service: "topup",
-      productName: "Digicel Haiti",
+      productName,
       amount,
       customerData: {
         operatorId,
@@ -200,4 +221,4 @@
   updateSummary();
 </script>
 </body>
-        </html>
+</html>
