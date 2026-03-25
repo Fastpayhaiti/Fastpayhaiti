@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Deposit - FastPay</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
@@ -29,15 +29,11 @@
     .sub{color:#8b93a7;font-size:14px;line-height:1.5}
     .field{margin-top:16px}
     .field label{display:block;font-size:14px;color:#c7cfdd;margin-bottom:8px;font-weight:600}
-    .input{width:100%;padding:14px;border-radius:16px;background:#11172a;border:1px solid rgba(255,255,255,0.08);color:#fff;outline:none}
-    .input::placeholder{color:#7f8798}
-    .method-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-    .method-card{
-      background:#11172a;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:16px;cursor:pointer
+    .input{
+      width:100%;padding:14px;border-radius:16px;background:#11172a;border:1px solid rgba(255,255,255,0.08);
+      color:#fff;outline:none
     }
-    .method-card.active{background:#2f3cff;border-color:transparent;box-shadow:0 12px 24px rgba(47,60,255,0.30)}
-    .method-title{font-size:16px;font-weight:800;margin-bottom:6px}
-    .method-text{font-size:13px;color:#dbe4ff;line-height:1.4}
+    .input::placeholder{color:#7f8798}
     .amount-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
     .amount-chip{
       border:none;border-radius:16px;padding:14px 10px;background:#11172a;color:#fff;font-size:15px;font-weight:700;
@@ -56,7 +52,6 @@
     .primary-btn:disabled{opacity:.6;cursor:not-allowed}
     .secondary-btn{background:#11172a;color:#fff;border:1px solid rgba(255,255,255,0.08)}
     .result-box{white-space:pre-wrap;word-break:break-word;font-size:13px;color:#dbe4ff;line-height:1.5}
-    .hint{color:#8b93a7;font-size:13px;line-height:1.5;margin-top:8px}
     .bottom-nav{
       position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:430px;background:#04060a;
       border-top:1px solid rgba(255,255,255,0.08);display:grid;grid-template-columns:repeat(5,1fr);
@@ -76,7 +71,7 @@
 
   <div class="card">
     <div class="title">Deposit</div>
-    <div class="sub">Ajoute lajan sou wallet ou fasil pou itilize sèvis FastPay yo.</div>
+    <div class="sub">Ajoute lajan nan wallet ou fasil pou itilize sèvis FastPay yo.</div>
   </div>
 
   <div class="card">
@@ -86,30 +81,8 @@
     </div>
 
     <div class="field">
-      <label>Chwazi metòd depo</label>
-      <div class="method-grid">
-        <div class="method-card" onclick="selectMethod(this, 'MonCash')">
-          <div class="method-title">MonCash</div>
-          <div class="method-text">Depoze pa MonCash</div>
-        </div>
-        <div class="method-card" onclick="selectMethod(this, 'NatCash')">
-          <div class="method-title">NatCash</div>
-          <div class="method-text">Depoze pa NatCash</div>
-        </div>
-        <div class="method-card" onclick="selectMethod(this, 'Wallet')">
-          <div class="method-title">Wallet</div>
-          <div class="method-text">Demo entèn</div>
-        </div>
-        <div class="method-card" onclick="selectMethod(this, 'Wise')">
-          <div class="method-title">Wise</div>
-          <div class="method-text">Transfè manyèl</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="field">
       <label>Montan</label>
-      <input id="amount" class="input" type="number" placeholder="Eg: 100">
+      <input id="amount" class="input" type="number" placeholder="Eg: 500">
       <div class="amount-grid">
         <button type="button" class="amount-chip" onclick="setAmount(100, this)">100</button>
         <button type="button" class="amount-chip" onclick="setAmount(250, this)">250</button>
@@ -121,24 +94,19 @@
     </div>
 
     <div class="field">
-      <label>Referans / Nòt</label>
-      <input id="note" class="input" type="text" placeholder="Eg: tranzaksyon MonCash / nòt kliyan">
-      <div class="hint">Pou kounya, bouton an ap ajoute balans lan dirèk pou test. Apre sa nou ka mete validation peman pwofesyonèl.</div>
+      <label>Nòt</label>
+      <input id="note" class="input" type="text" placeholder="Eg: Deposit kliyan">
     </div>
   </div>
 
   <div class="card">
     <div class="summary-row">
-      <div class="summary-label">Metòd</div>
-      <div class="summary-value" id="summaryMethod">--</div>
+      <div class="summary-label">User ID</div>
+      <div class="summary-value" id="summaryUser">1</div>
     </div>
     <div class="summary-row">
       <div class="summary-label">Montan</div>
       <div class="summary-value" id="summaryAmount">0 HTG</div>
-    </div>
-    <div class="summary-row">
-      <div class="summary-label">User ID</div>
-      <div class="summary-value" id="summaryUser">1</div>
     </div>
 
     <button class="primary-btn" id="depositBtn" onclick="submitDeposit()">Konfime Deposit</button>
@@ -159,29 +127,20 @@
 <script>
   const API_BASE = "https://fastpayhaiti.onrender.com";
   const savedUser = JSON.parse(localStorage.getItem("fastpay_user") || "{}");
-
-  if(savedUser.fullname){
-    document.getElementById("avatar").innerText = savedUser.fullname[0].toUpperCase();
-    if(savedUser.id){
-      document.getElementById("userId").value = savedUser.id;
-      document.getElementById("summaryUser").innerText = savedUser.id;
-    }
-  }
-
-  let selectedMethod = null;
   const userIdEl = document.getElementById("userId");
   const amountEl = document.getElementById("amount");
   const depositBtn = document.getElementById("depositBtn");
 
+  if(savedUser.fullname){
+    document.getElementById("avatar").innerText = savedUser.fullname[0].toUpperCase();
+    if(savedUser.id){
+      userIdEl.value = savedUser.id;
+      document.getElementById("summaryUser").innerText = savedUser.id;
+    }
+  }
+
   userIdEl.addEventListener("input", updateSummary);
   amountEl.addEventListener("input", updateSummary);
-
-  function selectMethod(el, method){
-    document.querySelectorAll(".method-card").forEach(card => card.classList.remove("active"));
-    el.classList.add("active");
-    selectedMethod = method;
-    updateSummary();
-  }
 
   function setAmount(value, btn){
     amountEl.value = value;
@@ -191,20 +150,14 @@
   }
 
   function updateSummary(){
-    document.getElementById("summaryMethod").innerText = selectedMethod || "--";
-    document.getElementById("summaryAmount").innerText = (amountEl.value || 0) + " HTG";
     document.getElementById("summaryUser").innerText = userIdEl.value || "--";
+    document.getElementById("summaryAmount").innerText = (amountEl.value || 0) + " HTG";
   }
 
   async function submitDeposit(){
     const userId = userIdEl.value.trim();
     const amount = amountEl.value.trim();
     const note = document.getElementById("note").value.trim();
-
-    if(!selectedMethod){
-      alert("Tanpri chwazi yon metòd depo.");
-      return;
-    }
 
     if(!userId || !amount){
       alert("Tanpri ranpli user id ak montan an.");
@@ -214,19 +167,15 @@
     try{
       depositBtn.disabled = true;
       depositBtn.innerText = "Ap trete...";
-
       document.getElementById("resultBox").innerText = "Ap trete deposit la...";
 
       const res = await fetch(`${API_BASE}/api/deposit`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: {"Content-Type":"application/json"},
         body: JSON.stringify({
           userId: Number(userId),
           amount: Number(amount),
-          note,
-          method: selectedMethod
+          note
         })
       });
 
@@ -241,7 +190,7 @@
         depositBtn.disabled = false;
         depositBtn.innerText = "Konfime Deposit";
       }
-    } catch(error){
+    }catch(error){
       document.getElementById("resultBox").innerText = "Erè pandan deposit la:\n\n" + error.message;
       depositBtn.disabled = false;
       depositBtn.innerText = "Konfime Deposit";
