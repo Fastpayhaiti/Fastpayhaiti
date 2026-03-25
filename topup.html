@@ -2,444 +2,199 @@
 <html lang="ht">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Topup - FastPay</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      font-family:Arial,sans-serif;
-    }
-
-    body{
-      background:#05070c;
-      color:#ffffff;
-      min-height:100vh;
-    }
-
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+    body{background:#05070c;color:#fff;min-height:100vh}
     .app{
-      max-width:430px;
-      margin:auto;
-      min-height:100vh;
-      padding:18px 18px 110px;
+      max-width:430px;margin:auto;min-height:100vh;padding:18px 18px 120px;
       background:
         radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
         radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
         #05070c;
     }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:18px;
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .back-btn,.avatar{
+      width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,0.06);color:#fff;text-decoration:none;font-size:18px
     }
-
-    .back-btn{
-      width:46px;
-      height:46px;
-      border:none;
-      border-radius:14px;
-      background:rgba(255,255,255,0.06);
-      color:#ffffff;
-      font-size:18px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-decoration:none;
-      backdrop-filter:blur(10px);
-    }
-
-    .profile-avatar{
-      width:46px;
-      height:46px;
-      border-radius:50%;
-      background:rgba(255,255,255,0.08);
-      color:#ffffff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:20px;
-      font-weight:bold;
-    }
-
-    .header-card,
-    .panel,
-    .summary-card{
+    .card{
       background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:22px;
-      padding:18px;
-      backdrop-filter:blur(10px);
-      margin-bottom:18px;
+      border:1px solid rgba(255,255,255,0.08);border-radius:22px;padding:18px;margin-bottom:18px;
+      backdrop-filter:blur(10px)
     }
-
-    .header-title{
-      font-size:32px;
-      font-weight:800;
-      margin-bottom:10px;
+    .title{font-size:30px;font-weight:800;margin-bottom:10px}
+    .sub{color:#8b93a7;font-size:14px;line-height:1.5}
+    .field{margin-top:16px}
+    .field label{display:block;font-size:14px;color:#c7cfdd;margin-bottom:8px;font-weight:600}
+    .input,.select{
+      width:100%;padding:14px;border-radius:16px;background:#11172a;border:1px solid rgba(255,255,255,0.08);
+      color:#fff;outline:none
     }
-
-    .header-sub{
-      color:#8b93a7;
-      font-size:15px;
-      line-height:1.5;
-    }
-
-    .service-badge{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      background:rgba(59,76,255,0.18);
-      color:#cfd6ff;
-      padding:10px 14px;
-      border-radius:999px;
-      font-size:14px;
-      font-weight:700;
-      margin-top:14px;
-    }
-
-    .section-title{
-      font-size:19px;
-      font-weight:800;
-      margin-bottom:14px;
-    }
-
-    .field{
-      margin-bottom:14px;
-    }
-
-    .field label{
-      display:block;
-      font-size:14px;
-      color:#c7cfdd;
-      margin-bottom:8px;
-      font-weight:600;
-    }
-
-    .input,
-    .select{
-      width:100%;
-      background:#131a2c;
-      color:#ffffff;
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:16px;
-      padding:15px 14px;
-      font-size:16px;
-      outline:none;
-    }
-
-    .input::placeholder{
-      color:#7f8798;
-    }
-
-    .grid-2{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-
-    .amount-grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:10px;
-      margin-top:8px;
-    }
-
+    .input::placeholder{color:#7f8798}
+    .amount-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
     .amount-chip{
-      border:none;
-      border-radius:16px;
-      padding:14px 10px;
-      background:#11172a;
-      color:#ffffff;
-      font-size:15px;
-      font-weight:700;
-      cursor:pointer;
-      border:1px solid rgba(255,255,255,0.08);
+      border:none;border-radius:16px;padding:14px 10px;background:#11172a;color:#fff;font-size:15px;font-weight:700;
+      cursor:pointer;border:1px solid rgba(255,255,255,0.08)
     }
-
-    .amount-chip.active{
-      background:#2f3cff;
-      box-shadow:0 12px 24px rgba(47,60,255,0.28);
-      border-color:transparent;
+    .amount-chip.active{background:#2f3cff;border-color:transparent;box-shadow:0 12px 24px rgba(47,60,255,0.28)}
+    .summary-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+    .summary-row:last-child{border-bottom:none}
+    .summary-label{color:#8b93a7;font-size:14px}
+    .summary-value{font-size:15px;font-weight:700;text-align:right;word-break:break-word;max-width:58%}
+    .primary-btn,.secondary-btn{
+      display:block;width:100%;border:none;border-radius:18px;font-size:17px;font-weight:700;padding:17px;
+      cursor:pointer;text-align:center;margin-top:12px
     }
-
-    .summary-row{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      padding:10px 0;
-      border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-
-    .summary-row:last-child{
-      border-bottom:none;
-      padding-bottom:0;
-    }
-
-    .summary-label{
-      color:#8b93a7;
-      font-size:14px;
-    }
-
-    .summary-value{
-      font-size:15px;
-      font-weight:700;
-      text-align:right;
-      word-break:break-word;
-    }
-
-    .primary-btn{
-      display:block;
-      width:100%;
-      border:none;
-      border-radius:18px;
-      background:#2f3cff;
-      color:#fff;
-      font-size:18px;
-      font-weight:700;
-      padding:18px;
-      cursor:pointer;
-      text-decoration:none;
-      text-align:center;
-      box-shadow:0 14px 30px rgba(47,60,255,0.35);
-      margin-top:10px;
-    }
-
-    .hint{
-      color:#8b93a7;
-      font-size:13px;
-      line-height:1.5;
-      margin-top:6px;
-    }
-
+    .primary-btn{background:#2f3cff;color:#fff;box-shadow:0 14px 30px rgba(47,60,255,0.35)}
+    .secondary-btn{background:#11172a;color:#fff;border:1px solid rgba(255,255,255,0.08)}
+    .hint{color:#8b93a7;font-size:13px;line-height:1.5;margin-top:8px}
     .bottom-nav{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:0;
-      width:100%;
-      max-width:430px;
-      background:#04060a;
-      border-top:1px solid rgba(255,255,255,0.08);
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      padding:12px 8px 14px;
-      z-index:1000;
+      position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:430px;background:#04060a;
+      border-top:1px solid rgba(255,255,255,0.08);display:grid;grid-template-columns:repeat(5,1fr);
+      padding:12px 8px 14px;z-index:1000
     }
-
-    .nav-item{
-      text-decoration:none;
-      color:#8b93a7;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:8px;
-      font-size:12px;
-      font-weight:600;
-    }
-
-    .nav-item i{
-      font-size:23px;
-    }
-
-    .nav-item.active{
-      color:#3b4cff;
-    }
+    .nav-item{text-decoration:none;color:#8b93a7;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;font-weight:600}
+    .nav-item i{font-size:23px}
+    .nav-item.active{color:#3b4cff}
   </style>
 </head>
 <body>
-  <div class="app">
-    <div class="topbar">
-      <a href="services.html" class="back-btn">
-        <i class="fa-solid fa-arrow-left"></i>
-      </a>
-      <div class="profile-avatar" id="profileLetter">A</div>
+<div class="app">
+  <div class="topbar">
+    <a href="services.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+    <div class="avatar" id="avatar">A</div>
+  </div>
+
+  <div class="card">
+    <div class="title">Topup</div>
+    <div class="sub">Rechaje liy mobil fasil ak FastPay.</div>
+  </div>
+
+  <div class="card">
+    <div class="field">
+      <label>User ID</label>
+      <input id="userId" class="input" type="number" value="1">
     </div>
 
-    <div class="header-card">
-      <div class="header-title">Topup</div>
-      <div class="header-sub">
-        Recharge telefòn fasil ak vit sou FastPay. Chwazi operatè a, antre nimewo a, epi kontinye pou peman.
-      </div>
-      <div class="service-badge">
-        <i class="fa-solid fa-mobile-screen-button"></i>
-        <span>Recharge Airtime</span>
-      </div>
+    <div class="field">
+      <label>Operatè</label>
+      <select id="operator" class="select" onchange="updateSummary()">
+        <option value="">Chwazi operatè a</option>
+        <option value="173">Digicel Haiti</option>
+      </select>
+      <div class="hint">Pou test sandbox la, n ap itilize Digicel Haiti.</div>
     </div>
 
-    <div class="panel">
-      <div class="section-title">Enfòmasyon kliyan</div>
-
-      <div class="field">
-        <label for="userId">User ID</label>
-        <input id="userId" class="input" type="number" value="1" />
-      </div>
-
-      <div class="field">
-        <label for="operator">Operatè</label>
-        <select id="operator" class="select">
-          <option value="173" data-name="Digicel Haiti">Digicel Haiti</option>
-          <option value="174" data-name="Natcom Haiti">Natcom Haiti</option>
-        </select>
-      </div>
-
-      <div class="grid-2">
-        <div class="field">
-          <label for="countryCode">Country Code</label>
-          <input id="countryCode" class="input" type="text" value="HT" />
-        </div>
-
-        <div class="field">
-          <label for="phone">Nimewo telefòn</label>
-          <input id="phone" class="input" type="text" placeholder="50937000000" />
-        </div>
-      </div>
-
-      <div class="field">
-        <label for="amount">Montan</label>
-        <input id="amount" class="input" type="number" placeholder="Eg: 10" />
-        <div class="amount-grid">
-          <button type="button" class="amount-chip" onclick="setAmount(5, this)">5 HTG</button>
-          <button type="button" class="amount-chip" onclick="setAmount(10, this)">10 HTG</button>
-          <button type="button" class="amount-chip" onclick="setAmount(25, this)">25 HTG</button>
-          <button type="button" class="amount-chip" onclick="setAmount(50, this)">50 HTG</button>
-          <button type="button" class="amount-chip" onclick="setAmount(100, this)">100 HTG</button>
-          <button type="button" class="amount-chip" onclick="setAmount(250, this)">250 HTG</button>
-        </div>
-        <div class="hint">Pou test sandbox, itilize yon nimewo test ou konnen ki valid pou API a.</div>
-      </div>
+    <div class="field">
+      <label>Nimewo telefòn</label>
+      <input id="phone" class="input" type="text" placeholder="Eg: 50912345678" oninput="updateSummary()">
     </div>
 
-    <div class="summary-card">
-      <div class="section-title">Rezime</div>
-
-      <div class="summary-row">
-        <div class="summary-label">Sèvis</div>
-        <div class="summary-value">Topup</div>
+    <div class="field">
+      <label>Montan</label>
+      <input id="amount" class="input" type="number" placeholder="Eg: 10" oninput="updateSummary()">
+      <div class="amount-grid">
+        <button type="button" class="amount-chip" onclick="setAmount(10, this)">10</button>
+        <button type="button" class="amount-chip" onclick="setAmount(20, this)">20</button>
+        <button type="button" class="amount-chip" onclick="setAmount(25, this)">25</button>
+        <button type="button" class="amount-chip" onclick="setAmount(50, this)">50</button>
+        <button type="button" class="amount-chip" onclick="setAmount(100, this)">100</button>
+        <button type="button" class="amount-chip" onclick="setAmount(150, this)">150</button>
       </div>
-
-      <div class="summary-row">
-        <div class="summary-label">Operatè</div>
-        <div class="summary-value" id="summaryOperator">Digicel Haiti</div>
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-label">Nimewo</div>
-        <div class="summary-value" id="summaryPhone">--</div>
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-label">Montan</div>
-        <div class="summary-value" id="summaryAmount">0 HTG</div>
-      </div>
-
-      <button class="primary-btn" onclick="goCheckout()">Kontinye nan checkout</button>
     </div>
   </div>
 
-  <div class="bottom-nav">
-    <a href="dashboard.html" class="nav-item">
-      <i class="fa-solid fa-house"></i>
-      <span>Home</span>
-    </a>
+  <div class="card">
+    <div class="summary-row">
+      <div class="summary-label">Sèvis</div>
+      <div class="summary-value">Topup</div>
+    </div>
+    <div class="summary-row">
+      <div class="summary-label">Operatè</div>
+      <div class="summary-value" id="summaryOperator">--</div>
+    </div>
+    <div class="summary-row">
+      <div class="summary-label">Nimewo</div>
+      <div class="summary-value" id="summaryPhone">--</div>
+    </div>
+    <div class="summary-row">
+      <div class="summary-label">Montan</div>
+      <div class="summary-value" id="summaryAmount">0 HTG</div>
+    </div>
 
-    <a href="statement.html" class="nav-item">
-      <i class="fa-solid fa-arrow-rotate-left"></i>
-      <span>Transactions</span>
-    </a>
-
-    <a href="services.html" class="nav-item active">
-      <i class="fa-brands fa-bitcoin"></i>
-      <span>Services</span>
-    </a>
-
-    <a href="card-dashboard.html" class="nav-item">
-      <i class="fa-regular fa-credit-card"></i>
-      <span>Cards</span>
-    </a>
-
-    <a href="wallet.html" class="nav-item">
-      <i class="fa-solid fa-wallet"></i>
-      <span>Wallet</span>
-    </a>
+    <button class="primary-btn" onclick="goCheckout()">Kontinye sou Checkout</button>
+    <button class="secondary-btn" onclick="window.location.href='services.html'">Retounen</button>
   </div>
+</div>
 
-  <script>
-    const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
-    const profileLetter = document.getElementById("profileLetter");
+<div class="bottom-nav">
+  <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <a href="statement.html" class="nav-item"><i class="fa-solid fa-arrow-rotate-left"></i><span>Transactions</span></a>
+  <a href="services.html" class="nav-item active"><i class="fa-brands fa-bitcoin"></i><span>Services</span></a>
+  <a href="card-dashboard.html" class="nav-item"><i class="fa-regular fa-credit-card"></i><span>Cards</span></a>
+  <a href="wallet.html" class="nav-item"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a>
+</div>
 
-    if (savedUser && savedUser.fullname) {
-      profileLetter.innerText = savedUser.fullname.charAt(0).toUpperCase();
-      if (savedUser.id) {
-        document.getElementById("userId").value = savedUser.id;
-      }
+<script>
+  const savedUser = JSON.parse(localStorage.getItem("fastpay_user") || "{}");
+
+  if(savedUser.fullname){
+    document.getElementById("avatar").innerText = savedUser.fullname[0].toUpperCase();
+    if(savedUser.id){
+      document.getElementById("userId").value = savedUser.id;
     }
+  }
 
-    const operatorEl = document.getElementById("operator");
-    const phoneEl = document.getElementById("phone");
-    const amountEl = document.getElementById("amount");
-
-    operatorEl.addEventListener("change", updateSummary);
-    phoneEl.addEventListener("input", updateSummary);
-    amountEl.addEventListener("input", updateSummary);
-
-    function setAmount(value, btn) {
-      amountEl.value = value;
-
-      document.querySelectorAll(".amount-chip").forEach(chip => {
-        chip.classList.remove("active");
-      });
-
-      btn.classList.add("active");
-      updateSummary();
-    }
-
-    function updateSummary() {
-      const selected = operatorEl.options[operatorEl.selectedIndex];
-      document.getElementById("summaryOperator").innerText =
-        selected.getAttribute("data-name") || selected.text;
-
-      document.getElementById("summaryPhone").innerText =
-        phoneEl.value.trim() || "--";
-
-      document.getElementById("summaryAmount").innerText =
-        (amountEl.value || 0) + " HTG";
-    }
-
-    function goCheckout() {
-      const userId = document.getElementById("userId").value.trim();
-      const operatorId = operatorEl.value;
-      const operatorName = operatorEl.options[operatorEl.selectedIndex].getAttribute("data-name");
-      const countryCode = document.getElementById("countryCode").value.trim();
-      const phone = phoneEl.value.trim();
-      const amount = amountEl.value.trim();
-
-      if (!userId || !operatorId || !countryCode || !phone || !amount) {
-        alert("Tanpri ranpli tout chan yo.");
-        return;
-      }
-
-      const topupData = {
-        userId: Number(userId),
-        service: "topup",
-        productName: operatorName,
-        amount: Number(amount),
-        customerData: {
-          operatorId: Number(operatorId),
-          countryCode: countryCode,
-          phone: phone
-        }
-      };
-
-      localStorage.setItem("fastpay_checkout", JSON.stringify(topupData));
-      window.location.href = "checkout.html";
-    }
-
+  function setAmount(value, btn){
+    document.getElementById("amount").value = value;
+    document.querySelectorAll(".amount-chip").forEach(chip => chip.classList.remove("active"));
+    btn.classList.add("active");
     updateSummary();
-  </script>
+  }
+
+  function updateSummary(){
+    const operatorSelect = document.getElementById("operator");
+    const operatorText = operatorSelect.options[operatorSelect.selectedIndex]?.text || "--";
+    document.getElementById("summaryOperator").innerText =
+      operatorSelect.value ? operatorText : "--";
+
+    document.getElementById("summaryPhone").innerText =
+      document.getElementById("phone").value || "--";
+
+    document.getElementById("summaryAmount").innerText =
+      (document.getElementById("amount").value || 0) + " HTG";
+  }
+
+  function goCheckout(){
+    const userId = Number(document.getElementById("userId").value);
+    const operatorId = Number(document.getElementById("operator").value);
+    const phone = document.getElementById("phone").value.trim();
+    const amount = Number(document.getElementById("amount").value);
+
+    if(!userId || !operatorId || !phone || !amount){
+      alert("Tanpri ranpli tout chan yo.");
+      return;
+    }
+
+    localStorage.setItem("fastpay_checkout", JSON.stringify({
+      userId,
+      service: "topup",
+      productName: "Digicel Haiti",
+      amount,
+      customerData: {
+        operatorId,
+        countryCode: "HT",
+        phone
+      }
+    }));
+
+    window.location.href = "checkout.html";
+  }
+
+  updateSummary();
+</script>
 </body>
-  </html>
+        </html>
