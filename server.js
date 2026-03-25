@@ -12,9 +12,7 @@ app.use(cors({
 }));
 
 app.options("*", cors());
-
 app.use(express.json());
-
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -197,6 +195,11 @@ app.get("/", (req, res) => {
   res.send("FastPay Backend Running 🚀");
 });
 
+// SIMPLE PING
+app.get("/api/ping", (req, res) => {
+  res.json({ success: true, message: "pong" });
+});
+
 // TEST RELOADLY
 app.get("/test-reloadly", async (req, res) => {
   try {
@@ -220,7 +223,11 @@ app.get("/test-reloadly", async (req, res) => {
 // GET WALLET
 app.get("/api/wallet/:id", async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM users WHERE id=$1", [req.params.id]);
+    const result = await pool.query(
+      "SELECT * FROM users WHERE id=$1",
+      [req.params.id]
+    );
+
     res.json(result.rows[0] || { error: "User not found" });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -233,18 +240,30 @@ app.post("/api/deposit", async (req, res) => {
     const { userId, amount } = req.body;
 
     if (!userId || !amount) {
-      return res.status(400).json({ error: "userId and amount required" });
+      return res.status(400).json({
+        success: false,
+        error: "userId and amount required"
+      });
     }
 
     if (Number(amount) <= 0) {
-      return res.status(400).json({ error: "Invalid amount" });
+      return res.status(400).json({
+        success: false,
+        error: "Invalid amount"
+      });
     }
 
-    const userResult = await pool.query("SELECT * FROM users WHERE id=$1", [userId]);
+    const userResult = await pool.query(
+      "SELECT * FROM users WHERE id=$1",
+      [userId]
+    );
     const user = userResult.rows[0];
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({
+        success: false,
+        error: "User not found"
+      });
     }
 
     await pool.query(
@@ -253,15 +272,63 @@ app.post("/api/deposit", async (req, res) => {
     );
 
     await pool.query(
-      `INSERT INTO transactions
-      (user_id, type, amount, final_amount, status)
-      VALUES ($1,'deposit',$2,$2,'completed')`,
+      `INSERT INTO transactions (user_id, type, amount, final_amount, status)
+       VALUES ($1,'deposit',$2,$2,'completed')`,
       [userId, amount]
     );
 
-    res.json({ success: true, message: "Deposit added" });
+    res.json({
+      success: true,
+      message: "Deposit added"
+    });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
+  }
+});
+
+// TEST DEPOSIT FOR CHROME
+app.get("/api/test-deposit", async (req, res) => {
+  try {
+    const userId = 1;
+    const amount = 50;
+
+    const userResult = await pool.query(
+      "SELECT * FROM users WHERE id=$1",
+      [userId]
+    );
+    const user = userResult.rows[0];
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        error: "User not found"
+      });
+    }
+
+    await pool.query(
+      "UPDATE users SET balance = balance + $1 WHERE id=$2",
+      [amount, userId]
+    );
+
+    await pool.query(
+      `INSERT INTO transactions (user_id, type, amount, final_amount, status)
+       VALUES ($1,'deposit',$2,$2,'completed')`,
+      [userId, amount]
+    );
+
+    res.json({
+      success: true,
+      message: "Test deposit added",
+      amount
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
   }
 });
 
@@ -271,14 +338,23 @@ app.post("/api/checkout/create", async (req, res) => {
     const { userId, service, productName, amount, customerData } = req.body;
 
     if (!userId || !service || !productName || !amount) {
-      return res.status(400).json({ error: "Missing fields" });
+      return res.status(400).json({
+        success: false,
+        error: "Missing fields"
+      });
     }
 
-    const userResult = await pool.query("SELECT * FROM users WHERE id=$1", [userId]);
+    const userResult = await pool.query(
+      "SELECT * FROM users WHERE id=$1",
+      [userId]
+    );
     const user = userResult.rows[0];
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({
+        success: false,
+        error: "User not found"
+      });
     }
 
     const orderResult = await pool.query(
@@ -293,7 +369,10 @@ app.post("/api/checkout/create", async (req, res) => {
       order: orderResult.rows[0]
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
   }
 });
 
@@ -303,29 +382,50 @@ app.post("/api/checkout/pay-and-deliver", async (req, res) => {
     const { orderId } = req.body;
 
     if (!orderId) {
-      return res.status(400).json({ error: "orderId required" });
+      return res.status(400).json({
+        success: false,
+        error: "orderId required"
+      });
     }
 
-    const orderResult = await pool.query("SELECT * FROM orders WHERE id=$1", [orderId]);
+    const orderResult = await pool.query(
+      "SELECT * FROM orders WHERE id=$1",
+      [orderId]
+    );
     const order = orderResult.rows[0];
 
     if (!order) {
-      return res.status(404).json({ error: "Order not found" });
+      return res.status(404).json({
+        success: false,
+        error: "Order not found"
+      });
     }
 
     if (order.status !== "pending") {
-      return res.status(400).json({ error: "Order already processed" });
+      return res.status(400).json({
+        success: false,
+        error: "Order already processed"
+      });
     }
 
-    const userResult = await pool.query("SELECT * FROM users WHERE id=$1", [order.user_id]);
+    const userResult = await pool.query(
+      "SELECT * FROM users WHERE id=$1",
+      [order.user_id]
+    );
     const user = userResult.rows[0];
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({
+        success: false,
+        error: "User not found"
+      });
     }
 
     if (Number(user.balance) < Number(order.amount)) {
-      return res.status(400).json({ error: "Insufficient balance" });
+      return res.status(400).json({
+        success: false,
+        error: "Insufficient balance"
+      });
     }
 
     await pool.query(
@@ -339,9 +439,8 @@ app.post("/api/checkout/pay-and-deliver", async (req, res) => {
     );
 
     await pool.query(
-      `INSERT INTO transactions
-      (user_id, type, amount, final_amount, status)
-      VALUES ($1,'payment',$2,$2,'completed')`,
+      `INSERT INTO transactions (user_id, type, amount, final_amount, status)
+       VALUES ($1,'payment',$2,$2,'completed')`,
       [order.user_id, order.amount]
     );
 
@@ -359,9 +458,8 @@ app.post("/api/checkout/pay-and-deliver", async (req, res) => {
       );
 
       await pool.query(
-        `INSERT INTO transactions
-        (user_id, type, amount, final_amount, status)
-        VALUES ($1,'delivery',$2,$2,'completed')`,
+        `INSERT INTO transactions (user_id, type, amount, final_amount, status)
+         VALUES ($1,'delivery',$2,$2,'completed')`,
         [order.user_id, order.amount]
       );
 
@@ -389,7 +487,10 @@ app.post("/api/checkout/pay-and-deliver", async (req, res) => {
       });
     }
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
   }
 });
 
@@ -402,7 +503,10 @@ app.get("/api/orders/:userId", async (req, res) => {
     );
     res.json(result.rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
   }
 });
 
@@ -415,18 +519,26 @@ app.get("/api/transactions/:userId", async (req, res) => {
     );
     res.json(result.rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
   }
 });
 
 // TEST CREATE TOPUP FOR CHROME
 app.get("/api/test-topup-create", async (req, res) => {
   try {
-    const userResult = await pool.query("SELECT * FROM users WHERE id=1");
+    const userResult = await pool.query(
+      "SELECT * FROM users WHERE id=1"
+    );
     const user = userResult.rows[0];
 
     if (!user) {
-      return res.status(404).json({ error: "User 1 not found" });
+      return res.status(404).json({
+        success: false,
+        error: "User 1 not found"
+      });
     }
 
     const orderResult = await pool.query(
@@ -478,7 +590,9 @@ app.get("/api/test-topup-pay", async (req, res) => {
       });
     }
 
-    const userResult = await pool.query("SELECT * FROM users WHERE id=1");
+    const userResult = await pool.query(
+      "SELECT * FROM users WHERE id=1"
+    );
     const user = userResult.rows[0];
 
     if (!user) {
@@ -545,7 +659,10 @@ app.post("/api/withdraw/request", async (req, res) => {
     const { userId, amount, method, destination, note } = req.body;
 
     if (!userId || !amount || !method || !destination) {
-      return res.status(400).json({ error: "Missing required fields" });
+      return res.status(400).json({
+        success: false,
+        error: "Missing required fields"
+      });
     }
 
     const userResult = await pool.query(
@@ -555,15 +672,24 @@ app.post("/api/withdraw/request", async (req, res) => {
     const user = userResult.rows[0];
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({
+        success: false,
+        error: "User not found"
+      });
     }
 
     if (Number(amount) <= 0) {
-      return res.status(400).json({ error: "Invalid amount" });
+      return res.status(400).json({
+        success: false,
+        error: "Invalid amount"
+      });
     }
 
     if (Number(user.balance) < Number(amount)) {
-      return res.status(400).json({ error: "Insufficient balance" });
+      return res.status(400).json({
+        success: false,
+        error: "Insufficient balance"
+      });
     }
 
     const result = await pool.query(
@@ -592,7 +718,10 @@ app.post("/api/withdraw/approve", async (req, res) => {
     const { withdrawalId } = req.body;
 
     if (!withdrawalId) {
-      return res.status(400).json({ error: "withdrawalId required" });
+      return res.status(400).json({
+        success: false,
+        error: "withdrawalId required"
+      });
     }
 
     const wdResult = await pool.query(
@@ -602,11 +731,15 @@ app.post("/api/withdraw/approve", async (req, res) => {
     const withdrawal = wdResult.rows[0];
 
     if (!withdrawal) {
-      return res.status(404).json({ error: "Withdrawal not found" });
+      return res.status(404).json({
+        success: false,
+        error: "Withdrawal not found"
+      });
     }
 
     if (withdrawal.status !== "pending") {
       return res.status(400).json({
+        success: false,
         error: `Withdrawal already ${withdrawal.status}`
       });
     }
@@ -618,11 +751,15 @@ app.post("/api/withdraw/approve", async (req, res) => {
     const user = userResult.rows[0];
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({
+        success: false,
+        error: "User not found"
+      });
     }
 
     if (Number(user.balance) < Number(withdrawal.amount)) {
       return res.status(400).json({
+        success: false,
         error: "Insufficient balance at approval time"
       });
     }
@@ -662,7 +799,10 @@ app.post("/api/withdraw/reject", async (req, res) => {
     const { withdrawalId } = req.body;
 
     if (!withdrawalId) {
-      return res.status(400).json({ error: "withdrawalId required" });
+      return res.status(400).json({
+        success: false,
+        error: "withdrawalId required"
+      });
     }
 
     const wdResult = await pool.query(
@@ -672,11 +812,15 @@ app.post("/api/withdraw/reject", async (req, res) => {
     const withdrawal = wdResult.rows[0];
 
     if (!withdrawal) {
-      return res.status(404).json({ error: "Withdrawal not found" });
+      return res.status(404).json({
+        success: false,
+        error: "Withdrawal not found"
+      });
     }
 
     if (withdrawal.status !== "pending") {
       return res.status(400).json({
+        success: false,
         error: `Withdrawal already ${withdrawal.status}`
       });
     }
@@ -720,7 +864,7 @@ app.get("/api/withdrawals/:userId", async (req, res) => {
 app.get("/api/test-withdraw-request", async (req, res) => {
   try {
     const userId = 1;
-    const amount = 100;
+    const amount = 50;
     const method = "MonCash";
     const destination = "50937000000";
     const note = "Test withdraw request";
@@ -732,11 +876,17 @@ app.get("/api/test-withdraw-request", async (req, res) => {
     const user = userResult.rows[0];
 
     if (!user) {
-      return res.status(404).json({ error: "User 1 not found" });
+      return res.status(404).json({
+        success: false,
+        error: "User 1 not found"
+      });
     }
 
     if (Number(user.balance) < Number(amount)) {
-      return res.status(400).json({ error: "Insufficient balance" });
+      return res.status(400).json({
+        success: false,
+        error: "Insufficient balance"
+      });
     }
 
     const result = await pool.query(
@@ -768,7 +918,10 @@ app.get("/api/test-withdraw-approve", async (req, res) => {
     const withdrawal = wdResult.rows[0];
 
     if (!withdrawal) {
-      return res.status(404).json({ error: "No pending withdrawal found" });
+      return res.status(404).json({
+        success: false,
+        error: "No pending withdrawal found"
+      });
     }
 
     const userResult = await pool.query(
@@ -778,11 +931,17 @@ app.get("/api/test-withdraw-approve", async (req, res) => {
     const user = userResult.rows[0];
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({
+        success: false,
+        error: "User not found"
+      });
     }
 
     if (Number(user.balance) < Number(withdrawal.amount)) {
-      return res.status(400).json({ error: "Insufficient balance" });
+      return res.status(400).json({
+        success: false,
+        error: "Insufficient balance"
+      });
     }
 
     await pool.query(
@@ -813,48 +972,7 @@ app.get("/api/test-withdraw-approve", async (req, res) => {
     });
   }
 });
-// TEST DEPOSIT FOR CHROME
-app.get("/api/test-deposit", async (req, res) => {
-  try {
-    const userId = 1;
-    const amount = 50;
 
-    const userResult = await pool.query(
-      "SELECT * FROM users WHERE id=$1",
-      [userId]
-    );
-    const user = userResult.rows[0];
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        error: "User not found"
-      });
-    }
-
-    await pool.query(
-      "UPDATE users SET balance = balance + $1 WHERE id=$2",
-      [amount, userId]
-    );
-
-    await pool.query(
-      `INSERT INTO transactions (user_id, type, amount, final_amount, status)
-       VALUES ($1,'deposit',$2,$2,'completed')`,
-      [userId, amount]
-    );
-
-    res.json({
-      success: true,
-      message: "Test deposit added",
-      amount
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      error: err.message
-    });
-  }
-});
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
