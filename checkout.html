@@ -1,342 +1,48 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout - FastPay</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      font-family:Arial,sans-serif;
-    }
-
-    body{
-      background:#05070c;
-      color:#fff;
-      min-height:100vh;
-    }
-
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+    body{background:#05070c;color:#fff;min-height:100vh}
     .app{
-      max-width:430px;
-      margin:auto;
-      min-height:100vh;
-      padding:18px 18px 120px;
+      max-width:430px;margin:auto;min-height:100vh;padding:18px 18px 120px;
       background:
         radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
         radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
         #05070c;
     }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:18px;
-    }
-
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
     .back-btn,.avatar{
-      width:46px;
-      height:46px;
-      border-radius:14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(255,255,255,0.06);
-      color:#fff;
-      text-decoration:none;
-      font-size:18px;
+      width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,0.06);color:#fff;text-decoration:none;font-size:18px
     }
-
     .card{
       background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:22px;
-      padding:18px;
-      margin-bottom:18px;
-      backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,0.08);border-radius:22px;padding:18px;margin-bottom:18px;
+      backdrop-filter:blur(10px)
     }
-
-    .title{
-      font-size:30px;
-      font-weight:800;
-      margin-bottom:8px;
+    .title{font-size:30px;font-weight:800;margin-bottom:10px}
+    .sub{color:#8b93a7;font-size:14px;line-height:1.5}
+    .summary-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+    .summary-row:last-child{border-bottom:none}
+    .summary-label{color:#8b93a7;font-size:14px}
+    .summary-value{font-size:15px;font-weight:700;text-align:right;word-break:break-word;max-width:58%}
+    .primary-btn,.secondary-btn{
+      display:block;width:100%;border:none;border-radius:18px;font-size:17px;font-weight:700;padding:17px;
+      cursor:pointer;text-align:center;margin-top:12px
     }
-
-    .sub{
-      color:#8b93a7;
-      font-size:14px;
-      line-height:1.5;
-    }
-
-    .pay-badge{
-      margin-top:14px;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 14px;
-      border-radius:999px;
-      background:rgba(59,130,246,0.12);
-      color:#93c5fd;
-      font-size:13px;
-      font-weight:700;
-    }
-
-    .summary-row{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:12px;
-      padding:12px 0;
-      border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-
-    .summary-row:last-child{
-      border-bottom:none;
-    }
-
-    .summary-label{
-      color:#8b93a7;
-      font-size:14px;
-    }
-
-    .summary-value{
-      font-size:15px;
-      font-weight:700;
-      text-align:right;
-      max-width:58%;
-      word-break:break-word;
-    }
-
-    .price-wrap{
-      margin-top:14px;
-      background:#11172a;
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:20px;
-      padding:16px;
-    }
-
-    .price-label{
-      color:#8b93a7;
-      font-size:13px;
-      margin-bottom:8px;
-    }
-
-    .price-value{
-      font-size:34px;
-      font-weight:800;
-    }
-
-    .wallet-box{
-      margin-top:14px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      padding:16px;
-      border-radius:18px;
-      background:#11172a;
-      border:1px solid rgba(255,255,255,0.08);
-    }
-
-    .wallet-left{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-    }
-
-    .wallet-label{
-      color:#8b93a7;
-      font-size:13px;
-    }
-
-    .wallet-value{
-      font-size:24px;
-      font-weight:800;
-    }
-
-    .wallet-status-ok,
-    .wallet-status-bad{
-      padding:8px 12px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:700;
-      white-space:nowrap;
-    }
-
-    .wallet-status-ok{
-      background:rgba(34,197,94,0.12);
-      color:#4ade80;
-    }
-
-    .wallet-status-bad{
-      background:rgba(239,68,68,0.12);
-      color:#f87171;
-    }
-
-    .pay-method-box{
-      margin-top:14px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:16px;
-      border-radius:18px;
-      background:#11172a;
-      border:1px solid rgba(255,255,255,0.08);
-    }
-
-    .pay-method-left{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .pay-icon{
-      width:46px;
-      height:46px;
-      border-radius:14px;
-      background:rgba(47,60,255,0.18);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:#cfd6ff;
-      font-size:18px;
-    }
-
-    .pay-method-title{
-      font-size:15px;
-      font-weight:800;
-    }
-
-    .pay-method-sub{
-      color:#8b93a7;
-      font-size:13px;
-      margin-top:4px;
-    }
-
-    .shield{
-      color:#4ade80;
-      font-size:18px;
-    }
-
-    .actions{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:12px;
-      margin-top:16px;
-    }
-
-    .primary-btn,
-    .secondary-btn{
-      width:100%;
-      border:none;
-      border-radius:20px;
-      padding:18px;
-      font-size:17px;
-      font-weight:800;
-      cursor:pointer;
-      text-align:center;
-      transition:0.2s ease;
-    }
-
-    .primary-btn{
-      background:linear-gradient(135deg,#2f3cff,#4b5dff);
-      color:#fff;
-      box-shadow:0 16px 32px rgba(47,60,255,0.35);
-    }
-
-    .primary-btn:disabled{
-      opacity:0.55;
-      cursor:not-allowed;
-      box-shadow:none;
-    }
-
-    .secondary-btn{
-      background:#11172a;
-      color:#fff;
-      border:1px solid rgba(255,255,255,0.08);
-    }
-
-    .btn-main{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-    }
-
-    .btn-sub{
-      display:block;
-      font-size:12px;
-      font-weight:600;
-      color:#dbe4ff;
-      opacity:0.9;
-      margin-top:4px;
-    }
-
-    .loading-inline{
-      display:none;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      font-size:14px;
-      color:#cfd6ff;
-      margin-top:8px;
-    }
-
-    .loading-inline.show{
-      display:flex;
-    }
-
-    .result-box{
-      white-space:pre-wrap;
-      word-break:break-word;
-      font-size:13px;
-      color:#dbe4ff;
-      line-height:1.5;
-      min-height:80px;
-    }
-
-    .bottom-nav{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:0;
-      width:100%;
-      max-width:430px;
-      background:#04060a;
-      border-top:1px solid rgba(255,255,255,0.08);
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      padding:12px 8px 14px;
-      z-index:1000;
-    }
-
-    .nav-item{
-      text-decoration:none;
-      color:#8b93a7;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:8px;
-      font-size:12px;
-      font-weight:600;
-    }
-
-    .nav-item i{
-      font-size:23px;
-    }
-
-    .nav-item.active{
-      color:#3b4cff;
-    }
+    .primary-btn{background:#2f3cff;color:#fff;box-shadow:0 14px 30px rgba(47,60,255,0.35)}
+    .primary-btn:disabled{opacity:.6;cursor:not-allowed}
+    .secondary-btn{background:#11172a;color:#fff;border:1px solid rgba(255,255,255,0.08)}
+    .result-box{white-space:pre-wrap;word-break:break-word;font-size:13px;color:#dbe4ff;line-height:1.5}
   </style>
 </head>
 <body>
 <div class="app">
-
   <div class="topbar">
     <a href="services.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
     <div class="avatar" id="avatar">A</div>
@@ -344,248 +50,109 @@
 
   <div class="card">
     <div class="title">Checkout</div>
-    <div class="sub">Verifye detay sèvis la anvan ou konfime peman an.</div>
-    <div class="pay-badge">
-      <i class="fa-solid fa-lock"></i>
-      <span>Peman an sekirize</span>
-    </div>
+    <div class="sub">Verifye detay yo epi peye sèvis la.</div>
   </div>
 
   <div class="card">
     <div class="summary-row">
       <div class="summary-label">Sèvis</div>
-      <div class="summary-value" id="summaryService">--</div>
+      <div class="summary-value" id="service">--</div>
     </div>
-
     <div class="summary-row">
       <div class="summary-label">Pwodwi</div>
-      <div class="summary-value" id="summaryProduct">--</div>
+      <div class="summary-value" id="product">--</div>
     </div>
-
     <div class="summary-row">
-      <div class="summary-label">Destinasyon</div>
-      <div class="summary-value" id="summaryDestination">--</div>
+      <div class="summary-label">Montan</div>
+      <div class="summary-value" id="amount">0 HTG</div>
     </div>
-
     <div class="summary-row">
       <div class="summary-label">User ID</div>
-      <div class="summary-value" id="summaryUser">--</div>
+      <div class="summary-value" id="userId">1</div>
     </div>
 
-    <div class="price-wrap">
-      <div class="price-label">Montan total pou peye</div>
-      <div class="price-value" id="summaryAmount">0 HTG</div>
-    </div>
-
-    <div class="wallet-box">
-      <div class="wallet-left">
-        <div class="wallet-label">Balans Wallet</div>
-        <div class="wallet-value" id="walletBalance">0 HTG</div>
-      </div>
-      <div id="walletStatus" class="wallet-status-bad">Ap verifye...</div>
-    </div>
-
-    <div class="pay-method-box">
-      <div class="pay-method-left">
-        <div class="pay-icon">
-          <i class="fa-solid fa-wallet"></i>
-        </div>
-        <div>
-          <div class="pay-method-title">FastPay Wallet</div>
-          <div class="pay-method-sub">Peman otomatik ak balans kliyan an</div>
-        </div>
-      </div>
-      <i class="fa-solid fa-shield-halved shield"></i>
-    </div>
-
-    <div class="actions">
-      <button class="primary-btn" id="payBtn" onclick="createAndPay()">
-        <div class="btn-main">
-          <i class="fa-solid fa-bolt"></i>
-          <span>Peye Kounya</span>
-        </div>
-        <span class="btn-sub">Payment + auto delivery</span>
-      </button>
-
-      <button class="secondary-btn" onclick="goBack()">Retounen</button>
-    </div>
-
-    <div id="loadingText" class="loading-inline">
-      <i class="fa-solid fa-spinner fa-spin"></i>
-      <span>Ap trete peman an...</span>
-    </div>
+    <button class="primary-btn" id="payBtn" onclick="payNow()">Peye Kounya</button>
+    <button class="secondary-btn" onclick="window.location.href='services.html'">Retounen</button>
   </div>
 
   <div class="card result-box" id="resultBox">Rezilta ap parèt isit...</div>
-
-</div>
-
-<div class="bottom-nav">
-  <a href="dashboard.html" class="nav-item">
-    <i class="fa-solid fa-house"></i>
-    <span>Home</span>
-  </a>
-
-  <a href="statement.html" class="nav-item">
-    <i class="fa-solid fa-arrow-rotate-left"></i>
-    <span>Transactions</span>
-  </a>
-
-  <a href="services.html" class="nav-item active">
-    <i class="fa-brands fa-bitcoin"></i>
-    <span>Services</span>
-  </a>
-
-  <a href="card-dashboard.html" class="nav-item">
-    <i class="fa-regular fa-credit-card"></i>
-    <span>Cards</span>
-  </a>
-
-  <a href="wallet.html" class="nav-item">
-    <i class="fa-solid fa-wallet"></i>
-    <span>Wallet</span>
-  </a>
 </div>
 
 <script>
   const API_BASE = "https://fastpayhaiti.onrender.com";
   const savedUser = JSON.parse(localStorage.getItem("fastpay_user") || "{}");
-  const checkoutData = JSON.parse(localStorage.getItem("fastpay_checkout") || "null");
+  const checkoutData = JSON.parse(localStorage.getItem("fastpay_checkout") || "{}");
+  const payBtn = document.getElementById("payBtn");
 
   if(savedUser.fullname){
     document.getElementById("avatar").innerText = savedUser.fullname[0].toUpperCase();
   }
 
-  const resultBox = document.getElementById("resultBox");
-  const payBtn = document.getElementById("payBtn");
-  const loadingText = document.getElementById("loadingText");
+  document.getElementById("service").innerText = checkoutData.service || "--";
+  document.getElementById("product").innerText = checkoutData.productName || "--";
+  document.getElementById("amount").innerText = (checkoutData.amount || 0) + " HTG";
+  document.getElementById("userId").innerText = checkoutData.userId || savedUser.id || 1;
 
-  if(!checkoutData){
-    resultBox.innerText = "Pa gen done checkout ki sove. Retounen sou paj sèvis la.";
-    payBtn.disabled = true;
-  } else {
-    document.getElementById("summaryService").innerText = checkoutData.service || "--";
-    document.getElementById("summaryProduct").innerText = checkoutData.productName || "--";
-
-    const customerData = checkoutData.customerData || {};
-    document.getElementById("summaryDestination").innerText =
-      customerData.phone || customerData.email || customerData.playerId || "--";
-
-    document.getElementById("summaryUser").innerText = checkoutData.userId || "--";
-    document.getElementById("summaryAmount").innerText = (checkoutData.amount || 0) + " HTG";
-
-    loadWalletBalance();
-  }
-
-  async function loadWalletBalance(){
+  async function payNow(){
     try{
-      const res = await fetch(`${API_BASE}/api/wallet/${checkoutData.userId}`);
-      const data = await res.json();
+      payBtn.disabled = true;
+      payBtn.innerText = "Ap trete...";
 
-      const balance = Number(data.balance || 0);
-      const amount = Number(checkoutData.amount || 0);
-
-      document.getElementById("walletBalance").innerText = balance + " HTG";
-
-      if(balance >= amount){
-        document.getElementById("walletStatus").innerText = "Balans sifi";
-        document.getElementById("walletStatus").className = "wallet-status-ok";
-      } else {
-        document.getElementById("walletStatus").innerText = "Balans pa sifi";
-        document.getElementById("walletStatus").className = "wallet-status-bad";
-      }
-    }catch(error){
-      document.getElementById("walletStatus").innerText = "Erè koneksyon";
-      document.getElementById("walletStatus").className = "wallet-status-bad";
-    }
-  }
-
-  function setProcessing(state){
-    payBtn.disabled = state;
-    loadingText.classList.toggle("show", state);
-
-    if(state){
-      payBtn.innerHTML = `
-        <div class="btn-main">
-          <i class="fa-solid fa-spinner fa-spin"></i>
-          <span>Ap peye...</span>
-        </div>
-        <span class="btn-sub">Tanpri tann kèk segond</span>
-      `;
-    } else {
-      payBtn.innerHTML = `
-        <div class="btn-main">
-          <i class="fa-solid fa-bolt"></i>
-          <span>Peye Kounya</span>
-        </div>
-        <span class="btn-sub">Payment + auto delivery</span>
-      `;
-    }
-  }
-
-  async function createAndPay(){
-    if(!checkoutData) return;
-
-    try{
-      setProcessing(true);
-      resultBox.innerText = "Ap kreye order la...";
+      document.getElementById("resultBox").innerText = "Ap kreye order la...";
 
       const createRes = await fetch(`${API_BASE}/api/checkout/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(checkoutData)
+        body: JSON.stringify({
+          userId: checkoutData.userId || savedUser.id || 1,
+          service: checkoutData.service,
+          productName: checkoutData.productName,
+          amount: checkoutData.amount,
+          customerData: checkoutData.customerData || {}
+        })
       });
 
       const createData = await createRes.json();
 
-      if(!createRes.ok || !createData.success || !createData.order){
-        resultBox.innerText = "Create order echwe:\n\n" + JSON.stringify(createData, null, 2);
-        setProcessing(false);
+      if(!createRes.ok || !createData.success){
+        document.getElementById("resultBox").innerText = JSON.stringify(createData, null, 2);
+        payBtn.disabled = false;
+        payBtn.innerText = "Peye Kounya";
         return;
       }
 
-      resultBox.innerText = "Order kreye. Ap fè peman + livrezon otomatik...";
+      document.getElementById("resultBox").innerText = "Order kreye. Ap fè peman an...";
 
       const payRes = await fetch(`${API_BASE}/api/checkout/pay-and-deliver`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ orderId: createData.order.id })
+        body: JSON.stringify({
+          orderId: createData.order.id
+        })
       });
 
       const payData = await payRes.json();
-      resultBox.innerText = JSON.stringify(payData, null, 2);
+      document.getElementById("resultBox").innerText = JSON.stringify(payData, null, 2);
 
       if(payRes.ok && payData.success){
         localStorage.setItem("fastpay_last_order", JSON.stringify(payData));
-        localStorage.removeItem("fastpay_checkout");
-
         setTimeout(() => {
           window.location.href = "success.html";
-        }, 1200);
-        return;
+        }, 1500);
+      } else {
+        payBtn.disabled = false;
+        payBtn.innerText = "Peye Kounya";
       }
-
-      setProcessing(false);
     }catch(error){
-      resultBox.innerText = "Erè pandan peman an:\n\n" + error.message;
-      setProcessing(false);
+      document.getElementById("resultBox").innerText = "Erè pandan checkout la:\n\n" + error.message;
+      payBtn.disabled = false;
+      payBtn.innerText = "Peye Kounya";
     }
-  }
-
-  function goBack(){
-    const service = (checkoutData?.service || "").toLowerCase();
-
-    if(service === "topup") window.location.href = "topup.html";
-    else if(service === "giftcard") window.location.href = "giftcards.html";
-    else if(service === "freefire") window.location.href = "freefire.html";
-    else if(service === "primevideo") window.location.href = "primevideo.html";
-    else if(service === "netflix") window.location.href = "netflix.html";
-    else window.location.href = "services.html";
   }
 </script>
 </body>
-  </html>
+</html>
