@@ -1,289 +1,63 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Withdraw - FastPay</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      font-family:Arial,sans-serif;
-    }
-
-    body{
-      background:#05070c;
-      color:#fff;
-      min-height:100vh;
-    }
-
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+    body{background:#05070c;color:#fff;min-height:100vh}
     .app{
-      max-width:430px;
-      margin:auto;
-      min-height:100vh;
-      padding:18px 18px 120px;
+      max-width:430px;margin:auto;min-height:100vh;padding:18px 18px 120px;
       background:
         radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
         radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
         #05070c;
     }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:18px;
-    }
-
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
     .back-btn,.avatar{
-      width:46px;
-      height:46px;
-      border-radius:14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(255,255,255,0.06);
-      color:#fff;
-      text-decoration:none;
-      font-size:18px;
+      width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,0.06);color:#fff;text-decoration:none;font-size:18px
     }
-
     .card{
       background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:22px;
-      padding:18px;
-      margin-bottom:18px;
-      backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,0.08);border-radius:22px;padding:18px;margin-bottom:18px;
+      backdrop-filter:blur(10px)
     }
-
-    .title{
-      font-size:30px;
-      font-weight:800;
-      margin-bottom:10px;
-    }
-
-    .sub{
-      color:#8b93a7;
-      font-size:14px;
-      line-height:1.5;
-    }
-
-    .balance-box{
-      margin-top:14px;
-      background:#11172a;
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:18px;
-      padding:16px;
-    }
-
-    .balance-label{
-      color:#8b93a7;
-      font-size:13px;
-      margin-bottom:8px;
-    }
-
-    .balance-value{
-      font-size:28px;
-      font-weight:800;
-    }
-
-    .field{
-      margin-top:16px;
-    }
-
-    .field label{
-      display:block;
-      font-size:14px;
-      color:#c7cfdd;
-      margin-bottom:8px;
-      font-weight:600;
-    }
-
+    .title{font-size:30px;font-weight:800;margin-bottom:10px}
+    .sub{color:#8b93a7;font-size:14px;line-height:1.5}
+    .field{margin-top:16px}
+    .field label{display:block;font-size:14px;color:#c7cfdd;margin-bottom:8px;font-weight:600}
     .input,.select{
-      width:100%;
-      padding:14px;
-      border-radius:16px;
-      background:#11172a;
-      border:1px solid rgba(255,255,255,0.08);
-      color:#fff;
-      outline:none;
+      width:100%;padding:14px;border-radius:16px;background:#11172a;border:1px solid rgba(255,255,255,0.08);
+      color:#fff;outline:none
     }
-
-    .input::placeholder{
-      color:#7f8798;
-    }
-
-    .method-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-      margin-top:12px;
-    }
-
-    .method-card{
-      background:#11172a;
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:18px;
-      padding:16px;
-      cursor:pointer;
-    }
-
-    .method-card.active{
-      background:#ff3c3c;
-      border-color:transparent;
-      box-shadow:0 12px 24px rgba(255,60,60,0.28);
-    }
-
-    .method-title{
-      font-size:16px;
-      font-weight:800;
-      margin-bottom:6px;
-    }
-
-    .method-text{
-      font-size:13px;
-      color:#dbe4ff;
-      line-height:1.4;
-    }
-
-    .amount-grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:10px;
-      margin-top:10px;
-    }
-
-    .amount-chip{
-      border:none;
-      border-radius:16px;
-      padding:14px 10px;
-      background:#11172a;
-      color:#fff;
-      font-size:15px;
-      font-weight:700;
-      cursor:pointer;
-      border:1px solid rgba(255,255,255,0.08);
-    }
-
-    .amount-chip.active{
-      background:#ff3c3c;
-      border-color:transparent;
-      box-shadow:0 12px 24px rgba(255,60,60,0.28);
-    }
-
-    .summary-row{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      padding:12px 0;
-      border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-
-    .summary-row:last-child{
-      border-bottom:none;
-    }
-
-    .summary-label{
-      color:#8b93a7;
-      font-size:14px;
-    }
-
-    .summary-value{
-      font-size:15px;
-      font-weight:700;
-      text-align:right;
-      word-break:break-word;
-      max-width:58%;
-    }
-
+    .input::placeholder{color:#7f8798}
+    .summary-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+    .summary-row:last-child{border-bottom:none}
+    .summary-label{color:#8b93a7;font-size:14px}
+    .summary-value{font-size:15px;font-weight:700;text-align:right;word-break:break-word;max-width:58%}
     .primary-btn,.secondary-btn{
-      display:block;
-      width:100%;
-      border:none;
-      border-radius:18px;
-      font-size:17px;
-      font-weight:700;
-      padding:17px;
-      cursor:pointer;
-      text-align:center;
-      margin-top:12px;
+      display:block;width:100%;border:none;border-radius:18px;font-size:17px;font-weight:700;padding:17px;
+      cursor:pointer;text-align:center;margin-top:12px
     }
-
-    .primary-btn{
-      background:#ff3c3c;
-      color:#fff;
-      box-shadow:0 14px 30px rgba(255,60,60,0.30);
-    }
-
-    .secondary-btn{
-      background:#11172a;
-      color:#fff;
-      border:1px solid rgba(255,255,255,0.08);
-    }
-
-    .result-box{
-      white-space:pre-wrap;
-      word-break:break-word;
-      font-size:13px;
-      color:#dbe4ff;
-      line-height:1.5;
-    }
-
-    .hint{
-      color:#8b93a7;
-      font-size:13px;
-      line-height:1.5;
-      margin-top:8px;
-    }
-
-    .warn{
-      color:#ffb4b4;
-      font-size:13px;
-      line-height:1.5;
-      margin-top:8px;
-    }
-
+    .primary-btn{background:#2f3cff;color:#fff;box-shadow:0 14px 30px rgba(47,60,255,0.35)}
+    .primary-btn:disabled{opacity:.6;cursor:not-allowed}
+    .secondary-btn{background:#11172a;color:#fff;border:1px solid rgba(255,255,255,0.08)}
+    .result-box{white-space:pre-wrap;word-break:break-word;font-size:13px;color:#dbe4ff;line-height:1.5}
     .bottom-nav{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:0;
-      width:100%;
-      max-width:430px;
-      background:#04060a;
-      border-top:1px solid rgba(255,255,255,0.08);
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      padding:12px 8px 14px;
-      z-index:1000;
+      position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:430px;background:#04060a;
+      border-top:1px solid rgba(255,255,255,0.08);display:grid;grid-template-columns:repeat(5,1fr);
+      padding:12px 8px 14px;z-index:1000
     }
-
-    .nav-item{
-      text-decoration:none;
-      color:#8b93a7;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:8px;
-      font-size:12px;
-      font-weight:600;
-    }
-
-    .nav-item i{
-      font-size:23px;
-    }
-
-    .nav-item.active{
-      color:#ff3c3c;
-    }
+    .nav-item{text-decoration:none;color:#8b93a7;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;font-weight:600}
+    .nav-item i{font-size:23px}
+    .nav-item.active{color:#3b4cff}
   </style>
 </head>
 <body>
 <div class="app">
-
   <div class="topbar">
     <a href="wallet.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
     <div class="avatar" id="avatar">A</div>
@@ -291,12 +65,7 @@
 
   <div class="card">
     <div class="title">Withdraw</div>
-    <div class="sub">Retire lajan sou wallet ou epi voye li sou metòd retrè kliyan an.</div>
-
-    <div class="balance-box">
-      <div class="balance-label">Balans Disponib</div>
-      <div class="balance-value" id="walletBalance">0 HTG</div>
-    </div>
+    <div class="sub">Voye yon demann retrè pou admin trete li epi valide li.</div>
   </div>
 
   <div class="card">
@@ -306,53 +75,28 @@
     </div>
 
     <div class="field">
-      <label>Chwazi metòd retrè</label>
-      <div class="method-grid">
-        <div class="method-card" onclick="selectMethod(this, 'MonCash')">
-          <div class="method-title">MonCash</div>
-          <div class="method-text">Retrè sou nimewo MonCash</div>
-        </div>
-
-        <div class="method-card" onclick="selectMethod(this, 'NatCash')">
-          <div class="method-title">NatCash</div>
-          <div class="method-text">Retrè sou NatCash</div>
-        </div>
-
-        <div class="method-card" onclick="selectMethod(this, 'Bank')">
-          <div class="method-title">Bank</div>
-          <div class="method-text">Vireman bankè</div>
-        </div>
-
-        <div class="method-card" onclick="selectMethod(this, 'Wise')">
-          <div class="method-title">Wise</div>
-          <div class="method-text">Transfè Wise</div>
-        </div>
-      </div>
+      <label>Metòd retrè</label>
+      <select id="method" class="select" onchange="updateSummary()">
+        <option value="">Chwazi metòd la</option>
+        <option value="MonCash">MonCash</option>
+        <option value="NatCash">NatCash</option>
+        <option value="PayPal">PayPal</option>
+      </select>
     </div>
 
     <div class="field">
-      <label>Montan retrè</label>
+      <label>Destinasyon</label>
+      <input id="destination" class="input" type="text" placeholder="Eg: +50942778505 / paypal@email.com">
+    </div>
+
+    <div class="field">
+      <label>Montan</label>
       <input id="amount" class="input" type="number" placeholder="Eg: 100">
-      <div class="amount-grid">
-        <button type="button" class="amount-chip" onclick="setAmount(100, this)">100</button>
-        <button type="button" class="amount-chip" onclick="setAmount(250, this)">250</button>
-        <button type="button" class="amount-chip" onclick="setAmount(500, this)">500</button>
-        <button type="button" class="amount-chip" onclick="setAmount(1000, this)">1000</button>
-        <button type="button" class="amount-chip" onclick="setAmount(2500, this)">2500</button>
-        <button type="button" class="amount-chip" onclick="setAmount(5000, this)">5000</button>
-      </div>
     </div>
 
     <div class="field">
-      <label>Nimewo / Kont destinasyon</label>
-      <input id="destination" class="input" type="text" placeholder="Eg: 509xxxxxxx / numero kont">
-    </div>
-
-    <div class="field">
-      <label>Nòt / Referans</label>
-      <input id="note" class="input" type="text" placeholder="Eg: retrè kliyan / nòt admin">
-      <div class="hint">Paj sa a se UI pwofesyonèl. Si backend retrè a poko la, nou ka konekte li apre ak validation pwofesyonèl.</div>
-      <div class="warn">Pa fè kliyan itilize retrè reyèl anvan backend la fin konekte nèt.</div>
+      <label>Nòt</label>
+      <input id="note" class="input" type="text" placeholder="Eg: retrè kliyan">
     </div>
   </div>
 
@@ -361,154 +105,104 @@
       <div class="summary-label">Metòd</div>
       <div class="summary-value" id="summaryMethod">--</div>
     </div>
-
+    <div class="summary-row">
+      <div class="summary-label">Destinasyon</div>
+      <div class="summary-value" id="summaryDestination">--</div>
+    </div>
     <div class="summary-row">
       <div class="summary-label">Montan</div>
       <div class="summary-value" id="summaryAmount">0 HTG</div>
     </div>
 
-    <div class="summary-row">
-      <div class="summary-label">Destinasyon</div>
-      <div class="summary-value" id="summaryDestination">--</div>
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-label">User ID</div>
-      <div class="summary-value" id="summaryUser">1</div>
-    </div>
-
-    <button class="primary-btn" onclick="submitWithdraw()">Konfime Withdraw</button>
+    <button class="primary-btn" id="withdrawBtn" onclick="submitWithdraw()">Voye Demann Retrè</button>
     <button class="secondary-btn" onclick="window.location.href='wallet.html'">Retounen Wallet</button>
   </div>
 
   <div class="card result-box" id="resultBox">Rezilta ap parèt isit...</div>
-
 </div>
 
 <div class="bottom-nav">
-  <a href="dashboard.html" class="nav-item">
-    <i class="fa-solid fa-house"></i>
-    <span>Home</span>
-  </a>
-
-  <a href="statement.html" class="nav-item">
-    <i class="fa-solid fa-arrow-rotate-left"></i>
-    <span>Transactions</span>
-  </a>
-
-  <a href="services.html" class="nav-item">
-    <i class="fa-brands fa-bitcoin"></i>
-    <span>Services</span>
-  </a>
-
-  <a href="card-dashboard.html" class="nav-item">
-    <i class="fa-regular fa-credit-card"></i>
-    <span>Cards</span>
-  </a>
-
-  <a href="wallet.html" class="nav-item active">
-    <i class="fa-solid fa-wallet"></i>
-    <span>Wallet</span>
-  </a>
+  <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <a href="statement.html" class="nav-item"><i class="fa-solid fa-arrow-rotate-left"></i><span>Transactions</span></a>
+  <a href="services.html" class="nav-item"><i class="fa-brands fa-bitcoin"></i><span>Services</span></a>
+  <a href="card-dashboard.html" class="nav-item"><i class="fa-regular fa-credit-card"></i><span>Cards</span></a>
+  <a href="wallet.html" class="nav-item active"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a>
 </div>
 
 <script>
   const API_BASE = "https://fastpayhaiti.onrender.com";
   const savedUser = JSON.parse(localStorage.getItem("fastpay_user") || "{}");
+  const withdrawBtn = document.getElementById("withdrawBtn");
 
   if(savedUser.fullname){
     document.getElementById("avatar").innerText = savedUser.fullname[0].toUpperCase();
     if(savedUser.id){
       document.getElementById("userId").value = savedUser.id;
-      document.getElementById("summaryUser").innerText = savedUser.id;
     }
   }
 
-  let selectedMethod = null;
-
-  const userIdEl = document.getElementById("userId");
-  const amountEl = document.getElementById("amount");
-  const destinationEl = document.getElementById("destination");
-
-  userIdEl.addEventListener("input", () => {
-    updateSummary();
-    loadWallet();
+  ["method","destination","amount"].forEach(id=>{
+    document.getElementById(id).addEventListener("input", updateSummary);
+    document.getElementById(id).addEventListener("change", updateSummary);
   });
 
-  amountEl.addEventListener("input", updateSummary);
-  destinationEl.addEventListener("input", updateSummary);
-
-  function selectMethod(el, method){
-    document.querySelectorAll(".method-card").forEach(card => card.classList.remove("active"));
-    el.classList.add("active");
-    selectedMethod = method;
-    updateSummary();
-  }
-
-  function setAmount(value, btn){
-    amountEl.value = value;
-    document.querySelectorAll(".amount-chip").forEach(chip => chip.classList.remove("active"));
-    btn.classList.add("active");
-    updateSummary();
-  }
-
   function updateSummary(){
-    document.getElementById("summaryMethod").innerText = selectedMethod || "--";
-    document.getElementById("summaryAmount").innerText = (amountEl.value || 0) + " HTG";
-    document.getElementById("summaryDestination").innerText = destinationEl.value || "--";
-    document.getElementById("summaryUser").innerText = userIdEl.value || "--";
-  }
+    document.getElementById("summaryMethod").innerText =
+      document.getElementById("method").value || "--";
 
-  async function loadWallet(){
-    const userId = userIdEl.value.trim();
-    if(!userId) return;
+    document.getElementById("summaryDestination").innerText =
+      document.getElementById("destination").value || "--";
 
-    try{
-      const res = await fetch(`${API_BASE}/api/wallet/${userId}`);
-      const data = await res.json();
-
-      if(data && !data.error){
-        document.getElementById("walletBalance").innerText = (data.balance || 0) + " HTG";
-      }else{
-        document.getElementById("walletBalance").innerText = "0 HTG";
-      }
-    }catch(error){
-      document.getElementById("walletBalance").innerText = "0 HTG";
-    }
+    document.getElementById("summaryAmount").innerText =
+      (document.getElementById("amount").value || 0) + " HTG";
   }
 
   async function submitWithdraw(){
-    const userId = userIdEl.value.trim();
-    const amount = amountEl.value.trim();
-    const destination = destinationEl.value.trim();
+    const userId = document.getElementById("userId").value.trim();
+    const method = document.getElementById("method").value.trim();
+    const destination = document.getElementById("destination").value.trim();
+    const amount = document.getElementById("amount").value.trim();
     const note = document.getElementById("note").value.trim();
 
-    if(!selectedMethod){
-      alert("Tanpri chwazi yon metòd retrè.");
+    if(!userId || !method || !destination || !amount){
+      alert("Tanpri ranpli tout chan yo.");
       return;
     }
 
-    if(!userId || !amount || !destination){
-      alert("Tanpri ranpli tout enfòmasyon yo.");
-      return;
+    try{
+      withdrawBtn.disabled = true;
+      withdrawBtn.innerText = "Ap voye...";
+      document.getElementById("resultBox").innerText = "Ap voye demann retrè a...";
+
+      const res = await fetch(`${API_BASE}/api/withdraw/request`, {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({
+          userId: Number(userId),
+          amount: Number(amount),
+          method,
+          destination,
+          note
+        })
+      });
+
+      const data = await res.json();
+      document.getElementById("resultBox").innerText = JSON.stringify(data, null, 2);
+
+      if(res.ok && data.success){
+        withdrawBtn.innerText = "Demann voye";
+      } else {
+        withdrawBtn.disabled = false;
+        withdrawBtn.innerText = "Voye Demann Retrè";
+      }
+    }catch(error){
+      document.getElementById("resultBox").innerText = "Erè pandan retrè a:\n\n" + error.message;
+      withdrawBtn.disabled = false;
+      withdrawBtn.innerText = "Voye Demann Retrè";
     }
-
-    const payload = {
-      userId: Number(userId),
-      amount: Number(amount),
-      method: selectedMethod,
-      destination,
-      note
-    };
-
-    document.getElementById("resultBox").innerText =
-      "Retrè a poko konekte ak backend la nèt.\n\nDone yo pare pou route backend la:\n\n" +
-      JSON.stringify(payload, null, 2);
   }
 
   updateSummary();
-  loadWallet();
 </script>
-
 </body>
-  </html>
+</html>
