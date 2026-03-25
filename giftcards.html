@@ -1,365 +1,215 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Giftcards - FastPay</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      font-family:Arial,sans-serif;
-    }
-    body{
-      background:#05070c;
-      color:#fff;
-      min-height:100vh;
-    }
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+    body{background:#05070c;color:#fff;min-height:100vh}
     .app{
-      max-width:430px;
-      margin:auto;
-      min-height:100vh;
-      padding:18px 18px 120px;
+      max-width:430px;margin:auto;min-height:100vh;padding:18px 18px 120px;
       background:
         radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
         radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
         #05070c;
     }
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:18px;
-    }
-    .back-btn{
-      width:46px;
-      height:46px;
-      border:none;
-      border-radius:14px;
-      background:rgba(255,255,255,0.06);
-      color:#fff;
-      font-size:18px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-decoration:none;
-      backdrop-filter:blur(10px);
-    }
-    .profile-avatar{
-      width:46px;
-      height:46px;
-      border-radius:50%;
-      background:rgba(255,255,255,0.08);
-      color:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:20px;
-      font-weight:bold;
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .back-btn,.avatar{
+      width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,0.06);color:#fff;text-decoration:none;font-size:18px
     }
     .card{
       background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:22px;
-      padding:18px;
-      backdrop-filter:blur(10px);
-      margin-bottom:18px;
+      border:1px solid rgba(255,255,255,0.08);border-radius:22px;padding:18px;margin-bottom:18px;
+      backdrop-filter:blur(10px)
     }
-    .title{
-      font-size:32px;
-      font-weight:800;
-      margin-bottom:10px;
+    .title{font-size:30px;font-weight:800;margin-bottom:10px}
+    .sub{color:#8b93a7;font-size:14px;line-height:1.5}
+    .field{margin-top:16px}
+    .field label{display:block;font-size:14px;color:#c7cfdd;margin-bottom:8px;font-weight:600}
+    .input{
+      width:100%;padding:14px;border-radius:16px;background:#11172a;border:1px solid rgba(255,255,255,0.08);
+      color:#fff;outline:none
     }
-    .sub{
-      color:#8b93a7;
-      font-size:15px;
-      line-height:1.5;
-      margin-bottom:14px;
+    .input::placeholder{color:#7f8798}
+    .gift-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+    .gift-card{
+      background:#11172a;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:16px;cursor:pointer
     }
-    .field{
-      margin-bottom:14px;
+    .gift-card.active{background:#2f3cff;border-color:transparent;box-shadow:0 12px 24px rgba(47,60,255,0.30)}
+    .gift-title{font-size:16px;font-weight:800;margin-bottom:6px}
+    .gift-text{font-size:13px;color:#dbe4ff;line-height:1.4}
+    .summary-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+    .summary-row:last-child{border-bottom:none}
+    .summary-label{color:#8b93a7;font-size:14px}
+    .summary-value{font-size:15px;font-weight:700;text-align:right;word-break:break-word;max-width:58%}
+    .primary-btn,.secondary-btn{
+      display:block;width:100%;border:none;border-radius:18px;font-size:17px;font-weight:700;padding:17px;
+      cursor:pointer;text-align:center;margin-top:12px
     }
-    .field label{
-      display:block;
-      font-size:14px;
-      color:#c7cfdd;
-      margin-bottom:8px;
-      font-weight:600;
-    }
-    .input, .select{
-      width:100%;
-      background:#131a2c;
-      color:#fff;
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:16px;
-      padding:15px 14px;
-      font-size:16px;
-      outline:none;
-    }
-    .input::placeholder{
-      color:#7f8798;
-    }
-    .gift-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-      margin-top:10px;
-    }
-    .gift-chip{
-      background:#11172a;
-      border:1px solid rgba(255,255,255,0.08);
-      color:#fff;
-      border-radius:18px;
-      padding:16px 12px;
-      cursor:pointer;
-      text-align:left;
-    }
-    .gift-chip.active{
-      background:#2f3cff;
-      box-shadow:0 14px 30px rgba(47,60,255,0.28);
-      border-color:transparent;
-    }
-    .gift-chip strong{
-      display:block;
-      font-size:16px;
-      margin-bottom:6px;
-    }
-    .gift-chip span{
-      font-size:13px;
-      color:#cfd6ff;
-    }
-    .summary-row{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      padding:12px 0;
-      border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-    .summary-row:last-child{
-      border-bottom:none;
-    }
-    .summary-label{
-      color:#8b93a7;
-      font-size:14px;
-    }
-    .summary-value{
-      font-size:15px;
-      font-weight:700;
-      text-align:right;
-      word-break:break-word;
-      max-width:58%;
-    }
-    .primary-btn{
-      display:block;
-      width:100%;
-      border:none;
-      border-radius:18px;
-      background:#2f3cff;
-      color:#fff;
-      font-size:18px;
-      font-weight:700;
-      padding:18px;
-      cursor:pointer;
-      text-decoration:none;
-      text-align:center;
-      box-shadow:0 14px 30px rgba(47,60,255,0.35);
-      margin-top:12px;
-    }
+    .primary-btn{background:#2f3cff;color:#fff;box-shadow:0 14px 30px rgba(47,60,255,0.35)}
+    .secondary-btn{background:#11172a;color:#fff;border:1px solid rgba(255,255,255,0.08)}
+    .hint{color:#8b93a7;font-size:13px;line-height:1.5;margin-top:8px}
     .bottom-nav{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:0;
-      width:100%;
-      max-width:430px;
-      background:#04060a;
-      border-top:1px solid rgba(255,255,255,0.08);
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      padding:12px 8px 14px;
-      z-index:1000;
+      position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:430px;background:#04060a;
+      border-top:1px solid rgba(255,255,255,0.08);display:grid;grid-template-columns:repeat(5,1fr);
+      padding:12px 8px 14px;z-index:1000
     }
-    .nav-item{
-      text-decoration:none;
-      color:#8b93a7;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:8px;
-      font-size:12px;
-      font-weight:600;
-    }
-    .nav-item i{
-      font-size:23px;
-    }
-    .nav-item.active{
-      color:#3b4cff;
-    }
+    .nav-item{text-decoration:none;color:#8b93a7;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;font-weight:600}
+    .nav-item i{font-size:23px}
+    .nav-item.active{color:#3b4cff}
   </style>
 </head>
 <body>
-  <div class="app">
-    <div class="topbar">
-      <a href="services.html" class="back-btn">
-        <i class="fa-solid fa-arrow-left"></i>
-      </a>
-      <div class="profile-avatar" id="profileLetter">A</div>
+<div class="app">
+  <div class="topbar">
+    <a href="services.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+    <div class="avatar" id="avatar">A</div>
+  </div>
+
+  <div class="card">
+    <div class="title">Giftcards</div>
+    <div class="sub">Chwazi gift card ou vle a epi kontinye sou checkout.</div>
+  </div>
+
+  <div class="card">
+    <div class="field">
+      <label>User ID</label>
+      <input id="userId" class="input" type="number" value="1">
     </div>
 
-    <div class="card">
-      <div class="title">Giftcards</div>
-      <div class="sub">Chwazi gift card ou vle a, mete email kliyan an, epi kontinye nan checkout.</div>
+    <div class="field">
+      <label>Email kliyan an</label>
+      <input id="email" class="input" type="email" placeholder="Eg: client@gmail.com" oninput="updateSummary()">
     </div>
 
-    <div class="card">
-      <div class="field">
-        <label for="userId">User ID</label>
-        <input id="userId" class="input" type="number" value="1" />
-      </div>
+    <div class="field">
+      <label>Non kliyan an</label>
+      <input id="name" class="input" type="text" placeholder="Eg: Jean Pierre">
+      <div class="hint">Gift card la ap al sou email kliyan an.</div>
+    </div>
 
-      <div class="field">
-        <label for="recipientName">Non kliyan an</label>
-        <input id="recipientName" class="input" type="text" placeholder="Eg: Jean Pierre" />
-      </div>
+    <div class="field">
+      <label>Chwazi gift card la</label>
+      <div class="gift-grid">
+        <div class="gift-card" onclick="selectGift(this, 1, 'Amazon $10', 10)">
+          <div class="gift-title">Amazon $10</div>
+          <div class="gift-text">Product test 1</div>
+        </div>
 
-      <div class="field">
-        <label for="recipientEmail">Email kliyan an</label>
-        <input id="recipientEmail" class="input" type="email" placeholder="Eg: client@gmail.com" />
-      </div>
+        <div class="gift-card" onclick="selectGift(this, 2, 'Netflix $15', 15)">
+          <div class="gift-title">Netflix $15</div>
+          <div class="gift-text">Product test 2</div>
+        </div>
 
-      <div class="field">
-        <label>Pake yo</label>
-        <div class="gift-grid">
-          <button type="button" class="gift-chip" onclick="selectGift(this, 1, 'Amazon $10', 10)">
-            <strong>Amazon $10</strong>
-            <span>Product test 1</span>
-          </button>
+        <div class="gift-card" onclick="selectGift(this, 3, 'Google Play $20', 20)">
+          <div class="gift-title">Google Play $20</div>
+          <div class="gift-text">Product test 3</div>
+        </div>
 
-          <button type="button" class="gift-chip" onclick="selectGift(this, 2, 'Netflix $15', 15)">
-            <strong>Netflix $15</strong>
-            <span>Product test 2</span>
-          </button>
-
-          <button type="button" class="gift-chip" onclick="selectGift(this, 3, 'Google Play $20', 20)">
-            <strong>Google Play $20</strong>
-            <span>Product test 3</span>
-          </button>
-
-          <button type="button" class="gift-chip" onclick="selectGift(this, 4, 'Apple $25', 25)">
-            <strong>Apple $25</strong>
-            <span>Product test 4</span>
-          </button>
+        <div class="gift-card" onclick="selectGift(this, 4, 'Apple $25', 25)">
+          <div class="gift-title">Apple $25</div>
+          <div class="gift-text">Product test 4</div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="card">
-      <div class="summary-row">
-        <div class="summary-label">Pwodwi</div>
-        <div class="summary-value" id="summaryProduct">--</div>
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-label">Email</div>
-        <div class="summary-value" id="summaryEmail">--</div>
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-label">Montan</div>
-        <div class="summary-value" id="summaryAmount">0 HTG</div>
-      </div>
-
-      <button class="primary-btn" onclick="goCheckout()">Kontinye nan checkout</button>
+  <div class="card">
+    <div class="summary-row">
+      <div class="summary-label">Sèvis</div>
+      <div class="summary-value">Giftcard</div>
     </div>
+    <div class="summary-row">
+      <div class="summary-label">Pwodwi</div>
+      <div class="summary-value" id="summaryProduct">--</div>
+    </div>
+    <div class="summary-row">
+      <div class="summary-label">Email</div>
+      <div class="summary-value" id="summaryEmail">--</div>
+    </div>
+    <div class="summary-row">
+      <div class="summary-label">Montan</div>
+      <div class="summary-value" id="summaryAmount">0 HTG</div>
+    </div>
+
+    <button class="primary-btn" onclick="goCheckout()">Kontinye sou Checkout</button>
+    <button class="secondary-btn" onclick="window.location.href='services.html'">Retounen</button>
   </div>
+</div>
 
-  <div class="bottom-nav">
-    <a href="dashboard.html" class="nav-item">
-      <i class="fa-solid fa-house"></i>
-      <span>Home</span>
-    </a>
-    <a href="statement.html" class="nav-item">
-      <i class="fa-solid fa-arrow-rotate-left"></i>
-      <span>Transactions</span>
-    </a>
-    <a href="services.html" class="nav-item active">
-      <i class="fa-brands fa-bitcoin"></i>
-      <span>Services</span>
-    </a>
-    <a href="card-dashboard.html" class="nav-item">
-      <i class="fa-regular fa-credit-card"></i>
-      <span>Cards</span>
-    </a>
-    <a href="wallet.html" class="nav-item">
-      <i class="fa-solid fa-wallet"></i>
-      <span>Wallet</span>
-    </a>
-  </div>
+<div class="bottom-nav">
+  <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <a href="statement.html" class="nav-item"><i class="fa-solid fa-arrow-rotate-left"></i><span>Transactions</span></a>
+  <a href="services.html" class="nav-item active"><i class="fa-brands fa-bitcoin"></i><span>Services</span></a>
+  <a href="card-dashboard.html" class="nav-item"><i class="fa-regular fa-credit-card"></i><span>Cards</span></a>
+  <a href="wallet.html" class="nav-item"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a>
+</div>
 
-  <script>
-    const savedUser = JSON.parse(localStorage.getItem("fastpay_user") || "null");
-    if (savedUser && savedUser.fullname) {
-      document.getElementById("profileLetter").innerText = savedUser.fullname.charAt(0).toUpperCase();
-      if (savedUser.id) {
-        document.getElementById("userId").value = savedUser.id;
+<script>
+  const savedUser = JSON.parse(localStorage.getItem("fastpay_user") || "{}");
+
+  if(savedUser.fullname){
+    document.getElementById("avatar").innerText = savedUser.fullname[0].toUpperCase();
+    if(savedUser.id){
+      document.getElementById("userId").value = savedUser.id;
+    }
+  }
+
+  let selectedGift = null;
+
+  function selectGift(el, productId, productName, amount){
+    document.querySelectorAll(".gift-card").forEach(card => card.classList.remove("active"));
+    el.classList.add("active");
+
+    selectedGift = { productId, productName, amount };
+    updateSummary();
+  }
+
+  function updateSummary(){
+    document.getElementById("summaryProduct").innerText =
+      selectedGift ? selectedGift.productName : "--";
+
+    document.getElementById("summaryEmail").innerText =
+      document.getElementById("email").value || "--";
+
+    document.getElementById("summaryAmount").innerText =
+      (selectedGift ? selectedGift.amount : 0) + " HTG";
+  }
+
+  function goCheckout(){
+    const userId = Number(document.getElementById("userId").value);
+    const email = document.getElementById("email").value.trim();
+    const name = document.getElementById("name").value.trim();
+
+    if(!selectedGift){
+      alert("Tanpri chwazi yon gift card.");
+      return;
+    }
+
+    if(!email){
+      alert("Tanpri mete email kliyan an.");
+      return;
+    }
+
+    localStorage.setItem("fastpay_checkout", JSON.stringify({
+      userId,
+      service: "giftcard",
+      productName: selectedGift.productName,
+      amount: selectedGift.amount,
+      customerData: {
+        productId: selectedGift.productId,
+        email,
+        name
       }
-    }
+    }));
 
-    let selectedGift = null;
+    window.location.href = "checkout.html";
+  }
 
-    function selectGift(btn, productId, productName, amount) {
-      document.querySelectorAll(".gift-chip").forEach(el => el.classList.remove("active"));
-      btn.classList.add("active");
-
-      selectedGift = { productId, productName, amount };
-      updateSummary();
-    }
-
-    function updateSummary() {
-      document.getElementById("summaryProduct").innerText =
-        selectedGift ? selectedGift.productName : "--";
-
-      document.getElementById("summaryEmail").innerText =
-        document.getElementById("recipientEmail").value.trim() || "--";
-
-      document.getElementById("summaryAmount").innerText =
-        selectedGift ? `${selectedGift.amount} HTG` : "0 HTG";
-    }
-
-    document.getElementById("recipientEmail").addEventListener("input", updateSummary);
-
-    function goCheckout() {
-      const userId = Number(document.getElementById("userId").value);
-      const name = document.getElementById("recipientName").value.trim();
-      const email = document.getElementById("recipientEmail").value.trim();
-
-      if (!selectedGift) {
-        alert("Tanpri chwazi yon gift card.");
-        return;
-      }
-
-      if (!email) {
-        alert("Tanpri mete email kliyan an.");
-        return;
-      }
-
-      const giftcardData = {
-        userId,
-        service: "giftcard",
-        productName: selectedGift.productName,
-        amount: selectedGift.amount,
-        customerData: {
-          productId: selectedGift.productId,
-          email,
-          name
-        }
-      };
-
-      localStorage.setItem("fastpay_checkout", JSON.stringify(giftcardData));
-      window.location.href = "checkout.html";
-    }
-  </script>
+  updateSummary();
+</script>
 </body>
-        </html>
+</html>
