@@ -808,7 +808,48 @@ app.get("/api/test-withdraw-approve", async (req, res) => {
     });
   }
 });
+// TEST DEPOSIT FOR CHROME
+app.get("/api/test-deposit", async (req, res) => {
+  try {
+    const userId = 1;
+    const amount = 50;
 
+    const userResult = await pool.query(
+      "SELECT * FROM users WHERE id=$1",
+      [userId]
+    );
+    const user = userResult.rows[0];
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        error: "User not found"
+      });
+    }
+
+    await pool.query(
+      "UPDATE users SET balance = balance + $1 WHERE id=$2",
+      [amount, userId]
+    );
+
+    await pool.query(
+      `INSERT INTO transactions (user_id, type, amount, final_amount, status)
+       VALUES ($1,'deposit',$2,$2,'completed')`,
+      [userId, amount]
+    );
+
+    res.json({
+      success: true,
+      message: "Test deposit added",
+      amount
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
+  }
+});
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
