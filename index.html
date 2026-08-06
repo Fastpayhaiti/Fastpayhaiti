@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FastPay Premium Dashboard</title>
+  <title>DLM Wallet Premium Dashboard</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     *{
@@ -500,12 +500,12 @@
 
 <div class="side-menu" id="sideMenu">
   <div class="menu-header">
-    <div class="menu-title">FastPay</div>
+    <div class="menu-title">DLM Wallet</div>
     <button class="close-menu" onclick="closeMenu()"><i class="fa-solid fa-xmark"></i></button>
   </div>
 
   <div class="menu-user">
-    <div class="menu-user-name" id="menuUserName">FastPay User</div>
+    <div class="menu-user-name" id="menuUserName">DLM Wallet User</div>
     <div class="menu-user-mail" id="menuUserMail">Not connected</div>
   </div>
 
@@ -526,7 +526,7 @@
     <a href="statement.html">📄 Statement</a>
     <a href="notification.html">🔔 Notifications</a>
     <a href="wallet.html">👛 Wallet</a>
-    <a href="admin.html">🛠 Admin</a>
+    <a href="admin.html" id="adminMenuLink">🛠 Admin</a>
     <a href="login.html" class="logout">🚪 Logout</a>
   </div>
 </div>
@@ -543,16 +543,16 @@
 
   <div class="greeting">
     <div class="hello">Hi,</div>
-    <div class="username" id="welcomeName">Luckystore! 👋</div>
+    <div class="username" id="welcomeName">DLM Wallet 👋</div>
   </div>
 
   <div class="premium-card-box">
     <div class="card-back"></div>
 
     <div class="card-front">
-      <div class="card-brand" id="frontBrand">FastPay</div>
+      <div class="card-brand" id="frontBrand">DLM Wallet</div>
       <div class="chip"></div>
-      <div class="card-holder" id="frontHolder">FASTPAY USER</div>
+      <div class="card-holder" id="frontHolder">DLM WALLET USER</div>
       <div class="mc-circles">
         <span></span>
         <span></span>
@@ -572,7 +572,7 @@
       <div class="status-pill">Active</div>
     </div>
     <div class="balance-amount" id="balanceAmount">0 HTG</div>
-    <div class="balance-sub" id="balanceSub">FastPay Wallet</div>
+    <div class="balance-sub" id="balanceSub">DLM Wallet</div>
   </div>
 
   <div class="section">
@@ -654,7 +654,9 @@
     document.getElementById("overlay").classList.remove("active");
   }
 
-  const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
+  const savedUser = requireLogin();
+  const adminMenuLink = document.getElementById("adminMenuLink");
+  if(adminMenuLink && !isAdmin(savedUser)) adminMenuLink.remove();
   const welcomeName = document.getElementById("welcomeName");
   const profileLetter = document.getElementById("profileLetter");
   const menuUserName = document.getElementById("menuUserName");
@@ -669,7 +671,7 @@
     menuUserName.innerText = savedUser.fullname;
     menuUserMail.innerText = savedUser.email || "No email";
     balanceAmount.innerText = (savedUser.balance || 0) + " HTG";
-    balanceSub.innerText = savedUser.email || "FastPay Wallet";
+    balanceSub.innerText = savedUser.email || "DLM Wallet";
     frontHolder.innerText = savedUser.fullname.toUpperCase();
   }
 

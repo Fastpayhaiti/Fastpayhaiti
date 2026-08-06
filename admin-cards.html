@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FastPay Premium Admin Cards</title>
+  <title>DLM Wallet Premium Admin Cards</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     *{
@@ -327,6 +327,9 @@
   </style>
 </head>
 <body>
+<script src="app.js"></script>
+<script>requireAdmin();</script>
+
 
 <div class="app">
   <div class="topbar">
@@ -338,7 +341,7 @@
   </div>
 
   <div class="hero-card">
-    <div class="hero-label">FastPay Cards Center</div>
+    <div class="hero-label">DLM Wallet Cards Center</div>
     <div class="hero-title">Manage Cards</div>
     <div class="hero-sub">Apwouve demann kat yo, jere kat kliyan yo, freeze, activate, ak load card yo.</div>
 
@@ -469,7 +472,7 @@
       userId: request.userId,
       number: "**** **** **** " + Math.floor(Math.random() * 9000 + 1000),
       realNumber: "4587 1234 9876 " + Math.floor(Math.random() * 9000 + 1000),
-      name: (request.fullname || "FASTPAY USER").toUpperCase(),
+      name: (request.fullname || "DLM WALLET USER").toUpperCase(),
       exp: "12/29",
       cvv: "392",
       brand: (request.network || "Mastercard"),
@@ -712,7 +715,7 @@
         <div class="list-item">
           <div class="item-top">
             <div>
-              <div class="item-title">${card.name || "FASTPAY USER"} - ${card.cardType || "Virtual Card"}</div>
+              <div class="item-title">${card.name || "DLM WALLET USER"} - ${card.cardType || "Virtual Card"}</div>
               <div class="item-sub">${user ? user.email : "N/A"}</div>
               <div class="item-sub">${card.brand || "Card"} • ${card.number || "**** **** **** 4587"}</div>
               <div class="badge ${getBadgeClass(card.status)}">${card.status || "Active"}</div>

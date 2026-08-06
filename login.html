@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FastPay Login</title>
+  <title>DLM Wallet Login</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
   <style>
@@ -153,11 +153,11 @@
 <div class="container">
   <div class="login-box">
 
-    <div class="logo">F</div>
+    <div class="logo">D</div>
 
     <h1>Login</h1>
     <div class="subtitle">
-      Konekte sou FastPay pou jere wallet ou, kat ou, ak tout sèvis dijital ou yo.
+      Konekte sou DLM Wallet pou jere wallet ou, kat ou, ak tout sèvis dijital ou yo.
     </div>
 
     <div id="errorBox" class="error"></div>
@@ -187,35 +187,20 @@
   </div>
 </div>
 
+<script src="app.js"></script>
 <script>
-  function showError(msg){
-    const box = document.getElementById("errorBox");
-    box.style.display = "block";
-    box.innerText = msg;
-  }
-
-  function loginUser(){
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-
-    if(!email || !password){
-      showError("Tanpri ranpli tout chan yo.");
-      return;
-    }
-
-    const users = JSON.parse(localStorage.getItem("fp_users") || "[]");
-
-    const user = users.find(u => u.email === email && u.password === password);
-
-    if(!user){
-      showError("Email oswa modpas pa kòrèk.");
-      return;
-    }
-
-    localStorage.setItem("fastpay_user", JSON.stringify(user));
-
-    window.location.href = "dashboard.html";
-  }
+function showError(msg){const box=document.getElementById("errorBox");box.style.display="block";box.innerText=msg;}
+function loginUser(){
+ const email=document.getElementById("email").value.trim().toLowerCase();
+ const password=document.getElementById("password").value;
+ if(!email||!password){showError("Tanpri ranpli tout chan yo.");return;}
+ const users=getUsers();
+ const user=users.find(u=>String(u.email||"").toLowerCase()===email && u.password===password);
+ if(!user){showError("Email oswa modpas pa kòrèk.");return;}
+ user.role=(email===DLM_ADMIN_EMAIL)?"admin":"customer";
+ saveUsers(users.map(u=>u.id===user.id?user:u)); saveCurrentUser(user);
+ window.location.replace(user.role==="admin"?"admin.html":"dashboard.html");
+}
 </script>
 
 </body>

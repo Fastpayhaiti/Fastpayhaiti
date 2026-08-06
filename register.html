@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FastPay Premium Register</title>
+  <title>DLM Wallet Premium Register</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     *{
@@ -180,9 +180,9 @@
 
 <div class="app">
   <div class="brand-wrap">
-    <div class="logo">F</div>
+    <div class="logo">D</div>
     <div class="title">Register</div>
-    <div class="sub">Kreye kont FastPay ou pou jere wallet ou, sèvis ou yo, ak kat dijital ou yo.</div>
+    <div class="sub">Kreye kont DLM Wallet ou pou jere wallet ou, sèvis ou yo, ak kat dijital ou yo.</div>
   </div>
 
   <div class="form-box">
@@ -245,7 +245,7 @@
       return;
     }
 
-    if(window.FastPayV2 && FastPayV2.registerUser){
+    if(false && window.FastPayV2 && FastPayV2.registerUser){
       const result = FastPayV2.registerUser({
         fullname,
         email,
@@ -278,6 +278,7 @@
       email,
       phone,
       password,
+      role: email === DLM_ADMIN_EMAIL ? "admin" : "customer",
       balance: 0,
       status: "Active",
       createdAt: new Date().toLocaleString()

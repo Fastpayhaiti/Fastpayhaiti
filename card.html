@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FastPay Virtual Card Request</title>
+<title>DLM Wallet Virtual Card Request</title>
 <style>
 *{
 box-sizing:border-box;
@@ -292,12 +292,14 @@ line-height:1.5;
 </style>
 </head>
 <body>
+<script src="app.js"></script>
+<script>requireLogin();</script>
 
 <div class="container">
 <a href="index.html" class="back">← Back Home</a>
 
 <div class="topbar">
-<div class="logo">FastPay</div>
+<div class="logo">DLM Wallet</div>
 <div class="profile" id="profileLetter">L</div>
 </div>
 
@@ -305,7 +307,7 @@ line-height:1.5;
 <div class="icon-wrap">💳</div>
 <div class="title">Demande Carte Vityèl</div>
 <div class="desc">
-Ranpli enfòmasyon yo epi chwazi mwayen peman ou pou mande kat vityèl FastPay la.
+Ranpli enfòmasyon yo epi chwazi mwayen peman ou pou mande kat vityèl DLM Wallet la.
 </div>
 
 <div class="info-box">
@@ -364,7 +366,7 @@ Ranpli enfòmasyon yo epi chwazi mwayen peman ou pou mande kat vityèl FastPay l
 <div class="method active" id="method-wallet" onclick="selectMethod('Wallet')">
 <div class="method-icon">👛</div>
 <div class="method-title">Wallet</div>
-<div class="method-sub">FastPay</div>
+<div class="method-sub">DLM Wallet</div>
 </div>
 
 <div class="method" id="method-bank" onclick="selectMethod('Bank')">
@@ -397,7 +399,7 @@ Ranpli enfòmasyon yo epi chwazi mwayen peman ou pou mande kat vityèl FastPay l
 <div class="success-box" id="successBox"></div>
 
 <div class="note">
-Si kliyan an peye ak wallet FastPay, sistèm nan ka retire 1500 HTG dirèkteman sou balans lan.  
+Si kliyan an peye ak wallet DLM Wallet, sistèm nan ka retire 1500 HTG dirèkteman sou balans lan.  
 Si li chwazi Bank oswa Digital, admin ap verifye peman an avan kat la aktive.
 </div>
 </div>
@@ -405,7 +407,7 @@ Si li chwazi Bank oswa Digital, admin ap verifye peman an avan kat la aktive.
 </div>
 
 <script>
-const savedUser = JSON.parse(localStorage.getItem("fastpay_user"));
+const savedUser = requireLogin();
 const profileLetter = document.getElementById("profileLetter");
 const walletBalanceEl = document.getElementById("walletBalance");
 const walletMessage = document.getElementById("walletMessage");
@@ -432,7 +434,7 @@ function selectMethod(method){
 }
 
 function updateWalletMessage(){
-  let balance = parseInt(localStorage.getItem("fastpay_balance")) || 0;
+  let balance = getUserBalance();
   walletBalanceEl.innerHTML = balance + " HTG";
 
   if(selectedMethod === "Wallet"){
@@ -456,7 +458,7 @@ function submitCardRequest(){
   const idNumber = document.getElementById("idNumber").value;
   const cardType = document.getElementById("cardType").value;
   const paymentNote = document.getElementById("paymentNote").value;
-  let balance = parseInt(localStorage.getItem("fastpay_balance")) || 0;
+  let balance = getUserBalance();
 
   if(!fullName || !email || !whatsapp || !dob || !address || !idNumber){
     alert("Tanpri ranpli tout enfòmasyon yo.");
@@ -472,7 +474,7 @@ function submitCardRequest(){
     }
 
     balance -= 1500;
-    localStorage.setItem("fastpay_balance", balance);
+    setUserBalance(balance);
 
     const cardData = {
       active: true,

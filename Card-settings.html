@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FastPay Professional Card Settings</title>
+  <title>DLM Wallet Professional Card Settings</title>
   <style>
     *{
       box-sizing:border-box;
@@ -388,13 +388,14 @@
   </style>
 </head>
 <body>
+<script>document.addEventListener("DOMContentLoaded",()=>requireLogin());</script>
 
 <div class="container">
 
   <div class="topbar">
     <div class="left-top">
       <a href="card-dashboard.html" class="back-btn">←</a>
-      <div class="logo">FastPay</div>
+      <div class="logo">DLM Wallet</div>
     </div>
     <div class="profile" id="profileLetter">U</div>
   </div>
@@ -490,6 +491,7 @@
 </div>
 
 <script src="app.js"></script>
+<script>requireLogin();</script>
 <script>
   function showNotice(message, isError = false){
     const box = document.getElementById("noticeBox");
@@ -549,7 +551,7 @@
         <div class="card-meta">
           <div class="meta-block">
             <small>Card Holder</small>
-            <span>${card.name || "FASTPAY USER"}</span>
+            <span>${card.name || "DLM WALLET USER"}</span>
           </div>
           <div class="meta-block">
             <small>Expiry</small>
@@ -574,7 +576,7 @@
       area.innerHTML = `
         <div class="section">
           <h2>Pa gen kat aktif</h2>
-          <div class="empty">Ou poko gen kat FastPay aktif pou modifye.</div>
+          <div class="empty">Ou poko gen kat DLM Wallet aktif pou modifye.</div>
           <a href="create-card.html" class="btn btn-orange" style="margin-top:14px;">Create Card</a>
         </div>
       `;
