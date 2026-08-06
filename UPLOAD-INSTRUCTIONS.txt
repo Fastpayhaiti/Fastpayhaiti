@@ -1,0 +1,17 @@
+DLM WALLET — FICHYE POU UPLOAD SOU GITHUB
+
+1. Dekonprese ZIP la.
+2. Sou GitHub: Add file > Upload files.
+3. Chwazi TOUT fichye ki nan katab sa a, espesyalman:
+   - app.js
+   - style.css
+   - index.html
+   - login.html
+   - register.html
+   - dashboard.html
+   - tout lòt fichye .html yo
+4. Commit dirèkteman sou branch main.
+5. Mesaj commit: Fix complete DLM Wallet version
+6. Tann 1–5 minit epi teste nan yon onglet prive.
+
+Pa upload ZIP la kòm yon sèl fichye. Upload sa ki ANNDAN katab la.
