@@ -1,33 +1,9 @@
-<!doctype html>
-<html lang="ht">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>DLM Wallet</title>
-  <meta name="theme-color" content="#05070c">
-  <style>
-    html,body{margin:0;min-height:100%;background:#05070c;color:#fff;font-family:Arial,sans-serif}
-    .loading{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px}
-    .spinner{width:38px;height:38px;border:4px solid rgba(255,255,255,.15);border-top-color:#2f3cff;border-radius:50%;margin:0 auto 14px;animation:spin .8s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
-  </style>
-</head>
-<body>
-  <div class="loading"><div><div class="spinner"></div><strong>DLM Wallet</strong><div style="margin-top:8px;color:#8b93a7">Ap louvri kont ou...</div></div></div>
-  <script>
-    (function(){
-      try{
-        var raw=localStorage.getItem('fastpay_user');
-        var user=raw?JSON.parse(raw):null;
-        var email=user&&user.email?String(user.email).toLowerCase():'';
-        var role=user&&user.role?String(user.role).toLowerCase():'';
-        var admin=email==='fastpayhaiti@gmail.com' && role==='admin';
-        window.location.replace(user&&email?(admin?'admin.html':'dashboard.html'):'login.html');
-      }catch(e){
-        localStorage.removeItem('fastpay_user');
-        window.location.replace('login.html');
-      }
-    })();
-  </script>
-</body>
-</html>
+<!DOCTYPE html>
+<html lang="ht"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>DLM Wallet</title>
+<style>body{margin:0;background:#05070c;color:white;font-family:Arial,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center}.loader{text-align:center}.logo{width:70px;height:70px;margin:auto;border-radius:20px;background:linear-gradient(135deg,#4f5eff,#2f3cff);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900}p{color:#9ca3af}</style></head>
+<body><div class="loader"><div class="logo">D</div><p>Ap ouvri DLM Wallet...</p></div>
+<script>
+const token=localStorage.getItem("dlm_token");
+const user=JSON.parse(localStorage.getItem("dlm_user")||"null");
+window.location.replace(token&&user?(user.role==="admin"?"admin.html":"dashboard.html"):"login.html");
+</script></body></html>

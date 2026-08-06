@@ -1,207 +1,39 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DLM Wallet Login</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-
-    body{
-      background:#05070c;
-      color:#fff;
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    .container{
-      width:100%;
-      max-width:420px;
-      padding:20px;
-    }
-
-    .login-box{
-      background:linear-gradient(135deg,#0d1117,#1c2330);
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:28px;
-      padding:28px 22px;
-      box-shadow:0 25px 60px rgba(0,0,0,0.4);
-      text-align:center;
-    }
-
-    .logo{
-      width:70px;
-      height:70px;
-      border-radius:20px;
-      background:linear-gradient(135deg,#4f5eff,#2f3cff);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:32px;
-      font-weight:900;
-      margin:0 auto 20px;
-      box-shadow:0 10px 30px rgba(47,60,255,0.4);
-    }
-
-    h1{
-      font-size:32px;
-      margin-bottom:10px;
-      font-weight:900;
-    }
-
-    .subtitle{
-      font-size:14px;
-      color:#9ca3af;
-      margin-bottom:22px;
-      line-height:1.6;
-    }
-
-    .form-group{
-      text-align:left;
-      margin-bottom:18px;
-    }
-
-    label{
-      font-size:14px;
-      font-weight:700;
-      margin-bottom:6px;
-      display:block;
-      color:#d1d5db;
-    }
-
-    .input-box{
-      position:relative;
-    }
-
-    .input-box i{
-      position:absolute;
-      left:14px;
-      top:50%;
-      transform:translateY(-50%);
-      color:#9ca3af;
-      font-size:16px;
-    }
-
-    input{
-      width:100%;
-      padding:14px 14px 14px 42px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,0.08);
-      background:rgba(255,255,255,0.05);
-      color:#fff;
-      font-size:14px;
-      outline:none;
-    }
-
-    input::placeholder{
-      color:#7f879b;
-    }
-
-    .btn{
-      width:100%;
-      padding:16px;
-      border:none;
-      border-radius:18px;
-      background:#2f3cff;
-      color:#fff;
-      font-size:16px;
-      font-weight:800;
-      cursor:pointer;
-      margin-top:10px;
-      box-shadow:0 15px 35px rgba(47,60,255,0.4);
-    }
-
-    .btn:hover{
-      opacity:0.9;
-    }
-
-    .extra{
-      margin-top:18px;
-      font-size:14px;
-      color:#9ca3af;
-    }
-
-    .extra a{
-      color:#fff;
-      font-weight:700;
-      text-decoration:none;
-    }
-
-    .extra a:hover{
-      text-decoration:underline;
-    }
-
-    .error{
-      display:none;
-      margin-bottom:14px;
-      padding:12px;
-      border-radius:12px;
-      background:rgba(217,60,75,0.2);
-      border:1px solid rgba(217,60,75,0.4);
-      color:#ffb4bf;
-      font-size:14px;
-    }
-  </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DLM Wallet Login</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}body{background:#05070c;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center}.container{width:100%;max-width:420px;padding:20px}.login-box{background:linear-gradient(135deg,#0d1117,#1c2330);border:1px solid rgba(255,255,255,.08);border-radius:28px;padding:28px 22px;box-shadow:0 25px 60px rgba(0,0,0,.4);text-align:center}.logo{width:70px;height:70px;border-radius:20px;background:linear-gradient(135deg,#4f5eff,#2f3cff);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;margin:0 auto 20px}h1{font-size:32px;margin-bottom:10px}.subtitle{font-size:14px;color:#9ca3af;margin-bottom:22px;line-height:1.6}.form-group{text-align:left;margin-bottom:18px}label{font-size:14px;font-weight:700;margin-bottom:6px;display:block;color:#d1d5db}.input-box{position:relative}.input-box i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#9ca3af}input{width:100%;padding:14px 14px 14px 42px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.05);color:#fff;font-size:14px;outline:none}.btn{width:100%;padding:16px;border:none;border-radius:18px;background:#2f3cff;color:#fff;font-size:16px;font-weight:800;cursor:pointer;margin-top:10px}.btn:disabled{opacity:.6}.extra{margin-top:18px;font-size:14px;color:#9ca3af}.extra a{color:#fff;font-weight:700;text-decoration:none}.error{display:none;margin-bottom:14px;padding:12px;border-radius:12px;background:rgba(217,60,75,.2);border:1px solid rgba(217,60,75,.4);color:#ffb4bf;font-size:14px}
+</style>
 </head>
-
 <body>
-
-<div class="container">
-  <div class="login-box">
-
-    <div class="logo">D</div>
-
-    <h1>Login</h1>
-    <div class="subtitle">
-      Konekte sou DLM Wallet pou jere wallet ou, kat ou, ak tout sèvis dijital ou yo.
-    </div>
-
-    <div id="errorBox" class="error"></div>
-
-    <div class="form-group">
-      <label>Email</label>
-      <div class="input-box">
-        <i class="fa-solid fa-envelope"></i>
-        <input type="email" id="email" placeholder="Antre email ou">
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>Password</label>
-      <div class="input-box">
-        <i class="fa-solid fa-lock"></i>
-        <input type="password" id="password" placeholder="Antre modpas ou">
-      </div>
-    </div>
-
-    <button class="btn" onclick="loginUser()">Login</button>
-
-    <div class="extra">
-      Ou poko gen kont? <a href="register.html">Kreye youn</a>
-    </div>
-
-  </div>
-</div>
-
+<div class="container"><div class="login-box">
+<div class="logo">D</div><h1>Login</h1>
+<div class="subtitle">Konekte sou DLM Wallet pou jere wallet ou, kat ou, ak tout sèvis dijital ou yo.</div>
+<div id="errorBox" class="error"></div>
+<div class="form-group"><label>Email</label><div class="input-box"><i class="fa-solid fa-envelope"></i><input type="email" id="email" autocomplete="email" placeholder="Antre email ou"></div></div>
+<div class="form-group"><label>Password</label><div class="input-box"><i class="fa-solid fa-lock"></i><input type="password" id="password" autocomplete="current-password" placeholder="Antre modpas ou"></div></div>
+<button class="btn" id="loginBtn" onclick="loginUser()">Login</button>
+<div class="extra">Ou poko gen kont? <a href="register.html">Kreye youn</a></div>
+</div></div>
 <script src="app.js"></script>
 <script>
-function showError(msg){const box=document.getElementById("errorBox");box.style.display="block";box.innerText=msg;}
-function loginUser(){
- const email=document.getElementById("email").value.trim().toLowerCase();
- const password=document.getElementById("password").value;
- if(!email||!password){showError("Tanpri ranpli tout chan yo.");return;}
- const users=getUsers();
- const user=users.find(u=>String(u.email||"").toLowerCase()===email && u.password===password);
- if(!user){showError("Email oswa modpas pa kòrèk.");return;}
- user.role=(email===DLM_ADMIN_EMAIL)?"admin":"customer";
- saveUsers(users.map(u=>u.id===user.id?user:u)); saveCurrentUser(user);
- window.location.replace(user.role==="admin"?"admin.html":"dashboard.html");
+function showError(message){const box=document.getElementById("errorBox");box.style.display="block";box.innerText=message;}
+async function loginUser(){
+  const email=document.getElementById("email").value.trim().toLowerCase();
+  const password=document.getElementById("password").value;
+  const btn=document.getElementById("loginBtn");
+  if(!email||!password){showError("Tanpri ranpli tout chan yo.");return;}
+  btn.disabled=true;btn.innerText="Ap konekte...";
+  try{
+    const data=await loginDlmUser(email,password);
+    window.location.replace(data.user.role==="admin"?"admin.html":"dashboard.html");
+  }catch(error){
+    showError(error.message);btn.disabled=false;btn.innerText="Login";
+  }
 }
+document.addEventListener("keydown",e=>{if(e.key==="Enter")loginUser();});
 </script>
-
-</body>
-</html>
+</body></html>
