@@ -1,43 +1,993 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>DLM Wallet Profile</title>
-<style>
-*{box-sizing:border-box;font-family:Arial,sans-serif}body{margin:0;background:#05070c;color:#fff}.app{max-width:430px;margin:auto;min-height:100vh;padding:20px}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}.back{color:#fff;text-decoration:none;background:rgba(255,255,255,.07);padding:12px 14px;border-radius:14px}.avatar{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.08);font-size:26px;font-weight:800;margin:0 auto 12px}.card{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:18px;margin-bottom:16px}.title{text-align:center;font-size:26px;font-weight:800;margin-bottom:6px}.sub{text-align:center;color:#8b93a7;margin-bottom:18px}.row{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.07)}.row:last-child{border-bottom:none}.label{font-size:12px;color:#8b93a7;margin-bottom:6px}.value{font-size:16px;font-weight:700;word-break:break-word}.btn{width:100%;border:0;border-radius:16px;padding:15px;background:#151922;color:#ffb4b4;font-weight:800;font-size:16px;margin-top:10px}
-</style>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>DLM Wallet - Profile & Settings</title>
+
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    rel="stylesheet"
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #05070c;
+      color: #ffffff;
+      min-height: 100vh;
+    }
+
+    .app {
+      max-width: 430px;
+      margin: auto;
+      min-height: 100vh;
+      padding: 20px 18px 40px;
+
+      background:
+        radial-gradient(
+          circle at top left,
+          rgba(59,130,246,.10),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at top right,
+          rgba(99,102,241,.10),
+          transparent 28%
+        ),
+        #05070c;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .back-btn {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.07);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .page-title {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .top-space {
+      width: 46px;
+    }
+
+    .profile-head {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .avatar {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      margin: 0 auto 14px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        linear-gradient(
+          135deg,
+          #2f3cff,
+          #5d6bff
+        );
+
+      font-size: 32px;
+      font-weight: 900;
+
+      box-shadow:
+        0 15px 35px
+        rgba(47,60,255,.25);
+    }
+
+    .name {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .email-head {
+      color: #8b93a7;
+      font-size: 14px;
+    }
+
+    .card {
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255,255,255,.06),
+          rgba(255,255,255,.03)
+        );
+
+      border:
+        1px solid
+        rgba(255,255,255,.08);
+
+      border-radius: 22px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .card-title {
+      font-size: 19px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .info-row {
+      padding: 13px 0;
+      border-bottom:
+        1px solid
+        rgba(255,255,255,.07);
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .label {
+      color: #8b93a7;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .value {
+      font-size: 15px;
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    .status {
+      color: #4ade80;
+    }
+
+    .pin-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+
+      padding: 14px;
+      border-radius: 16px;
+
+      background:
+        rgba(255,255,255,.04);
+
+      margin-bottom: 16px;
+    }
+
+    .pin-status-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pin-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        rgba(47,60,255,.18);
+
+      color: #9ea7ff;
+    }
+
+    .pin-status-title {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .pin-status-text {
+      color: #8b93a7;
+      font-size: 12px;
+    }
+
+    .pin-badge {
+      font-size: 11px;
+      font-weight: 800;
+
+      padding: 6px 9px;
+      border-radius: 999px;
+
+      background:
+        rgba(255,193,7,.12);
+
+      color: #ffd76a;
+    }
+
+    .pin-badge.active {
+      background:
+        rgba(34,197,94,.12);
+
+      color: #4ade80;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      color: #d7deee;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #7f879b;
+    }
+
+    input {
+      width: 100%;
+
+      background:
+        rgba(255,255,255,.06);
+
+      border:
+        1px solid
+        rgba(255,255,255,.08);
+
+      border-radius: 16px;
+      color: white;
+
+      padding:
+        15px 14px
+        15px 42px;
+
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color:
+        rgba(79,94,255,.7);
+    }
+
+    .notice {
+      display: none;
+      padding: 13px;
+      border-radius: 14px;
+      margin-bottom: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .notice.error {
+      display: block;
+
+      background:
+        rgba(217,60,75,.18);
+
+      color: #ffb4bf;
+    }
+
+    .notice.success {
+      display: block;
+
+      background:
+        rgba(17,156,103,.18);
+
+      color: #7ff0be;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 17px;
+
+      padding: 15px;
+
+      background: #2f3cff;
+      color: white;
+
+      font-size: 15px;
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+    .btn:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .logout-btn {
+      width: 100%;
+
+      border:
+        1px solid
+        rgba(255,255,255,.08);
+
+      border-radius: 17px;
+
+      padding: 15px;
+
+      background: #151922;
+      color: #ffb4b4;
+
+      font-size: 15px;
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+    .security-note {
+      color: #8b93a7;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 12px;
+    }
+  </style>
 </head>
+
 <body>
+
 <div class="app">
-  <div class="top"><a class="back" href="dashboard.html">← Retour</a></div>
-  <div class="card">
-    <div class="avatar" id="avatar">D</div>
-    <div class="title" id="name">DLM User</div>
-    <div class="sub">Profile & Settings</div>
-    <div class="row"><div class="label">Email</div><div class="value" id="email">--</div></div>
-    <div class="row"><div class="label">Phone</div><div class="value" id="phone">--</div></div>
-    <div class="row"><div class="label">Role</div><div class="value" id="role">customer</div></div>
-    <div class="row"><div class="label">Status</div><div class="value" id="status">Active</div></div>
+
+  <!-- TOP BAR -->
+
+  <div class="topbar">
+
+    <a
+      href="dashboard.html"
+      class="back-btn"
+    >
+      <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+    <div class="page-title">
+      Profile & Settings
+    </div>
+
+    <div class="top-space"></div>
+
   </div>
-  <div class="card">
-    <div class="row"><div class="label">Security PIN</div><div class="value">PIN ap aktive nan pwochen patch backend la.</div></div>
+
+
+  <!-- PROFILE -->
+
+  <div class="profile-head">
+
+    <div
+      class="avatar"
+      id="profileAvatar"
+    >
+      D
+    </div>
+
+    <div
+      class="name"
+      id="profileName"
+    >
+      DLM User
+    </div>
+
+    <div
+      class="email-head"
+      id="profileEmailHead"
+    >
+      --
+    </div>
+
   </div>
-  <button class="btn" onclick="logoutDlmUser()">Logout</button>
+
+
+  <!-- ACCOUNT INFORMATION -->
+
+  <div class="card">
+
+    <div class="card-title">
+      Account Information
+    </div>
+
+    <div class="info-row">
+
+      <div class="label">
+        Full Name
+      </div>
+
+      <div
+        class="value"
+        id="profileFullName"
+      >
+        --
+      </div>
+
+    </div>
+
+    <div class="info-row">
+
+      <div class="label">
+        Email
+      </div>
+
+      <div
+        class="value"
+        id="profileEmail"
+      >
+        --
+      </div>
+
+    </div>
+
+    <div class="info-row">
+
+      <div class="label">
+        Phone
+      </div>
+
+      <div
+        class="value"
+        id="profilePhone"
+      >
+        --
+      </div>
+
+    </div>
+
+    <div class="info-row">
+
+      <div class="label">
+        Account Status
+      </div>
+
+      <div
+        class="value status"
+        id="profileStatus"
+      >
+        Active
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- SECURITY PIN -->
+
+  <div class="card">
+
+    <div class="card-title">
+      Security PIN
+    </div>
+
+    <div class="pin-status">
+
+      <div class="pin-status-left">
+
+        <div class="pin-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <div>
+
+          <div class="pin-status-title">
+            Transaction PIN
+          </div>
+
+          <div
+            class="pin-status-text"
+            id="pinStatusText"
+          >
+            PIN poko aktive
+          </div>
+
+        </div>
+
+      </div>
+
+      <div
+        class="pin-badge"
+        id="pinBadge"
+      >
+        OFF
+      </div>
+
+    </div>
+
+
+    <div
+      id="pinNotice"
+      class="notice"
+    ></div>
+
+
+    <div class="form-group">
+
+      <label for="newPin">
+        Nouvo PIN
+      </label>
+
+      <div class="input-wrap">
+
+        <i class="fa-solid fa-lock"></i>
+
+        <input
+          type="password"
+          id="newPin"
+          inputmode="numeric"
+          maxlength="6"
+          autocomplete="new-password"
+          placeholder="Antre 6 chif"
+        >
+
+      </div>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="confirmPin">
+        Konfime PIN
+      </label>
+
+      <div class="input-wrap">
+
+        <i class="fa-solid fa-shield"></i>
+
+        <input
+          type="password"
+          id="confirmPin"
+          inputmode="numeric"
+          maxlength="6"
+          autocomplete="new-password"
+          placeholder="Antre menm 6 chif yo"
+        >
+
+      </div>
+
+    </div>
+
+
+    <button
+      class="btn"
+      id="savePinBtn"
+      onclick="saveSecurityPin()"
+    >
+      Activate PIN
+    </button>
+
+
+    <div class="security-note">
+      PIN ou a dwe genyen egzakteman 6 chif.
+      DLM Wallet pa montre PIN ou apre li fin anrejistre.
+    </div>
+
+  </div>
+
+
+  <!-- LOGOUT -->
+
+  <button
+    class="logout-btn"
+    onclick="logoutDlmUser()"
+  >
+    <i class="fa-solid fa-right-from-bracket"></i>
+    Logout
+  </button>
+
 </div>
+
+
 <script src="js/app.js"></script>
+
 <script>
-function paint(u){
-  if(!u)return;
-  const name=u.fullname||u.name||"DLM User";
-  document.getElementById("avatar").innerText=name.charAt(0).toUpperCase();
-  document.getElementById("name").innerText=name;
-  document.getElementById("email").innerText=u.email||"--";
-  document.getElementById("phone").innerText=u.phone||"--";
-  document.getElementById("role").innerText=u.role||"customer";
-  document.getElementById("status").innerText=u.status||"Active";
-}
-paint(requireDlmLogin());
-refreshDlmUser().then(paint);
+
+  /* =========================
+     REQUIRE LOGIN
+  ========================= */
+
+  const currentUser =
+    requireDlmLogin();
+
+
+  /* =========================
+     DISPLAY USER
+  ========================= */
+
+  function displayProfile(user) {
+
+    if (!user) {
+      return;
+    }
+
+    const name =
+      user.fullname ||
+      user.name ||
+      "DLM User";
+
+
+    document
+      .getElementById(
+        "profileAvatar"
+      )
+      .innerText =
+        name
+          .charAt(0)
+          .toUpperCase();
+
+
+    document
+      .getElementById(
+        "profileName"
+      )
+      .innerText =
+        name;
+
+
+    document
+      .getElementById(
+        "profileFullName"
+      )
+      .innerText =
+        name;
+
+
+    document
+      .getElementById(
+        "profileEmail"
+      )
+      .innerText =
+        user.email || "--";
+
+
+    document
+      .getElementById(
+        "profileEmailHead"
+      )
+      .innerText =
+        user.email || "--";
+
+
+    document
+      .getElementById(
+        "profilePhone"
+      )
+      .innerText =
+        user.phone || "--";
+
+
+    document
+      .getElementById(
+        "profileStatus"
+      )
+      .innerText =
+        user.status || "Active";
+
+
+    updatePinStatus(
+      Boolean(
+        user.pinEnabled
+      )
+    );
+  }
+
+
+  /* =========================
+     PIN STATUS
+  ========================= */
+
+  function updatePinStatus(enabled) {
+
+    const text =
+      document.getElementById(
+        "pinStatusText"
+      );
+
+    const badge =
+      document.getElementById(
+        "pinBadge"
+      );
+
+    const button =
+      document.getElementById(
+        "savePinBtn"
+      );
+
+
+    if (enabled) {
+
+      text.innerText =
+        "PIN sekirite aktive";
+
+      badge.innerText =
+        "ON";
+
+      badge.classList.add(
+        "active"
+      );
+
+      button.innerText =
+        "Change PIN";
+
+    } else {
+
+      text.innerText =
+        "PIN poko aktive";
+
+      badge.innerText =
+        "OFF";
+
+      badge.classList.remove(
+        "active"
+      );
+
+      button.innerText =
+        "Activate PIN";
+    }
+  }
+
+
+  /* =========================
+     NOTICE
+  ========================= */
+
+  function showPinNotice(
+    message,
+    success = false
+  ) {
+
+    const box =
+      document.getElementById(
+        "pinNotice"
+      );
+
+    box.className =
+      success
+        ? "notice success"
+        : "notice error";
+
+    box.innerText =
+      message;
+  }
+
+
+  /* =========================
+     NUMBERS ONLY
+  ========================= */
+
+  function cleanPinInput(input) {
+
+    input.value =
+      input.value
+        .replace(/\D/g, "")
+        .slice(0, 6);
+  }
+
+
+  document
+    .getElementById(
+      "newPin"
+    )
+    .addEventListener(
+      "input",
+      function () {
+        cleanPinInput(this);
+      }
+    );
+
+
+  document
+    .getElementById(
+      "confirmPin"
+    )
+    .addEventListener(
+      "input",
+      function () {
+        cleanPinInput(this);
+      }
+    );
+
+
+  /* =========================
+     SAVE PIN
+  ========================= */
+
+  async function saveSecurityPin() {
+
+    const pin =
+      document
+        .getElementById(
+          "newPin"
+        )
+        .value
+        .trim();
+
+
+    const confirmPin =
+      document
+        .getElementById(
+          "confirmPin"
+        )
+        .value
+        .trim();
+
+
+    const button =
+      document.getElementById(
+        "savePinBtn"
+      );
+
+
+    if (
+      !/^\d{6}$/.test(pin)
+    ) {
+
+      showPinNotice(
+        "PIN lan dwe genyen egzakteman 6 chif."
+      );
+
+      return;
+    }
+
+
+    if (
+      pin !== confirmPin
+    ) {
+
+      showPinNotice(
+        "De PIN yo pa menm."
+      );
+
+      return;
+    }
+
+
+    button.disabled =
+      true;
+
+    button.innerText =
+      "Ap anrejistre...";
+
+
+    try {
+
+      const data =
+        await dlmApi(
+          "/pin/set",
+          {
+            method: "POST",
+
+            body:
+              JSON.stringify({
+                pin
+              })
+          }
+        );
+
+
+      document
+        .getElementById(
+          "newPin"
+        )
+        .value = "";
+
+
+      document
+        .getElementById(
+          "confirmPin"
+        )
+        .value = "";
+
+
+      showPinNotice(
+        data.message ||
+        "PIN sekirite a aktive.",
+        true
+      );
+
+
+      updatePinStatus(
+        true
+      );
+
+
+      /*
+        Refresh user pou pinEnabled
+        rete ajou nan session lan.
+      */
+
+      const freshUser =
+        await refreshDlmUser();
+
+
+      if (freshUser) {
+
+        displayProfile(
+          freshUser
+        );
+      }
+
+
+    } catch (error) {
+
+      showPinNotice(
+        error.message ||
+        "Pa rive anrejistre PIN lan."
+      );
+
+    } finally {
+
+      button.disabled =
+        false;
+    }
+  }
+
+
+  /* =========================
+     INITIAL USER
+  ========================= */
+
+  if (currentUser) {
+
+    displayProfile(
+      currentUser
+    );
+  }
+
+
+  /* =========================
+     REFRESH FROM SERVER
+  ========================= */
+
+  refreshDlmUser()
+    .then(
+      function (freshUser) {
+
+        if (freshUser) {
+
+          displayProfile(
+            freshUser
+          );
+        }
+      }
+    );
+
 </script>
+
 </body>
-                                                      </html>
+  </html>
