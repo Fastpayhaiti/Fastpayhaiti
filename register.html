@@ -10,19 +10,25 @@
 </head>
 <body>
 <div class="app">
-<div class="brand-wrap"><div class="logo">D</div><div class="title">Register</div><div class="sub">Kreye kont DLM Wallet ou pou jere wallet ou, sèvis ou yo, ak kat dijital ou yo.</div></div>
-<div class="form-box">
-<div id="noticeBox" class="notice err"></div>
-<label>Full Name</label><div class="input-wrap"><i class="fa-regular fa-user"></i><input type="text" id="fullname" autocomplete="name" placeholder="Antre non konplè ou"></div>
-<label>Email</label><div class="input-wrap"><i class="fa-regular fa-envelope"></i><input type="email" id="email" autocomplete="email" placeholder="Antre email ou"></div>
-<label>Phone</label><div class="input-wrap"><i class="fa-solid fa-phone"></i><input type="tel" id="phone" autocomplete="tel" placeholder="Antre nimewo telefòn ou"></div>
-<label>Password</label><div class="input-wrap"><i class="fa-solid fa-lock"></i><input type="password" id="password" autocomplete="new-password" placeholder="Omwen 8 karaktè"></div>
-<button class="btn" id="registerBtn" onclick="registerUser()">Create Account</button>
-<div class="extra">Ou deja gen kont? <a href="login.html">Konekte</a></div>
-</div></div>
+  <div class="brand-wrap"><div class="logo">D</div><div class="title">Register</div><div class="sub">Kreye kont DLM Wallet ou pou jere wallet ou, sèvis ou yo, ak kat dijital ou yo.</div></div>
+  <div class="form-box">
+    <div id="noticeBox" class="notice err"></div>
+    <label>Full Name</label><div class="input-wrap"><i class="fa-regular fa-user"></i><input type="text" id="fullname" autocomplete="name" placeholder="Antre non konplè ou"></div>
+    <label>Email</label><div class="input-wrap"><i class="fa-regular fa-envelope"></i><input type="email" id="email" autocomplete="email" placeholder="Antre email ou"></div>
+    <label>Phone</label><div class="input-wrap"><i class="fa-solid fa-phone"></i><input type="tel" id="phone" autocomplete="tel" placeholder="Antre nimewo telefòn ou"></div>
+    <label>Password</label><div class="input-wrap"><i class="fa-solid fa-lock"></i><input type="password" id="password" autocomplete="new-password" placeholder="Omwen 8 karaktè"></div>
+    <button class="btn" id="registerBtn" onclick="registerUser()">Create Account</button>
+    <div class="extra">Ou deja gen kont? <a href="login.html">Konekte</a></div>
+  </div>
+</div>
 <script src="js/app.js"></script>
 <script>
-function showNotice(message,isError=true){const box=document.getElementById("noticeBox");box.style.display="block";box.className=isError?"notice err":"notice ok";box.innerText=message;}
+function showNotice(message,isError=true){
+  const box=document.getElementById("noticeBox");
+  box.style.display="block";
+  box.className=isError?"notice err":"notice ok";
+  box.innerText=message;
+}
 async function registerUser(){
   const fullname=document.getElementById("fullname").value.trim();
   const email=document.getElementById("email").value.trim().toLowerCase();
@@ -31,14 +37,26 @@ async function registerUser(){
   const btn=document.getElementById("registerBtn");
   if(!fullname||!email||!phone||!password){showNotice("Tanpri ranpli tout chan yo.");return;}
   if(password.length<8){showNotice("Modpas la dwe gen omwen 8 karaktè.");return;}
+
   btn.disabled=true;btn.innerText="Ap kreye kont...";
   try{
     await registerDlmUser({fullname,email,phone,password});
-    showNotice("Kont lan kreye avèk siksè. Ou ka konekte kounye a.",false);
-    setTimeout(()=>window.location.replace("login.html"),1200);
+
+    // konekte kliyan an otomatikman apre register
+    const loginData = await loginDlmUser(email,password);
+
+    showNotice("Kont lan kreye avèk siksè.",false);
+    setTimeout(()=>{
+      window.location.replace(
+        loginData.user.role==="admin" ? "admin-users.html" : "dashboard.html"
+      );
+    },500);
   }catch(error){
-    showNotice(error.message);btn.disabled=false;btn.innerText="Create Account";
+    showNotice(error.message);
+    btn.disabled=false;
+    btn.innerText="Create Account";
   }
 }
 </script>
-</body></html>
+</body>
+</html>
