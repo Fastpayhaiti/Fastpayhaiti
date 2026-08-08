@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DLM Wallet Admin - Withdrawals</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#05070c;color:#fff;min-height:100vh}
+.app{max-width:760px;margin:auto;min-height:100vh;padding:20px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.back{color:#fff;text-decoration:none;background:rgba(255,255,255,.07);padding:12px 14px;border-radius:14px}
+.refresh{border:0;border-radius:14px;background:#2f3cff;color:#fff;padding:12px 14px;font-weight:900}
+.title{font-size:30px;font-weight:900}.sub{color:#8b93a7;margin:6px 0 18px;line-height:1.5}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab{border:0;border-radius:12px;padding:10px 12px;background:rgba(255,255,255,.06);color:#fff;font-weight:800}
+.tab.active{background:#2f3cff}
+.card{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:16px;margin-bottom:12px}
+.name{font-size:18px;font-weight:900;margin-bottom:8px}
+.meta{font-size:14px;color:#aab3c5;line-height:1.65;word-break:break-word}
+.amount{font-size:24px;font-weight:900;margin:12px 0}
+.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:900}
+.pending{background:rgba(255,193,7,.15);color:#ffd76a}
+.approved{background:rgba(34,197,94,.15);color:#4ade80}
+.rejected{background:rgba(217,60,75,.15);color:#ff9eaa}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+button.action{border:0;border-radius:13px;padding:12px 14px;color:#fff;font-weight:900;cursor:pointer}
+.approve{background:#15803d}.reject{background:#b42335}
+.empty{color:#8b93a7;padding:20px 0}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <a href="admin.html" class="back">← Admin</a>
+    <button class="refresh" onclick="loadWithdrawals()">Refresh</button>
+  </div>
+
+  <div class="title">Withdrawal Requests</div>
+  <div class="sub">Verifye payout la anvan ou Approve. Sou Reject, backend la remèt montan an sou balans kliyan an.</div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="setFilter('',this)">All</button>
+    <button class="tab" onclick="setFilter('pending',this)">Pending</button>
+    <button class="tab" onclick="setFilter('approved',this)">Approved</button>
+    <button class="tab" onclick="setFilter('rejected',this)">Rejected</button>
+  </div>
+
+  <div id="list"><div class="empty">Ap chaje...</div></div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+requireDlmAdmin();
+
+let filterStatus="";
+
+function setFilter(status,button){
+  filterStatus=status;
+  document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+  button.classList.add("active");
+  loadWithdrawals();
+}
+
+async function loadWithdrawals(){
+  const box=document.getElementById("list");
+  box.innerHTML='<div class="empty">Ap chaje...</div>';
+
+  try{
+    const q=filterStatus?`?status=${filterStatus}`:"";
+    const data=await dlmApi(`/admin/withdrawals${q}`);
+    const withdrawals=data.withdrawals||[];
+
+    if(!withdrawals.length){
+      box.innerHTML='<div class="empty">Pa gen demann nan kategori sa.</div>';
+      return;
+    }
+
+    box.innerHTML=withdrawals.map(w=>{
+      const u=w.userId||{};
+      const status=String(w.status||"pending");
+
+      const actions=status==="pending"?`
+        <div class="actions">
+          <button class="action approve" onclick="approveWithdrawal('${w._id}')">Approve</button>
+          <button class="action reject" onclick="rejectWithdrawal('${w._id}')">Reject</button>
+        </div>
+      `:"";
+
+      return `
+        <div class="card">
+          <div class="name">
+            ${u.name||"DLM Customer"}
+            <span class="badge ${status}">${status.toUpperCase()}</span>
+          </div>
+
+          <div class="meta">
+            Email: ${u.email||"--"}<br>
+            Phone: ${u.phone||"--"}<br>
+            Method: ${w.method||"--"}<br>
+            Account: ${w.account||"--"}<br>
+            Created: ${w.createdAt?new Date(w.createdAt).toLocaleString():"--"}
+          </div>
+
+          <div class="amount">$${Number(w.amount||0).toFixed(2)} USD</div>
+          ${actions}
+        </div>
+      `;
+    }).join("");
+
+  }catch(error){
+    box.innerHTML=`<div class="empty">${error.message}</div>`;
+  }
+}
+
+async function approveWithdrawal(id){
+  if(!confirm("Ou verifye payout la epi ou vle APPROVE retrè sa?")) return;
+
+  try{
+    const data=await dlmApi(`/admin/withdrawals/${id}/approve`,{
+      method:"PATCH",
+      body:"{}"
+    });
+
+    alert(data.message||"Retrè approve.");
+    loadWithdrawals();
+
+  }catch(error){
+    alert(error.message);
+  }
+}
+
+async function rejectWithdrawal(id){
+  const reason=prompt("Rezon rejè a (optional):")||"";
+
+  try{
+    const data=await dlmApi(`/admin/withdrawals/${id}/reject`,{
+      method:"PATCH",
+      body:JSON.stringify({reason})
+    });
+
+    alert(data.message||"Retrè rejte.");
+    loadWithdrawals();
+
+  }catch(error){
+    alert(error.message);
+  }
+}
+
+loadWithdrawals();
+</script>
+</body>
+</html>
