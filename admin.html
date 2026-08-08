@@ -20,9 +20,7 @@ body{background:#05070c;color:#fff;min-height:100vh}
 .card{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:18px;text-decoration:none;color:#fff;min-height:132px;display:flex;flex-direction:column;justify-content:space-between}
 .card i{font-size:24px;color:#aeb6ff}.card h3{font-size:17px;margin-top:12px}.card p{color:#8b93a7;font-size:13px;line-height:1.45;margin-top:6px}
 .card.disabled{opacity:.45;pointer-events:none}
-.actions{display:flex;gap:10px;margin-top:24px}
-.btn{flex:1;border:0;border-radius:16px;padding:15px;font-size:14px;font-weight:900;cursor:pointer}
-.customer-btn{background:#151922;color:#fff}.logout-btn{background:#2a1218;color:#ffb4b4}
+.logout-btn{width:100%;border:0;border-radius:16px;padding:15px;font-size:15px;font-weight:900;cursor:pointer;background:#2a1218;color:#ffb4b4;margin-top:24px}
 .notice{display:none;margin-bottom:14px;padding:12px;border-radius:14px;background:rgba(217,60,75,.18);color:#ffb4bf;font-size:13px}
 @media(max-width:560px){.summary{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
 </style>
@@ -55,9 +53,10 @@ body{background:#05070c;color:#fff;min-height:100vh}
   </div>
 
   <div class="section-title">Administration</div>
+
   <div class="grid">
     <a class="card" href="admin-users.html">
-      <div><i class="fa-solid fa-users"></i><h3>Customers</h3><p>Wè tout kliyan, email, telefòn, balans, role ak status yo.</p></div>
+      <div><i class="fa-solid fa-users"></i><h3>Customers</h3><p>Wè tout kliyan, balans, email, telefòn ak status yo.</p></div>
     </a>
 
     <a class="card" href="admin-deposits.html">
@@ -77,19 +76,16 @@ body{background:#05070c;color:#fff;min-height:100vh}
     </a>
 
     <a class="card disabled" href="#">
-      <div><i class="fa-regular fa-credit-card"></i><h3>Cards & Orders</h3><p>Jesyon kat ak kòmand sèvis ap ajoute apre entegrasyon founisè yo.</p></div>
+      <div><i class="fa-regular fa-credit-card"></i><h3>Cards & Orders</h3><p>Jesyon kat ak kòmand sèvis ap ajoute apre.</p></div>
     </a>
   </div>
 
-  <div class="actions">
-    <button class="btn customer-btn" onclick="window.location.href='dashboard.html'">Open Customer View</button>
-    <button class="btn logout-btn" onclick="logoutDlmUser()">Logout</button>
-  </div>
+  <button class="logout-btn" onclick="logoutDlmUser()">Logout</button>
 </div>
 
 <script src="js/app.js"></script>
 <script>
-const admin = requireDlmAdmin();
+const admin=requireDlmAdmin();
 
 function showError(message){
   const box=document.getElementById("notice");
@@ -107,9 +103,9 @@ async function loadReserve(){
   try{
     const data=await dlmApi("/admin/reserve");
     const r=data.reserve||{};
-    document.getElementById("cashReserve").innerText=`$${Number(r.cashReserve||0).toFixed(2)}`;
-    document.getElementById("liabilities").innerText=`$${Number(r.customerLiability||0).toFixed(2)}`;
-    document.getElementById("availableReserve").innerText=`$${Number(r.availableReserve||0).toFixed(2)}`;
+    document.getElementById("cashReserve").innerText=`$${Number(r.cashReserve||0).toFixed(2)} USD`;
+    document.getElementById("liabilities").innerText=`$${Number(r.customerLiability||0).toFixed(2)} USD`;
+    document.getElementById("availableReserve").innerText=`$${Number(r.availableReserve||0).toFixed(2)} USD`;
   }catch(error){
     showError(error.message);
   }
