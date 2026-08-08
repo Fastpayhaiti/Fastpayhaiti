@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DLM Wallet Admin - Customers</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#05070c;color:#fff;min-height:100vh}
+.app{max-width:760px;margin:auto;min-height:100vh;padding:20px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.back{color:#fff;text-decoration:none;background:rgba(255,255,255,.07);padding:12px 14px;border-radius:14px}
+.refresh{border:0;border-radius:14px;background:#2f3cff;color:#fff;padding:12px 14px;font-weight:900}
+.title{font-size:30px;font-weight:900}.sub{color:#8b93a7;margin:6px 0 18px;line-height:1.5}
+.notice{display:none;padding:12px;border-radius:14px;margin-bottom:14px;font-size:13px}
+.notice.err{display:block;background:rgba(217,60,75,.18);color:#ffb4bf}
+.card{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:16px;margin-bottom:12px}
+.name{font-size:18px;font-weight:900;margin-bottom:8px}
+.meta{font-size:14px;color:#aab3c5;line-height:1.65;word-break:break-word}
+.balance{font-size:24px;font-weight:900;margin:12px 0}
+.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:900}
+.active{background:rgba(34,197,94,.15);color:#4ade80}
+.blocked{background:rgba(217,60,75,.15);color:#ff9eaa}
+.admin{background:rgba(99,102,241,.18);color:#c7ccff}
+.customer{background:rgba(255,255,255,.08);color:#d7deee}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+button.action{border:0;border-radius:12px;padding:10px 12px;color:#fff;font-weight:800}
+.credit{background:#166534}.debit{background:#7f1d1d}.status{background:#334155}
+.empty{color:#8b93a7;padding:20px 0}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <a href="admin.html" class="back">← Admin</a>
+    <button class="refresh" onclick="loadUsers()">Refresh</button>
+  </div>
+
+  <div class="title">Customers</div>
+  <div class="sub">Wè tout kont yo, balans yo, epi modifye balans oswa status kliyan yo.</div>
+
+  <div id="notice" class="notice"></div>
+  <div id="list"><div class="empty">Ap chaje...</div></div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+requireDlmAdmin();
+
+function showError(message){
+  const box=document.getElementById("notice");
+  box.className="notice err";
+  box.innerText=message;
+}
+
+async function loadUsers(){
+  const list=document.getElementById("list");
+  list.innerHTML='<div class="empty">Ap chaje...</div>';
+
+  try{
+    const data=await dlmApi("/admin/users");
+    const users=data.users||[];
+
+    if(!users.length){
+      list.innerHTML='<div class="empty">Pa gen itilizatè pou kounye a.</div>';
+      return;
+    }
+
+    list.innerHTML=users.map(u=>{
+      const statusClass=(u.status||"Active").toLowerCase()==="active"?"active":"blocked";
+      const roleClass=(u.role||"customer")==="admin"?"admin":"customer";
+      const isAdmin=(u.role==="admin");
+
+      return `
+        <div class="card">
+          <div class="name">
+            ${u.name||"DLM User"}
+            <span class="badge ${roleClass}">${String(u.role||"customer").toUpperCase()}</span>
+            <span class="badge ${statusClass}">${String(u.status||"Active").toUpperCase()}</span>
+          </div>
+
+          <div class="meta">
+            Email: ${u.email||"--"}<br>
+            Phone: ${u.phone||"--"}<br>
+            User ID: ${u.id||"--"}
+          </div>
+
+          <div class="balance">$${Number(u.balance||0).toFixed(2)} USD</div>
+
+          ${isAdmin ? "" : `
+          <div class="actions">
+            <button class="action credit" onclick="adjustBalance('${u.id}',1)">Add Balance</button>
+            <button class="action debit" onclick="adjustBalance('${u.id}',-1)">Remove Balance</button>
+            <button class="action status" onclick="toggleStatus('${u.id}','${u.status||"Active"}')">
+              ${(u.status||"Active")==="Active"?"Block":"Activate"}
+            </button>
+          </div>
+          `}
+        </div>
+      `;
+    }).join("");
+  }catch(error){
+    showError(error.message);
+    list.innerHTML='<div class="empty">Pa rive chaje kliyan yo.</div>';
+  }
+}
+
+async function adjustBalance(id,direction){
+  const raw=prompt(direction>0?"Konbyen USD ou vle ajoute?":"Konbyen USD ou vle retire?");
+  if(raw===null) return;
+
+  const value=Number(raw);
+  if(!Number.isFinite(value)||value<=0){
+    alert("Antre yon montan valab.");
+    return;
+  }
+
+  const amount=direction>0?value:-value;
+  const description=prompt("Description (optional):")||"Admin balance adjustment";
+
+  try{
+    const data=await dlmApi(`/admin/users/${id}/balance`,{
+      method:"PATCH",
+      body:JSON.stringify({amount,description})
+    });
+
+    alert(data.message||"Balans modifye.");
+    loadUsers();
+  }catch(error){
+    alert(error.message);
+  }
+}
+
+async function toggleStatus(id,currentStatus){
+  const nextStatus=currentStatus==="Active"?"Blocked":"Active";
+
+  if(!confirm(`Chanje status kont sa pou ${nextStatus}?`)) return;
+
+  try{
+    const data=await dlmApi(`/admin/users/${id}/status`,{
+      method:"PATCH",
+      body:JSON.stringify({status:nextStatus})
+    });
+
+    alert(data.message||"Status modifye.");
+    loadUsers();
+  }catch(error){
+    alert(error.message);
+  }
+}
+
+loadUsers();
+</script>
+</body>
+</html>
