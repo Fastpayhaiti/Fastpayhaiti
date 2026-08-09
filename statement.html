@@ -2,279 +2,31 @@
 <html lang="ht">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Statement - DLM Wallet</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-      font-family:Arial,sans-serif;
-    }
-
-    body{
-      background:#05070c;
-      color:#ffffff;
-      min-height:100vh;
-    }
-
-    .app{
-      max-width:430px;
-      margin:auto;
-      min-height:100vh;
-      padding:18px 18px 120px;
-      background:
-        radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 28%),
-        radial-gradient(circle at top right, rgba(99,102,241,0.10), transparent 25%),
-        #05070c;
-    }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:18px;
-    }
-
-    .back-btn,.avatar{
-      width:46px;
-      height:46px;
-      border-radius:14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(255,255,255,0.06);
-      color:#ffffff;
-      text-decoration:none;
-      font-size:18px;
-    }
-
-    .card{
-      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:22px;
-      padding:18px;
-      margin-bottom:18px;
-      backdrop-filter:blur(10px);
-    }
-
-    .title{
-      font-size:30px;
-      font-weight:800;
-      margin-bottom:10px;
-    }
-
-    .sub{
-      color:#8b93a7;
-      font-size:14px;
-      line-height:1.5;
-    }
-
-    .filters{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin-top:14px;
-    }
-
-    .input,.select{
-      width:100%;
-      padding:14px;
-      border-radius:16px;
-      background:#11172a;
-      border:1px solid rgba(255,255,255,0.08);
-      color:#fff;
-      outline:none;
-    }
-
-    .primary-btn,.secondary-btn{
-      display:block;
-      width:100%;
-      border:none;
-      border-radius:18px;
-      font-size:16px;
-      font-weight:700;
-      padding:15px;
-      cursor:pointer;
-      text-align:center;
-      margin-top:12px;
-    }
-
-    .primary-btn{
-      background:#2f3cff;
-      color:#fff;
-      box-shadow:0 14px 30px rgba(47,60,255,0.35);
-    }
-
-    .secondary-btn{
-      background:#11172a;
-      color:#fff;
-      border:1px solid rgba(255,255,255,0.08);
-    }
-
-    .summary-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-      margin-top:14px;
-    }
-
-    .summary-box{
-      background:#11172a;
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:18px;
-      padding:14px;
-    }
-
-    .summary-label{
-      color:#8b93a7;
-      font-size:13px;
-      margin-bottom:8px;
-    }
-
-    .summary-value{
-      font-size:22px;
-      font-weight:800;
-    }
-
-    .list-box{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-
-    .tx-card{
-      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:20px;
-      padding:16px;
-    }
-
-    .tx-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:12px;
-      margin-bottom:10px;
-    }
-
-    .tx-title{
-      font-size:16px;
-      font-weight:800;
-      margin-bottom:4px;
-    }
-
-    .tx-sub{
-      color:#8b93a7;
-      font-size:13px;
-      line-height:1.45;
-    }
-
-    .tx-amount{
-      font-size:16px;
-      font-weight:800;
-      white-space:nowrap;
-    }
-
-    .tx-bottom{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      margin-top:10px;
-      flex-wrap:wrap;
-    }
-
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding:7px 12px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:700;
-    }
-
-    .badge-success{
-      background:rgba(34,197,94,0.12);
-      color:#4ade80;
-    }
-
-    .badge-pending{
-      background:rgba(250,204,21,0.12);
-      color:#facc15;
-    }
-
-    .badge-failed{
-      background:rgba(239,68,68,0.12);
-      color:#f87171;
-    }
-
-    .badge-info{
-      background:rgba(59,130,246,0.12);
-      color:#60a5fa;
-    }
-
-    .tx-id{
-      color:#8b93a7;
-      font-size:12px;
-    }
-
-    .empty{
-      color:#8b93a7;
-      text-align:center;
-      padding:30px 10px;
-      font-size:14px;
-    }
-
-    .loading{
-      color:#8b93a7;
-      text-align:center;
-      padding:24px 10px;
-      font-size:14px;
-    }
-
-    .bottom-nav{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:0;
-      width:100%;
-      max-width:430px;
-      background:#04060a;
-      border-top:1px solid rgba(255,255,255,0.08);
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      padding:12px 8px 14px;
-      z-index:1000;
-    }
-
-    .nav-item{
-      text-decoration:none;
-      color:#8b93a7;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:8px;
-      font-size:12px;
-      font-weight:600;
-    }
-
-    .nav-item i{
-      font-size:23px;
-    }
-
-    .nav-item.active{
-      color:#3b4cff;
-    }
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+    body{background:#05070c;color:#fff;min-height:100vh}
+    .app{max-width:430px;margin:auto;min-height:100vh;padding:18px 18px 120px;background:radial-gradient(circle at top left,rgba(59,130,246,.08),transparent 28%),radial-gradient(circle at top right,rgba(99,102,241,.10),transparent 25%),#05070c}
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .back-btn,.avatar{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);color:#fff;text-decoration:none;font-size:18px}
+    .card,.tx-card{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:18px;margin-bottom:18px}
+    .title{font-size:30px;font-weight:800;margin-bottom:10px}.sub{color:#8b93a7;font-size:14px;line-height:1.5}
+    .filters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+    .input,.select{width:100%;padding:14px;border-radius:16px;background:#11172a;border:1px solid rgba(255,255,255,.08);color:#fff}
+    .primary-btn,.secondary-btn{display:block;width:100%;border:none;border-radius:18px;font-size:16px;font-weight:700;padding:15px;cursor:pointer;text-align:center;margin-top:12px}
+    .primary-btn{background:#2f3cff;color:#fff}.secondary-btn{background:#11172a;color:#fff;border:1px solid rgba(255,255,255,.08)}
+    .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.summary-box{background:#11172a;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:14px}
+    .summary-label{color:#8b93a7;font-size:13px;margin-bottom:8px}.summary-value{font-size:22px;font-weight:800}.list-box{display:flex;flex-direction:column;gap:12px}
+    .tx-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}.tx-title{font-size:16px;font-weight:800;margin-bottom:4px}.tx-sub{color:#8b93a7;font-size:13px;line-height:1.45}.tx-amount{font-size:16px;font-weight:800;white-space:nowrap}
+    .tx-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}.badge{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;font-size:12px;font-weight:700}
+    .badge-success{background:rgba(34,197,94,.12);color:#4ade80}.badge-pending{background:rgba(250,204,21,.12);color:#facc15}.badge-failed{background:rgba(239,68,68,.12);color:#f87171}.badge-info{background:rgba(59,130,246,.12);color:#60a5fa}
+    .tx-id{color:#8b93a7;font-size:12px}.empty,.loading{color:#8b93a7;text-align:center;padding:24px 10px;font-size:14px}
   </style>
 </head>
 <body>
-<script src="app.js"></script>
-<script>requireLogin();</script>
 <div class="app">
-
   <div class="topbar">
     <a href="dashboard.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
     <div class="avatar" id="avatar">A</div>
@@ -282,15 +34,15 @@
 
   <div class="card">
     <div class="title">Statement</div>
-    <div class="sub">Gade tranzaksyon ki pou kont ou sèlman sou DLM Wallet.</div>
+    <div class="sub">Gade tranzaksyon ak orders DLM Wallet ou.</div>
 
     <div class="filters">
-      <input id="userId" class="input" type="text" value="" placeholder="User ID" readonly>
+      <input id="userId" class="input" type="text" placeholder="User ID">
       <select id="typeFilter" class="select">
         <option value="all">Tout kalite</option>
         <option value="deposit">Deposit</option>
-        <option value="payment">Payment</option>
-        <option value="delivery">Delivery</option>
+        <option value="withdraw">Withdraw</option>
+        <option value="transfer">Transfer</option>
       </select>
     </div>
 
@@ -299,13 +51,12 @@
 
     <div class="summary-grid">
       <div class="summary-box">
-        <div class="summary-label">Total Tranzaksyon</div>
+        <div class="summary-label">Total</div>
         <div class="summary-value" id="totalCount">0</div>
       </div>
-
       <div class="summary-box">
-        <div class="summary-label">Total Montan</div>
-        <div class="summary-value" id="totalAmount">0</div>
+        <div class="summary-label">Montan</div>
+        <div class="summary-value" id="totalAmount">$0.00</div>
       </div>
     </div>
   </div>
@@ -313,88 +64,47 @@
   <div class="list-box" id="statementBox">
     <div class="loading">Ap tann chajman...</div>
   </div>
-
 </div>
 
 <div class="bottom-nav">
-  <a href="dashboard.html" class="nav-item">
-    <i class="fa-solid fa-house"></i>
-    <span>Home</span>
-  </a>
-
-  <a href="statement.html" class="nav-item active">
-    <i class="fa-solid fa-arrow-rotate-left"></i>
-    <span>Transactions</span>
-  </a>
-
-  <a href="services.html" class="nav-item">
-    <i class="fa-brands fa-bitcoin"></i>
-    <span>Services</span>
-  </a>
-
-  <a href="card-dashboard.html" class="nav-item">
-    <i class="fa-regular fa-credit-card"></i>
-    <span>Cards</span>
-  </a>
-
-  <a href="wallet.html" class="nav-item">
-    <i class="fa-solid fa-wallet"></i>
-    <span>Wallet</span>
-  </a>
+  <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <a href="statement.html" class="nav-item active"><i class="fa-solid fa-arrow-rotate-left"></i><span>Transactions</span></a>
+  <a href="services.html" class="nav-item"><i class="fa-brands fa-bitcoin"></i><span>Services</span></a>
+  <a href="card-dashboard.html" class="nav-item"><i class="fa-regular fa-credit-card"></i><span>Cards</span></a>
+  <a href="wallet.html" class="nav-item"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a>
 </div>
 
+<script src="app.js"></script>
 <script>
-  const API_BASE = "https://fastpayhaiti.onrender.com";
-  const savedUser = requireLogin() || {};
-
-  if(savedUser.fullname){
-    document.getElementById("avatar").innerText = savedUser.fullname[0].toUpperCase();
-    if(savedUser.id){
-      document.getElementById("userId").value = savedUser.id;
-    }
-  }
+  requireDlmLogin();
 
   function formatAmount(value){
-    return Number(value || 0).toFixed(2) + " HTG";
+    return `$${Number(value || 0).toFixed(2)} USD`;
   }
 
   function getBadgeClass(status){
-    const s = (status || "").toLowerCase();
-
-    if (s.includes("completed") || s.includes("delivered") || s.includes("success")) {
-      return "badge badge-success";
-    }
-
-    if (s.includes("pending") || s.includes("manual")) {
-      return "badge badge-pending";
-    }
-
-    if (s.includes("failed") || s.includes("error")) {
-      return "badge badge-failed";
-    }
-
+    const s = String(status || "").toLowerCase();
+    if (s.includes("completed") || s.includes("approved") || s.includes("success")) return "badge badge-success";
+    if (s.includes("pending") || s.includes("processing")) return "badge badge-pending";
+    if (s.includes("failed") || s.includes("rejected")) return "badge badge-failed";
     return "badge badge-info";
   }
 
   function renderTransactions(items){
     const box = document.getElementById("statementBox");
     const typeFilter = document.getElementById("typeFilter").value;
+    let filtered = Array.isArray(items) ? items : [];
 
-    let filtered = items || [];
     if(typeFilter !== "all"){
-      filtered = filtered.filter(item => (item.type || "").toLowerCase() === typeFilter);
+      filtered = filtered.filter(item => String(item.type || "").toLowerCase() === typeFilter);
     }
 
     document.getElementById("totalCount").innerText = filtered.length;
-
-    let total = 0;
-    filtered.forEach(item => {
-      total += Number(item.final_amount || item.amount || 0);
-    });
-    document.getElementById("totalAmount").innerText = formatAmount(total);
+    document.getElementById("totalAmount").innerText =
+      formatAmount(filtered.reduce((sum,item)=>sum + Number(item.amount || 0),0));
 
     if(!filtered.length){
-      box.innerHTML = `<div class="empty">Pa gen tranzaksyon pou montre.</div>`;
+      box.innerHTML = '<div class="empty">Pa gen tranzaksyon pou montre.</div>';
       return;
     }
 
@@ -402,98 +112,51 @@
       <div class="tx-card">
         <div class="tx-top">
           <div>
-            <div class="tx-title">${(item.type || "transaction").toUpperCase()}</div>
-            <div class="tx-sub">
-              ${item.created_at || item.date || "No date"}<br>
-              Status: ${item.status || "unknown"}
-            </div>
-          </div>
-          <div class="tx-amount">${formatAmount(item.final_amount || item.amount || 0)}</div>
-        </div>
-
-        <div class="tx-bottom">
-          <div class="${getBadgeClass(item.status)}">
-            <i class="fa-solid fa-circle-check"></i>
-            <span>${item.status || "unknown"}</span>
-          </div>
-          <div class="tx-id">TX ID: ${item.id || "--"}</div>
-        </div>
-      </div>
-    `).join("");
-  }
-
-  function renderOrders(items){
-    const box = document.getElementById("statementBox");
-
-    document.getElementById("totalCount").innerText = items.length;
-
-    let total = 0;
-    items.forEach(item => {
-      total += Number(item.amount || 0);
-    });
-    document.getElementById("totalAmount").innerText = formatAmount(total);
-
-    if(!items.length){
-      box.innerHTML = `<div class="empty">Pa gen orders pou montre.</div>`;
-      return;
-    }
-
-    box.innerHTML = items.map(item => `
-      <div class="tx-card">
-        <div class="tx-top">
-          <div>
-            <div class="tx-title">${item.product_name || item.service || "Order"}</div>
-            <div class="tx-sub">
-              Service: ${item.service || "--"}<br>
-              ${item.created_at || "No date"}
-            </div>
+            <div class="tx-title">${String(item.type || "transaction").toUpperCase()}</div>
+            <div class="tx-sub">${item.createdAt || item.created_at || item.date || ""}<br>Status: ${item.status || "unknown"}</div>
           </div>
           <div class="tx-amount">${formatAmount(item.amount || 0)}</div>
         </div>
-
         <div class="tx-bottom">
-          <div class="${getBadgeClass(item.status)}">
-            <i class="fa-solid fa-bolt"></i>
-            <span>${item.status || "unknown"}</span>
-          </div>
-          <div class="tx-id">Order ID: ${item.id || "--"}</div>
+          <div class="${getBadgeClass(item.status)}">${item.status || "unknown"}</div>
+          <div class="tx-id">ID: ${item._id || item.id || "--"}</div>
         </div>
       </div>
     `).join("");
   }
 
   async function loadTransactions(){
-    const userId = savedUser.id;
     const box = document.getElementById("statementBox");
-
-    box.innerHTML = `<div class="loading">Ap chaje tranzaksyon yo...</div>`;
-
+    box.innerHTML = '<div class="loading">Ap chaje tranzaksyon yo...</div>';
     try{
-      const res = await fetch(`${API_BASE}/api/transactions/${userId}`);
-      const data = await res.json();
-      renderTransactions(Array.isArray(data) ? data : []);
+      const data = await dlmApi("/transactions/mine");
+      renderTransactions(data.transactions || data.items || []);
     }catch(error){
-      box.innerHTML = `<div class="empty">Erè pandan chajman tranzaksyon yo.</div>`;
+      box.innerHTML = `<div class="empty">${error.message}</div>`;
     }
   }
 
   async function loadOrders(){
-    const userId = savedUser.id;
     const box = document.getElementById("statementBox");
-
-    box.innerHTML = `<div class="loading">Ap chaje orders yo...</div>`;
-
+    box.innerHTML = '<div class="loading">Ap chaje orders yo...</div>';
     try{
-      const res = await fetch(`${API_BASE}/api/orders/${userId}`);
-      const data = await res.json();
-      renderOrders(Array.isArray(data) ? data : []);
+      const data = await dlmApi("/service-orders/mine");
+      const items = data.orders || [];
+      renderTransactions(items.map(o => ({
+        ...o,
+        type: o.service || "service",
+        amount: o.amount
+      })));
     }catch(error){
-      box.innerHTML = `<div class="empty">Erè pandan chajman orders yo.</div>`;
+      box.innerHTML = `<div class="empty">${error.message}</div>`;
     }
   }
 
-  loadTransactions();
+  document.addEventListener("DOMContentLoaded", ()=>{
+    const u = getDlmUser();
+    if(u?.id) document.getElementById("userId").value = u.id;
+    loadTransactions();
+  });
 </script>
-
 </body>
 </html>

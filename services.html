@@ -2,125 +2,44 @@
 <html lang="ht">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Services - DLM Wallet</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
   <style>
-    body{
-      background:#05070c;
-      color:white;
-      font-family:Arial;
-      margin:0;
-    }
-
-    .app{
-      max-width:430px;
-      margin:auto;
-      padding:20px;
-    }
-
-    .title{
-      font-size:28px;
-      font-weight:bold;
-      margin-bottom:20px;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:15px;
-    }
-
-    .card{
-      background:#11172a;
-      padding:20px;
-      border-radius:20px;
-      text-decoration:none;
-      color:white;
-      text-align:center;
-      border:1px solid rgba(255,255,255,0.08);
-    }
-
-    .card:hover{
-      background:#2f3cff;
-    }
-
-    .card i{
-      font-size:28px;
-      margin-bottom:10px;
-    }
-
-    .bottom-nav{
-      position:fixed;
-      bottom:0;
-      width:100%;
-      max-width:430px;
-      background:#04060a;
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      padding:10px;
-    }
-
-    .nav-item{
-      text-align:center;
-      color:#8b93a7;
-      font-size:12px;
-      text-decoration:none;
-    }
-
-    .nav-item.active{
-      color:#3b4cff;
-    }
+    *{box-sizing:border-box}
+    body{background:#05070c;color:#fff;font-family:Arial,sans-serif;margin:0}
+    .app{max-width:430px;margin:auto;min-height:100vh;padding:20px 20px 120px}
+    .title{font-size:30px;font-weight:800;margin-bottom:8px}
+    .sub{color:#8b93a7;line-height:1.5;margin-bottom:20px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+    .card{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.03));padding:22px 16px;border-radius:20px;text-decoration:none;color:#fff;text-align:center;border:1px solid rgba(255,255,255,.08);min-height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+    .card i{font-size:30px}.card div{font-weight:800}
   </style>
 </head>
-
 <body>
-<script src="app.js"></script>
-<script>requireLogin();</script>
-
 <div class="app">
-
   <div class="title">Services</div>
+  <div class="sub">Topup, Gift Cards, Free Fire, Netflix ak Prime Video.</div>
 
   <div class="grid">
-
-    <a href="topup.html" class="card">
-      <i class="fa-solid fa-mobile"></i>
-      <div>Topup</div>
-    </a>
-
-    <a href="giftcards.html" class="card">
-      <i class="fa-solid fa-gift"></i>
-      <div>Giftcards</div>
-    </a>
-
-    <a href="freefire.html" class="card">
-      <i class="fa-solid fa-gamepad"></i>
-      <div>FreeFire</div>
-    </a>
-
-    <a href="netflix.html" class="card">
-      <i class="fa-solid fa-film"></i>
-      <div>Netflix</div>
-    </a>
-
-    <a href="primevideo.html" class="card">
-      <i class="fa-solid fa-tv"></i>
-      <div>Prime Video</div>
-    </a>
-
+    <a href="topup.html" class="card"><i class="fa-solid fa-mobile-screen-button"></i><div>Topup</div></a>
+    <a href="giftcards.html" class="card"><i class="fa-solid fa-gift"></i><div>Gift Cards</div></a>
+    <a href="freefire.html" class="card"><i class="fa-solid fa-gamepad"></i><div>Free Fire</div></a>
+    <a href="netflix.html" class="card"><i class="fa-solid fa-film"></i><div>Netflix</div></a>
+    <a href="primevideo.html" class="card"><i class="fa-solid fa-tv"></i><div>Prime Video</div></a>
+    <a href="service-orders.html" class="card"><i class="fa-solid fa-box"></i><div>My Orders</div></a>
   </div>
-
 </div>
 
 <div class="bottom-nav">
-  <a href="dashboard.html" class="nav-item">Home</a>
-  <a href="statement.html" class="nav-item">Tx</a>
-  <a href="services.html" class="nav-item active">Services</a>
-  <a href="card-dashboard.html" class="nav-item">Cards</a>
-  <a href="wallet.html" class="nav-item">Wallet</a>
+  <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <a href="statement.html" class="nav-item"><i class="fa-solid fa-arrow-rotate-left"></i><span>Transactions</span></a>
+  <a href="services.html" class="nav-item active"><i class="fa-brands fa-bitcoin"></i><span>Services</span></a>
+  <a href="card-dashboard.html" class="nav-item"><i class="fa-regular fa-credit-card"></i><span>Cards</span></a>
+  <a href="wallet.html" class="nav-item"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a>
 </div>
 
+<script src="app.js"></script>
+<script>requireDlmLogin();</script>
 </body>
 </html>

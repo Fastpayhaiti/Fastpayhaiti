@@ -1,5 +1,9 @@
 const DLM_API_BASE = "https://fastpayhaiti.onrender.com";
 
+/* =========================
+   SESSION / USER
+========================= */
+
 function getDlmToken() {
   return localStorage.getItem("dlm_token") || "";
 }
@@ -46,6 +50,10 @@ function clearDlmSession() {
   localStorage.removeItem("fastpay_user");
 }
 
+/* =========================
+   API REQUESTS
+========================= */
+
 async function dlmApi(path, options = {}) {
   const headers = {
     "Content-Type": "application/json",
@@ -73,6 +81,10 @@ async function dlmApi(path, options = {}) {
 
   return data;
 }
+
+/* =========================
+   REGISTER / LOGIN
+========================= */
 
 async function registerDlmUser(payload) {
   return dlmApi("/register", {
@@ -104,6 +116,10 @@ async function loginDlmUser(email, password) {
   };
 }
 
+/* =========================
+   REFRESH USER DATA
+========================= */
+
 async function refreshDlmUser() {
   if (!getDlmToken()) {
     return getDlmUser();
@@ -120,6 +136,10 @@ async function refreshDlmUser() {
     return getDlmUser();
   }
 }
+
+/* =========================
+   PROTECT PAGES
+========================= */
 
 function requireDlmLogin() {
   const user = getDlmUser();
@@ -148,12 +168,192 @@ function requireDlmAdmin() {
   return user;
 }
 
+/* =========================
+   LOGOUT
+========================= */
+
 function logoutDlmUser() {
   clearDlmSession();
   window.location.replace("login.html");
 }
 
+/* =========================
+   BOTTOM NAV
+========================= */
+
+function nav(active = "") {
+  return `
+    <div class="bottom-nav">
+      <a href="./dashboard.html" class="nav-item ${active === "home" ? "active" : ""}">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </a>
+
+      <a href="./statement.html" class="nav-item ${active === "transactions" ? "active" : ""}">
+        <i class="fa-solid fa-arrow-rotate-left"></i>
+        <span>Transactions</span>
+      </a>
+
+      <a href="./services.html" class="nav-item ${active === "services" ? "active" : ""}">
+        <i class="fa-brands fa-bitcoin"></i>
+        <span>Services</span>
+      </a>
+
+      <a href="./card-dashboard.html" class="nav-item ${active === "cards" ? "active" : ""}">
+        <i class="fa-regular fa-credit-card"></i>
+        <span>Cards</span>
+      </a>
+
+      <a href="./wallet.html" class="nav-item ${active === "wallet" ? "active" : ""}">
+        <i class="fa-solid fa-wallet"></i>
+        <span>Wallet</span>
+      </a>
+    </div>
+  `;
+}
+
+function loadPageNav(active = "") {
+  const navRoot = document.getElementById("nav-root");
+
+  if (navRoot) {
+    navRoot.innerHTML = nav(active);
+  }
+}
+
+/* =========================
+   SIDE MENU
+========================= */
+
+function openMenu() {
+  const menu = document.getElementById("sideMenu");
+  const overlay =
+    document.getElementById("menuOverlay") ||
+    document.getElementById("overlay");
+
+  if (menu) {
+    menu.classList.add("open");
+    menu.classList.add("active");
+  }
+
+  if (overlay) {
+    overlay.classList.add("show");
+    overlay.classList.add("active");
+  }
+}
+
+function closeMenu() {
+  const menu = document.getElementById("sideMenu");
+  const overlay =
+    document.getElementById("menuOverlay") ||
+    document.getElementById("overlay");
+
+  if (menu) {
+    menu.classList.remove("open");
+    menu.classList.remove("active");
+  }
+
+  if (overlay) {
+    overlay.classList.remove("show");
+    overlay.classList.remove("active");
+  }
+}
+
+/* =========================
+   GLOBAL FIXED BOTTOM NAV
+========================= */
+
+function installStableBottomNav() {
+  if (document.getElementById("dlm-fixed-bottom-nav-style")) {
+    return;
+  }
+
+  const style = document.createElement("style");
+  style.id = "dlm-fixed-bottom-nav-style";
+  style.textContent = `
+    html, body {
+      min-height: 100%;
+      overscroll-behavior-y: none;
+    }
+
+    body {
+      padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    .app,
+    .container,
+    main {
+      padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    .bottom-nav {
+      position: fixed !important;
+      left: 50% !important;
+      right: auto !important;
+      bottom: 0 !important;
+      transform: translate3d(-50%, 0, 0) !important;
+      width: min(100%, 430px) !important;
+      max-width: 430px !important;
+      min-height: 78px !important;
+      display: grid !important;
+      grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+      align-items: center !important;
+      padding: 10px 8px calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+      margin: 0 !important;
+      background: rgba(4, 6, 10, 0.98) !important;
+      border-top: 1px solid rgba(255,255,255,0.10) !important;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.35) !important;
+      z-index: 2147483000 !important;
+      isolation: isolate !important;
+      will-change: transform !important;
+      backface-visibility: hidden !important;
+      -webkit-backface-visibility: hidden !important;
+    }
+
+    .bottom-nav .nav-item {
+      min-width: 0 !important;
+      min-height: 56px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+      align-items: center !important;
+      gap: 6px !important;
+      padding: 4px 2px !important;
+      color: #8b93a7 !important;
+      text-decoration: none !important;
+      text-align: center !important;
+      font-size: 12px !important;
+      font-weight: 700 !important;
+      line-height: 1.1 !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+
+    .bottom-nav .nav-item i {
+      font-size: 22px !important;
+      line-height: 1 !important;
+    }
+
+    .bottom-nav .nav-item.active {
+      color: #3b4cff !important;
+    }
+
+    @media (min-width: 431px) {
+      .bottom-nav {
+        border-left: 1px solid rgba(255,255,255,0.08) !important;
+        border-right: 1px solid rgba(255,255,255,0.08) !important;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+}
+
+/* =========================
+   LOAD USER / NAV FIX
+========================= */
+
 document.addEventListener("DOMContentLoaded", async () => {
+  installStableBottomNav();
+
   const path = window.location.pathname.toLowerCase();
 
   const isPublicPage =
@@ -248,3 +448,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     });
 });
+
+/* Re-apply after mobile browser viewport changes. */
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", installStableBottomNav);
+  window.visualViewport.addEventListener("scroll", installStableBottomNav);
+}
