@@ -200,6 +200,22 @@ function requireDlmAdmin() {
   return user;
 }
 
+function requireDlmCustomer() {
+  const user = requireDlmLogin();
+
+  if (
+    user &&
+    user.role === "admin"
+  ) {
+    window.location.replace(
+      "admin.html"
+    );
+    return null;
+  }
+
+  return user;
+}
+
 function logoutDlmUser() {
   clearDlmSession();
   window.location.replace(

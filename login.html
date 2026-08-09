@@ -36,14 +36,7 @@ label{display:block;font-size:13px;font-weight:850;margin:12px 0 7px}
 .security-note{font-size:11px;color:var(--muted);line-height:1.5;margin-top:12px}
 .logo{width:64px;height:64px;border-radius:21px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#5662ff,#7868ff);font-size:25px;font-weight:950;margin-bottom:20px}</style></head><body>
 <div class="app"><div style="padding-top:45px"><div class="logo">D</div><div class="eyebrow">DLM Wallet</div><div class="title">Welcome back</div><div class="sub" style="margin-bottom:24px">Secure access to your wallet.</div>
-<div class="card"><div id="msg" class="msg"></div><label>Email</label><input class="input" id="email" type="email" autocomplete="email"><label>Password</label><input class="input" id="password" type="password" autocomplete="current-password"><button class="btn" id="btn" onclick="login()">Login</button><a href="forgot-password.html" style="display:block;text-align:center;margin-top:16px;color:#aab0ff;text-decoration:none;font-size:12px;font-weight:800">Forgot password?</a>
-
-<div style="text-align:center;margin-top:18px;font-size:13px;color:#9299aa;">
-  Pa gen kont?
-  <a href="register.html" style="color:#aab0ff;text-decoration:none;font-weight:800;">
-    Create account
-  </a>
-</div></div></div></div>
+<div class="card"><div id="msg" class="msg"></div><label>Email</label><input class="input" id="email" type="email" autocomplete="email"><label>Password</label><input class="input" id="password" type="password" autocomplete="current-password"><button class="btn" id="btn" onclick="login()">Login</button><a href="forgot-password.html" style="display:block;text-align:center;margin-top:16px;color:#aab0ff;text-decoration:none;font-size:12px;font-weight:800">Forgot password?</a></div></div></div>
 <script src="app.js"></script><script>
-async function login(){const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value,b=document.getElementById("btn");b.disabled=true;b.innerText="Signing in...";try{await loginDlmUser(email,password);clearPinUnlock();location.replace("dashboard.html")}catch(e){const m=document.getElementById("msg");m.className="msg err";m.innerText=e.message}finally{b.disabled=false;b.innerText="Login"}}
+async function login(){const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value,b=document.getElementById("btn");b.disabled=true;b.innerText="Signing in...";try{const data=await loginDlmUser(email,password);clearPinUnlock();if(data.user&&data.user.role==="admin"){location.replace("admin.html");return;}location.replace("dashboard.html")}catch(e){const m=document.getElementById("msg");m.className="msg err";m.innerText=e.message}finally{b.disabled=false;b.innerText="Login"}}
 </script></body></html>
