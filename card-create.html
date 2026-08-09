@@ -1,4 +1,4 @@
-<!doctype html><html lang="ht"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Wallet - DLM Wallet</title><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"><link rel="stylesheet" href="fixed-bottom-nav.css"><style>
+<!doctype html><html lang="ht"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Create Card - DLM Wallet</title><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"><link rel="stylesheet" href="fixed-bottom-nav.css"><style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
 :root{--bg:#05070c;--panel:#10141d;--line:rgba(255,255,255,.08);--muted:#9199ab;--primary:#5662ff;--primary2:#7868ff}
 body{background:var(--bg);color:#fff;min-height:100vh}
@@ -18,8 +18,17 @@ label{display:block;font-size:13px;font-weight:850;margin:12px 0 7px}.input,.sel
 .small{font-size:11px;color:var(--muted);line-height:1.45}.strong{font-weight:900}.pill{display:inline-flex;padding:7px 10px;border-radius:999px;font-size:11px;font-weight:900;background:rgba(255,255,255,.07)}.pill.good{background:rgba(54,214,125,.12);color:#59e38c}.pill.warn{background:rgba(250,204,21,.12);color:#facc15}.pill.bad{background:rgba(239,68,68,.12);color:#ff8e96}
 .upload{display:block;border:1px dashed rgba(255,255,255,.16);border-radius:17px;padding:18px;text-align:center;background:#111620;cursor:pointer;margin-bottom:12px}.preview{width:100%;max-height:180px;object-fit:cover;border-radius:14px;margin-top:10px;display:none}
 </style></head><body>
-<div class="app"><div class="top"><a class="back" href="dashboard.html">← Retounen</a><div class="avatar" id="avatar">D</div></div>
-<div class="hero"><div class="eyebrow">DLM Wallet</div><div class="title">Wallet</div><div class="sub">Available balance</div><div class="balance" id="walletBalance">$0.00 USD</div></div>
-<div class="card"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><a class="btn secondary" style="text-decoration:none;text-align:center" href="deposit.html">Deposit</a><a class="btn secondary" style="text-decoration:none;text-align:center" href="withdraw.html">Withdraw</a><a class="btn secondary" style="text-decoration:none;text-align:center" href="transfer.html">Send</a><a class="btn secondary" style="text-decoration:none;text-align:center" href="statement.html">Activity</a></div></div></div>
-<div class="bottom-nav"><a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a><a href="statement.html" class="nav-item"><i class="fa-solid fa-arrow-rotate-left"></i><span>Transactions</span></a><a href="services.html" class="nav-item"><i class="fa-brands fa-bitcoin"></i><span>Services</span></a><a href="card-dashboard.html" class="nav-item"><i class="fa-regular fa-credit-card"></i><span>Cards</span></a><a href="wallet.html" class="nav-item active"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a></div>
-<script src="app.js"></script><script>requireDlmLogin();async function load(){const u=await refreshDlmUser();if(u)document.getElementById("walletBalance").innerText="$"+Number(u.balance||0).toFixed(2)+" USD"}load();</script></body></html>
+<div class="app"><div class="top"><a class="back" href="card-dashboard.html">← Retounen</a><div class="avatar" id="avatar">D</div></div>
+<div class="hero"><div class="eyebrow">Virtual card setup</div><div class="title">Review & pay</div><div class="sub">Final step.</div><div class="stepbar"><div class="step active"></div><div class="step active"></div><div class="step active"></div><div class="step active"></div></div></div>
+<div class="card"><div id="msg" class="msg"></div>
+<div class="row"><span class="small">KYC</span><span class="pill good">Verified</span></div>
+<div class="row"><span class="small">Balance</span><span id="balance" class="strong">$0.00 USD</span></div>
+<div style="text-align:center;padding:18px 0"><div class="eyebrow">Application fee</div><div style="font-size:44px;font-weight:950;margin:7px 0">$10</div><div class="small">Paid from DLM Wallet</div></div>
+<button class="btn" id="payBtn" onclick="createRequest()">Pay & Continue</button></div></div>
+<script src="app.js"></script><script>
+requireDlmLogin();let s=null;
+function show(t,ok=false){const e=document.getElementById("msg");e.className="msg "+(ok?"ok":"err");e.innerText=t}
+async function load(){try{s=await dlmApi("/card/status");document.getElementById("balance").innerText="$"+Number(s.balance||0).toFixed(2)+" USD";const b=document.getElementById("payBtn");if(s.kycStatus!=="verified"){b.disabled=true;show("KYC poko verifye.")}else if(Number(s.balance||0)<10){b.disabled=true;show("Ou bezwen omwen $10 USD sou wallet ou.")}else if(s.cardRequest&&["pending","approved"].includes(s.cardRequest.status)){b.disabled=true;show("Ou deja gen yon demann kat aktif.",true)}}catch(e){show(e.message)}}
+async function createRequest(){if(!confirm("Konfime frè $10 USD?"))return;const b=document.getElementById("payBtn");b.disabled=true;b.innerText="Processing...";try{const d=await dlmApi("/card/request",{method:"POST",body:"{}"});show(d.message||"Request sent.",true);setTimeout(()=>location.href="card-dashboard.html",900)}catch(e){show(e.message);b.disabled=false;b.innerText="Pay & Continue"}}
+load();
+</script></body></html>

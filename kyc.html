@@ -1,0 +1,36 @@
+<!doctype html><html lang="ht"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>KYC - DLM Wallet</title><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"><link rel="stylesheet" href="fixed-bottom-nav.css"><style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
+:root{--bg:#05070c;--panel:#10141d;--line:rgba(255,255,255,.08);--muted:#9199ab;--primary:#5662ff;--primary2:#7868ff}
+body{background:var(--bg);color:#fff;min-height:100vh}
+.app{max-width:430px;margin:auto;min-height:100vh;padding:20px 18px 120px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.back{color:#fff;text-decoration:none;background:#151923;border:1px solid var(--line);padding:13px 16px;border-radius:15px}
+.avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--primary),var(--primary2));font-weight:900}
+.hero,.card{background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:16px}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:800}
+.title{font-size:31px;font-weight:950;margin:7px 0 8px}.sub{color:var(--muted);font-size:13px;line-height:1.5}
+.balance{font-size:35px;font-weight:950;margin-top:7px}
+.stepbar{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:16px 0}.step{height:5px;border-radius:999px;background:#252a36}.step.active{background:linear-gradient(90deg,var(--primary),var(--primary2))}
+label{display:block;font-size:13px;font-weight:850;margin:12px 0 7px}.input,.select{width:100%;padding:15px;border-radius:15px;border:1px solid var(--line);background:#111724;color:#fff;margin-bottom:12px}
+.btn{width:100%;padding:16px;border:0;border-radius:17px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;font-size:16px;font-weight:900}.btn.secondary{background:#171c27;border:1px solid var(--line)}.btn:disabled{opacity:.5}
+.msg{display:none;padding:13px;border-radius:14px;margin-bottom:13px}.msg.ok{display:block;background:rgba(34,197,94,.14);color:#5ee48b}.msg.err{display:block;background:rgba(239,68,68,.14);color:#ff8f98}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.055)}.row:last-child{border-bottom:0}
+.small{font-size:11px;color:var(--muted);line-height:1.45}.strong{font-weight:900}.pill{display:inline-flex;padding:7px 10px;border-radius:999px;font-size:11px;font-weight:900;background:rgba(255,255,255,.07)}.pill.good{background:rgba(54,214,125,.12);color:#59e38c}.pill.warn{background:rgba(250,204,21,.12);color:#facc15}.pill.bad{background:rgba(239,68,68,.12);color:#ff8e96}
+.upload{display:block;border:1px dashed rgba(255,255,255,.16);border-radius:17px;padding:18px;text-align:center;background:#111620;cursor:pointer;margin-bottom:12px}.preview{width:100%;max-height:180px;object-fit:cover;border-radius:14px;margin-top:10px;display:none}
+</style></head><body>
+<div class="app"><div class="top"><a class="back" href="card-dashboard.html">← Retounen</a><div class="avatar" id="avatar">D</div></div>
+<div class="hero"><div class="eyebrow">Identity verification</div><div class="title">Verify identity</div><div class="sub">ID + selfie. Admin verifye dosye a.</div><div class="stepbar"><div class="step active"></div><div class="step active"></div><div class="step"></div><div class="step"></div></div></div>
+<div class="card"><div id="msg" class="msg"></div>
+<label>Document type</label><select class="select" id="documentType"><option value="national_id">National ID</option><option value="passport">Passport</option><option value="drivers_license">Driver license</option></select>
+<label>Document number</label><input class="input" id="documentNumber" placeholder="Document number">
+<label class="upload"><i class="fa-solid fa-id-card"></i><b> Front of ID</b><input hidden type="file" id="front" accept="image/*" onchange="previewFile(this,'pFront')"><img class="preview" id="pFront"></label>
+<label class="upload"><i class="fa-regular fa-id-card"></i><b> Back of ID</b><input hidden type="file" id="back" accept="image/*" onchange="previewFile(this,'pBack')"><img class="preview" id="pBack"></label>
+<label class="upload"><i class="fa-solid fa-camera"></i><b> Selfie</b><input hidden type="file" id="selfie" accept="image/*" capture="user" onchange="previewFile(this,'pSelfie')"><img class="preview" id="pSelfie"></label>
+<button class="btn" id="submitBtn" onclick="submitKyc()">Submit KYC</button></div></div>
+<script src="app.js"></script><script>
+requireDlmLogin();
+function show(t,ok=false){const e=document.getElementById("msg");e.className="msg "+(ok?"ok":"err");e.innerText=t}
+function previewFile(input,id){const f=input.files?.[0];if(!f)return;const img=document.getElementById(id);img.src=URL.createObjectURL(f);img.style.display="block"}
+function toData(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)})}
+async function submitKyc(){const front=document.getElementById("front").files[0],back=document.getElementById("back").files[0],selfie=document.getElementById("selfie").files[0],documentNumber=document.getElementById("documentNumber").value.trim(),documentType=document.getElementById("documentType").value;if(!front||!selfie||documentNumber.length<4)return show("Ajoute ID, selfie ak nimewo pyès la.");if(front.size>1500000||selfie.size>1500000||(back&&back.size>1500000))return show("Chak foto dwe mwens pase 1.5 MB.");const b=document.getElementById("submitBtn");b.disabled=true;b.innerText="Submitting...";try{const body={documentType,documentNumber,documentFront:await toData(front),documentBack:back?await toData(back):"",selfieImage:await toData(selfie)};const d=await dlmApi("/kyc/submit",{method:"POST",body:JSON.stringify(body)});show(d.message||"KYC sent.",true);setTimeout(()=>location.href="card-dashboard.html",900)}catch(e){show(e.message)}finally{b.disabled=false;b.innerText="Submit KYC"}}
+</script></body></html>
