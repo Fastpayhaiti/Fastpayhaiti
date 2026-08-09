@@ -1,68 +1,128 @@
-<!doctype html><html lang="ht"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Netflix - DLM Wallet</title>
-<style>:root{--accent:#e50914;--accent2:#b20710}
+<!doctype html>
+<html lang="ht">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05070c">
+<title>Netflix - DLM Wallet</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="fixed-bottom-nav.css">
+<style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
-:root{--bg:#06080d;--panel:#10131b;--panel2:#151925;--muted:#9199ab;--line:rgba(255,255,255,.08)}
-body{background:var(--bg);color:#fff;min-height:100vh}
-.app{max-width:460px;margin:auto;min-height:100vh;padding:20px 18px 90px}
-.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.back{display:inline-flex;align-items:center;gap:8px;color:#fff;text-decoration:none;background:#151923;border:1px solid var(--line);padding:13px 16px;border-radius:15px}
-.avatar{width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2))}
-.hero,.card{background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:16px}
-.hero{position:relative;overflow:hidden}
-.hero:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-75px;top:-90px;background:var(--accent);opacity:.13}
-.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:800}
-.title{font-size:32px;font-weight:950;line-height:1.08;margin:7px 0 10px;position:relative;z-index:1}
-.sub{color:var(--muted);line-height:1.55;position:relative;z-index:1}
-.balance{font-size:34px;font-weight:950;margin-top:7px;position:relative;z-index:1}
-label{display:block;font-size:13px;font-weight:800;margin:13px 0 7px;color:#dbe1ee}
-.input,.select{width:100%;padding:15px;border-radius:15px;border:1px solid var(--line);background:#111724;color:#fff;margin-bottom:12px;outline:none}
-.input:focus,.select:focus{border-color:var(--accent)}
-.btn{width:100%;padding:16px;border:0;border-radius:17px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:900;font-size:16px;cursor:pointer}
-.btn.secondary{background:#171c28;border:1px solid var(--line)}
-.btn:disabled{opacity:.52;cursor:not-allowed}
+:root{--accent:#e50914;--accent2:#b20710;--line:rgba(255,255,255,.08);--muted:#9299aa}
+body{background:#05070c;color:#fff;min-height:100vh}
+.app{max-width:430px;margin:auto;min-height:100vh;padding:20px 18px 120px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.back{color:#fff;text-decoration:none;background:#151923;border:1px solid var(--line);padding:13px 16px;border-radius:15px}
+.avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent),var(--accent2));font-weight:900}
+.hero,.card{background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:23px;padding:20px;margin-bottom:16px}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:800}
+.title{font-size:32px;font-weight:950;margin:7px 0 8px}
+.sub{font-size:13px;color:var(--muted);line-height:1.5}
+.balance{font-size:34px;font-weight:950;margin-top:7px}
+label{display:block;font-size:13px;font-weight:800;margin:11px 0 7px}
+.select{width:100%;padding:15px;border-radius:15px;background:#111724;border:1px solid var(--line);color:#fff;margin-bottom:14px}
+.wallet-box{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;border-radius:16px;background:#141925;border:1px solid var(--line);margin-bottom:14px}
+.wallet-left{display:flex;align-items:center;gap:11px}
+.wallet-icon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06)}
+.wallet-title{font-size:13px;font-weight:900}
+.wallet-sub{font-size:11px;color:var(--muted);margin-top:3px}
+.check{color:#52dc85}
+.btn{width:100%;padding:16px;border:0;border-radius:17px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:900;font-size:16px}
+.btn:disabled{opacity:.55}
 .msg{display:none;padding:13px;border-radius:14px;margin-bottom:13px;line-height:1.45}
 .msg.ok{display:block;background:rgba(34,197,94,.14);color:#5ee48b}
 .msg.err{display:block;background:rgba(239,68,68,.14);color:#ff8f98}
-.small{font-size:12px;color:var(--muted);line-height:1.5}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.chip{border:1px solid var(--line);background:#141824;color:#fff;border-radius:14px;padding:13px;font-weight:850;cursor:pointer;text-align:left}
-.product{margin-top:12px;padding:16px;border-radius:18px;background:#121621;border:1px solid var(--line);cursor:pointer}
-.product h3{font-size:17px;margin-bottom:6px}.product-meta{font-size:12px;color:var(--muted);line-height:1.5}
-.tag{display:inline-flex;margin-top:9px;padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.06);font-size:11px;color:#c8cfdd}
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:flex-end;justify-content:center;z-index:100}
-.modal-bg.show{display:flex}.modal{width:100%;max-width:460px;background:#0d1119;border:1px solid var(--line);border-radius:26px 26px 0 0;padding:21px;max-height:90vh;overflow:auto}
-.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
-.close{border:0;background:#1a1f2b;color:#fff;width:40px;height:40px;border-radius:12px;font-size:20px}
-.amounts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-.amount{border:1px solid var(--line);background:#171c27;color:#fff;border-radius:13px;padding:10px 12px;font-weight:800;cursor:pointer}
-.amount.active{outline:2px solid var(--accent)}
-.payment{border:1px solid var(--line);background:#121722;border-radius:16px;padding:14px;margin-bottom:10px;cursor:pointer}
-.payment.active{border-color:var(--accent);background:rgba(255,255,255,.055)}
-.status{display:inline-flex;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900;background:rgba(255,255,255,.07)}
-</style></head><body>
-<div class="app"><div class="top"><a class="back" href="dashboard.html">← Retounen</a><div class="avatar" id="avatar">D</div></div>
-<div class="hero"><div class="eyebrow">Manual fulfillment</div><div class="title">Netflix</div><div class="sub">Chwazi plan ou vle a. Peman ka fèt ak DLM Wallet, MonCash oswa NatCash. Apre verifikasyon, admin trete kòmand lan.</div><div class="small" style="margin-top:16px">Wallet balance</div><div id="serviceBalance" class="balance">$0.00 USD</div></div>
-<div class="card"><div id="msg" class="msg"></div><label>Choose plan</label><select class="select" id="plan"><option value="1 Month - Basic|9.99">1 Month - Basic — $9.99</option><option value="1 Month - Standard|15.49">1 Month - Standard — $15.49</option><option value="1 Month - Premium|22.99">1 Month - Premium — $22.99</option></select>
-<label>Payment method</label>
-<div class="payment active" data-method="wallet" onclick="choosePay('wallet',this)">
-  <b>👛 DLM Wallet</b>
-  <div class="small">Peye touswit ak balans DLM Wallet ou.</div>
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <a class="back" href="services.html">← Retounen</a>
+    <div class="avatar" id="avatar">D</div>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">Digital service</div>
+    <div class="title">Netflix</div>
+    <div class="sub">Chwazi plan an epi peye dirèkteman ak DLM Wallet ou.</div>
+    <div class="eyebrow" style="margin-top:16px">Wallet balance</div>
+    <div class="balance" id="serviceBalance">$0.00 USD</div>
+  </div>
+
+  <div class="card">
+    <div id="msg" class="msg"></div>
+
+    <label>Plan</label>
+    <select class="select" id="plan"><option value="1 Month - Basic|9.99">1 Month - Basic — $9.99</option><option value="1 Month - Standard|15.49">1 Month - Standard — $15.49</option><option value="1 Month - Premium|22.99">1 Month - Premium — $22.99</option></select>
+
+    <div class="wallet-box">
+      <div class="wallet-left">
+        <div class="wallet-icon"><i class="fa-solid fa-wallet"></i></div>
+        <div>
+          <div class="wallet-title">DLM Wallet</div>
+          <div class="wallet-sub">Peman fèt ak balans ou.</div>
+        </div>
+      </div>
+      <i class="fa-solid fa-circle-check check"></i>
+    </div>
+
+    <button class="btn" id="orderBtn" onclick="submitOrder()">Pay & Continue</button>
+  </div>
 </div>
-<div class="payment" data-method="card" onclick="choosePay('card',this)">
-  <b>💳 Card</b>
-  <div class="small">Visa / Mastercard — aktivasyon processeur peman an ap vini.</div>
+
+<div class="bottom-nav">
+  <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <a href="statement.html" class="nav-item"><i class="fa-solid fa-arrow-rotate-left"></i><span>Transactions</span></a>
+  <a href="services.html" class="nav-item active"><i class="fa-brands fa-bitcoin"></i><span>Services</span></a>
+  <a href="card-dashboard.html" class="nav-item"><i class="fa-regular fa-credit-card"></i><span>Cards</span></a>
+  <a href="wallet.html" class="nav-item"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a>
 </div>
-<div id="cardNotice" class="small" style="display:none;margin:0 0 13px;padding:12px;border-radius:13px;background:rgba(255,255,255,.05)">
-  Peman pa kat poko konekte ak yon processeur reyèl. Ou ka chwazi opsyon an, men checkout kat la pap finalize jiskaske entegrasyon an fèt.
-</div>
-<button class="btn" id="orderBtn" onclick="submitOrder()">Continue</button></div>
-<div class="card"><div class="eyebrow">How it works</div><div class="small" style="font-size:13px;margin-top:8px">1. Chwazi plan an.<br>2. Peye ak DLM Wallet oswa chwazi Card.<br>3. DLM Wallet orders antre Pending pou admin trete yo.<br>4. Lè order la complete, detay livrezon yo parèt nan My Service Orders.</div></div></div>
-<script src="app.js"></script><script>
-requireDlmLogin();let method="wallet";
-function msg(t,ok=false){const e=document.getElementById("msg");e.className="msg "+(ok?"ok":"err");e.innerText=t}
-function choosePay(m,el){method=m;document.querySelectorAll(".payment").forEach(x=>x.classList.remove("active"));el.classList.add("active");document.getElementById("cardNotice").style.display=(m==="card"?"block":"none")}
-async function submitOrder(){const [plan,price]=document.getElementById("plan").value.split("|"),amount=Number(price);if(method==="card")return msg("Peman pa kat poko aktive. Sèvi ak DLM Wallet pou kounye a.");
- if(!confirm(`Konfime Netflix ${plan} pou $${amount.toFixed(2)}?`))return;const b=document.getElementById("orderBtn");b.disabled=true;b.innerText="Sending...";
- try{const d=await dlmApi("/service-orders",{method:"POST",body:JSON.stringify({service:"Netflix",plan,amount,paymentMethod:method})});msg(d.message||"Order resevwa.",true);const u=await refreshDlmUser();if(u)document.getElementById("serviceBalance").innerText=`$${Number(u.balance||0).toFixed(2)} USD`}
- catch(e){msg(e.message)}finally{b.disabled=false;b.innerText="Place order"}}
-</script></body></html>
+
+<script src="app.js"></script>
+<script>
+requireDlmLogin();
+
+function showMsg(text, ok=false){
+  const e=document.getElementById("msg");
+  e.className="msg "+(ok?"ok":"err");
+  e.innerText=text;
+}
+
+async function submitOrder(){
+  const [plan,price]=document.getElementById("plan").value.split("|");
+  const amount=Number(price);
+  const btn=document.getElementById("orderBtn");
+
+  if(!confirm(`Konfime Netflix ${plan} pou $${amount.toFixed(2)}?`)) return;
+
+  btn.disabled=true;
+  btn.innerText="Processing...";
+
+  try{
+    const data=await dlmApi("/service-orders",{
+      method:"POST",
+      body:JSON.stringify({
+        service:"Netflix",
+        plan,
+        amount
+      })
+    });
+
+    showMsg(data.message||"Order resevwa.",true);
+
+    const user=await refreshDlmUser();
+    if(user){
+      document.getElementById("serviceBalance").innerText=
+        `$${Number(user.balance||0).toFixed(2)} USD`;
+    }
+  }catch(error){
+    showMsg(error.message);
+  }finally{
+    btn.disabled=false;
+    btn.innerText="Pay & Continue";
+  }
+}
+</script>
+</body>
+</html>

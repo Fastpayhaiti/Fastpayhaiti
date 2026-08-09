@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ht">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05070c">
+<title>Assistant - DLM Wallet</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="fixed-bottom-nav.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
+:root{--bg:#05070c;--panel:#10141d;--line:rgba(255,255,255,.08);--muted:#9299aa;--primary:#5662ff}
+body{background:var(--bg);color:#fff;min-height:100vh}
+.app{max-width:430px;margin:auto;min-height:100vh;padding:20px 18px 120px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.back{color:#fff;text-decoration:none;background:#151923;border:1px solid var(--line);padding:13px 16px;border-radius:15px}
+.avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#5662ff,#7a66ff);font-weight:900}
+.hero,.card{background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:23px;padding:19px;margin-bottom:15px}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:800}
+.title{font-size:30px;font-weight:950;margin:7px 0 8px}
+.sub{font-size:13px;color:var(--muted);line-height:1.5}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.help{display:flex;flex-direction:column;gap:12px;min-height:115px;padding:16px;border-radius:18px;background:#141925;border:1px solid var(--line);color:#fff;text-decoration:none}
+.help i{font-size:21px;color:#bec3ff}
+.help b{font-size:14px}
+.help span{font-size:11px;color:var(--muted);line-height:1.4}
+.contact{display:block;width:100%;padding:15px;border-radius:16px;text-decoration:none;text-align:center;font-weight:900;background:linear-gradient(135deg,#5662ff,#7a66ff);color:#fff}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <a class="back" href="dashboard.html">← Retounen</a>
+    <div class="avatar" id="avatar">D</div>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">DLM Support</div>
+    <div class="title">Assistant</div>
+    <div class="sub">Bezwen èd? Chwazi sijè a oswa kontakte sipò.</div>
+  </div>
+
+  <div class="grid">
+    <a class="help" href="deposit.html">
+      <i class="fa-solid fa-arrow-down"></i>
+      <b>Deposit</b>
+      <span>Mete lajan sou wallet ou.</span>
+    </a>
+
+    <a class="help" href="withdraw.html">
+      <i class="fa-solid fa-arrow-up"></i>
+      <b>Withdraw</b>
+      <span>Kesyon sou retrè.</span>
+    </a>
+
+    <a class="help" href="services.html">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <b>Services</b>
+      <span>Topup, gift cards ak plis.</span>
+    </a>
+
+    <a class="help" href="pin.html">
+      <i class="fa-solid fa-shield-halved"></i>
+      <b>Security</b>
+      <span>PIN ak sekirite kont.</span>
+    </a>
+  </div>
+
+  <div class="card" style="margin-top:15px">
+    <div class="eyebrow">Human support</div>
+    <div class="sub" style="margin:7px 0 14px">Si ou bezwen plis èd, kontakte ekip DLM Wallet.</div>
+    <a class="contact" href="mailto:fastpayhaiti@gmail.com?subject=DLM%20Wallet%20Support">Contact support</a>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+  <a href="statement.html" class="nav-item"><i class="fa-solid fa-arrow-rotate-left"></i><span>Transactions</span></a>
+  <a href="services.html" class="nav-item"><i class="fa-brands fa-bitcoin"></i><span>Services</span></a>
+  <a href="card-dashboard.html" class="nav-item"><i class="fa-regular fa-credit-card"></i><span>Cards</span></a>
+  <a href="wallet.html" class="nav-item"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a>
+</div>
+
+<script src="app.js"></script>
+<script>requireDlmLogin();</script>
+</body>
+</html>
