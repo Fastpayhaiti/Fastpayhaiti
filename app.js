@@ -1,7 +1,7 @@
 const DLM_API_BASE = "https://fastpayhaiti.onrender.com";
 
 /* =========================
-   SESSION / USER
+   SESSION
 ========================= */
 
 function getDlmToken() {
@@ -15,7 +15,7 @@ function getDlmUser() {
       localStorage.getItem("fastpay_user") ||
       "null"
     );
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -25,21 +25,35 @@ function saveDlmSession(data) {
 
   const user = {
     id: apiUser.id || apiUser._id || "",
-    fullname: apiUser.fullname || apiUser.name || "DLM User",
-    name: apiUser.name || apiUser.fullname || "DLM User",
+    fullname:
+      apiUser.fullname ||
+      apiUser.name ||
+      "DLM User",
+    name:
+      apiUser.name ||
+      apiUser.fullname ||
+      "DLM User",
     email: apiUser.email || "",
     phone: apiUser.phone || "",
     balance: Number(apiUser.balance || 0),
     role: apiUser.role || "customer",
-    status: apiUser.status || "Active"
+    status: apiUser.status || "Active",
+    pinEnabled: Boolean(apiUser.pinEnabled)
   };
 
   if (data.token) {
     localStorage.setItem("dlm_token", data.token);
   }
 
-  localStorage.setItem("dlm_user", JSON.stringify(user));
-  localStorage.setItem("fastpay_user", JSON.stringify(user));
+  localStorage.setItem(
+    "dlm_user",
+    JSON.stringify(user)
+  );
+
+  localStorage.setItem(
+    "fastpay_user",
+    JSON.stringify(user)
+  );
 
   return user;
 }
@@ -51,7 +65,7 @@ function clearDlmSession() {
 }
 
 /* =========================
-   API REQUESTS
+   API
 ========================= */
 
 async function dlmApi(path, options = {}) {
@@ -66,16 +80,23 @@ async function dlmApi(path, options = {}) {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${DLM_API_BASE}${path}`, {
-    ...options,
-    headers
-  });
+  const response = await fetch(
+    `${DLM_API_BASE}${path}`,
+    {
+      ...options,
+      headers
+    }
+  );
 
-  const data = await response.json().catch(() => ({}));
+  const data =
+    await response
+      .json()
+      .catch(() => ({}));
 
   if (!response.ok) {
     throw new Error(
-      data.message || "Demann lan echwe. Eseye ankò."
+      data.message ||
+      "Demann lan echwe."
     );
   }
 
@@ -83,7 +104,7 @@ async function dlmApi(path, options = {}) {
 }
 
 /* =========================
-   REGISTER / LOGIN
+   AUTH
 ========================= */
 
 async function registerDlmUser(payload) {
@@ -100,13 +121,16 @@ async function registerDlmUser(payload) {
 }
 
 async function loginDlmUser(email, password) {
-  const data = await dlmApi("/login", {
-    method: "POST",
-    body: JSON.stringify({
-      email,
-      password
-    })
-  });
+  const data = await dlmApi(
+    "/login",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        email,
+        password
+      })
+    }
+  );
 
   const user = saveDlmSession(data);
 
@@ -116,37 +140,32 @@ async function loginDlmUser(email, password) {
   };
 }
 
-/* =========================
-   REFRESH USER DATA
-========================= */
-
 async function refreshDlmUser() {
   if (!getDlmToken()) {
     return getDlmUser();
   }
 
   try {
-    const data = await dlmApi("/me");
+    const data =
+      await dlmApi("/me");
 
     return saveDlmSession({
       token: getDlmToken(),
       user: data.user
     });
-  } catch (error) {
+  } catch {
     return getDlmUser();
   }
 }
-
-/* =========================
-   PROTECT PAGES
-========================= */
 
 function requireDlmLogin() {
   const user = getDlmUser();
   const token = getDlmToken();
 
   if (!user || !token) {
-    window.location.replace("login.html");
+    window.location.replace(
+      "login.html"
+    );
     return null;
   }
 
@@ -158,299 +177,235 @@ function requireLogin() {
 }
 
 function requireDlmAdmin() {
-  const user = requireDlmLogin();
+  const user =
+    requireDlmLogin();
 
-  if (user && user.role !== "admin") {
-    window.location.replace("dashboard.html");
+  if (
+    user &&
+    user.role !== "admin"
+  ) {
+    window.location.replace(
+      "dashboard.html"
+    );
     return null;
   }
 
   return user;
 }
 
-/* =========================
-   LOGOUT
-========================= */
-
 function logoutDlmUser() {
   clearDlmSession();
-  window.location.replace("login.html");
+  window.location.replace(
+    "login.html"
+  );
 }
 
 /* =========================
-   BOTTOM NAV
+   STABLE BOTTOM NAV
+   Android / Chrome visual viewport
 ========================= */
 
-function nav(active = "") {
-  return `
-    <div class="bottom-nav">
-      <a href="./dashboard.html" class="nav-item ${active === "home" ? "active" : ""}">
-        <i class="fa-solid fa-house"></i>
-        <span>Home</span>
-      </a>
+function syncStableBottomNav() {
+  const nav =
+    document.querySelector(
+      ".bottom-nav"
+    );
 
-      <a href="./statement.html" class="nav-item ${active === "transactions" ? "active" : ""}">
-        <i class="fa-solid fa-arrow-rotate-left"></i>
-        <span>Transactions</span>
-      </a>
+  if (!nav) return;
 
-      <a href="./services.html" class="nav-item ${active === "services" ? "active" : ""}">
-        <i class="fa-brands fa-bitcoin"></i>
-        <span>Services</span>
-      </a>
+  let offset = 0;
 
-      <a href="./card-dashboard.html" class="nav-item ${active === "cards" ? "active" : ""}">
-        <i class="fa-regular fa-credit-card"></i>
-        <span>Cards</span>
-      </a>
+  if (window.visualViewport) {
+    const vv =
+      window.visualViewport;
 
-      <a href="./wallet.html" class="nav-item ${active === "wallet" ? "active" : ""}">
-        <i class="fa-solid fa-wallet"></i>
-        <span>Wallet</span>
-      </a>
-    </div>
-  `;
+    /*
+      Compensates for mobile browser bars
+      and visual viewport movement.
+    */
+    const layoutHeight =
+      document.documentElement
+        .clientHeight;
+
+    offset =
+      Math.max(
+        0,
+        layoutHeight -
+        vv.height -
+        vv.offsetTop
+      );
+  }
+
+  document.documentElement
+    .style
+    .setProperty(
+      "--dlm-vv-bottom",
+      `${offset}px`
+    );
 }
-
-function loadPageNav(active = "") {
-  const navRoot = document.getElementById("nav-root");
-
-  if (navRoot) {
-    navRoot.innerHTML = nav(active);
-  }
-}
-
-/* =========================
-   SIDE MENU
-========================= */
-
-function openMenu() {
-  const menu = document.getElementById("sideMenu");
-  const overlay =
-    document.getElementById("menuOverlay") ||
-    document.getElementById("overlay");
-
-  if (menu) {
-    menu.classList.add("open");
-    menu.classList.add("active");
-  }
-
-  if (overlay) {
-    overlay.classList.add("show");
-    overlay.classList.add("active");
-  }
-}
-
-function closeMenu() {
-  const menu = document.getElementById("sideMenu");
-  const overlay =
-    document.getElementById("menuOverlay") ||
-    document.getElementById("overlay");
-
-  if (menu) {
-    menu.classList.remove("open");
-    menu.classList.remove("active");
-  }
-
-  if (overlay) {
-    overlay.classList.remove("show");
-    overlay.classList.remove("active");
-  }
-}
-
-/* =========================
-   GLOBAL FIXED BOTTOM NAV
-========================= */
 
 function installStableBottomNav() {
-  if (document.getElementById("dlm-fixed-bottom-nav-style")) {
-    return;
+  syncStableBottomNav();
+
+  if (window.visualViewport) {
+    window.visualViewport
+      .addEventListener(
+        "resize",
+        syncStableBottomNav
+      );
+
+    window.visualViewport
+      .addEventListener(
+        "scroll",
+        syncStableBottomNav
+      );
   }
 
-  const style = document.createElement("style");
-  style.id = "dlm-fixed-bottom-nav-style";
-  style.textContent = `
-    html, body {
-      min-height: 100%;
-      overscroll-behavior-y: none;
-    }
+  window.addEventListener(
+    "resize",
+    syncStableBottomNav
+  );
 
-    body {
-      padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important;
+  window.addEventListener(
+    "orientationchange",
+    () => {
+      setTimeout(
+        syncStableBottomNav,
+        80
+      );
     }
+  );
 
-    .app,
-    .container,
-    main {
-      padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)) !important;
-    }
-
-    .bottom-nav {
-      position: fixed !important;
-      left: 50% !important;
-      right: auto !important;
-      bottom: 0 !important;
-      transform: translate3d(-50%, 0, 0) !important;
-      width: min(100%, 430px) !important;
-      max-width: 430px !important;
-      min-height: 78px !important;
-      display: grid !important;
-      grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-      align-items: center !important;
-      padding: 10px 8px calc(10px + env(safe-area-inset-bottom, 0px)) !important;
-      margin: 0 !important;
-      background: rgba(4, 6, 10, 0.98) !important;
-      border-top: 1px solid rgba(255,255,255,0.10) !important;
-      box-shadow: 0 -10px 30px rgba(0,0,0,0.35) !important;
-      z-index: 2147483000 !important;
-      isolation: isolate !important;
-      will-change: transform !important;
-      backface-visibility: hidden !important;
-      -webkit-backface-visibility: hidden !important;
-    }
-
-    .bottom-nav .nav-item {
-      min-width: 0 !important;
-      min-height: 56px !important;
-      display: flex !important;
-      flex-direction: column !important;
-      justify-content: center !important;
-      align-items: center !important;
-      gap: 6px !important;
-      padding: 4px 2px !important;
-      color: #8b93a7 !important;
-      text-decoration: none !important;
-      text-align: center !important;
-      font-size: 12px !important;
-      font-weight: 700 !important;
-      line-height: 1.1 !important;
-      -webkit-tap-highlight-color: transparent !important;
-    }
-
-    .bottom-nav .nav-item i {
-      font-size: 22px !important;
-      line-height: 1 !important;
-    }
-
-    .bottom-nav .nav-item.active {
-      color: #3b4cff !important;
-    }
-
-    @media (min-width: 431px) {
-      .bottom-nav {
-        border-left: 1px solid rgba(255,255,255,0.08) !important;
-        border-right: 1px solid rgba(255,255,255,0.08) !important;
-      }
-    }
-  `;
-
-  document.head.appendChild(style);
+  /*
+    Keep it synced while ordinary
+    page content scrolls.
+  */
+  window.addEventListener(
+    "scroll",
+    syncStableBottomNav,
+    { passive: true }
+  );
 }
 
 /* =========================
-   LOAD USER / NAV FIX
+   GENERIC USER UI
 ========================= */
 
-document.addEventListener("DOMContentLoaded", async () => {
-  installStableBottomNav();
+function updateCommonUserUI(user) {
+  if (!user) return;
 
-  const path = window.location.pathname.toLowerCase();
+  const fullName =
+    user.fullname ||
+    user.name ||
+    "DLM User";
 
-  const isPublicPage =
-    path.endsWith("/login.html") ||
-    path.endsWith("/register.html") ||
-    path.endsWith("/index.html") ||
-    path === "/";
+  const initial =
+    fullName
+      .charAt(0)
+      .toUpperCase();
 
-  if (!isPublicPage) {
-    const user = requireDlmLogin();
+  const usdBalance =
+    `$${Number(
+      user.balance || 0
+    ).toFixed(2)} USD`;
 
-    if (!user) {
-      return;
-    }
+  const map = [
+    ["welcomeName", fullName],
+    ["topProfileName", fullName],
+    ["menuUserName", fullName],
+    ["menuUserMail", user.email],
+    ["balanceAmount", usdBalance],
+    ["totalBalance", usdBalance],
+    ["serviceBalance", usdBalance],
+    ["balanceSub", user.email || "DLM Wallet"],
+    ["profileLetter", initial],
+    ["avatar", initial]
+  ];
 
-    const refreshedUser = await refreshDlmUser();
+  for (
+    const [id, value]
+    of map
+  ) {
+    const element =
+      document.getElementById(id);
 
-    if (refreshedUser) {
-      const welcomeName = document.getElementById("welcomeName");
-      const profileLetter = document.getElementById("profileLetter");
-      const avatar = document.getElementById("avatar");
-      const menuUserName = document.getElementById("menuUserName");
-      const menuUserMail = document.getElementById("menuUserMail");
-      const balanceAmount = document.getElementById("balanceAmount");
-      const totalBalance = document.getElementById("totalBalance");
-      const serviceBalance = document.getElementById("serviceBalance");
-      const balanceSub = document.getElementById("balanceSub");
-      const frontHolder = document.getElementById("frontHolder");
-
-      if (welcomeName) {
-        welcomeName.innerText = `${refreshedUser.fullname}! 👋`;
-      }
-
-      if (profileLetter) {
-        profileLetter.innerText =
-          refreshedUser.fullname.charAt(0).toUpperCase();
-      }
-
-      if (avatar) {
-        avatar.innerText =
-          refreshedUser.fullname.charAt(0).toUpperCase();
-      }
-
-      if (menuUserName) {
-        menuUserName.innerText = refreshedUser.fullname;
-      }
-
-      if (menuUserMail) {
-        menuUserMail.innerText = refreshedUser.email;
-      }
-
-      const usdBalance =
-        `$${Number(refreshedUser.balance || 0).toFixed(2)} USD`;
-
-      if (balanceAmount) {
-        balanceAmount.innerText = usdBalance;
-      }
-
-      if (totalBalance) {
-        totalBalance.innerText = usdBalance;
-      }
-
-      if (serviceBalance) {
-        serviceBalance.innerText = usdBalance;
-      }
-
-      if (balanceSub) {
-        balanceSub.innerText =
-          refreshedUser.email || "DLM Wallet";
-      }
-
-      if (frontHolder) {
-        frontHolder.innerText =
-          refreshedUser.fullname.toUpperCase();
-      }
-
-      document
-        .querySelectorAll('a[href="admin.html"]')
-        .forEach((link) => {
-          link.style.display =
-            refreshedUser.role === "admin" ? "" : "none";
-        });
+    if (element) {
+      element.innerText =
+        value || "";
     }
   }
 
   document
-    .querySelectorAll("a.logout")
-    .forEach((link) => {
-      link.addEventListener("click", (event) => {
-        event.preventDefault();
-        logoutDlmUser();
-      });
+    .querySelectorAll(
+      'a[href="admin.html"]'
+    )
+    .forEach(link => {
+      link.style.display =
+        user.role === "admin"
+          ? ""
+          : "none";
     });
-});
-
-/* Re-apply after mobile browser viewport changes. */
-if (window.visualViewport) {
-  window.visualViewport.addEventListener("resize", installStableBottomNav);
-  window.visualViewport.addEventListener("scroll", installStableBottomNav);
 }
+
+/* =========================
+   DOM READY
+========================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  async () => {
+    installStableBottomNav();
+
+    const path =
+      window
+        .location
+        .pathname
+        .toLowerCase();
+
+    const publicPage =
+      path.endsWith(
+        "/login.html"
+      ) ||
+      path.endsWith(
+        "/register.html"
+      ) ||
+      path.endsWith(
+        "/index.html"
+      ) ||
+      path === "/";
+
+    if (!publicPage) {
+      const user =
+        requireDlmLogin();
+
+      if (!user) return;
+
+      updateCommonUserUI(
+        user
+      );
+
+      const refreshed =
+        await refreshDlmUser();
+
+      if (refreshed) {
+        updateCommonUserUI(
+          refreshed
+        );
+      }
+    }
+
+    document
+      .querySelectorAll(
+        "a.logout"
+      )
+      .forEach(link => {
+        link.addEventListener(
+          "click",
+          event => {
+            event.preventDefault();
+            logoutDlmUser();
+          }
+        );
+      });
+  }
+);

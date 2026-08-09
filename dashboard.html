@@ -1,173 +1,791 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>DLM Wallet Dashboard</title>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#05070c;color:#fff;min-height:100vh}
-.app{max-width:430px;margin:auto;min-height:100vh;padding:18px 18px 110px;position:relative;background:radial-gradient(circle at top left,rgba(59,130,246,.08),transparent 28%),radial-gradient(circle at top right,rgba(99,102,241,.10),transparent 25%),#05070c}
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.menu-btn{width:48px;height:48px;border:none;border-radius:14px;background:rgba(255,255,255,.06);color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center}
-.profile-avatar{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.08);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:bold;text-decoration:none}
-.greeting{margin-bottom:18px}.hello{font-size:14px;color:#8b93a7;margin-bottom:6px}.username{font-size:34px;font-weight:800;line-height:1.1}
-.premium-card-box{position:relative;margin:8px 0 24px;min-height:240px;display:flex;align-items:center;justify-content:center}
-.card-back{position:absolute;width:220px;height:135px;border-radius:22px;background:linear-gradient(135deg,#243bff,#3e5cff);top:20px;left:75px;transform:rotate(-12deg);box-shadow:0 20px 40px rgba(37,59,255,.25);border:1px solid rgba(255,255,255,.18)}
-.card-front{position:absolute;width:255px;height:155px;border-radius:24px;background:linear-gradient(135deg,#0e1118,#2b2f39);top:44px;left:115px;transform:rotate(-8deg);box-shadow:0 24px 50px rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.15);padding:18px}
-.chip{width:42px;height:32px;border-radius:10px;background:linear-gradient(135deg,#f4f4f5,#b6b7bc)}
-.card-brand{position:absolute;right:18px;top:18px;font-size:18px;font-weight:700}
-.card-holder{position:absolute;left:18px;bottom:20px;font-size:15px;font-weight:700}
-.mc-circles{position:absolute;right:18px;bottom:20px;display:flex}.mc-circles span{width:26px;height:26px;border-radius:50%;display:block}.mc-circles span:first-child{background:#ea001b;margin-right:-7px}.mc-circles span:last-child{background:#f79e1b}
-.empty-card-text{margin-top:245px;text-align:center;padding:0 10px}.empty-card-title{font-size:22px;font-weight:800;margin-bottom:12px}.empty-card-sub{font-size:15px;color:#8b93a7;line-height:1.5;margin-bottom:20px}
-.primary-btn{display:block;width:100%;border:none;border-radius:18px;background:#2f3cff;color:#fff;font-size:18px;font-weight:700;padding:18px;text-decoration:none;text-align:center}
-.balance-card{margin-top:18px;background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:18px;margin-bottom:22px}
-.balance-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.balance-label{color:#9ca3af;font-size:14px}.status-pill{padding:6px 12px;border-radius:999px;background:rgba(34,197,94,.12);color:#4ade80;font-size:12px;font-weight:700}.balance-amount{font-size:36px;font-weight:800;margin-bottom:8px}.balance-sub{color:#8b93a7;font-size:14px;word-break:break-word}
-.section{margin-bottom:24px}.section-title{font-size:22px;font-weight:800;margin-bottom:14px}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.quick-card{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:18px 16px;text-decoration:none;color:#fff;min-height:100px;display:flex;flex-direction:column;justify-content:center;gap:12px}.quick-card i{font-size:22px;color:#c9d1ff}.quick-card span{font-size:17px;font-weight:700}
-.list-box{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:10px 16px}.empty{color:#8b93a7;font-size:14px;padding:10px 0}
-.bottom-nav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:430px;background:#04060a;border-top:1px solid rgba(255,255,255,.08);display:grid;grid-template-columns:repeat(5,1fr);padding:12px 8px 14px;z-index:1000}
-.nav-item{text-decoration:none;color:#8b93a7;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;font-weight:600}.nav-item i{font-size:23px}.nav-item.active{color:#3b4cff}
-.side-menu{position:fixed;top:0;left:-310px;width:290px;height:100%;background:#0b0f16;border-right:1px solid rgba(255,255,255,.08);z-index:1200;transition:.25s ease;padding:20px 16px;overflow-y:auto}.side-menu.active{left:0}
-.menu-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.menu-title{font-size:24px;font-weight:800}.close-menu{width:40px;height:40px;border:none;border-radius:12px;background:rgba(255,255,255,.08);color:#fff;font-size:18px}
-.menu-user{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:14px;margin-bottom:16px}.menu-user-name{font-size:16px;font-weight:700;margin-bottom:4px}.menu-user-mail{font-size:13px;color:#8b93a7;word-break:break-word}
-.menu-links{display:flex;flex-direction:column;gap:10px}.menu-links a{text-decoration:none;color:#fff;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06);padding:14px 15px;border-radius:14px;font-weight:700}.menu-links a.logout{background:#151922;color:#ffb4b4}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;z-index:1100}.overlay.active{display:block}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#05070c">
+  <title>DLM Wallet</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="fixed-bottom-nav.css">
+
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      font-family:Inter,Arial,sans-serif;
+    }
+
+    :root{
+      --bg:#05070c;
+      --panel:#10131a;
+      --panel-2:#141823;
+      --line:rgba(255,255,255,.08);
+      --muted:#8f97aa;
+      --primary:#3b4cff;
+      --primary-2:#6772ff;
+      --success:#35d477;
+    }
+
+    html,body{
+      min-height:100%;
+      background:var(--bg);
+      color:#fff;
+    }
+
+    body{
+      overflow-x:hidden;
+    }
+
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      min-height:100vh;
+      padding:
+        max(18px, env(safe-area-inset-top))
+        18px
+        calc(118px + env(safe-area-inset-bottom))
+        18px;
+      background:
+        radial-gradient(circle at top left,rgba(59,76,255,.10),transparent 30%),
+        radial-gradient(circle at top right,rgba(103,114,255,.08),transparent 27%),
+        var(--bg);
+    }
+
+    /* ===== Top account area ===== */
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:22px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:11px;
+      min-width:0;
+    }
+
+    .brand-mark{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      box-shadow:0 12px 28px rgba(59,76,255,.22);
+      font-size:18px;
+      font-weight:900;
+    }
+
+    .brand-copy{
+      min-width:0;
+    }
+
+    .brand-name{
+      font-size:18px;
+      font-weight:900;
+      letter-spacing:-.2px;
+    }
+
+    .brand-sub{
+      color:var(--muted);
+      font-size:12px;
+      margin-top:3px;
+    }
+
+    .profile-btn{
+      border:0;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      gap:9px;
+      padding:7px 8px 7px 11px;
+      border-radius:16px;
+      color:#fff;
+      background:rgba(255,255,255,.055);
+      border:1px solid var(--line);
+      max-width:190px;
+    }
+
+    .profile-text{
+      text-align:right;
+      min-width:0;
+    }
+
+    .profile-name{
+      display:block;
+      max-width:108px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .profile-hint{
+      display:block;
+      margin-top:2px;
+      color:var(--muted);
+      font-size:10px;
+    }
+
+    .profile-avatar{
+      width:38px;
+      height:38px;
+      flex:0 0 38px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,#252b3d,#3b435d);
+      font-size:16px;
+      font-weight:900;
+    }
+
+    /* ===== Welcome ===== */
+
+    .welcome{
+      margin-bottom:18px;
+    }
+
+    .hello{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:5px;
+    }
+
+    .username{
+      font-size:30px;
+      line-height:1.1;
+      font-weight:950;
+      letter-spacing:-.7px;
+    }
+
+    /* ===== Balance ===== */
+
+    .balance-card{
+      position:relative;
+      overflow:hidden;
+      background:
+        linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.025));
+      border:1px solid var(--line);
+      border-radius:26px;
+      padding:21px;
+      margin-bottom:26px;
+      box-shadow:0 18px 55px rgba(0,0,0,.20);
+    }
+
+    .balance-card::after{
+      content:"";
+      position:absolute;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      right:-80px;
+      top:-90px;
+      background:var(--primary);
+      opacity:.10;
+    }
+
+    .balance-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      position:relative;
+      z-index:1;
+    }
+
+    .balance-label{
+      color:#a4abbb;
+      font-size:13px;
+    }
+
+    .status-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:7px 11px;
+      border-radius:999px;
+      background:rgba(53,212,119,.12);
+      color:#55e28c;
+      font-size:11px;
+      font-weight:900;
+    }
+
+    .status-dot{
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:currentColor;
+    }
+
+    .balance-amount{
+      position:relative;
+      z-index:1;
+      margin:13px 0 8px;
+      font-size:38px;
+      font-weight:950;
+      letter-spacing:-1px;
+    }
+
+    .balance-sub{
+      position:relative;
+      z-index:1;
+      color:var(--muted);
+      font-size:13px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    /* ===== Quick actions ===== */
+
+    .section{
+      margin-bottom:27px;
+    }
+
+    .section-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:14px;
+    }
+
+    .section-title{
+      font-size:21px;
+      font-weight:900;
+      letter-spacing:-.3px;
+    }
+
+    .section-link{
+      color:#929aff;
+      text-decoration:none;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .quick-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .quick-card{
+      min-height:115px;
+      padding:17px;
+      text-decoration:none;
+      color:#fff;
+      border-radius:21px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.025));
+      border:1px solid var(--line);
+      transition:transform .15s ease,border-color .15s ease;
+    }
+
+    .quick-card:active{
+      transform:scale(.98);
+      border-color:rgba(103,114,255,.40);
+    }
+
+    .quick-icon{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(103,114,255,.11);
+      color:#c5c9ff;
+      font-size:19px;
+    }
+
+    .quick-card span{
+      font-size:16px;
+      font-weight:900;
+    }
+
+    /* ===== Recent transactions only ===== */
+
+    .list-box{
+      overflow:hidden;
+      border-radius:22px;
+      border:1px solid var(--line);
+      background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.022));
+    }
+
+    .list-item{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+      padding:15px 16px;
+      border-bottom:1px solid rgba(255,255,255,.055);
+    }
+
+    .list-item:last-child{
+      border-bottom:0;
+    }
+
+    .item-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .item-icon{
+      width:40px;
+      height:40px;
+      border-radius:13px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#151a26;
+      color:#bfc5ff;
+      flex:0 0 40px;
+    }
+
+    .item-copy{
+      min-width:0;
+    }
+
+    .item-title{
+      font-size:14px;
+      font-weight:850;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .item-sub{
+      color:var(--muted);
+      font-size:11px;
+      margin-top:4px;
+    }
+
+    .item-amount{
+      font-size:13px;
+      font-weight:900;
+      white-space:nowrap;
+    }
+
+    .empty{
+      padding:20px 16px;
+      color:var(--muted);
+      font-size:13px;
+      text-align:center;
+    }
+
+    /* ===== Profile Sheet ===== */
+
+    .sheet-bg{
+      position:fixed;
+      inset:0;
+      z-index:2147483500;
+      display:none;
+      align-items:flex-end;
+      justify-content:center;
+      background:rgba(0,0,0,.65);
+      backdrop-filter:blur(4px);
+    }
+
+    .sheet-bg.show{
+      display:flex;
+    }
+
+    .profile-sheet{
+      width:100%;
+      max-width:430px;
+      padding:10px 18px calc(22px + env(safe-area-inset-bottom));
+      border-radius:28px 28px 0 0;
+      background:#0d1119;
+      border:1px solid var(--line);
+      box-shadow:0 -20px 55px rgba(0,0,0,.45);
+    }
+
+    .grabber{
+      width:45px;
+      height:5px;
+      border-radius:999px;
+      margin:2px auto 17px;
+      background:#313746;
+    }
+
+    .sheet-profile{
+      display:flex;
+      align-items:center;
+      gap:13px;
+      margin-bottom:18px;
+    }
+
+    .sheet-avatar{
+      width:54px;
+      height:54px;
+      border-radius:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      font-size:21px;
+      font-weight:950;
+    }
+
+    .sheet-name{
+      font-size:18px;
+      font-weight:900;
+    }
+
+    .sheet-role{
+      margin-top:4px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .info-grid{
+      display:grid;
+      gap:9px;
+      margin-bottom:14px;
+    }
+
+    .info-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:15px;
+      padding:13px 14px;
+      border-radius:15px;
+      background:#141925;
+      border:1px solid rgba(255,255,255,.055);
+    }
+
+    .info-label{
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .info-value{
+      max-width:65%;
+      text-align:right;
+      font-size:12px;
+      font-weight:800;
+      overflow:hidden;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+    }
+
+    .sheet-actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:9px;
+      margin-top:13px;
+    }
+
+    .sheet-action{
+      padding:14px 10px;
+      border-radius:15px;
+      border:1px solid var(--line);
+      background:#171c28;
+      color:#fff;
+      text-decoration:none;
+      text-align:center;
+      font-size:12px;
+      font-weight:850;
+    }
+
+    .sheet-action.danger{
+      color:#ff9ea5;
+    }
+
+    /* The nav itself is styled by fixed-bottom-nav.css */
+  </style>
 </head>
+
 <body>
-
-<div class="side-menu" id="sideMenu">
-  <div class="menu-header">
-    <div class="menu-title">DLM Wallet</div>
-    <button class="close-menu" onclick="closeMenu()"><i class="fa-solid fa-xmark"></i></button>
-  </div>
-
-  <div class="menu-user">
-    <div class="menu-user-name" id="menuUserName">DLM Wallet User</div>
-    <div class="menu-user-mail" id="menuUserMail">Not connected</div>
-  </div>
-
-  <div class="menu-links">
-    <a href="dashboard.html">🏠 Home</a>
-    <a href="profile.html">⚙️ Profile & Settings</a>
-    <a href="topup.html">📱 Topup</a>
-    <a href="giftcards.html">🎁 Giftcards</a>
-    <a href="netflix.html">🎬 Netflix</a>
-    <a href="primevideo.html">📺 Prime Video</a>
-    <a href="freefire.html">🔥 Free Fire</a>
-    <a href="deposit.html">💰 Deposit</a>
-    <a href="withdraw.html">💸 Withdraw</a>
-    <a href="transfer.html">🔁 Send</a>
-    <a href="shop.html">🛍 Shop</a>
-    <a href="convert.html">💱 Convert</a>
-    <a href="card.html">💳 Create Card</a>
-    <a href="statement.html">📄 Statement</a>
-    <a href="notification.html">🔔 Notifications</a>
-    <a href="wallet.html">👛 Wallet</a>
-    <a href="#" class="logout" onclick="logoutDlmUser();return false;">🚪 Logout</a>
-  </div>
-</div>
-
-<div class="overlay" id="overlay" onclick="closeMenu()"></div>
 
 <div class="app">
   <div class="topbar">
-    <button class="menu-btn" onclick="openMenu()"><i class="fa-solid fa-bars"></i></button>
-    <a class="profile-avatar" id="profileLetter" href="profile.html">D</a>
-  </div>
-
-  <div class="greeting">
-    <div class="hello">Hi,</div>
-    <div class="username" id="welcomeName">DLM Wallet 👋</div>
-  </div>
-
-  <div class="premium-card-box">
-    <div class="card-back"></div>
-    <div class="card-front">
-      <div class="card-brand">DLM Wallet</div>
-      <div class="chip"></div>
-      <div class="card-holder" id="frontHolder">DLM WALLET USER</div>
-      <div class="mc-circles"><span></span><span></span></div>
+    <div class="brand">
+      <div class="brand-mark">D</div>
+      <div class="brand-copy">
+        <div class="brand-name">DLM Wallet</div>
+        <div class="brand-sub">Secure digital wallet</div>
+      </div>
     </div>
 
-    <div class="empty-card-text">
-      <div class="empty-card-title">Obtenez votre première carte</div>
-      <div class="empty-card-sub">Créez votre première carte pour activer votre compte.</div>
-      <a href="card.html" class="primary-btn">Commencer</a>
-    </div>
+    <button class="profile-btn" type="button" onclick="openProfileSheet()">
+      <span class="profile-text">
+        <span class="profile-name" id="topProfileName">My account</span>
+        <span class="profile-hint">Tap for details</span>
+      </span>
+      <span class="profile-avatar" id="profileLetter">D</span>
+    </button>
   </div>
+
+  <div class="welcome">
+    <div class="hello">Welcome back</div>
+    <div class="username" id="welcomeName">DLM User</div>
+  </div>
+
+  <!-- Card artwork / "Commencer" section intentionally removed -->
 
   <div class="balance-card">
     <div class="balance-top">
       <div class="balance-label">Available balance</div>
-      <div class="status-pill" id="statusPill">Active</div>
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span id="accountStatus">Active</span>
+      </div>
     </div>
+
     <div class="balance-amount" id="balanceAmount">$0.00 USD</div>
     <div class="balance-sub" id="balanceSub">DLM Wallet</div>
   </div>
 
   <div class="section">
-    <div class="section-title">Quick Actions</div>
+    <div class="section-head">
+      <div class="section-title">Quick Actions</div>
+      <a class="section-link" href="services.html">View services</a>
+    </div>
+
     <div class="quick-grid">
-      <a href="deposit.html" class="quick-card"><i class="fa-solid fa-wallet"></i><span>Deposit</span></a>
-      <a href="withdraw.html" class="quick-card"><i class="fa-solid fa-download"></i><span>Withdraw</span></a>
-      <a href="giftcards.html" class="quick-card"><i class="fa-solid fa-gift"></i><span>Giftcards</span></a>
-      <a href="transfer.html" class="quick-card"><i class="fa-regular fa-paper-plane"></i><span>Send</span></a>
+      <a href="deposit.html" class="quick-card">
+        <div class="quick-icon"><i class="fa-solid fa-arrow-down"></i></div>
+        <span>Deposit</span>
+      </a>
+
+      <a href="withdraw.html" class="quick-card">
+        <div class="quick-icon"><i class="fa-solid fa-arrow-up"></i></div>
+        <span>Withdraw</span>
+      </a>
+
+      <a href="giftcards.html" class="quick-card">
+        <div class="quick-icon"><i class="fa-solid fa-gift"></i></div>
+        <span>Gift Cards</span>
+      </a>
+
+      <a href="transfer.html" class="quick-card">
+        <div class="quick-icon"><i class="fa-regular fa-paper-plane"></i></div>
+        <span>Send</span>
+      </a>
     </div>
   </div>
 
-  <div class="section"><div class="section-title">Recent Transactions</div><div class="list-box"><div class="empty">Pa gen tranzaksyon pou kounye a.</div></div></div>
-  <div class="section"><div class="section-title">Recent Notifications</div><div class="list-box"><div class="empty">Pa gen notifikasyon pou kounye a.</div></div></div>
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Recent Transactions</div>
+      <a class="section-link" href="statement.html">See all</a>
+    </div>
+
+    <div class="list-box" id="transactionsBox">
+      <div class="empty">Pa gen tranzaksyon pou kounye a.</div>
+    </div>
+  </div>
+
+  <!-- Recent Notifications intentionally removed -->
 </div>
 
-<div class="bottom-nav">
-  <a href="dashboard.html" class="nav-item active"><i class="fa-solid fa-house"></i><span>Home</span></a>
-  <a href="statement.html" class="nav-item"><i class="fa-solid fa-arrow-rotate-left"></i><span>Transactions</span></a>
-  <a href="services.html" class="nav-item"><i class="fa-brands fa-bitcoin"></i><span>Services</span></a>
-  <a href="card.html" class="nav-item"><i class="fa-regular fa-credit-card"></i><span>Cards</span></a>
-  <a href="wallet.html" class="nav-item"><i class="fa-solid fa-wallet"></i><span>Wallet</span></a>
+<div class="bottom-nav" id="stableBottomNav">
+  <a href="dashboard.html" class="nav-item active">
+    <i class="fa-solid fa-house"></i>
+    <span>Home</span>
+  </a>
+
+  <a href="statement.html" class="nav-item">
+    <i class="fa-solid fa-arrow-rotate-left"></i>
+    <span>Transactions</span>
+  </a>
+
+  <a href="services.html" class="nav-item">
+    <i class="fa-brands fa-bitcoin"></i>
+    <span>Services</span>
+  </a>
+
+  <a href="card-dashboard.html" class="nav-item">
+    <i class="fa-regular fa-credit-card"></i>
+    <span>Cards</span>
+  </a>
+
+  <a href="wallet.html" class="nav-item">
+    <i class="fa-solid fa-wallet"></i>
+    <span>Wallet</span>
+  </a>
 </div>
 
-<script src="js/app.js"></script>
+<!-- Professional account detail sheet -->
+<div class="sheet-bg" id="profileSheetBg" onclick="sheetBackdrop(event)">
+  <div class="profile-sheet">
+    <div class="grabber"></div>
+
+    <div class="sheet-profile">
+      <div class="sheet-avatar" id="sheetAvatar">D</div>
+      <div>
+        <div class="sheet-name" id="sheetName">DLM User</div>
+        <div class="sheet-role" id="sheetRole">Customer account</div>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-row">
+        <span class="info-label">Email</span>
+        <span class="info-value" id="sheetEmail">—</span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Phone</span>
+        <span class="info-value" id="sheetPhone">—</span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Account status</span>
+        <span class="info-value" id="sheetStatus">Active</span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Security PIN</span>
+        <span class="info-value" id="sheetPin">Not enabled</span>
+      </div>
+    </div>
+
+    <div class="sheet-actions">
+      <a class="sheet-action" href="wallet.html">
+        <i class="fa-solid fa-wallet"></i>&nbsp; Wallet
+      </a>
+
+      <a class="sheet-action" href="pin.html">
+        <i class="fa-solid fa-shield-halved"></i>&nbsp; PIN
+      </a>
+
+      <a class="sheet-action" href="statement.html">
+        <i class="fa-solid fa-receipt"></i>&nbsp; Activity
+      </a>
+
+      <a class="sheet-action danger" href="#" onclick="logoutDlmUser();return false;">
+        <i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout
+      </a>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
 <script>
-function openMenu(){
-  document.getElementById("sideMenu").classList.add("active");
-  document.getElementById("overlay").classList.add("active");
-}
-function closeMenu(){
-  document.getElementById("sideMenu").classList.remove("active");
-  document.getElementById("overlay").classList.remove("active");
-}
+  requireDlmLogin();
 
-const user=requireDlmLogin();
+  function openProfileSheet(){
+    document.getElementById("profileSheetBg").classList.add("show");
+    document.body.style.overflow = "hidden";
+  }
 
-if(user && user.role==="admin"){
-  window.location.replace("admin.html");
-} else if(user){
-  const name=user.fullname||user.name||"DLM User";
-  document.getElementById("welcomeName").innerText=`${name}! 👋`;
-  document.getElementById("profileLetter").innerText=name.charAt(0).toUpperCase();
-  document.getElementById("menuUserName").innerText=name;
-  document.getElementById("menuUserMail").innerText=user.email||"No email";
-  document.getElementById("balanceAmount").innerText=`$${Number(user.balance||0).toFixed(2)} USD`;
-  document.getElementById("balanceSub").innerText=user.email||"DLM Wallet";
-  document.getElementById("frontHolder").innerText=name.toUpperCase();
-  document.getElementById("statusPill").innerText=user.status||"Active";
-}
+  function closeProfileSheet(){
+    document.getElementById("profileSheetBg").classList.remove("show");
+    document.body.style.overflow = "";
+  }
 
-refreshDlmUser().then(fresh=>{
-  if(!fresh || fresh.role==="admin") return;
-  const name=fresh.fullname||fresh.name||"DLM User";
-  document.getElementById("welcomeName").innerText=`${name}! 👋`;
-  document.getElementById("profileLetter").innerText=name.charAt(0).toUpperCase();
-  document.getElementById("menuUserName").innerText=name;
-  document.getElementById("menuUserMail").innerText=fresh.email||"No email";
-  document.getElementById("balanceAmount").innerText=`$${Number(fresh.balance||0).toFixed(2)} USD`;
-  document.getElementById("balanceSub").innerText=fresh.email||"DLM Wallet";
-  document.getElementById("frontHolder").innerText=name.toUpperCase();
-  document.getElementById("statusPill").innerText=fresh.status||"Active";
-});
+  function sheetBackdrop(event){
+    if(event.target.id === "profileSheetBg"){
+      closeProfileSheet();
+    }
+  }
+
+  function syncProfileUI(user){
+    if(!user) return;
+
+    const fullName = user.fullname || user.name || "DLM User";
+    const initial = fullName.charAt(0).toUpperCase();
+    const balance = Number(user.balance || 0);
+
+    document.getElementById("welcomeName").innerText = fullName;
+    document.getElementById("topProfileName").innerText = fullName;
+    document.getElementById("profileLetter").innerText = initial;
+    document.getElementById("sheetAvatar").innerText = initial;
+    document.getElementById("sheetName").innerText = fullName;
+    document.getElementById("sheetEmail").innerText = user.email || "—";
+    document.getElementById("sheetPhone").innerText = user.phone || "—";
+    document.getElementById("sheetStatus").innerText = user.status || "Active";
+    document.getElementById("accountStatus").innerText = user.status || "Active";
+    document.getElementById("sheetRole").innerText =
+      user.role === "admin" ? "Administrator account" : "Customer account";
+
+    document.getElementById("balanceAmount").innerText =
+      `$${balance.toFixed(2)} USD`;
+
+    document.getElementById("balanceSub").innerText =
+      user.email || "DLM Wallet";
+
+    document.getElementById("sheetPin").innerText =
+      user.pinEnabled ? "Enabled" : "Not enabled";
+  }
+
+  async function loadDashboardData(){
+    let user = getDlmUser();
+    syncProfileUI(user);
+
+    try{
+      const fresh = await refreshDlmUser();
+      if(fresh){
+        user = fresh;
+        syncProfileUI(user);
+      }
+    }catch(error){}
+
+    try{
+      const data = await dlmApi("/transactions/mine");
+      const items = data.transactions || data.items || [];
+      const box = document.getElementById("transactionsBox");
+
+      if(!items.length){
+        box.innerHTML =
+          '<div class="empty">Pa gen tranzaksyon pou kounye a.</div>';
+        return;
+      }
+
+      box.innerHTML = items.slice(0,4).map(item => {
+        const type = String(item.type || "Transaction");
+        const amount = Number(item.amount || 0);
+        const date = item.createdAt
+          ? new Date(item.createdAt).toLocaleDateString()
+          : "";
+
+        const icon =
+          type === "deposit" ? "fa-arrow-down" :
+          type === "withdraw" ? "fa-arrow-up" :
+          type === "transfer" ? "fa-paper-plane" :
+          "fa-receipt";
+
+        return `
+          <div class="list-item">
+            <div class="item-left">
+              <div class="item-icon">
+                <i class="fa-solid ${icon}"></i>
+              </div>
+
+              <div class="item-copy">
+                <div class="item-title">${type}</div>
+                <div class="item-sub">${date} • ${item.status || ""}</div>
+              </div>
+            </div>
+
+            <div class="item-amount">
+              $${amount.toFixed(2)}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }catch(error){
+      document.getElementById("transactionsBox").innerHTML =
+        '<div class="empty">Recent transactions yo ap parèt isit lè yo disponib.</div>';
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", loadDashboardData);
 </script>
+
 </body>
 </html>
