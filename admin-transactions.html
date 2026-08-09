@@ -1,4 +1,5 @@
-<!doctype html><html lang="ht"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reserve - DLM Admin</title><style>
+<!doctype html><html lang="ht"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>All Transactions - DLM Admin</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"><style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
 :root{--bg:#05070c;--panel:#10141d;--panel2:#151a25;--line:rgba(255,255,255,.08);--muted:#9299aa;--primary:#5662ff;--primary2:#7868ff;--good:#55df8a;--warn:#ffd451;--bad:#ff8e98}
 body{background:var(--bg);color:#fff;min-height:100vh}
@@ -27,7 +28,43 @@ body{background:var(--bg);color:#fff;min-height:100vh}
 .pill.good{color:var(--good);background:rgba(85,223,138,.10)}.pill.warn{color:var(--warn);background:rgba(255,212,81,.10)}.pill.bad{color:var(--bad);background:rgba(255,142,152,.10)}
 .empty{padding:20px;color:var(--muted);text-align:center;font-size:12px}
 </style></head>
-<body><div class="app"><div class="top"><a class="back" href="admin.html">← Admin</a><div class="avatar">A</div></div><div class="hero"><div class="title">Reserve</div><div class="sub">System liquidity.</div></div><div id="data" class="card"></div></div>
+<body><div class="app">
+<div class="top"><a class="back" href="admin.html">← Admin</a><div class="avatar">A</div></div>
+<div class="hero"><div class="eyebrow">Finance</div><div class="title">All Transactions</div><div class="sub">Tout mouvman DLM Wallet.</div></div>
+<div class="card">
+  <select id="type" class="select">
+    <option value="">All types</option>
+    <option value="deposit">Deposit</option>
+    <option value="withdraw">Withdraw</option>
+    <option value="transfer">Transfer</option>
+    <option value="admin_credit">Admin credit</option>
+    <option value="admin_debit">Admin debit</option>
+  </select>
+  <select id="status" class="select">
+    <option value="">All status</option>
+    <option value="completed">Completed</option>
+    <option value="pending">Pending</option>
+    <option value="failed">Failed</option>
+  </select>
+  <button class="btn" onclick="load()">Filter</button>
+</div>
+<div id="summary" class="card"></div>
+<div id="items"></div>
+</div>
 <script src="app.js"></script><script>
-requireDlmAdmin();async function load(){const d=await dlmApi("/admin/reserve");const r=d.reserve||{};document.getElementById("data").innerHTML=`<div class="row"><span>Cash reserve</span><b>$${Number(r.cashReserve||0).toFixed(2)}</b></div><div class="row"><span>Customer liabilities</span><b>$${Number(r.customerLiability||0).toFixed(2)}</b></div><div class="row"><span>Available reserve</span><b>$${Number(r.availableReserve||0).toFixed(2)}</b></div>`}load();
+requireDlmAdmin();
+function klass(s){s=String(s||"").toLowerCase();return s==="completed"?"good":s==="pending"?"warn":"bad"}
+async function load(){
+  const type=document.getElementById("type").value;
+  const status=document.getElementById("status").value;
+  const q=new URLSearchParams(); if(type)q.set("type",type); if(status)q.set("status",status);
+  try{
+    const d=await dlmApi("/admin/transactions?"+q.toString());
+    const a=d.transactions||[];
+    const total=a.reduce((s,x)=>s+Number(x.amount||0),0);
+    document.getElementById("summary").innerHTML=`<div class="metric-grid"><div class="metric"><small>Transactions</small><strong>${a.length}</strong></div><div class="metric"><small>Total volume</small><strong>$${total.toFixed(2)}</strong></div></div>`;
+    document.getElementById("items").innerHTML=a.map(t=>`<div class="list-item"><div class="list-top"><div><div class="name">${t.userId?.name||"User"} • ${t.type}</div><div class="meta">${t.userId?.email||""}<br>${new Date(t.createdAt).toLocaleString()}</div></div><div class="amount">$${Number(t.amount||0).toFixed(2)}</div></div><span class="pill ${klass(t.status)}">${t.status}</span></div>`).join("")||'<div class="empty">Pa gen tranzaksyon.</div>';
+  }catch(e){document.getElementById("items").innerHTML='<div class="empty">'+e.message+'</div>'}
+}
+load();
 </script></body></html>

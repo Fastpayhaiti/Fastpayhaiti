@@ -1,4 +1,4 @@
-<!doctype html><html lang="ht"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reserve - DLM Admin</title><style>
+<!doctype html><html lang="ht"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Customers - DLM Admin</title><style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
 :root{--bg:#05070c;--panel:#10141d;--panel2:#151a25;--line:rgba(255,255,255,.08);--muted:#9299aa;--primary:#5662ff;--primary2:#7868ff;--good:#55df8a;--warn:#ffd451;--bad:#ff8e98}
 body{background:var(--bg);color:#fff;min-height:100vh}
@@ -27,7 +27,8 @@ body{background:var(--bg);color:#fff;min-height:100vh}
 .pill.good{color:var(--good);background:rgba(85,223,138,.10)}.pill.warn{color:var(--warn);background:rgba(255,212,81,.10)}.pill.bad{color:var(--bad);background:rgba(255,142,152,.10)}
 .empty{padding:20px;color:var(--muted);text-align:center;font-size:12px}
 </style></head>
-<body><div class="app"><div class="top"><a class="back" href="admin.html">← Admin</a><div class="avatar">A</div></div><div class="hero"><div class="title">Reserve</div><div class="sub">System liquidity.</div></div><div id="data" class="card"></div></div>
+<body><div class="app"><div class="top"><a class="back" href="admin.html">← Admin</a><div class="avatar">A</div></div><div class="hero"><div class="title">Customers</div><div class="sub">Kont kliyan ak balans yo.</div></div><div id="items"></div></div>
 <script src="app.js"></script><script>
-requireDlmAdmin();async function load(){const d=await dlmApi("/admin/reserve");const r=d.reserve||{};document.getElementById("data").innerHTML=`<div class="row"><span>Cash reserve</span><b>$${Number(r.cashReserve||0).toFixed(2)}</b></div><div class="row"><span>Customer liabilities</span><b>$${Number(r.customerLiability||0).toFixed(2)}</b></div><div class="row"><span>Available reserve</span><b>$${Number(r.availableReserve||0).toFixed(2)}</b></div>`}load();
+requireDlmAdmin();
+async function load(){try{const d=await dlmApi("/admin/users");document.getElementById("items").innerHTML=(d.users||[]).map(u=>`<div class="list-item"><div class="list-top"><div><div class="name">${u.fullname||u.name}</div><div class="meta">${u.email}<br>${u.phone||""}</div></div><div class="amount">$${Number(u.balance||0).toFixed(2)}</div></div><span class="pill ${u.status==="Active"?"good":"bad"}">${u.status}</span></div>`).join("")}catch(e){}}load();
 </script></body></html>

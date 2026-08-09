@@ -1,153 +1,70 @@
-<!DOCTYPE html>
-<html lang="ht">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>DLM Wallet Admin - Withdrawals</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#05070c;color:#fff;min-height:100vh}
-.app{max-width:760px;margin:auto;min-height:100vh;padding:20px}
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
-.back{color:#fff;text-decoration:none;background:rgba(255,255,255,.07);padding:12px 14px;border-radius:14px}
-.refresh{border:0;border-radius:14px;background:#2f3cff;color:#fff;padding:12px 14px;font-weight:900}
-.title{font-size:30px;font-weight:900}.sub{color:#8b93a7;margin:6px 0 18px;line-height:1.5}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-.tab{border:0;border-radius:12px;padding:10px 12px;background:rgba(255,255,255,.06);color:#fff;font-weight:800}
-.tab.active{background:#2f3cff}
-.card{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:16px;margin-bottom:12px}
-.name{font-size:18px;font-weight:900;margin-bottom:8px}
-.meta{font-size:14px;color:#aab3c5;line-height:1.65;word-break:break-word}
-.amount{font-size:24px;font-weight:900;margin:12px 0}
-.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:900}
-.pending{background:rgba(255,193,7,.15);color:#ffd76a}
-.approved{background:rgba(34,197,94,.15);color:#4ade80}
-.rejected{background:rgba(217,60,75,.15);color:#ff9eaa}
-.actions{display:flex;gap:10px;flex-wrap:wrap}
-button.action{border:0;border-radius:13px;padding:12px 14px;color:#fff;font-weight:900;cursor:pointer}
-.approve{background:#15803d}.reject{background:#b42335}
-.empty{color:#8b93a7;padding:20px 0}
-</style>
-</head>
-<body>
-<div class="app">
-  <div class="top">
-    <a href="admin.html" class="back">← Admin</a>
-    <button class="refresh" onclick="loadWithdrawals()">Refresh</button>
-  </div>
-
-  <div class="title">Withdrawal Requests</div>
-  <div class="sub">Verifye payout la anvan ou Approve. Sou Reject, backend la remèt montan an sou balans kliyan an.</div>
-
-  <div class="tabs">
-    <button class="tab active" onclick="setFilter('',this)">All</button>
-    <button class="tab" onclick="setFilter('pending',this)">Pending</button>
-    <button class="tab" onclick="setFilter('approved',this)">Approved</button>
-    <button class="tab" onclick="setFilter('rejected',this)">Rejected</button>
-  </div>
-
-  <div id="list"><div class="empty">Ap chaje...</div></div>
+<!doctype html><html lang="ht"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Withdrawals - DLM Admin</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"><style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
+:root{--bg:#05070c;--panel:#10141d;--panel2:#151a25;--line:rgba(255,255,255,.08);--muted:#9299aa;--primary:#5662ff;--primary2:#7868ff;--good:#55df8a;--warn:#ffd451;--bad:#ff8e98}
+body{background:var(--bg);color:#fff;min-height:100vh}
+.app{max-width:430px;margin:auto;min-height:100vh;padding:20px 18px 50px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.back{color:#fff;text-decoration:none;background:#151923;border:1px solid var(--line);padding:13px 16px;border-radius:15px}
+.avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--primary),var(--primary2));font-weight:900}
+.hero,.card{background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:16px}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:800}
+.title{font-size:31px;font-weight:950;margin:7px 0 8px}.sub{color:var(--muted);font-size:13px;line-height:1.5}
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.metric{background:#121722;border:1px solid var(--line);border-radius:18px;padding:15px}
+.metric small{color:var(--muted);display:block;margin-bottom:7px}.metric strong{font-size:22px}
+.section-title{font-size:20px;font-weight:900;margin:24px 2px 12px}
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.admin-card{min-height:135px;text-decoration:none;color:#fff;padding:16px;border-radius:21px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.025));border:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between}
+.icon{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:rgba(86,98,255,.12);color:#c6caff;font-size:19px}
+.admin-card h3{font-size:15px;margin-top:15px}.admin-card p{font-size:11px;line-height:1.4;color:var(--muted);margin-top:5px}
+.input,.select{width:100%;padding:14px;border-radius:15px;border:1px solid var(--line);background:#111724;color:#fff;margin-bottom:10px}
+.btn{width:100%;padding:14px;border:0;border-radius:15px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;font-weight:900}
+.btn.secondary{background:#171c27;border:1px solid var(--line)}
+.list-item{padding:15px;border-radius:17px;background:#121722;border:1px solid var(--line);margin-top:10px}
+.list-top{display:flex;justify-content:space-between;gap:10px}.name{font-weight:900;font-size:14px}.amount{font-weight:900;white-space:nowrap}
+.meta{font-size:11px;color:var(--muted);line-height:1.5;margin-top:5px}
+.pill{display:inline-flex;padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.06);font-size:10px;font-weight:900;margin-top:8px}
+.pill.good{color:var(--good);background:rgba(85,223,138,.10)}.pill.warn{color:var(--warn);background:rgba(255,212,81,.10)}.pill.bad{color:var(--bad);background:rgba(255,142,152,.10)}
+.empty{padding:20px;color:var(--muted);text-align:center;font-size:12px}
+</style></head>
+<body><div class="app">
+<div class="top"><a class="back" href="admin.html">← Admin</a><div class="avatar">A</div></div>
+<div class="hero"><div class="eyebrow">Finance</div><div class="title">Withdrawals</div><div class="sub">Tout retrè kliyan yo.</div></div>
+<div class="card">
+  <select id="type" class="select">
+    <option value="withdraw">Withdraw</option>
+    <option value="deposit">Deposit</option>
+    <option value="withdraw">Withdraw</option>
+    <option value="transfer">Transfer</option>
+    <option value="admin_credit">Admin credit</option>
+    <option value="admin_debit">Admin debit</option>
+  </select>
+  <select id="status" class="select">
+    <option value="">All status</option>
+    <option value="completed">Completed</option>
+    <option value="pending">Pending</option>
+    <option value="failed">Failed</option>
+  </select>
+  <button class="btn" onclick="load()">Filter</button>
 </div>
-
-<script src="js/app.js"></script>
-<script>
+<div id="summary" class="card"></div>
+<div id="items"></div>
+</div>
+<script src="app.js"></script><script>
 requireDlmAdmin();
-
-let filterStatus="";
-
-function setFilter(status,button){
-  filterStatus=status;
-  document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
-  button.classList.add("active");
-  loadWithdrawals();
-}
-
-async function loadWithdrawals(){
-  const box=document.getElementById("list");
-  box.innerHTML='<div class="empty">Ap chaje...</div>';
-
+function klass(s){s=String(s||"").toLowerCase();return s==="completed"?"good":s==="pending"?"warn":"bad"}
+async function load(){
+  const type="withdraw";
+  const status=document.getElementById("status").value;
+  const q=new URLSearchParams(); if(type)q.set("type",type); if(status)q.set("status",status);
   try{
-    const q=filterStatus?`?status=${filterStatus}`:"";
-    const data=await dlmApi(`/admin/withdrawals${q}`);
-    const withdrawals=data.withdrawals||[];
-
-    if(!withdrawals.length){
-      box.innerHTML='<div class="empty">Pa gen demann nan kategori sa.</div>';
-      return;
-    }
-
-    box.innerHTML=withdrawals.map(w=>{
-      const u=w.userId||{};
-      const status=String(w.status||"pending");
-
-      const actions=status==="pending"?`
-        <div class="actions">
-          <button class="action approve" onclick="approveWithdrawal('${w._id}')">Approve</button>
-          <button class="action reject" onclick="rejectWithdrawal('${w._id}')">Reject</button>
-        </div>
-      `:"";
-
-      return `
-        <div class="card">
-          <div class="name">
-            ${u.name||"DLM Customer"}
-            <span class="badge ${status}">${status.toUpperCase()}</span>
-          </div>
-
-          <div class="meta">
-            Email: ${u.email||"--"}<br>
-            Phone: ${u.phone||"--"}<br>
-            Method: ${w.method||"--"}<br>
-            Account: ${w.account||"--"}<br>
-            Created: ${w.createdAt?new Date(w.createdAt).toLocaleString():"--"}
-          </div>
-
-          <div class="amount">$${Number(w.amount||0).toFixed(2)} USD</div>
-          ${actions}
-        </div>
-      `;
-    }).join("");
-
-  }catch(error){
-    box.innerHTML=`<div class="empty">${error.message}</div>`;
-  }
+    const d=await dlmApi("/admin/transactions?"+q.toString());
+    const a=d.transactions||[];
+    const total=a.reduce((s,x)=>s+Number(x.amount||0),0);
+    document.getElementById("summary").innerHTML=`<div class="metric-grid"><div class="metric"><small>Transactions</small><strong>${a.length}</strong></div><div class="metric"><small>Total volume</small><strong>$${total.toFixed(2)}</strong></div></div>`;
+    document.getElementById("items").innerHTML=a.map(t=>`<div class="list-item"><div class="list-top"><div><div class="name">${t.userId?.name||"User"} • ${t.type}</div><div class="meta">${t.userId?.email||""}<br>${new Date(t.createdAt).toLocaleString()}</div></div><div class="amount">$${Number(t.amount||0).toFixed(2)}</div></div><span class="pill ${klass(t.status)}">${t.status}</span></div>`).join("")||'<div class="empty">Pa gen tranzaksyon.</div>';
+  }catch(e){document.getElementById("items").innerHTML='<div class="empty">'+e.message+'</div>'}
 }
-
-async function approveWithdrawal(id){
-  if(!confirm("Ou verifye payout la epi ou vle APPROVE retrè sa?")) return;
-
-  try{
-    const data=await dlmApi(`/admin/withdrawals/${id}/approve`,{
-      method:"PATCH",
-      body:"{}"
-    });
-
-    alert(data.message||"Retrè approve.");
-    loadWithdrawals();
-
-  }catch(error){
-    alert(error.message);
-  }
-}
-
-async function rejectWithdrawal(id){
-  const reason=prompt("Rezon rejè a (optional):")||"";
-
-  try{
-    const data=await dlmApi(`/admin/withdrawals/${id}/reject`,{
-      method:"PATCH",
-      body:JSON.stringify({reason})
-    });
-
-    alert(data.message||"Retrè rejte.");
-    loadWithdrawals();
-
-  }catch(error){
-    alert(error.message);
-  }
-}
-
-loadWithdrawals();
-</script>
-</body>
-</html>
+load();
+</script></body></html>
