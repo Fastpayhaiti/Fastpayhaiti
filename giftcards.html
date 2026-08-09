@@ -1,74 +1,87 @@
-<!doctype html><html lang="ht"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Giftcards - DLM Wallet</title>
-<style>:root{--accent:#7C3AED;--accent2:#4F46E5}
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#05070c;color:#fff;min-height:100vh}
-.app{max-width:430px;margin:auto;min-height:100vh;padding:22px 18px 80px;background:#05070c}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.back{color:#fff;text-decoration:none;background:rgba(255,255,255,.08);padding:13px 16px;border-radius:14px}
-.avatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent),var(--accent2));font-weight:900}
-.hero,.card{background:linear-gradient(135deg,rgba(255,255,255,.065),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:20px;margin-bottom:18px}
-.title{font-size:34px;font-weight:900;margin-bottom:10px}
-.sub{color:#9aa2b4;line-height:1.5;margin-bottom:16px}
-.small{font-size:12px;color:#8b93a7;line-height:1.45}.balance{font-size:34px;font-weight:900;margin-top:5px}
-label{display:block;font-size:13px;font-weight:800;margin:12px 0 7px;color:#d7deee}
-.input{width:100%;padding:15px;border-radius:15px;border:1px solid rgba(255,255,255,.1);background:#11172a;color:#fff;margin-bottom:12px}
+<!doctype html><html lang="ht"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gift Cards - DLM Wallet</title>
+<style>:root{--accent:#6d5dfc;--accent2:#4255ff}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
+:root{--bg:#06080d;--panel:#10131b;--panel2:#151925;--muted:#9199ab;--line:rgba(255,255,255,.08)}
+body{background:var(--bg);color:#fff;min-height:100vh}
+.app{max-width:460px;margin:auto;min-height:100vh;padding:20px 18px 90px}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.back{display:inline-flex;align-items:center;gap:8px;color:#fff;text-decoration:none;background:#151923;border:1px solid var(--line);padding:13px 16px;border-radius:15px}
+.avatar{width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.hero,.card{background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:16px}
+.hero{position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-75px;top:-90px;background:var(--accent);opacity:.13}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:800}
+.title{font-size:32px;font-weight:950;line-height:1.08;margin:7px 0 10px;position:relative;z-index:1}
+.sub{color:var(--muted);line-height:1.55;position:relative;z-index:1}
+.balance{font-size:34px;font-weight:950;margin-top:7px;position:relative;z-index:1}
+label{display:block;font-size:13px;font-weight:800;margin:13px 0 7px;color:#dbe1ee}
+.input,.select{width:100%;padding:15px;border-radius:15px;border:1px solid var(--line);background:#111724;color:#fff;margin-bottom:12px;outline:none}
+.input:focus,.select:focus{border-color:var(--accent)}
 .btn{width:100%;padding:16px;border:0;border-radius:17px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:900;font-size:16px;cursor:pointer}
-.btn.secondary{background:#171b26;border:1px solid rgba(255,255,255,.1)}
-.btn:disabled{opacity:.55}
-.msg{margin:0 0 14px;padding:13px;border-radius:13px;display:none;line-height:1.45}
-.ok{display:block;background:rgba(34,197,94,.14);color:#4ade80}.err{display:block;background:rgba(239,68,68,.14);color:#f87171}
-.product{margin-top:12px;padding:16px;border-radius:18px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);cursor:pointer}
-.product-name{font-size:17px;font-weight:900}.product-meta{font-size:12px;color:#8b93a7;margin-top:7px;line-height:1.45}
-.product-action{display:inline-block;margin-top:10px;color:var(--accent);font-size:13px;font-weight:900}
-.modal-wrap{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:flex-end;justify-content:center;z-index:50}
-.modal-wrap.show{display:flex}.modal{width:100%;max-width:430px;max-height:88vh;overflow:auto;background:#0d111b;border:1px solid rgba(255,255,255,.09);border-radius:26px 26px 0 0;padding:22px}
-.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
-.modal-title{font-size:23px;font-weight:900}.close{width:40px;height:40px;border:0;border-radius:12px;background:#1a1f2c;color:#fff;font-size:20px}
-.price-chip{display:inline-block;background:rgba(255,255,255,.07);color:#fff;border:0;padding:8px 10px;border-radius:12px;margin:4px 6px 4px 0;font-size:13px}
+.btn.secondary{background:#171c28;border:1px solid var(--line)}
+.btn:disabled{opacity:.52;cursor:not-allowed}
+.msg{display:none;padding:13px;border-radius:14px;margin-bottom:13px;line-height:1.45}
+.msg.ok{display:block;background:rgba(34,197,94,.14);color:#5ee48b}
+.msg.err{display:block;background:rgba(239,68,68,.14);color:#ff8f98}
+.small{font-size:12px;color:var(--muted);line-height:1.5}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chip{border:1px solid var(--line);background:#141824;color:#fff;border-radius:14px;padding:13px;font-weight:850;cursor:pointer;text-align:left}
+.product{margin-top:12px;padding:16px;border-radius:18px;background:#121621;border:1px solid var(--line);cursor:pointer}
+.product h3{font-size:17px;margin-bottom:6px}.product-meta{font-size:12px;color:var(--muted);line-height:1.5}
+.tag{display:inline-flex;margin-top:9px;padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.06);font-size:11px;color:#c8cfdd}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:flex-end;justify-content:center;z-index:100}
+.modal-bg.show{display:flex}.modal{width:100%;max-width:460px;background:#0d1119;border:1px solid var(--line);border-radius:26px 26px 0 0;padding:21px;max-height:90vh;overflow:auto}
+.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
+.close{border:0;background:#1a1f2b;color:#fff;width:40px;height:40px;border-radius:12px;font-size:20px}
+.amounts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.amount{border:1px solid var(--line);background:#171c27;color:#fff;border-radius:13px;padding:10px 12px;font-weight:800;cursor:pointer}
+.amount.active{outline:2px solid var(--accent)}
+.payment{border:1px solid var(--line);background:#121722;border-radius:16px;padding:14px;margin-bottom:10px;cursor:pointer}
+.payment.active{border-color:var(--accent);background:rgba(255,255,255,.055)}
+.status{display:inline-flex;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900;background:rgba(255,255,255,.07)}
 </style></head><body>
 <div class="app"><div class="top"><a class="back" href="dashboard.html">← Retounen</a><div class="avatar" id="avatar">D</div></div>
-<div class="hero"><div class="title">Giftcards</div><div class="sub">Chèche gift card Reloadly, chwazi pwodwi a, epi kontinye sou acha a.</div><div class="small">Balance</div><div id="serviceBalance" class="balance">$0.00 USD</div></div>
-<div class="card"><div id="msg" class="msg"></div><label>Search</label><input class="input" id="search" value="Amazon">
-<button class="btn" id="searchBtn" onclick="searchProducts()">Search products</button><div id="products"></div></div></div>
+<div class="hero"><div class="eyebrow">Reloadly Marketplace</div><div class="title">Gift Cards</div><div class="sub">Chèche mak ou bezwen an, gade peyi ak denominasyon Reloadly pèmèt yo, epi achte dirèkteman ak DLM Wallet.</div><div class="small" style="margin-top:16px">Wallet balance</div><div id="serviceBalance" class="balance">$0.00 USD</div></div>
+<div class="card"><div id="msg" class="msg"></div><label>Search brand</label><input class="input" id="search" placeholder="Amazon, Apple, Google Play, Steam...">
+<div class="grid" style="margin-bottom:12px">
+<button class="chip" onclick="quick('Amazon')">Amazon</button><button class="chip" onclick="quick('Apple')">Apple</button>
+<button class="chip" onclick="quick('Google Play')">Google Play</button><button class="chip" onclick="quick('Steam')">Steam</button>
+<button class="chip" onclick="quick('PlayStation')">PlayStation</button><button class="chip" onclick="quick('Xbox')">Xbox</button>
+</div><button class="btn" id="searchBtn" onclick="searchProducts()">Search products</button><div id="products"></div></div></div>
 
-<div class="modal-wrap" id="buyModal"><div class="modal">
-<div class="modal-head"><div><div class="small">Selected product</div><div class="modal-title" id="selectedName"></div><div class="product-meta" id="selectedMeta"></div></div><button class="close" onclick="closeBuyModal()">×</button></div>
-<div id="modalMsg" class="msg"></div><div id="fixedAmounts"></div>
-<label>Amount</label><input class="input" id="buyAmount" type="number" min="0.01" step="0.01">
-<label>Quantity</label><input class="input" id="buyQty" type="number" min="1" step="1" value="1">
-<label>Recipient email</label><input class="input" id="recipientEmail" type="email" placeholder="Email pou resevwa gift card la">
-<button class="btn" id="purchaseBtn" onclick="purchaseSelected()">Continue to purchase</button>
-<button class="btn secondary" style="margin-top:10px" onclick="closeBuyModal()">Cancel</button>
-</div></div>
-
+<div class="modal-bg" id="modal"><div class="modal"><div class="modal-head"><div><div class="eyebrow">Gift card checkout</div><div class="title" style="font-size:23px" id="pName">Product</div><div class="small" id="pMeta"></div></div><button class="close" onclick="closeModal()">×</button></div>
+<div id="modalMsg" class="msg"></div><div id="amountArea"></div>
+<label>Recipient email</label><input class="input" id="recipientEmail" type="email">
+<label>Quantity</label><input class="input" id="qty" type="number" min="1" value="1">
+<button class="btn" id="buyBtn" onclick="buy()">Buy gift card</button><button class="btn secondary" style="margin-top:10px" onclick="closeModal()">Cancel</button></div></div>
 <script src="app.js"></script><script>
-requireDlmLogin();
-let productStore=[],selectedProduct=null;
-function showMsg(t,o=false,id="msg"){const m=document.getElementById(id);m.className=o?"msg ok":"msg err";m.innerText=t}
-function fixedAmounts(p){const a=p.fixedRecipientDenominations||p.fixedSenderDenominations||[];return Array.isArray(a)?a.map(Number).filter(Number.isFinite):[]}
+requireDlmLogin(); let products=[],selected=null;
+function msg(t,ok=false,id="msg"){const e=document.getElementById(id);e.className="msg "+(ok?"ok":"err");e.innerText=t}
+function quick(q){document.getElementById("search").value=q;searchProducts()}
+function fixed(p){const a=p.fixedRecipientDenominations||p.fixedSenderDenominations||[];return Array.isArray(a)?a.map(Number).filter(Number.isFinite):[]}
 function country(p){return p?.country?.isoName||p?.country?.isoCode||p?.countryCode||"US"}
-function currency(p){return p?.recipientCurrencyCode||p?.currencyCode||"USD"}
+function currency(p){return p?.recipientCurrencyCode||p?.senderCurrencyCode||p?.currencyCode||"USD"}
 async function searchProducts(){
- const q=document.getElementById("search").value.trim(),btn=document.getElementById("searchBtn"); if(!q)return showMsg("Antre yon pwodwi pou chèche.");
- btn.disabled=true;btn.innerText="Searching...";
- try{const data=await dlmApi(`/reloadly/giftcards?search=${encodeURIComponent(q)}`);productStore=data.products||data.content||[];const box=document.getElementById("products");
- if(!productStore.length){box.innerHTML='<div class="small" style="margin-top:14px">Pa gen pwodwi jwenn.</div>';return}
- box.innerHTML=productStore.slice(0,30).map((p,i)=>{const id=p.productId||p.id||"",n=p.productName||p.name||"Giftcards",a=fixedAmounts(p),cur=currency(p);return `<div class="product" onclick="openProduct(${i})"><div class="product-name">${n}</div><div class="product-meta">Product ID: ${id}${a.length?`<br>Amounts: ${a.slice(0,6).join(", ")} ${cur}`:""}</div><span class="product-action">Tap to buy →</span></div>`}).join("")
- }catch(e){showMsg(e.message)}finally{btn.disabled=false;btn.innerText="Search products"}
+ const q=document.getElementById("search").value.trim(); if(!q)return msg("Antre non yon mak.");
+ const b=document.getElementById("searchBtn");b.disabled=true;b.innerText="Searching...";
+ try{const d=await dlmApi(`/reloadly/giftcards?search=${encodeURIComponent(q)}`);products=d.products||[];const box=document.getElementById("products");
+ if(!products.length){box.innerHTML='<div class="small" style="margin-top:14px">Pa gen pwodwi jwenn.</div>';return}
+ box.innerHTML=products.slice(0,40).map((p,i)=>{const a=fixed(p),min=Number(p.minRecipientDenomination||p.minSenderDenomination||0),max=Number(p.maxRecipientDenomination||p.maxSenderDenomination||0),cur=currency(p);let price=a.length?`${a.slice(0,6).join(", ")} ${cur}`:min&&max?`${min}–${max} ${cur}`:"View available amount";return `<div class="product" onclick="openP(${i})"><h3>${p.productName||p.name||"Gift Card"}</h3><div class="product-meta">${country(p)} • Product ID ${p.productId||p.id}<br>${price}</div><span class="tag">Tap to choose amount</span></div>`}).join("")
+ }catch(e){msg(e.message)}finally{b.disabled=false;b.innerText="Search products"}
 }
-function openProduct(i){selectedProduct=productStore[i];if(!selectedProduct)return;const n=selectedProduct.productName||selectedProduct.name||"Giftcards",id=selectedProduct.productId||selectedProduct.id||"",a=fixedAmounts(selectedProduct),cur=currency(selectedProduct);
- document.getElementById("selectedName").innerText=n;document.getElementById("selectedMeta").innerText=`Product ID: ${id} • ${country(selectedProduct)} • ${cur}`;
- const amt=document.getElementById("buyAmount"),chips=document.getElementById("fixedAmounts"); if(a.length){chips.innerHTML='<label>Available amounts</label>'+a.map(v=>`<button type="button" class="price-chip" onclick="pickAmount(${v})">${v} ${cur}</button>`).join("");amt.value=a[0];amt.readOnly=true}else{chips.innerHTML="";amt.readOnly=false;amt.value=selectedProduct.minRecipientDenomination||selectedProduct.minSenderDenomination||""}
- const u=getDlmUser();document.getElementById("recipientEmail").value=u?.email||"";document.getElementById("buyQty").value="1";document.getElementById("buyModal").classList.add("show")
+async function openP(i){selected=products[i];if(!selected)return;try{const d=await dlmApi(`/reloadly/giftcards/${selected.productId||selected.id}`);selected=d.product||selected}catch(e){}
+ document.getElementById("pName").innerText=selected.productName||selected.name||"Gift Card";document.getElementById("pMeta").innerText=`${country(selected)} • ${currency(selected)} • Product ID ${selected.productId||selected.id}`;
+ const a=fixed(selected),min=Number(selected.minRecipientDenomination||selected.minSenderDenomination||0),max=Number(selected.maxRecipientDenomination||selected.maxSenderDenomination||0),area=document.getElementById("amountArea");
+ if(a.length){area.innerHTML='<label>Available amounts</label><div class="amounts">'+a.map((v,ix)=>`<button class="amount ${ix===0?"active":""}" onclick="pick(${v},this)">${v} ${currency(selected)}</button>`).join("")+'</div><input type="hidden" id="amount" value="'+a[0]+'">'}
+ else{area.innerHTML=`<label>Amount (${currency(selected)})</label><input class="input" id="amount" type="number" min="${min||0.01}" ${max?`max="${max}"`:""} step="0.01" placeholder="${min&&max?`${min} - ${max}`:"Amount"}">`}
+ document.getElementById("recipientEmail").value=getDlmUser()?.email||"";document.getElementById("qty").value=1;document.getElementById("modal").classList.add("show")
 }
-function pickAmount(v){document.getElementById("buyAmount").value=v}
-function closeBuyModal(){document.getElementById("buyModal").classList.remove("show")}
-async function purchaseSelected(){
- const productId=Number(selectedProduct?.productId||selectedProduct?.id),amount=Number(document.getElementById("buyAmount").value),quantity=Number(document.getElementById("buyQty").value),recipientEmail=document.getElementById("recipientEmail").value.trim(),btn=document.getElementById("purchaseBtn");
- if(!Number.isInteger(productId)||productId<=0)return showMsg("Product ID pa valab.",false,"modalMsg"); if(!Number.isFinite(amount)||amount<=0)return showMsg("Chwazi yon montan valab.",false,"modalMsg"); if(!recipientEmail.includes("@"))return showMsg("Antre yon email valab.",false,"modalMsg");
- if(!confirm(`Konfime acha pou $${(amount*quantity).toFixed(2)}?`))return; btn.disabled=true;btn.innerText="Processing...";
- try{const data=await dlmApi("/reloadly/giftcards/order",{method:"POST",body:JSON.stringify({productId,quantity,unitPrice:amount,amount,countryCode:country(selectedProduct),recipientEmail})});showMsg(data.message||"Acha a reyisi.",true,"modalMsg");const u=await refreshDlmUser();if(u)document.getElementById("serviceBalance").innerText=`$${Number(u.balance||0).toFixed(2)} USD`}
- catch(e){showMsg(e.message,false,"modalMsg");btn.disabled=false;btn.innerText="Continue to purchase"}
+function pick(v,el){document.getElementById("amount").value=v;document.querySelectorAll(".amount").forEach(x=>x.classList.remove("active"));el.classList.add("active")}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+async function buy(){const amount=Number(document.getElementById("amount").value),quantity=Number(document.getElementById("qty").value),recipientEmail=document.getElementById("recipientEmail").value.trim(),productId=Number(selected.productId||selected.id);
+ if(!amount||amount<=0)return msg("Chwazi yon montan valab.",false,"modalMsg");if(!recipientEmail.includes("@"))return msg("Antre yon email valab.",false,"modalMsg");
+ if(!confirm(`Konfime acha pou $${(amount*quantity).toFixed(2)}?`))return;const b=document.getElementById("buyBtn");b.disabled=true;b.innerText="Processing...";
+ try{const d=await dlmApi("/reloadly/giftcards/order",{method:"POST",body:JSON.stringify({productId,quantity,unitPrice:amount,countryCode:country(selected),recipientEmail})});msg(d.message||"Gift card achte.",true,"modalMsg");const u=await refreshDlmUser();if(u)document.getElementById("serviceBalance").innerText=`$${Number(u.balance||0).toFixed(2)} USD`}
+ catch(e){msg(e.message,false,"modalMsg");b.disabled=false;b.innerText="Buy gift card"}
 }
-window.addEventListener("DOMContentLoaded",()=>setTimeout(searchProducts,120));
 </script></body></html>

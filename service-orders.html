@@ -1,5 +1,5 @@
-<!doctype html><html lang="ht"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Prime Video - DLM Wallet</title>
-<style>:root{--accent:#00a8e1;--accent2:#146eb4}
+<!doctype html><html lang="ht"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My Service Orders - DLM Wallet</title>
+<style>:root{--accent:#5561ff;--accent2:#7b61ff}
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
 :root{--bg:#06080d;--panel:#10131b;--panel2:#151925;--muted:#9199ab;--line:rgba(255,255,255,.08)}
 body{background:var(--bg);color:#fff;min-height:100vh}
@@ -39,24 +39,6 @@ label{display:block;font-size:13px;font-weight:800;margin:13px 0 7px;color:#dbe1
 .payment{border:1px solid var(--line);background:#121722;border-radius:16px;padding:14px;margin-bottom:10px;cursor:pointer}
 .payment.active{border-color:var(--accent);background:rgba(255,255,255,.055)}
 .status{display:inline-flex;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900;background:rgba(255,255,255,.07)}
-</style></head><body>
-<div class="app"><div class="top"><a class="back" href="dashboard.html">← Retounen</a><div class="avatar" id="avatar">D</div></div>
-<div class="hero"><div class="eyebrow">Manual fulfillment</div><div class="title">Prime Video</div><div class="sub">Chwazi plan Prime Video a, peye ak DLM Wallet/MonCash/NatCash, epi admin trete kòmand lan apre verifikasyon.</div><div class="small" style="margin-top:16px">Wallet balance</div><div id="serviceBalance" class="balance">$0.00 USD</div></div>
-<div class="card"><div id="msg" class="msg"></div><label>Choose plan</label><select class="select" id="plan"><option value="1 Month|8.99">1 Month — $8.99</option><option value="3 Months|24.99">3 Months — $24.99</option><option value="12 Months|79.99">12 Months — $79.99</option></select>
-<label>Payment method</label>
-<div class="payment active" data-method="wallet" onclick="choosePay('wallet',this)"><b>DLM Wallet</b><div class="small">Deduct from your wallet balance.</div></div>
-<div class="payment" data-method="MonCash" onclick="choosePay('MonCash',this)"><b>MonCash</b><div class="small">Pay manually, then enter the transaction reference.</div></div>
-<div class="payment" data-method="NatCash" onclick="choosePay('NatCash',this)"><b>NatCash</b><div class="small">Pay manually, then enter the transaction reference.</div></div>
-<div class="payment" style="opacity:.45;pointer-events:none"><b>Card</b><div class="small">Coming soon — payment processor not connected yet.</div></div>
-<div id="refBox" style="display:none"><label>Payment reference</label><input class="input" id="reference" placeholder="Transaction reference / ID"></div>
-<button class="btn" id="orderBtn" onclick="submitOrder()">Place order</button></div>
-<div class="card"><div class="eyebrow">How it works</div><div class="small" style="font-size:13px;margin-top:8px">1. Choose plan and payment method.<br>2. Your order stays Pending while admin verifies/treats it.<br>3. When completed, delivery details appear in your order history. Automatic email can be added later with an email provider.</div></div></div>
-<script src="app.js"></script><script>
-requireDlmLogin();let method="wallet";
-function msg(t,ok=false){const e=document.getElementById("msg");e.className="msg "+(ok?"ok":"err");e.innerText=t}
-function choosePay(m,el){method=m;document.querySelectorAll(".payment").forEach(x=>x.classList.remove("active"));el.classList.add("active");document.getElementById("refBox").style.display=(m==="wallet"?"none":"block")}
-async function submitOrder(){const [plan,price]=document.getElementById("plan").value.split("|"),amount=Number(price),paymentReference=document.getElementById("reference").value.trim();if(method!=="wallet"&&!paymentReference)return msg("Antre reference peman an.");
- if(!confirm(`Konfime Prime Video ${plan} pou $${amount.toFixed(2)}?`))return;const b=document.getElementById("orderBtn");b.disabled=true;b.innerText="Sending...";
- try{const d=await dlmApi("/service-orders",{method:"POST",body:JSON.stringify({service:"Prime Video",plan,amount,paymentMethod:method,paymentReference})});msg(d.message||"Order resevwa.",true);const u=await refreshDlmUser();if(u)document.getElementById("serviceBalance").innerText=`$${Number(u.balance||0).toFixed(2)} USD`}
- catch(e){msg(e.message)}finally{b.disabled=false;b.innerText="Place order"}}
-</script></body></html>
+</style></head><body><div class="app"><div class="top"><a class="back" href="dashboard.html">← Retounen</a><div class="avatar" id="avatar">D</div></div>
+<div class="hero"><div class="eyebrow">Orders</div><div class="title">My Services</div><div class="sub">Swiv Netflix ak Prime Video orders ou yo ak detay livrezon lè yo complete.</div></div><div class="card"><button class="btn" onclick="load()">Refresh</button><div id="orders"></div></div></div>
+<script src="app.js"></script><script>requireDlmLogin();async function load(){try{const d=await dlmApi("/service-orders/mine");document.getElementById("orders").innerHTML=(d.orders||[]).map(o=>`<div class="product"><h3>${o.service} — ${o.plan}</h3><div class="product-meta">$${Number(o.amount).toFixed(2)} • ${o.paymentMethod}<br>Status: ${o.status}${o.deliveryMessage?`<br><br><b>Delivery:</b> ${o.deliveryMessage}`:""}</div></div>`).join("")||'<div class="small" style="margin-top:14px">Pa gen order ankò.</div>'}catch(e){}}load();</script></body></html>
