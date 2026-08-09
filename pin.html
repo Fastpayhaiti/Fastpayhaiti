@@ -1,0 +1,56 @@
+<!doctype html><html lang="ht"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#05070c"><title>Security PIN - DLM Wallet</title><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"><style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
+:root{
+  --bg:#05070c;
+  --panel:#10141d;
+  --line:rgba(255,255,255,.08);
+  --muted:#9299aa;
+  --primary:#5662ff;
+  --primary2:#7868ff;
+  --good:#57e28b;
+  --bad:#ff9099
+}
+body{background:var(--bg);color:#fff;min-height:100vh}
+.app{max-width:430px;margin:auto;min-height:100vh;padding:20px 18px 90px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.back{color:#fff;text-decoration:none;background:#151923;border:1px solid var(--line);padding:13px 16px;border-radius:15px}
+.avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--primary),var(--primary2));font-weight:900}
+.hero,.card{background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:16px}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:800}
+.title{font-size:31px;font-weight:950;margin:7px 0 8px;letter-spacing:-.5px}
+.sub{color:var(--muted);font-size:13px;line-height:1.5}
+label{display:block;font-size:13px;font-weight:850;margin:12px 0 7px}
+.input{width:100%;padding:15px;border-radius:15px;border:1px solid var(--line);background:#111724;color:#fff;margin-bottom:12px;outline:0}
+.input:focus{border-color:var(--primary)}
+.pin-input{text-align:center;font-size:25px;font-weight:900;letter-spacing:12px;padding-left:12px}
+.btn{width:100%;padding:16px;border:0;border-radius:17px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;font-size:16px;font-weight:900;cursor:pointer}
+.btn.secondary{background:#171c27;border:1px solid var(--line)}
+.btn:disabled{opacity:.5}
+.msg{display:none;padding:13px;border-radius:14px;margin-bottom:13px;line-height:1.45}
+.msg.ok{display:block;background:rgba(34,197,94,.14);color:var(--good)}
+.msg.err{display:block;background:rgba(239,68,68,.14);color:var(--bad)}
+.option{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;border-radius:18px;background:#141925;border:1px solid var(--line);text-decoration:none;color:#fff;margin-top:10px}
+.option-left{display:flex;align-items:center;gap:12px}
+.option-icon{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:rgba(86,98,255,.12);color:#c4c8ff}
+.option b{display:block;font-size:14px}.option span{display:block;color:var(--muted);font-size:11px;margin-top:4px;line-height:1.4}
+.security-note{font-size:11px;color:var(--muted);line-height:1.5;margin-top:12px}
+</style></head><body>
+<div class="app">
+<div class="top"><a class="back" href="security.html">← Security</a><div class="avatar" id="avatar">D</div></div>
+<div class="hero"><div class="eyebrow">Security PIN</div><div class="title">Protect your wallet</div><div class="sub">6-digit PIN. Avoid easy sequences.</div></div>
+<div class="card">
+<div id="msg" class="msg"></div>
+<div id="statusBox" class="security-note" style="margin:0 0 12px">Checking PIN status...</div>
+<label>Account password</label><input class="input" id="password" type="password" autocomplete="current-password" placeholder="Your password">
+<label>New 6-digit PIN</label><input class="input pin-input" id="pin" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password">
+<label>Confirm PIN</label><input class="input pin-input" id="confirmPin" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password">
+<button class="btn" id="saveBtn" onclick="savePin()">Save PIN</button>
+<div class="security-note">After PIN is enabled, returning to the app after it goes to the background will lock the wallet.</div>
+</div></div>
+<script src="app.js"></script><script>
+requireDlmLogin();let enabled=false;
+function show(t,ok=false){const e=document.getElementById("msg");e.className="msg "+(ok?"ok":"err");e.innerText=t}
+async function load(){try{const d=await dlmApi("/pin/status");enabled=!!d.pinEnabled;document.getElementById("statusBox").innerText=enabled?"PIN is active. Saving here will change it.":"PIN is not active yet.";document.getElementById("saveBtn").innerText=enabled?"Change PIN":"Activate PIN"}catch(e){}}
+async function savePin(){const currentPassword=document.getElementById("password").value,newPin=document.getElementById("pin").value,confirmPin=document.getElementById("confirmPin").value;if(newPin!==confirmPin)return show("PIN yo pa menm.");const btn=document.getElementById("saveBtn");btn.disabled=true;btn.innerText="Saving...";try{const path=enabled?"/pin/change":"/pin/setup";const body=enabled?{currentPassword,newPin}:{currentPassword,pin:newPin};const d=await dlmApi(path,{method:"POST",body:JSON.stringify(body)});if(d.pinToken){sessionStorage.setItem("dlm_pin_token",d.pinToken);sessionStorage.setItem("dlm_pin_unlocked","1")}show(d.message||"Saved.",true);enabled=true;document.getElementById("pin").value="";document.getElementById("confirmPin").value=""}catch(e){show(e.message)}finally{btn.disabled=false;btn.innerText=enabled?"Change PIN":"Activate PIN"}}
+load();
+</script><script src="app.js"></script><script>requireDlmLogin();</script></body></html>
