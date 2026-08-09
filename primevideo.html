@@ -44,19 +44,25 @@ label{display:block;font-size:13px;font-weight:800;margin:13px 0 7px;color:#dbe1
 <div class="hero"><div class="eyebrow">Manual fulfillment</div><div class="title">Prime Video</div><div class="sub">Chwazi plan Prime Video a, peye ak DLM Wallet/MonCash/NatCash, epi admin trete kòmand lan apre verifikasyon.</div><div class="small" style="margin-top:16px">Wallet balance</div><div id="serviceBalance" class="balance">$0.00 USD</div></div>
 <div class="card"><div id="msg" class="msg"></div><label>Choose plan</label><select class="select" id="plan"><option value="1 Month|8.99">1 Month — $8.99</option><option value="3 Months|24.99">3 Months — $24.99</option><option value="12 Months|79.99">12 Months — $79.99</option></select>
 <label>Payment method</label>
-<div class="payment active" data-method="wallet" onclick="choosePay('wallet',this)"><b>DLM Wallet</b><div class="small">Deduct from your wallet balance.</div></div>
-<div class="payment" data-method="MonCash" onclick="choosePay('MonCash',this)"><b>MonCash</b><div class="small">Pay manually, then enter the transaction reference.</div></div>
-<div class="payment" data-method="NatCash" onclick="choosePay('NatCash',this)"><b>NatCash</b><div class="small">Pay manually, then enter the transaction reference.</div></div>
-<div class="payment" style="opacity:.45;pointer-events:none"><b>Card</b><div class="small">Coming soon — payment processor not connected yet.</div></div>
-<div id="refBox" style="display:none"><label>Payment reference</label><input class="input" id="reference" placeholder="Transaction reference / ID"></div>
-<button class="btn" id="orderBtn" onclick="submitOrder()">Place order</button></div>
-<div class="card"><div class="eyebrow">How it works</div><div class="small" style="font-size:13px;margin-top:8px">1. Choose plan and payment method.<br>2. Your order stays Pending while admin verifies/treats it.<br>3. When completed, delivery details appear in your order history. Automatic email can be added later with an email provider.</div></div></div>
+<div class="payment active" data-method="wallet" onclick="choosePay('wallet',this)">
+  <b>👛 DLM Wallet</b>
+  <div class="small">Peye touswit ak balans DLM Wallet ou.</div>
+</div>
+<div class="payment" data-method="card" onclick="choosePay('card',this)">
+  <b>💳 Card</b>
+  <div class="small">Visa / Mastercard — aktivasyon processeur peman an ap vini.</div>
+</div>
+<div id="cardNotice" class="small" style="display:none;margin:0 0 13px;padding:12px;border-radius:13px;background:rgba(255,255,255,.05)">
+  Peman pa kat poko konekte ak yon processeur reyèl. Ou ka chwazi opsyon an, men checkout kat la pap finalize jiskaske entegrasyon an fèt.
+</div>
+<button class="btn" id="orderBtn" onclick="submitOrder()">Continue</button></div>
+<div class="card"><div class="eyebrow">How it works</div><div class="small" style="font-size:13px;margin-top:8px">1. Chwazi plan an.<br>2. Peye ak DLM Wallet oswa chwazi Card.<br>3. DLM Wallet orders antre Pending pou admin trete yo.<br>4. Lè order la complete, detay livrezon yo parèt nan My Service Orders.</div></div></div>
 <script src="app.js"></script><script>
 requireDlmLogin();let method="wallet";
 function msg(t,ok=false){const e=document.getElementById("msg");e.className="msg "+(ok?"ok":"err");e.innerText=t}
-function choosePay(m,el){method=m;document.querySelectorAll(".payment").forEach(x=>x.classList.remove("active"));el.classList.add("active");document.getElementById("refBox").style.display=(m==="wallet"?"none":"block")}
-async function submitOrder(){const [plan,price]=document.getElementById("plan").value.split("|"),amount=Number(price),paymentReference=document.getElementById("reference").value.trim();if(method!=="wallet"&&!paymentReference)return msg("Antre reference peman an.");
+function choosePay(m,el){method=m;document.querySelectorAll(".payment").forEach(x=>x.classList.remove("active"));el.classList.add("active");document.getElementById("cardNotice").style.display=(m==="card"?"block":"none")}
+async function submitOrder(){const [plan,price]=document.getElementById("plan").value.split("|"),amount=Number(price);if(method==="card")return msg("Peman pa kat poko aktive. Sèvi ak DLM Wallet pou kounye a.");
  if(!confirm(`Konfime Prime Video ${plan} pou $${amount.toFixed(2)}?`))return;const b=document.getElementById("orderBtn");b.disabled=true;b.innerText="Sending...";
- try{const d=await dlmApi("/service-orders",{method:"POST",body:JSON.stringify({service:"Prime Video",plan,amount,paymentMethod:method,paymentReference})});msg(d.message||"Order resevwa.",true);const u=await refreshDlmUser();if(u)document.getElementById("serviceBalance").innerText=`$${Number(u.balance||0).toFixed(2)} USD`}
+ try{const d=await dlmApi("/service-orders",{method:"POST",body:JSON.stringify({service:"Prime Video",plan,amount,paymentMethod:method})});msg(d.message||"Order resevwa.",true);const u=await refreshDlmUser();if(u)document.getElementById("serviceBalance").innerText=`$${Number(u.balance||0).toFixed(2)} USD`}
  catch(e){msg(e.message)}finally{b.disabled=false;b.innerText="Place order"}}
 </script></body></html>
