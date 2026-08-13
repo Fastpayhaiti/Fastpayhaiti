@@ -28,9 +28,20 @@ body{background:var(--bg);color:#fff;min-height:100vh}
 .pill{display:inline-flex;padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.06);font-size:10px;font-weight:900;margin-top:8px}
 .pill.good{color:var(--good);background:rgba(85,223,138,.10)}.pill.warn{color:var(--warn);background:rgba(255,212,81,.10)}.pill.bad{color:var(--bad);background:rgba(255,142,152,.10)}
 .empty{padding:20px;color:var(--muted);text-align:center;font-size:12px}
-</style></head>
+</style>
+<style>
+.dlm-value-loading{
+  display:inline-block;
+  min-width:92px;
+  opacity:.65;
+  animation:dlmPulse 1.1s ease-in-out infinite;
+}
+@keyframes dlmPulse{0%,100%{opacity:.45}50%{opacity:1}}
+</style>
+
+</head>
 <body><div class="app">
-<div class="top"><a class="back" href="dashboard.html">← Dashboard</a><div class="avatar">A</div></div>
+<div class="top"><div class="avatar">A</div></div>
 
 <div class="hero">
   <div class="eyebrow">Control center</div>
@@ -68,4 +79,13 @@ async function loadMetrics(){
   }catch(e){}
 }
 loadMetrics();
-</script></body></html>
+</script>
+<a href="admin-settings.html" class="admin-card">
+  <div class="admin-icon">⚙</div>
+  <div>
+    <h3>Settings</h3>
+    <p>Security, account and logout.</p>
+  </div>
+</a>
+
+</body></html>

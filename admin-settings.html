@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DLM Wallet — Admin Settings</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#05060a;color:#f7f7fb;font-family:Arial,Helvetica,sans-serif}
+.wrap{max-width:720px;margin:auto;padding:32px 32px 56px}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:34px}
+.back{color:#fff;text-decoration:none;background:#151823;border:1px solid #282c39;padding:16px 20px;border-radius:20px;font-weight:700}
+.avatar{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#3f51ff,#795cff);font-size:25px;font-weight:800}
+.hero,.panel{background:#111319;border:1px solid #252832;border-radius:30px;padding:28px;margin-bottom:24px}
+.eyebrow{font-size:13px;letter-spacing:2px;color:#969caf;font-weight:800}
+h1{font-size:38px;margin:14px 0 8px}
+.muted{color:#9299aa;line-height:1.5}
+.row{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid #252832}
+.row:last-child{border-bottom:0}
+.label{color:#969caf}
+.value{font-weight:800}
+.logout{width:100%;border:0;border-radius:22px;padding:18px;font-size:17px;font-weight:800;background:#2a1820;color:#ff879a;cursor:pointer}
+.note{text-align:center;color:#747b8d;font-size:12px;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="admin.html">← Administration</a>
+    <div class="avatar">A</div>
+  </div>
+
+  <section class="hero">
+    <div class="eyebrow">CONTROL CENTER</div>
+    <h1>Settings</h1>
+    <div class="muted">Admin account and security.</div>
+  </section>
+
+  <section class="panel">
+    <div class="row"><span class="label">Account</span><span class="value" id="adminEmail">Administrator</span></div>
+    <div class="row"><span class="label">Role</span><span class="value">Admin</span></div>
+    <div class="row"><span class="label">Session</span><span class="value">Active</span></div>
+  </section>
+
+  <section class="panel">
+    <button class="logout" onclick="logoutAdmin()">Log out</button>
+    <div class="note">This securely ends the current admin session on this device.</div>
+  </section>
+</div>
+
+<script src="app.js"></script>
+<script>
+const adminUser = requireDlmAdmin();
+if (adminUser && adminUser.email) {
+  document.getElementById("adminEmail").textContent = adminUser.email;
+}
+function logoutAdmin(){
+  clearDlmSession();
+  if (typeof clearPinUnlock === "function") clearPinUnlock();
+  window.location.replace("login.html");
+}
+</script>
+</body>
+</html>
