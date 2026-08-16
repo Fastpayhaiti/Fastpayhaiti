@@ -3,157 +3,1015 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>DLM Wallet - Deposit USD</title>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  rel="stylesheet"
+/>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#05070c;color:#fff;min-height:100vh}
-.app{max-width:430px;margin:auto;min-height:100vh;padding:20px 18px 40px;background:radial-gradient(circle at top left,rgba(59,130,246,.10),transparent 30%),radial-gradient(circle at top right,rgba(99,102,241,.10),transparent 28%),#05070c}
-.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.back{width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.07);color:#fff;text-decoration:none;display:flex;align-items:center;justify-content:center}
-.title{font-size:24px;font-weight:900}.sub{color:#8b93a7;font-size:14px;line-height:1.5;margin-top:6px;margin-bottom:18px}
-.card{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:18px;margin-bottom:16px}
-.balance{font-size:30px;font-weight:900;margin-top:6px}
-.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.method{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#fff;border-radius:16px;padding:16px;text-align:left;cursor:pointer}
-.method.active{border-color:#5967ff;background:rgba(89,103,255,.12)}
-.method.disabled{opacity:.45;cursor:not-allowed}
-.method strong{display:block;margin-bottom:5px}.method small{color:#8b93a7}
-label{display:block;font-size:13px;font-weight:800;margin:14px 0 8px;color:#d7deee}
-input,textarea{width:100%;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.05);color:#fff;padding:14px;font-size:15px;outline:none}
-textarea{min-height:90px;resize:vertical}
-.btn{width:100%;border:0;border-radius:17px;background:#2f3cff;color:#fff;padding:16px;font-size:16px;font-weight:900;margin-top:16px;cursor:pointer}
-.btn:disabled{opacity:.6}
-.notice{display:none;padding:13px;border-radius:14px;margin-bottom:14px;font-size:13px;font-weight:700;line-height:1.45}
-.notice.error{display:block;background:rgba(217,60,75,.18);color:#ffb4bf}
-.notice.success{display:block;background:rgba(17,156,103,.18);color:#7ff0be}
-.info{font-size:12px;color:#8b93a7;line-height:1.55;margin-top:12px}
-.status-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
-.status-item{padding:12px;border-radius:14px;background:rgba(255,255,255,.04);font-size:13px}
-.status-item b{display:block;margin-bottom:5px}
-.pending{color:#ffd76a}.approved{color:#4ade80}.rejected{color:#ff9eaa}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  background:#05070c;
+  color:#fff;
+  min-height:100vh;
+}
+
+.app{
+  max-width:430px;
+  margin:auto;
+  min-height:100vh;
+  padding:20px 18px 40px;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(59,130,246,.10),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(99,102,241,.10),
+      transparent 28%
+    ),
+    #05070c;
+}
+
+.top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.back{
+  width:46px;
+  height:46px;
+  border-radius:14px;
+  background:rgba(255,255,255,.07);
+  color:#fff;
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.title{
+  font-size:24px;
+  font-weight:900;
+}
+
+.sub{
+  color:#8b93a7;
+  font-size:14px;
+  line-height:1.5;
+  margin-top:6px;
+  margin-bottom:18px;
+}
+
+.card{
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.06),
+      rgba(255,255,255,.03)
+    );
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:22px;
+  padding:18px;
+  margin-bottom:16px;
+}
+
+.balance{
+  font-size:30px;
+  font-weight:900;
+  margin-top:6px;
+}
+
+.method-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.method{
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.04);
+  color:#fff;
+  border-radius:16px;
+  padding:16px;
+  text-align:left;
+  cursor:pointer;
+}
+
+.method.active{
+  border-color:#5967ff;
+  background:rgba(89,103,255,.12);
+}
+
+.method.disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.method strong{
+  display:block;
+  margin-bottom:5px;
+}
+
+.method small{
+  color:#8b93a7;
+  line-height:1.35;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:800;
+  margin:14px 0 8px;
+  color:#d7deee;
+}
+
+input,
+textarea{
+  width:100%;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  background:rgba(255,255,255,.05);
+  color:#fff;
+  padding:14px;
+  font-size:15px;
+  outline:none;
+}
+
+input:disabled,
+textarea:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+.btn{
+  width:100%;
+  border:0;
+  border-radius:17px;
+  background:#2f3cff;
+  color:#fff;
+  padding:16px;
+  font-size:16px;
+  font-weight:900;
+  margin-top:16px;
+  cursor:pointer;
+}
+
+.btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.notice{
+  display:none;
+  padding:13px;
+  border-radius:14px;
+  margin-top:14px;
+  margin-bottom:14px;
+  font-size:13px;
+  font-weight:700;
+  line-height:1.45;
+}
+
+.notice.error{
+  display:block;
+  background:rgba(217,60,75,.18);
+  color:#ffb4bf;
+}
+
+.notice.success{
+  display:block;
+  background:rgba(17,156,103,.18);
+  color:#7ff0be;
+}
+
+.info{
+  font-size:12px;
+  color:#8b93a7;
+  line-height:1.55;
+  margin-top:12px;
+}
+
+.status-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:12px;
+}
+
+.status-item{
+  padding:12px;
+  border-radius:14px;
+  background:rgba(255,255,255,.04);
+  font-size:13px;
+  line-height:1.45;
+}
+
+.status-item b{
+  display:block;
+  margin-bottom:5px;
+}
+
+.pending{
+  color:#ffd76a;
+}
+
+.approved{
+  color:#4ade80;
+}
+
+.completed{
+  color:#4ade80;
+}
+
+.rejected,
+.failed,
+.cancelled{
+  color:#ff9eaa;
+}
+
+.moncash-info{
+  margin-top:14px;
+  padding:13px;
+  border-radius:14px;
+  background:rgba(47,60,255,.10);
+  border:1px solid rgba(89,103,255,.22);
+  color:#bac2ff;
+  font-size:12px;
+  line-height:1.55;
+}
 </style>
 </head>
+
 <body>
+
 <div class="app">
+
   <div class="top">
-    <a href="dashboard.html" class="back"><i class="fa-solid fa-arrow-left"></i></a>
+    <a
+      href="dashboard.html"
+      class="back"
+      aria-label="Back"
+    >
+      <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
     <div style="width:46px"></div>
   </div>
 
-  <div class="title">Deposit USD</div>
-  <div class="sub">Voye yon demann depo. Balans ou ap monte sèlman apre admin verifye peman an epi approve li.</div>
 
-  <div class="card">
-    <div style="color:#8b93a7;font-size:13px">Current balance</div>
-    <div class="balance" id="balance">$0.00 USD</div>
+  <div class="title">
+    Deposit USD
   </div>
 
+  <div
+    class="sub"
+    id="depositSubtitle"
+  >
+    Ajoute lajan sou balans DLM Wallet ou.
+    MonCash itilize yon checkout otomatik ak sekirize.
+  </div>
+
+
   <div class="card">
-    <div style="font-weight:900;margin-bottom:12px">Choose payment method</div>
-    <div class="method-grid">
-      <button class="method active" data-method="MonCash" onclick="selectMethod(this)">
-        <strong>MonCash</strong><small>Manual verification</small>
-      </button>
-      <button class="method" data-method="NatCash" onclick="selectMethod(this)">
-        <strong>NatCash</strong><small>Manual verification</small>
-      </button>
-      <button class="method" data-method="Bank" onclick="selectMethod(this)">
-        <strong>Bank Transfer</strong><small>USD / bank reference</small>
-      </button>
-      <button class="method disabled" type="button">
-        <strong>Card</strong><small>Secure processor integration coming later</small>
-      </button>
+
+    <div
+      style="color:#8b93a7;font-size:13px"
+    >
+      Current balance
     </div>
 
-    <div id="notice" class="notice"></div>
+    <div
+      class="balance"
+      id="balance"
+    >
+      $0.00 USD
+    </div>
 
-    <label>Amount (USD)</label>
-    <input id="amount" type="number" min="0.01" step="0.01" placeholder="Eg. 25.00">
+  </div>
 
-    <label>Transaction reference</label>
-    <input id="reference" type="text" maxlength="80" placeholder="Reference / transaction ID">
 
-    <label>Note (optional)</label>
-    <textarea id="note" maxlength="300" placeholder="Eg. payment sent from my MonCash number..."></textarea>
+  <div class="card">
 
-    <button id="submitBtn" class="btn" onclick="submitDeposit()">Submit Deposit Request</button>
+    <div
+      style="font-weight:900;margin-bottom:12px"
+    >
+      Choose payment method
+    </div>
+
+
+    <div class="method-grid">
+
+      <button
+        class="method active"
+        data-method="MonCash"
+        onclick="selectMethod(this)"
+        type="button"
+      >
+        <strong>
+          MonCash
+        </strong>
+
+        <small>
+          Secure automatic payment
+        </small>
+      </button>
+
+
+      <button
+        class="method"
+        data-method="NatCash"
+        onclick="selectMethod(this)"
+        type="button"
+      >
+        <strong>
+          NatCash
+        </strong>
+
+        <small>
+          Manual verification
+        </small>
+      </button>
+
+
+      <button
+        class="method"
+        data-method="Bank"
+        onclick="selectMethod(this)"
+        type="button"
+      >
+        <strong>
+          Bank Transfer
+        </strong>
+
+        <small>
+          USD / bank reference
+        </small>
+      </button>
+
+
+      <button
+        class="method disabled"
+        type="button"
+        disabled
+      >
+        <strong>
+          Card
+        </strong>
+
+        <small>
+          Secure processor integration coming later
+        </small>
+      </button>
+
+    </div>
+
+
+    <div
+      id="notice"
+      class="notice"
+    ></div>
+
+
+    <label for="amount">
+      Amount (USD)
+    </label>
+
+    <input
+      id="amount"
+      type="number"
+      min="0.01"
+      step="0.01"
+      inputmode="decimal"
+      placeholder="Eg. 25.00"
+    >
+
+
+    <div
+      id="moncashInfo"
+      class="moncash-info"
+    >
+      Apre ou peze
+      <b>Continue with MonCash</b>,
+      DLM Wallet ap kreye tranzaksyon an epi voye ou
+      sou checkout MonCash la. Ou pa bezwen antre
+      reference manyèlman.
+    </div>
+
+
+    <div id="manualFields">
+
+      <label for="reference">
+        Transaction reference
+      </label>
+
+      <input
+        id="reference"
+        type="text"
+        maxlength="80"
+        placeholder="Reference / transaction ID"
+      >
+
+
+      <label for="note">
+        Note (optional)
+      </label>
+
+      <textarea
+        id="note"
+        maxlength="300"
+        placeholder="Eg. payment sent from my account..."
+      ></textarea>
+
+    </div>
+
+
+    <button
+      id="submitBtn"
+      class="btn"
+      onclick="submitDeposit()"
+      type="button"
+    >
+      Continue with MonCash
+    </button>
+
 
     <div class="info">
-      Pa antre nimewo kat bank, CVV, PIN kat, oswa lòt detay kat isit. Lè n konekte yon card processor ofisyèl pita, kliyan ap pase nan checkout sekirize founisè a.
+      Pa janm antre PIN MonCash, PIN NatCash,
+      nimewo kat bank, CVV oswa lòt enfòmasyon
+      sekrè nan fòm sa a.
     </div>
+
   </div>
+
 
   <div class="card">
-    <div style="font-weight:900">My recent deposit requests</div>
-    <div id="myDeposits" class="status-list">
-      <div class="status-item">Ap chaje...</div>
+
+    <div style="font-weight:900">
+      My recent deposit requests
     </div>
+
+    <div
+      id="myDeposits"
+      class="status-list"
+    >
+      <div class="status-item">
+        Ap chaje...
+      </div>
+    </div>
+
   </div>
+
 </div>
 
+
 <script src="js/app.js"></script>
+
 <script>
+
 requireDlmLogin();
+
 let selectedMethod = "MonCash";
 
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+
+function showNotice(
+  message,
+  ok = false
+){
+
+  const box =
+    document.getElementById(
+      "notice"
+    );
+
+  box.className =
+    ok
+      ? "notice success"
+      : "notice error";
+
+  box.innerText =
+    message;
+}
+
+
+function clearNotice(){
+
+  const box =
+    document.getElementById(
+      "notice"
+    );
+
+  box.className =
+    "notice";
+
+  box.innerText =
+    "";
+}
+
+
 function selectMethod(button){
-  document.querySelectorAll(".method:not(.disabled)").forEach(b=>b.classList.remove("active"));
-  button.classList.add("active");
-  selectedMethod = button.dataset.method;
+
+  clearNotice();
+
+  document
+    .querySelectorAll(
+      ".method:not(.disabled)"
+    )
+    .forEach(
+      b =>
+        b.classList.remove(
+          "active"
+        )
+    );
+
+  button
+    .classList
+    .add("active");
+
+  selectedMethod =
+    button.dataset.method;
+
+  updateDepositUI();
 }
-function showNotice(message, ok=false){
-  const box=document.getElementById("notice");
-  box.className=ok?"notice success":"notice error";
-  box.innerText=message;
+
+
+function updateDepositUI(){
+
+  const manualFields =
+    document.getElementById(
+      "manualFields"
+    );
+
+  const moncashInfo =
+    document.getElementById(
+      "moncashInfo"
+    );
+
+  const submitBtn =
+    document.getElementById(
+      "submitBtn"
+    );
+
+  const subtitle =
+    document.getElementById(
+      "depositSubtitle"
+    );
+
+
+  if(
+    selectedMethod ===
+    "MonCash"
+  ){
+
+    manualFields.style.display =
+      "none";
+
+    moncashInfo.style.display =
+      "block";
+
+    submitBtn.innerText =
+      "Continue with MonCash";
+
+    subtitle.innerText =
+      "Ajoute lajan sou balans DLM Wallet ou. MonCash itilize yon checkout otomatik ak sekirize.";
+
+    return;
+  }
+
+
+  manualFields.style.display =
+    "block";
+
+  moncashInfo.style.display =
+    "none";
+
+  submitBtn.innerText =
+    "Submit Deposit Request";
+
+
+  if(
+    selectedMethod ===
+    "NatCash"
+  ){
+
+    subtitle.innerText =
+      "Voye demann depo NatCash ou. Balans lan ap monte apre verifikasyon.";
+
+  }else{
+
+    subtitle.innerText =
+      "Voye demann depo Bank Transfer ou. Balans lan ap monte apre verifikasyon.";
+
+  }
+
 }
+
+
 async function submitDeposit(){
-  const amount=Number(document.getElementById("amount").value);
-  const reference=document.getElementById("reference").value.trim();
-  const note=document.getElementById("note").value.trim();
-  const btn=document.getElementById("submitBtn");
 
-  if(!Number.isFinite(amount)||amount<=0){showNotice("Antre yon montan USD valab.");return;}
-  if(!reference){showNotice("Reference tranzaksyon an obligatwa.");return;}
+  clearNotice();
 
-  btn.disabled=true;btn.innerText="Ap voye demann...";
+
+  const amount =
+    Number(
+      document
+        .getElementById(
+          "amount"
+        )
+        .value
+    );
+
+
+  const btn =
+    document.getElementById(
+      "submitBtn"
+    );
+
+
+  if(
+    !Number.isFinite(
+      amount
+    ) ||
+    amount <= 0
+  ){
+
+    showNotice(
+      "Antre yon montan USD valab."
+    );
+
+    return;
+  }
+
+
+  btn.disabled =
+    true;
+
+
   try{
-    const data=await dlmApi("/deposits",{
-      method:"POST",
-      body:JSON.stringify({amount,method:selectedMethod,reference,note})
-    });
-    showNotice(data.message||"Demann depo a voye.",true);
-    document.getElementById("amount").value="";
-    document.getElementById("reference").value="";
-    document.getElementById("note").value="";
+
+
+    /* =========================
+       MONCASH AUTOMATIC
+    ========================= */
+
+    if(
+      selectedMethod ===
+      "MonCash"
+    ){
+
+      btn.innerText =
+        "Ap kreye peman MonCash...";
+
+
+      const data =
+        await dlmApi(
+          "/payments/moncash/create",
+          {
+            method:
+              "POST",
+
+            body:
+              JSON.stringify({
+                amountUsd:
+                  amount
+              })
+          }
+        );
+
+
+      if(
+        !data ||
+        !data.paymentUrl
+      ){
+
+        throw new Error(
+          "MonCash pa retounen URL peman an."
+        );
+
+      }
+
+
+      if(
+        data.reference
+      ){
+
+        localStorage.setItem(
+          "dlm_moncash_reference",
+          String(
+            data.reference
+          )
+        );
+
+      }
+
+
+      localStorage.setItem(
+        "dlm_moncash_amount_usd",
+        String(amount)
+      );
+
+
+      window.location.href =
+        data.paymentUrl;
+
+
+      return;
+    }
+
+
+
+    /* =========================
+       NATCASH / BANK MANUAL
+    ========================= */
+
+    const reference =
+      document
+        .getElementById(
+          "reference"
+        )
+        .value
+        .trim();
+
+
+    const note =
+      document
+        .getElementById(
+          "note"
+        )
+        .value
+        .trim();
+
+
+    if(!reference){
+
+      showNotice(
+        "Reference tranzaksyon an obligatwa."
+      );
+
+      return;
+    }
+
+
+    btn.innerText =
+      "Ap voye demann...";
+
+
+    const data =
+      await dlmApi(
+        "/deposits",
+        {
+          method:
+            "POST",
+
+          body:
+            JSON.stringify({
+              amount,
+              method:
+                selectedMethod,
+              reference,
+              note
+            })
+        }
+      );
+
+
+    showNotice(
+      data.message ||
+      "Demann depo a voye.",
+      true
+    );
+
+
+    document
+      .getElementById(
+        "amount"
+      )
+      .value =
+      "";
+
+
+    document
+      .getElementById(
+        "reference"
+      )
+      .value =
+      "";
+
+
+    document
+      .getElementById(
+        "note"
+      )
+      .value =
+      "";
+
+
     await loadDeposits();
+
+
   }catch(error){
-    showNotice(error.message);
+
+    console.error(
+      "DEPOSIT_ERROR:",
+      error
+    );
+
+
+    showNotice(
+      error.message ||
+      "Peman an pa rive kòmanse."
+    );
+
+
   }finally{
-    btn.disabled=false;btn.innerText="Submit Deposit Request";
+
+
+    btn.disabled =
+      false;
+
+
+    btn.innerText =
+      selectedMethod ===
+      "MonCash"
+        ? "Continue with MonCash"
+        : "Submit Deposit Request";
+
   }
+
 }
+
+
 async function loadDeposits(){
+
+  const box =
+    document.getElementById(
+      "myDeposits"
+    );
+
+
   try{
-    const data=await dlmApi("/deposits/mine");
-    const items=data.deposits||[];
-    const box=document.getElementById("myDeposits");
-    if(!items.length){box.innerHTML='<div class="status-item">Pa gen demann depo pou kounye a.</div>';return;}
-    box.innerHTML=items.slice(0,8).map(d=>`
-      <div class="status-item">
-        <b>$${Number(d.amount||0).toFixed(2)} USD · ${d.method}</b>
-        Ref: ${d.reference}<br>
-        Status: <span class="${d.status}">${String(d.status||"").toUpperCase()}</span>
-      </div>
-    `).join("");
+
+    const data =
+      await dlmApi(
+        "/deposits/mine"
+      );
+
+
+    const items =
+      data.deposits || [];
+
+
+    if(
+      !items.length
+    ){
+
+      box.innerHTML =
+        '<div class="status-item">Pa gen demann depo manyèl pou kounye a.</div>';
+
+      return;
+    }
+
+
+    box.innerHTML =
+      items
+        .slice(0,8)
+        .map(
+          d => {
+
+            const amount =
+              Number(
+                d.amount || 0
+              ).toFixed(2);
+
+
+            const method =
+              escapeHtml(
+                d.method || ""
+              );
+
+
+            const reference =
+              escapeHtml(
+                d.reference || ""
+              );
+
+
+            const status =
+              String(
+                d.status || ""
+              ).toLowerCase();
+
+
+            return `
+              <div class="status-item">
+
+                <b>
+                  $${amount} USD · ${method}
+                </b>
+
+                Ref:
+                ${reference}
+                <br>
+
+                Status:
+                <span class="${escapeHtml(status)}">
+                  ${escapeHtml(status.toUpperCase())}
+                </span>
+
+              </div>
+            `;
+
+          }
+        )
+        .join("");
+
+
   }catch(error){
-    document.getElementById("myDeposits").innerHTML='<div class="status-item">Pa rive chaje depo yo.</div>';
+
+    console.error(
+      "LOAD_DEPOSITS_ERROR:",
+      error
+    );
+
+
+    box.innerHTML =
+      '<div class="status-item">Pa rive chaje depo yo.</div>';
+
   }
+
 }
-refreshDlmUser().then(u=>{
-  if(u) document.getElementById("balance").innerText=`$${Number(u.balance||0).toFixed(2)} USD`;
-});
+
+
+async function loadCurrentBalance(){
+
+  try{
+
+    const user =
+      await refreshDlmUser();
+
+
+    if(user){
+
+      document
+        .getElementById(
+          "balance"
+        )
+        .innerText =
+        `$${Number(
+          user.balance || 0
+        ).toFixed(2)} USD`;
+
+    }
+
+
+  }catch(error){
+
+    console.error(
+      "BALANCE_LOAD_ERROR:",
+      error
+    );
+
+  }
+
+}
+
+
+updateDepositUI();
+
+loadCurrentBalance();
+
 loadDeposits();
+
 </script>
+
 </body>
 </html>
