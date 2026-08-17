@@ -258,6 +258,85 @@ textarea{
   font-size:12px;
   line-height:1.55;
 }
+
+.paypal-box{
+  display:none;
+  margin-top:14px;
+  padding:15px;
+  border-radius:18px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.08);
+}
+.paypal-box.show{display:block}
+.paypal-title{
+  font-size:14px;
+  font-weight:900;
+  margin-bottom:6px;
+}
+.paypal-sub{
+  color:#8b93a7;
+  font-size:12px;
+  line-height:1.5;
+  margin-bottom:14px;
+}
+#paypal-button-container{
+  margin-bottom:14px;
+}
+.card-fields{
+  display:none;
+  flex-direction:column;
+  gap:10px;
+}
+.card-fields.show{display:flex}
+.pp-field{
+  min-height:48px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:14px;
+  background:#fff;
+  overflow:hidden;
+}
+.pp-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.card-pay-btn{
+  width:100%;
+  border:0;
+  border-radius:15px;
+  background:#2f3cff;
+  color:#fff;
+  padding:15px;
+  font-size:15px;
+  font-weight:900;
+  cursor:pointer;
+}
+.card-pay-btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+.pp-divider{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#697188;
+  font-size:11px;
+  margin:6px 0 12px;
+}
+.pp-divider:before,
+.pp-divider:after{
+  content:"";
+  height:1px;
+  flex:1;
+  background:rgba(255,255,255,.08);
+}
+.paypal-loading{
+  padding:14px;
+  text-align:center;
+  color:#8b93a7;
+  font-size:13px;
+}
+
 </style>
 </head>
 
@@ -369,16 +448,17 @@ textarea{
 
 
       <button
-        class="method disabled"
+        class="method"
+        data-method="Card"
+        onclick="selectMethod(this)"
         type="button"
-        disabled
       >
         <strong>
-          Card
+          Card / PayPal
         </strong>
 
         <small>
-          Secure processor integration coming later
+          Visa · Mastercard · PayPal
         </small>
       </button>
 
@@ -416,6 +496,61 @@ textarea{
       reference manyèlman.
     </div>
 
+
+
+    <div
+      id="paypalBox"
+      class="paypal-box"
+    >
+      <div class="paypal-title">
+        Secure card payment
+      </div>
+
+      <div class="paypal-sub">
+        Peye ak PayPal oswa ak yon kat Visa/Mastercard.
+        DLM Wallet pa estoke nimewo kat oswa CVV ou.
+      </div>
+
+      <div id="paypalSdkLoading" class="paypal-loading">
+        Ap prepare PayPal Checkout...
+      </div>
+
+      <div id="paypal-button-container"></div>
+
+      <div id="cardFieldsWrap" class="card-fields">
+        <div class="pp-divider">OR PAY WITH CARD</div>
+
+        <div
+          id="card-name-field-container"
+          class="pp-field"
+        ></div>
+
+        <div
+          id="card-number-field-container"
+          class="pp-field"
+        ></div>
+
+        <div class="pp-row">
+          <div
+            id="card-expiry-field-container"
+            class="pp-field"
+          ></div>
+
+          <div
+            id="card-cvv-field-container"
+            class="pp-field"
+          ></div>
+        </div>
+
+        <button
+          id="cardPayBtn"
+          class="card-pay-btn"
+          type="button"
+        >
+          Pay securely by card
+        </button>
+      </div>
+    </div>
 
     <div id="manualFields">
 
@@ -490,10 +625,12 @@ textarea{
 requireDlmLogin();
 
 let selectedMethod = "MonCash";
-
+let paypalSdkReady = false;
+let paypalInitPromise = null;
+let paypalCardFields = null;
+let paypalLastOrderId = null;
 
 function escapeHtml(value){
-
   return String(value ?? "")
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
@@ -502,307 +639,209 @@ function escapeHtml(value){
     .replace(/'/g,"&#039;");
 }
 
-
-function showNotice(
-  message,
-  ok = false
-){
-
-  const box =
-    document.getElementById(
-      "notice"
-    );
-
-  box.className =
-    ok
-      ? "notice success"
-      : "notice error";
-
-  box.innerText =
-    message;
+function showNotice(message, ok=false){
+  const box=document.getElementById("notice");
+  box.className=ok?"notice success":"notice error";
+  box.innerText=message;
 }
-
 
 function clearNotice(){
-
-  const box =
-    document.getElementById(
-      "notice"
-    );
-
-  box.className =
-    "notice";
-
-  box.innerText =
-    "";
+  const box=document.getElementById("notice");
+  box.className="notice";
+  box.innerText="";
 }
 
+function getAmount(){
+  return Number(
+    document.getElementById("amount").value
+  );
+}
+
+function validAmount(){
+  const amount=getAmount();
+
+  if(
+    !Number.isFinite(amount) ||
+    amount<=0
+  ){
+    showNotice(
+      "Antre yon montan USD valab."
+    );
+    return false;
+  }
+
+  return true;
+}
 
 function selectMethod(button){
-
   clearNotice();
 
   document
-    .querySelectorAll(
-      ".method:not(.disabled)"
-    )
+    .querySelectorAll(".method:not(.disabled)")
     .forEach(
-      b =>
-        b.classList.remove(
-          "active"
-        )
+      b=>b.classList.remove("active")
     );
 
-  button
-    .classList
-    .add("active");
+  button.classList.add("active");
 
-  selectedMethod =
+  selectedMethod=
     button.dataset.method;
 
   updateDepositUI();
 }
 
-
 function updateDepositUI(){
+  const manualFields=
+    document.getElementById("manualFields");
 
-  const manualFields =
-    document.getElementById(
-      "manualFields"
-    );
+  const moncashInfo=
+    document.getElementById("moncashInfo");
 
-  const moncashInfo =
-    document.getElementById(
-      "moncashInfo"
-    );
+  const paypalBox=
+    document.getElementById("paypalBox");
 
-  const submitBtn =
-    document.getElementById(
-      "submitBtn"
-    );
+  const submitBtn=
+    document.getElementById("submitBtn");
 
-  const subtitle =
-    document.getElementById(
-      "depositSubtitle"
-    );
+  const subtitle=
+    document.getElementById("depositSubtitle");
 
+  manualFields.style.display="none";
+  moncashInfo.style.display="none";
+  paypalBox.classList.remove("show");
+  submitBtn.style.display="block";
 
-  if(
-    selectedMethod ===
-    "MonCash"
-  ){
-
-    manualFields.style.display =
-      "none";
-
-    moncashInfo.style.display =
-      "block";
-
-    submitBtn.innerText =
-      "Continue with MonCash";
-
-    subtitle.innerText =
+  if(selectedMethod==="MonCash"){
+    moncashInfo.style.display="block";
+    submitBtn.innerText="Continue with MonCash";
+    subtitle.innerText=
       "Ajoute lajan sou balans DLM Wallet ou. MonCash itilize yon checkout otomatik ak sekirize.";
-
     return;
   }
 
+  if(selectedMethod==="Card"){
+    paypalBox.classList.add("show");
+    submitBtn.style.display="none";
+    subtitle.innerText=
+      "Peye ak PayPal oswa Visa/Mastercard atravè PayPal Checkout.";
+    initPayPalCheckout().catch(error=>{
+      console.error(
+        "PAYPAL_INIT_ERROR:",
+        error
+      );
+      showNotice(
+        error.message ||
+        "PayPal Checkout pa rive chaje."
+      );
+    });
+    return;
+  }
 
-  manualFields.style.display =
-    "block";
-
-  moncashInfo.style.display =
-    "none";
-
-  submitBtn.innerText =
+  manualFields.style.display="block";
+  submitBtn.innerText=
     "Submit Deposit Request";
 
-
-  if(
-    selectedMethod ===
-    "NatCash"
-  ){
-
-    subtitle.innerText =
+  if(selectedMethod==="NatCash"){
+    subtitle.innerText=
       "Voye demann depo NatCash ou. Balans lan ap monte apre verifikasyon.";
-
   }else{
-
-    subtitle.innerText =
+    subtitle.innerText=
       "Voye demann depo Bank Transfer ou. Balans lan ap monte apre verifikasyon.";
-
   }
-
 }
 
-
 async function submitDeposit(){
-
   clearNotice();
 
-
-  const amount =
-    Number(
-      document
-        .getElementById(
-          "amount"
-        )
-        .value
-    );
-
-
-  const btn =
-    document.getElementById(
-      "submitBtn"
-    );
-
-
-  if(
-    !Number.isFinite(
-      amount
-    ) ||
-    amount <= 0
-  ){
-
-    showNotice(
-      "Antre yon montan USD valab."
-    );
-
+  if(!validAmount()){
     return;
   }
 
+  const amount=getAmount();
 
-  btn.disabled =
-    true;
+  const btn=
+    document.getElementById("submitBtn");
 
+  btn.disabled=true;
 
   try{
-
-
-    /* =========================
-       MONCASH AUTOMATIC
-    ========================= */
-
-    if(
-      selectedMethod ===
-      "MonCash"
-    ){
-
-      btn.innerText =
+    if(selectedMethod==="MonCash"){
+      btn.innerText=
         "Ap kreye peman MonCash...";
 
-
-      const data =
+      const data=
         await dlmApi(
           "/payments/moncash/create",
           {
-            method:
-              "POST",
-
-            body:
-              JSON.stringify({
-                amountUsd:
-                  amount
-              })
+            method:"POST",
+            body:JSON.stringify({
+              amountUsd:amount
+            })
           }
         );
-
 
       if(
         !data ||
         !data.paymentUrl
       ){
-
         throw new Error(
           "MonCash pa retounen URL peman an."
         );
-
       }
 
-
-      if(
-        data.reference
-      ){
-
+      if(data.reference){
         localStorage.setItem(
           "dlm_moncash_reference",
-          String(
-            data.reference
-          )
+          String(data.reference)
         );
-
       }
-
 
       localStorage.setItem(
         "dlm_moncash_amount_usd",
         String(amount)
       );
 
-
-      window.location.href =
+      window.location.href=
         data.paymentUrl;
-
 
       return;
     }
 
-
-
-    /* =========================
-       NATCASH / BANK MANUAL
-    ========================= */
-
-    const reference =
+    const reference=
       document
-        .getElementById(
-          "reference"
-        )
+        .getElementById("reference")
         .value
         .trim();
 
-
-    const note =
+    const note=
       document
-        .getElementById(
-          "note"
-        )
+        .getElementById("note")
         .value
         .trim();
-
 
     if(!reference){
-
       showNotice(
         "Reference tranzaksyon an obligatwa."
       );
-
       return;
     }
 
-
-    btn.innerText =
+    btn.innerText=
       "Ap voye demann...";
 
-
-    const data =
+    const data=
       await dlmApi(
         "/deposits",
         {
-          method:
-            "POST",
-
-          body:
-            JSON.stringify({
-              amount,
-              method:
-                selectedMethod,
-              reference,
-              note
-            })
+          method:"POST",
+          body:JSON.stringify({
+            amount,
+            method:selectedMethod,
+            reference,
+            note
+          })
         }
       );
-
 
     showNotice(
       data.message ||
@@ -810,205 +849,526 @@ async function submitDeposit(){
       true
     );
 
+    document.getElementById("amount").value="";
+    document.getElementById("reference").value="";
+    document.getElementById("note").value="";
 
-    document
-      .getElementById(
-        "amount"
-      )
-      .value =
-      "";
-
-
-    document
-      .getElementById(
-        "reference"
-      )
-      .value =
-      "";
-
-
-    document
-      .getElementById(
-        "note"
-      )
-      .value =
-      "";
-
-
-    await loadDeposits();
-
+    await Promise.all([
+      loadDeposits(),
+      loadCurrentBalance()
+    ]);
 
   }catch(error){
-
     console.error(
       "DEPOSIT_ERROR:",
       error
     );
-
 
     showNotice(
       error.message ||
       "Peman an pa rive kòmanse."
     );
 
-
   }finally{
+    btn.disabled=false;
 
-
-    btn.disabled =
-      false;
-
-
-    btn.innerText =
-      selectedMethod ===
-      "MonCash"
+    btn.innerText=
+      selectedMethod==="MonCash"
         ? "Continue with MonCash"
         : "Submit Deposit Request";
-
   }
-
 }
 
+async function createPayPalOrder(){
+  clearNotice();
+
+  if(!validAmount()){
+    throw new Error(
+      "Antre yon montan USD valab."
+    );
+  }
+
+  const amount=getAmount();
+
+  const data=
+    await dlmApi(
+      "/payments/paypal/create",
+      {
+        method:"POST",
+        body:JSON.stringify({
+          amountUsd:amount
+        })
+      }
+    );
+
+  if(!data?.orderId){
+    throw new Error(
+      "PayPal pa retounen Order ID."
+    );
+  }
+
+  paypalLastOrderId=
+    data.orderId;
+
+  localStorage.setItem(
+    "dlm_paypal_order_id",
+    data.orderId
+  );
+
+  return data.orderId;
+}
+
+async function capturePayPalOrder(orderId){
+  const id=
+    String(
+      orderId ||
+      paypalLastOrderId ||
+      ""
+    ).trim();
+
+  if(!id){
+    throw new Error(
+      "PayPal Order ID manke."
+    );
+  }
+
+  const data=
+    await dlmApi(
+      `/payments/paypal/${encodeURIComponent(id)}/capture`,
+      {
+        method:"POST",
+        body:JSON.stringify({})
+      }
+    );
+
+  if(!data?.success){
+    throw new Error(
+      data?.message ||
+      "PayPal payment lan pa rive capture."
+    );
+  }
+
+  showNotice(
+    data.message ||
+    "Peman an reyisi. Balans ou mete ajou.",
+    true
+  );
+
+  document.getElementById("amount").value="";
+
+  localStorage.removeItem(
+    "dlm_paypal_order_id"
+  );
+
+  paypalLastOrderId=null;
+
+  await Promise.all([
+    loadCurrentBalance(),
+    loadDeposits()
+  ]);
+
+  return data;
+}
+
+function loadPayPalSdk(clientId){
+  return new Promise(
+    (resolve,reject)=>{
+      if(
+        window.paypal &&
+        window.paypal.Buttons
+      ){
+        resolve();
+        return;
+      }
+
+      const existing=
+        document.getElementById(
+          "paypal-sdk"
+        );
+
+      if(existing){
+        existing.addEventListener(
+          "load",
+          ()=>resolve(),
+          {once:true}
+        );
+
+        existing.addEventListener(
+          "error",
+          ()=>reject(
+            new Error(
+              "PayPal SDK pa rive chaje."
+            )
+          ),
+          {once:true}
+        );
+
+        return;
+      }
+
+      const script=
+        document.createElement(
+          "script"
+        );
+
+      script.id="paypal-sdk";
+
+      script.src=
+        "https://www.paypal.com/sdk/js" +
+        `?client-id=${encodeURIComponent(clientId)}` +
+        "&currency=USD" +
+        "&intent=capture" +
+        "&components=buttons,card-fields";
+
+      script.async=true;
+
+      script.onload=()=>resolve();
+
+      script.onerror=()=>reject(
+        new Error(
+          "PayPal SDK pa rive chaje."
+        )
+      );
+
+      document.head.appendChild(
+        script
+      );
+    }
+  );
+}
+
+async function initPayPalCheckout(){
+  if(paypalSdkReady){
+    return;
+  }
+
+  if(paypalInitPromise){
+    return paypalInitPromise;
+  }
+
+  paypalInitPromise=
+    (async()=>{
+      const loading=
+        document.getElementById(
+          "paypalSdkLoading"
+        );
+
+      loading.style.display=
+        "block";
+
+      const config=
+        await dlmApi(
+          "/payments/paypal/config"
+        );
+
+      if(
+        !config?.clientId
+      ){
+        throw new Error(
+          "PayPal Client ID pa disponib."
+        );
+      }
+
+      await loadPayPalSdk(
+        config.clientId
+      );
+
+      const createOrderCallback=
+        async()=>{
+          return createPayPalOrder();
+        };
+
+      const onApproveCallback=
+        async(data)=>{
+          const orderId=
+            data?.orderID ||
+            paypalLastOrderId;
+
+          await capturePayPalOrder(
+            orderId
+          );
+        };
+
+      const onErrorCallback=
+        (error)=>{
+          console.error(
+            "PAYPAL_CHECKOUT_ERROR:",
+            error
+          );
+
+          showNotice(
+            "PayPal/kat pa rive trete peman an. Verifye enfòmasyon yo epi eseye ankò."
+          );
+        };
+
+      const onCancelCallback=
+        ()=>{
+          showNotice(
+            "Peman an anile. Balans ou pa chanje."
+          );
+        };
+
+      await window.paypal
+        .Buttons({
+          createOrder:
+            createOrderCallback,
+
+          onApprove:
+            onApproveCallback,
+
+          onError:
+            onErrorCallback,
+
+          onCancel:
+            onCancelCallback,
+
+          style:{
+            layout:"vertical",
+            shape:"rect",
+            label:"paypal"
+          }
+        })
+        .render(
+          "#paypal-button-container"
+        );
+
+      const cardFields=
+        window.paypal.CardFields({
+          createOrder:
+            createOrderCallback,
+
+          onApprove:
+            onApproveCallback,
+
+          onError:
+            onErrorCallback,
+
+          style:{
+            input:{
+              "font-size":"16px",
+              "font-family":"Arial, sans-serif",
+              color:"#111827"
+            },
+            ".invalid":{
+              color:"#b91c1c"
+            }
+          }
+        });
+
+      paypalCardFields=
+        cardFields;
+
+      if(
+        cardFields &&
+        cardFields.isEligible()
+      ){
+        await cardFields
+          .NameField({
+            placeholder:
+              "Name on card"
+          })
+          .render(
+            "#card-name-field-container"
+          );
+
+        await cardFields
+          .NumberField({
+            placeholder:
+              "Card number"
+          })
+          .render(
+            "#card-number-field-container"
+          );
+
+        await cardFields
+          .ExpiryField({
+            placeholder:
+              "MM/YY"
+          })
+          .render(
+            "#card-expiry-field-container"
+          );
+
+        await cardFields
+          .CVVField({
+            placeholder:
+              "CVV"
+          })
+          .render(
+            "#card-cvv-field-container"
+          );
+
+        document
+          .getElementById(
+            "cardFieldsWrap"
+          )
+          .classList.add(
+            "show"
+          );
+
+        const cardPayBtn=
+          document.getElementById(
+            "cardPayBtn"
+          );
+
+        cardPayBtn.onclick=
+          async()=>{
+            clearNotice();
+
+            if(!validAmount()){
+              return;
+            }
+
+            cardPayBtn.disabled=
+              true;
+
+            cardPayBtn.innerText=
+              "Processing securely...";
+
+            try{
+              await cardFields.submit();
+            }catch(error){
+              console.error(
+                "PAYPAL_CARD_SUBMIT_ERROR:",
+                error
+              );
+
+              showNotice(
+                error?.message ||
+                "Kat la pa rive trete. Verifye enfòmasyon yo."
+              );
+            }finally{
+              cardPayBtn.disabled=
+                false;
+
+              cardPayBtn.innerText=
+                "Pay securely by card";
+            }
+          };
+
+      }else{
+        document
+          .getElementById(
+            "cardFieldsWrap"
+          )
+          .classList.remove(
+            "show"
+          );
+      }
+
+      loading.style.display=
+        "none";
+
+      paypalSdkReady=true;
+    })();
+
+  try{
+    await paypalInitPromise;
+  }finally{
+    paypalInitPromise=null;
+  }
+}
 
 async function loadDeposits(){
-
-  const box =
+  const box=
     document.getElementById(
       "myDeposits"
     );
 
-
   try{
-
-    const data =
+    const data=
       await dlmApi(
         "/deposits/mine"
       );
 
-
-    const items =
+    const items=
       data.deposits || [];
 
-
-    if(
-      !items.length
-    ){
-
-      box.innerHTML =
+    if(!items.length){
+      box.innerHTML=
         '<div class="status-item">Pa gen demann depo manyèl pou kounye a.</div>';
-
       return;
     }
 
-
-    box.innerHTML =
+    box.innerHTML=
       items
         .slice(0,8)
-        .map(
-          d => {
+        .map(d=>{
+          const amount=
+            Number(
+              d.amount || 0
+            ).toFixed(2);
 
-            const amount =
-              Number(
-                d.amount || 0
-              ).toFixed(2);
+          const method=
+            escapeHtml(
+              d.method || ""
+            );
 
+          const reference=
+            escapeHtml(
+              d.reference || ""
+            );
 
-            const method =
-              escapeHtml(
-                d.method || ""
-              );
+          const status=
+            String(
+              d.status || ""
+            ).toLowerCase();
 
+          return `
+            <div class="status-item">
+              <b>
+                $${amount} USD · ${method}
+              </b>
 
-            const reference =
-              escapeHtml(
-                d.reference || ""
-              );
+              Ref:
+              ${reference}
+              <br>
 
-
-            const status =
-              String(
-                d.status || ""
-              ).toLowerCase();
-
-
-            return `
-              <div class="status-item">
-
-                <b>
-                  $${amount} USD · ${method}
-                </b>
-
-                Ref:
-                ${reference}
-                <br>
-
-                Status:
-                <span class="${escapeHtml(status)}">
-                  ${escapeHtml(status.toUpperCase())}
-                </span>
-
-              </div>
-            `;
-
-          }
-        )
+              Status:
+              <span class="${escapeHtml(status)}">
+                ${escapeHtml(status.toUpperCase())}
+              </span>
+            </div>
+          `;
+        })
         .join("");
 
-
   }catch(error){
-
     console.error(
       "LOAD_DEPOSITS_ERROR:",
       error
     );
 
-
-    box.innerHTML =
+    box.innerHTML=
       '<div class="status-item">Pa rive chaje depo yo.</div>';
-
   }
-
 }
 
-
 async function loadCurrentBalance(){
-
   try{
-
-    const user =
+    const user=
       await refreshDlmUser();
 
-
     if(user){
-
       document
         .getElementById(
           "balance"
         )
-        .innerText =
+        .innerText=
         `$${Number(
           user.balance || 0
         ).toFixed(2)} USD`;
-
     }
-
-
   }catch(error){
-
     console.error(
       "BALANCE_LOAD_ERROR:",
       error
     );
-
   }
-
 }
 
-
 updateDepositUI();
-
 loadCurrentBalance();
-
 loadDeposits();
 
 </script>
