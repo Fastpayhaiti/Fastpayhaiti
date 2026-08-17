@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DLM Wallet - Finance Control Center</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#05070c;color:#fff;min-height:100vh}
+.app{max-width:980px;margin:auto;padding:22px 16px 50px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.title{font-size:28px;font-weight:900}
+.sub{color:#8b93a7;font-size:13px;line-height:1.5;margin-top:5px}
+.actions{display:flex;gap:10px}
+.btn{border:0;border-radius:14px;padding:12px 15px;font-weight:800;cursor:pointer;background:#2f3cff;color:#fff}
+.btn.secondary{background:rgba(255,255,255,.07)}
+.notice{display:none;padding:13px;border-radius:14px;margin-bottom:14px;font-size:13px;font-weight:700}
+.notice.error{display:block;background:rgba(217,60,75,.18);color:#ffb4bf}
+.notice.success{display:block;background:rgba(17,156,103,.18);color:#7ff0be}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.card{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:16px}
+.label{color:#8b93a7;font-size:12px;font-weight:800}
+.value{font-size:25px;font-weight:900;margin-top:7px}
+.small{font-size:12px;color:#8b93a7;margin-top:6px;line-height:1.45}
+.section{margin-top:20px}
+.section-title{font-size:17px;font-weight:900;margin-bottom:10px}
+.rows{display:flex;flex-direction:column;gap:8px}
+.row{display:flex;justify-content:space-between;gap:12px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06);padding:12px 14px;border-radius:14px;font-size:13px}
+.row span:first-child{color:#aab2c5}
+.row strong{text-align:right}
+.audit{padding:12px 14px;border-radius:14px;margin-bottom:8px;font-size:13px;line-height:1.45}
+.audit.warning{background:rgba(234,179,8,.12);color:#fde68a}
+.audit.critical{background:rgba(239,68,68,.14);color:#fecaca}
+.audit.ok{background:rgba(34,197,94,.12);color:#bbf7d0}
+.note{background:rgba(47,60,255,.08);border:1px solid rgba(89,103,255,.18);color:#aeb6ff;border-radius:16px;padding:13px;font-size:12px;line-height:1.55;margin-top:10px}
+@media(max-width:720px){.grid{grid-template-columns:1fr 1fr}.title{font-size:24px}}
+@media(max-width:470px){.grid{grid-template-columns:1fr}.actions{width:100%}.btn{flex:1}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div>
+      <div class="title">Finance Control Center</div>
+      <div class="sub">DLMWALLET · Wallet liabilities, processor collections, withdrawals, service spend, and reconciliation.</div>
+    </div>
+    <div class="actions">
+      <button class="btn secondary" onclick="location.href='admin.html'"><i class="fa-solid fa-arrow-left"></i> Admin</button>
+      <button class="btn" onclick="loadAll()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+    </div>
+  </div>
+
+  <div id="notice" class="notice"></div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="label">Spendable Wallet Balances</div>
+      <div class="value" id="walletBalances">$0.00</div>
+      <div class="small">Total money customers can still spend.</div>
+    </div>
+    <div class="card">
+      <div class="label">Reserved Withdrawals</div>
+      <div class="value" id="reservedWithdrawals">$0.00</div>
+      <div class="small">Pending + Processing withdrawals.</div>
+    </div>
+    <div class="card">
+      <div class="label">Customer Obligation</div>
+      <div class="value" id="customerObligation">$0.00</div>
+      <div class="small">Spendable balances + reserved withdrawals.</div>
+    </div>
+    <div class="card">
+      <div class="label">PayPal Net Collections</div>
+      <div class="value" id="paypalNet">$0.00</div>
+      <div class="small" id="paypalFees">Known fees: $0.00</div>
+    </div>
+    <div class="card">
+      <div class="label">MonCash Wallet Credits</div>
+      <div class="value" id="moncashCredits">$0.00</div>
+      <div class="small">Completed MonCash deposits recorded by DLMWALLET.</div>
+    </div>
+    <div class="card">
+      <div class="label">Approved Withdrawals</div>
+      <div class="value" id="approvedWithdrawals">$0.00</div>
+      <div class="small">Payouts admin marked completed.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Reserve Reconciliation</div>
+    <div class="rows">
+      <div class="row"><span>Cash Reserve</span><strong id="cashReserve">$0.00</strong></div>
+      <div class="row"><span>Stored Customer Liability</span><strong id="storedLiability">$0.00</strong></div>
+      <div class="row"><span>Computed Customer Obligation</span><strong id="computedLiability">$0.00</strong></div>
+      <div class="row"><span>Liability Difference</span><strong id="liabilityDifference">$0.00</strong></div>
+      <div class="row"><span>Available Reserve</span><strong id="availableReserve">$0.00</strong></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Collections & Service Activity</div>
+    <div class="rows">
+      <div class="row"><span>PayPal gross wallet credits</span><strong id="paypalGross">$0.00</strong></div>
+      <div class="row"><span>Manual approved deposits</span><strong id="manualDeposits">$0.00</strong></div>
+      <div class="row"><span>Manual deposits pending</span><strong id="manualPending">$0.00</strong></div>
+      <div class="row"><span>Airtime spend</span><strong id="airtimeSpend">$0.00</strong></div>
+      <div class="row"><span>Gift card spend</span><strong id="giftcardSpend">$0.00</strong></div>
+      <div class="row"><span>Service orders completed</span><strong id="serviceCompleted">$0.00</strong></div>
+      <div class="row"><span>Service funds in progress</span><strong id="servicePending">$0.00</strong></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Audit Checks</div>
+    <div id="auditBox">
+      <div class="audit ok">Ap chaje audit...</div>
+    </div>
+  </div>
+
+  <div class="note">
+    “PayPal Net Collections” ak “MonCash Wallet Credits” soti nan dosye DLMWALLET yo. Yo pa yon live balance dirèk ki soti nan kont merchant PayPal/MonCashConnect. Finance Control Center sa a fèt pou reconciliation entèn; li pa ranplase statement processor, bank statement, oswa kontablite legal.
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+requireDlmLogin();
+
+const money = v => `$${Number(v || 0).toFixed(2)}`;
+
+function showNotice(message, ok=false){
+  const box=document.getElementById("notice");
+  box.className=ok?"notice success":"notice error";
+  box.innerText=message;
+}
+
+async function ensureAdmin(){
+  const data=await dlmApi("/me");
+  if(!data?.user || data.user.role!=="admin"){
+    location.href="dashboard.html";
+    throw new Error("Admin access required.");
+  }
+}
+
+async function loadSummary(){
+  const data=await dlmApi("/admin/finance/summary");
+  const c=data.customerFunds||{};
+  const p=data.processorCollections||{};
+  const o=data.outflowsAndSpend||{};
+  const r=data.reserve||{};
+
+  document.getElementById("walletBalances").innerText=money(c.spendableWalletBalances);
+  document.getElementById("reservedWithdrawals").innerText=money(c.reservedWithdrawals);
+  document.getElementById("customerObligation").innerText=money(c.customerObligationEstimate);
+
+  document.getElementById("paypalNet").innerText=money(p.paypal?.recordedNetCollections);
+  document.getElementById("paypalFees").innerText=`Known fees: ${money(p.paypal?.knownFees)}`;
+  document.getElementById("paypalGross").innerText=money(p.paypal?.grossWalletCredits);
+
+  document.getElementById("moncashCredits").innerText=money(p.moncash?.walletCreditsUsd);
+  document.getElementById("manualDeposits").innerText=money(p.manualDeposits?.approvedUsd);
+  document.getElementById("manualPending").innerText=money(p.manualDeposits?.pendingUsd);
+
+  document.getElementById("approvedWithdrawals").innerText=money(o.approvedWithdrawalsUsd);
+  document.getElementById("airtimeSpend").innerText=money(o.airtimeSpendUsd);
+  document.getElementById("giftcardSpend").innerText=money(o.giftcardSpendUsd);
+  document.getElementById("serviceCompleted").innerText=money(o.serviceOrders?.completedUsd);
+  document.getElementById("servicePending").innerText=money(
+    Number(o.serviceOrders?.pendingUsd||0)+Number(o.serviceOrders?.processingUsd||0)
+  );
+
+  document.getElementById("cashReserve").innerText=money(r.cashReserve);
+  document.getElementById("storedLiability").innerText=money(r.customerLiability);
+  document.getElementById("computedLiability").innerText=money(r.computedCustomerObligation);
+  document.getElementById("liabilityDifference").innerText=money(r.liabilityDifference);
+  document.getElementById("availableReserve").innerText=money(r.availableReserve);
+}
+
+async function loadAudit(){
+  const data=await dlmApi("/admin/finance/audit");
+  const box=document.getElementById("auditBox");
+  const findings=data.findings||[];
+
+  if(!findings.length){
+    box.innerHTML='<div class="audit ok"><b>OK</b> · Pa gen gwo pwoblèm audit otomatik la detekte kounye a.</div>';
+    return;
+  }
+
+  box.innerHTML=findings.map(item=>`
+    <div class="audit ${item.severity==="critical"?"critical":"warning"}">
+      <b>${String(item.severity||"warning").toUpperCase()} · ${item.code||"CHECK"}</b><br>
+      ${item.message||""}
+      ${typeof item.count!=="undefined"?` · Count: ${item.count}`:""}
+      ${typeof item.amountUsd!=="undefined"?` · Amount: ${money(item.amountUsd)}`:""}
+    </div>
+  `).join("");
+}
+
+async function loadAll(){
+  try{
+    showNotice("Ap mete finance dashboard la ajou...",true);
+    await ensureAdmin();
+    await Promise.all([loadSummary(),loadAudit()]);
+    showNotice("Finance dashboard la ajou.",true);
+  }catch(error){
+    console.error(error);
+    showNotice(error.message||"Pa rive chaje finance dashboard la.");
+  }
+}
+
+loadAll();
+</script>
+</body>
+</html>
