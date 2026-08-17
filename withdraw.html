@@ -30,7 +30,7 @@ textarea{min-height:90px;resize:vertical}
 .status-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
 .status-item{padding:12px;border-radius:14px;background:rgba(255,255,255,.04);font-size:13px}
 .status-item b{display:block;margin-bottom:5px}
-.pending{color:#ffd76a}.approved{color:#4ade80}.rejected{color:#ff9eaa}
+.pending{color:#ffd76a}.processing{color:#7dd3fc}.approved{color:#4ade80}.rejected{color:#ff9eaa}
 </style>
 </head>
 <body>
@@ -80,10 +80,6 @@ textarea{min-height:90px;resize:vertical}
     <textarea id="note" maxlength="300" placeholder="Optional note"></textarea>
 
     <button id="submitBtn" class="btn" onclick="submitWithdrawal()">Submit Withdrawal Request</button>
-
-    <div class="info">
-      Pa pataje PIN, password, CVV oswa lòt sekrè. Admin ap verifye demann lan anvan li approve li.
-    </div>
   </div>
 
   <div class="card">
