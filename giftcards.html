@@ -39,23 +39,90 @@ label{display:block;font-size:13px;font-weight:800;margin:13px 0 7px;color:#dbe1
 .payment{border:1px solid var(--line);background:#121722;border-radius:16px;padding:14px;margin-bottom:10px;cursor:pointer}
 .payment.active{border-color:var(--accent);background:rgba(255,255,255,.055)}
 .status{display:inline-flex;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900;background:rgba(255,255,255,.07)}
+
+/* ===== DLM GIFT CARD BRAND IMAGE UPGRADE ===== */
+.chip{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  min-height:52px;
+  background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.025));
+}
+.chip-logo{
+  width:30px;height:30px;border-radius:8px;object-fit:contain;
+  background:#fff;padding:3px;flex:0 0 auto;
+}
+.product{
+  display:grid;
+  grid-template-columns:78px 1fr;
+  gap:14px;
+  align-items:center;
+  transition:.18s ease;
+  overflow:hidden;
+}
+.product:hover{transform:translateY(-1px);border-color:rgba(109,93,252,.55)}
+.product-logo-wrap{
+  width:78px;height:78px;border-radius:16px;background:#fff;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.product-logo{
+  width:100%;height:100%;object-fit:contain;padding:7px;
+}
+.product-copy{min-width:0}
+.product-copy h3{margin-top:0}
+.product-fallback{
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-weight:950;font-size:25px;color:#111827;
+  background:linear-gradient(135deg,#fff,#e9ecf4);
+}
+.modal-product-row{display:flex;gap:12px;align-items:center}
+.modal-product-logo{
+  width:58px;height:58px;border-radius:14px;object-fit:contain;background:#fff;padding:5px;
+}
+@media(max-width:360px){
+  .product{grid-template-columns:64px 1fr}
+  .product-logo-wrap{width:64px;height:64px}
+}
+
 </style></head><body>
 <div class="app"><div class="top"><a class="back" href="dashboard.html">← Retounen</a><div class="avatar" id="avatar">D</div></div>
 <div class="hero"><div class="eyebrow">Reloadly Marketplace</div><div class="title">Gift Cards</div><div class="sub">Chèche mak ou bezwen an, gade peyi ak denominasyon Reloadly pèmèt yo, epi achte dirèkteman ak DLM Wallet.</div><div class="small" style="margin-top:16px">Wallet balance</div><div id="serviceBalance" class="balance">$0.00 USD</div></div>
 <div class="card"><div id="msg" class="msg"></div><label>Search brand</label><input class="input" id="search" placeholder="Amazon, Apple, Google Play, Steam...">
 <div class="grid" style="margin-bottom:12px">
-<button class="chip" onclick="quick('Amazon')">Amazon</button><button class="chip" onclick="quick('Apple')">Apple</button>
-<button class="chip" onclick="quick('Google Play')">Google Play</button><button class="chip" onclick="quick('Steam')">Steam</button>
-<button class="chip" onclick="quick('PlayStation')">PlayStation</button><button class="chip" onclick="quick('Xbox')">Xbox</button>
+<button class="chip" onclick="quick('Amazon')"><img class="chip-logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon logo">Amazon</button><button class="chip" onclick="quick('Apple')"><img class="chip-logo" src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple logo">Apple</button>
+<button class="chip" onclick="quick('Google Play')"><img class="chip-logo" src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play logo">Google Play</button><button class="chip" onclick="quick('Steam')"><img class="chip-logo" src="https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" alt="Steam logo">Steam</button>
+<button class="chip" onclick="quick('PlayStation')"><img class="chip-logo" src="https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg" alt="PlayStation logo">PlayStation</button><button class="chip" onclick="quick('Xbox')"><img class="chip-logo" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg" alt="Xbox logo">Xbox</button>
 </div><button class="btn" id="searchBtn" onclick="searchProducts()">Search products</button><div id="products"></div></div></div>
 
-<div class="modal-bg" id="modal"><div class="modal"><div class="modal-head"><div><div class="eyebrow">Gift card checkout</div><div class="title" style="font-size:23px" id="pName">Product</div><div class="small" id="pMeta"></div></div><button class="close" onclick="closeModal()">×</button></div>
+<div class="modal-bg" id="modal"><div class="modal"><div class="modal-head"><div class="modal-product-row"><img id="pLogo" class="modal-product-logo" alt="Gift card logo" style="display:none"><div><div class="eyebrow">Gift card checkout</div><div class="title" style="font-size:23px" id="pName">Product</div><div class="small" id="pMeta"></div></div></div><button class="close" onclick="closeModal()">×</button></div>
 <div id="modalMsg" class="msg"></div><div id="amountArea"></div>
 <label>Recipient email</label><input class="input" id="recipientEmail" type="email">
 <label>Quantity</label><input class="input" id="qty" type="number" min="1" value="1">
 <button class="btn" id="buyBtn" onclick="buy()">Buy gift card</button><button class="btn secondary" style="margin-top:10px" onclick="closeModal()">Cancel</button></div></div>
 <script src="app.js"></script><script>
 requireDlmLogin(); let products=[],selected=null;
+
+function esc(s){
+ return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function productLogo(p){
+ const candidates=[
+  p?.logoUrls?.[0],
+  p?.logoUrls?.[1],
+  p?.logoUrl,
+  p?.brand?.logoUrl,
+  p?.brand?.logoUrls?.[0],
+  p?.imageUrl,
+  p?.image
+ ];
+ return candidates.find(v=>typeof v==="string" && /^https?:\/\//i.test(v)) || "";
+}
+function fallbackLogo(el,name){
+ const wrap=el.parentElement;
+ if(!wrap)return;
+ wrap.innerHTML=`<div class="product-fallback">${esc(String(name||"G").trim().charAt(0).toUpperCase())}</div>`;
+}
+
 function msg(t,ok=false,id="msg"){const e=document.getElementById(id);e.className="msg "+(ok?"ok":"err");e.innerText=t}
 function quick(q){document.getElementById("search").value=q;searchProducts()}
 function fixed(p){const a=p.fixedRecipientDenominations||p.fixedSenderDenominations||[];return Array.isArray(a)?a.map(Number).filter(Number.isFinite):[]}
@@ -66,11 +133,24 @@ async function searchProducts(){
  const b=document.getElementById("searchBtn");b.disabled=true;b.innerText="Searching...";
  try{const d=await dlmApi(`/reloadly/giftcards?search=${encodeURIComponent(q)}`);products=d.products||[];const box=document.getElementById("products");
  if(!products.length){box.innerHTML='<div class="small" style="margin-top:14px">Pa gen pwodwi jwenn.</div>';return}
- box.innerHTML=products.slice(0,40).map((p,i)=>{const a=fixed(p),min=Number(p.minRecipientDenomination||p.minSenderDenomination||0),max=Number(p.maxRecipientDenomination||p.maxSenderDenomination||0),cur=currency(p);let price=a.length?`${a.slice(0,6).join(", ")} ${cur}`:min&&max?`${min}–${max} ${cur}`:"View available amount";return `<div class="product" onclick="openP(${i})"><h3>${p.productName||p.name||"Gift Card"}</h3><div class="product-meta">${country(p)} • Product ID ${p.productId||p.id}<br>${price}</div><span class="tag">Tap to choose amount</span></div>`}).join("")
+ box.innerHTML=products.slice(0,40).map((p,i)=>{
+   const a=fixed(p),min=Number(p.minRecipientDenomination||p.minSenderDenomination||0),max=Number(p.maxRecipientDenomination||p.maxSenderDenomination||0),cur=currency(p);
+   const name=p.productName||p.name||"Gift Card",logo=productLogo(p);
+   let price=a.length?`${a.slice(0,6).join(", ")} ${cur}`:min&&max?`${min}–${max} ${cur}`:"View available amount";
+   const visual=logo
+     ? `<img class="product-logo" src="${esc(logo)}" alt="${esc(name)} logo" loading="lazy" onerror="fallbackLogo(this,'${esc(name).replace(/'/g,"&#39;")}')">`
+     : `<div class="product-fallback">${esc(name.trim().charAt(0).toUpperCase())}</div>`;
+   return `<div class="product" onclick="openP(${i})">
+     <div class="product-logo-wrap">${visual}</div>
+     <div class="product-copy"><h3>${esc(name)}</h3><div class="product-meta">${esc(country(p))} • Product ID ${esc(p.productId||p.id)}<br>${esc(price)}</div><span class="tag">Tap to choose amount</span></div>
+   </div>`
+ }).join("")
  }catch(e){msg(e.message)}finally{b.disabled=false;b.innerText="Search products"}
 }
 async function openP(i){selected=products[i];if(!selected)return;try{const d=await dlmApi(`/reloadly/giftcards/${selected.productId||selected.id}`);selected=d.product||selected}catch(e){}
  document.getElementById("pName").innerText=selected.productName||selected.name||"Gift Card";document.getElementById("pMeta").innerText=`${country(selected)} • ${currency(selected)} • Product ID ${selected.productId||selected.id}`;
+ const pl=productLogo(selected),pi=document.getElementById("pLogo");
+ if(pl){pi.src=pl;pi.style.display="block";pi.onerror=()=>{pi.style.display="none"}}else{pi.removeAttribute("src");pi.style.display="none"};
  const a=fixed(selected),min=Number(selected.minRecipientDenomination||selected.minSenderDenomination||0),max=Number(selected.maxRecipientDenomination||selected.maxSenderDenomination||0),area=document.getElementById("amountArea");
  if(a.length){area.innerHTML='<label>Available amounts</label><div class="amounts">'+a.map((v,ix)=>`<button class="amount ${ix===0?"active":""}" onclick="pick(${v},this)">${v} ${currency(selected)}</button>`).join("")+'</div><input type="hidden" id="amount" value="'+a[0]+'">'}
  else{area.innerHTML=`<label>Amount (${currency(selected)})</label><input class="input" id="amount" type="number" min="${min||0.01}" ${max?`max="${max}"`:""} step="0.01" placeholder="${min&&max?`${min} - ${max}`:"Amount"}">`}
