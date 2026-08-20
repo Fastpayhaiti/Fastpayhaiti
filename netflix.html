@@ -83,6 +83,33 @@ label{display:block;font-size:13px;font-weight:800;margin:11px 0 7px}
 <script>
 requireDlmLogin();
 
+async function loadServiceBalance(){
+  const cached=getDlmUser();
+  if(cached){
+    document.getElementById("serviceBalance").innerText=
+      `$${Number(cached.balance||0).toFixed(2)} USD`;
+    const a=document.getElementById("avatar");
+    if(a){
+      const n=cached.fullname||cached.name||"D";
+      a.innerText=n.charAt(0).toUpperCase();
+    }
+  }
+  try{
+    const user=await refreshDlmUser();
+    if(user){
+      document.getElementById("serviceBalance").innerText=
+        `$${Number(user.balance||0).toFixed(2)} USD`;
+      const a=document.getElementById("avatar");
+      if(a){
+        const n=user.fullname||user.name||"D";
+        a.innerText=n.charAt(0).toUpperCase();
+      }
+    }
+  }catch(error){}
+}
+loadServiceBalance();
+
+
 function showMsg(text, ok=false){
   const e=document.getElementById("msg");
   e.className="msg "+(ok?"ok":"err");
