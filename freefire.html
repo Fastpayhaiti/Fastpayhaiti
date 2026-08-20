@@ -39,22 +39,70 @@ label{display:block;font-size:13px;font-weight:800;margin:13px 0 7px;color:#dbe1
 .payment{border:1px solid var(--line);background:#121722;border-radius:16px;padding:14px;margin-bottom:10px;cursor:pointer}
 .payment.active{border-color:var(--accent);background:rgba(255,255,255,.055)}
 .status{display:inline-flex;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900;background:rgba(255,255,255,.07)}
+
+/* ===== DLM FREE FIRE PRODUCT IMAGE UPGRADE ===== */
+.ff-brand{
+  display:flex;align-items:center;gap:12px;margin-bottom:10px;
+  position:relative;z-index:1;
+}
+.ff-brand-logo{
+  width:68px;height:68px;border-radius:17px;object-fit:cover;
+  background:#111;padding:4px;border:1px solid rgba(255,255,255,.10);
+}
+.product{
+  display:grid;
+  grid-template-columns:78px 1fr;
+  gap:14px;
+  align-items:center;
+  overflow:hidden;
+}
+.product-logo-wrap{
+  width:78px;height:78px;border-radius:16px;background:#111;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.product-logo{width:100%;height:100%;object-fit:contain;padding:6px}
+.product-copy{min-width:0}
+.product-fallback{
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-weight:950;font-size:22px;color:#f6a800;background:#151925;
+}
+.modal-product-row{display:flex;gap:12px;align-items:center}
+.modal-product-logo{
+  width:58px;height:58px;border-radius:14px;object-fit:contain;background:#111;padding:5px;
+}
+
 </style></head><body>
 <div class="app"><div class="top"><a class="back" href="dashboard.html">← Retounen</a><div class="avatar" id="avatar">D</div></div>
 <div class="hero"><div class="eyebrow">Gaming</div><div class="title">Free Fire</div><div class="sub">Chwazi voucher/diamonds ki disponib, antre Free Fire Player ID la, verifye montan an, epi kontinye.</div><div class="small" style="margin-top:16px">Wallet balance</div><div id="serviceBalance" class="balance">$0.00 USD</div></div>
 <div class="card"><div id="msg" class="msg"></div><button class="btn" id="searchBtn" onclick="loadFF()">Load Free Fire products</button><div id="products"></div></div></div>
-<div class="modal-bg" id="modal"><div class="modal"><div class="modal-head"><div><div class="eyebrow">Free Fire checkout</div><div class="title" style="font-size:23px" id="pName"></div><div class="small" id="pMeta"></div></div><button class="close" onclick="closeModal()">×</button></div>
+<div class="modal-bg" id="modal"><div class="modal"><div class="modal-head"><div class="modal-product-row"><img id="pLogo" class="modal-product-logo" alt="Free Fire product" style="display:none"><div><div class="eyebrow">Free Fire checkout</div><div class="title" style="font-size:23px" id="pName"></div><div class="small" id="pMeta"></div></div></div><button class="close" onclick="closeModal()">×</button></div>
 <div id="modalMsg" class="msg"></div><div id="amountArea"></div><label>Free Fire Player ID</label><input class="input" id="playerId" inputmode="numeric" placeholder="Antre Player ID ou">
 <label>Recipient email</label><input class="input" id="recipientEmail" type="email"><button class="btn" id="buyBtn" onclick="buyFF()">Continue</button><button class="btn secondary" style="margin-top:10px" onclick="closeModal()">Cancel</button></div></div>
 <script src="app.js"></script><script>
 requireDlmLogin();let products=[],selected=null;
+syncDlmServiceBalance("serviceBalance");
+function escFF(s){
+ return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function ffProductLogo(p){
+ const c=[p?.logoUrls?.[0],p?.logoUrls?.[1],p?.logoUrl,p?.brand?.logoUrl,p?.imageUrl,p?.image];
+ return c.find(v=>typeof v==="string" && /^https?:\/\//i.test(v)) || "";
+}
+function ffFallback(el,name){
+ const wrap=el.parentElement;if(!wrap)return;
+ wrap.innerHTML=`<div class="product-fallback">${escFF(String(name||"FF").trim().slice(0,2).toUpperCase())}</div>`;
+}
+
 function msg(t,ok=false,id="msg"){const e=document.getElementById(id);e.className="msg "+(ok?"ok":"err");e.innerText=t}
 function fixed(p){const a=p.fixedRecipientDenominations||p.fixedSenderDenominations||[];return Array.isArray(a)?a.map(Number).filter(Number.isFinite):[]}
 function country(p){return p?.country?.isoName||p?.country?.isoCode||p?.countryCode||"US"}
 function currency(p){return p?.recipientCurrencyCode||p?.currencyCode||"USD"}
 async function loadFF(){const b=document.getElementById("searchBtn");b.disabled=true;b.innerText="Loading...";try{const d=await dlmApi("/reloadly/giftcards?search=Free%20Fire");products=d.products||[];document.getElementById("products").innerHTML=products.map((p,i)=>`<div class="product" onclick="openP(${i})"><h3>${p.productName||"Free Fire"}</h3><div class="product-meta">${country(p)} • Product ID ${p.productId||p.id}</div><span class="tag">Select product</span></div>`).join("")||'<div class="small">Pa gen Free Fire pwodwi jwenn.</div>'}catch(e){msg(e.message)}finally{b.disabled=false;b.innerText="Load Free Fire products"}}
 async function openP(i){selected=products[i];try{const d=await dlmApi(`/reloadly/giftcards/${selected.productId||selected.id}`);selected=d.product||selected}catch(e){}
- document.getElementById("pName").innerText=selected.productName||"Free Fire";document.getElementById("pMeta").innerText=`${country(selected)} • ${currency(selected)}`;const a=fixed(selected),area=document.getElementById("amountArea");
+ document.getElementById("pName").innerText=selected.productName||"Free Fire";document.getElementById("pMeta").innerText=`${country(selected)} • ${currency(selected)}`;
+ const pl=ffProductLogo(selected),pi=document.getElementById("pLogo");
+ if(pl){pi.src=pl;pi.style.display="block";pi.onerror=()=>{pi.style.display="none"}}else{pi.removeAttribute("src");pi.style.display="none"};
+ const a=fixed(selected),area=document.getElementById("amountArea");
  if(a.length){area.innerHTML='<label>Available amounts</label><div class="amounts">'+a.map((v,ix)=>`<button class="amount ${ix===0?"active":""}" onclick="pick(${v},this)">${v} ${currency(selected)}</button>`).join("")+'</div><input type="hidden" id="amount" value="'+a[0]+'">'}
  else{const min=Number(selected.minRecipientDenomination||selected.minSenderDenomination||0),max=Number(selected.maxRecipientDenomination||selected.maxSenderDenomination||0);area.innerHTML=`<label>Amount</label><input class="input" id="amount" type="number" min="${min||0.01}" ${max?`max="${max}"`:""} step="0.01">`}
  document.getElementById("recipientEmail").value=getDlmUser()?.email||"";document.getElementById("modal").classList.add("show")}
@@ -63,7 +111,7 @@ function closeModal(){document.getElementById("modal").classList.remove("show")}
 async function buyFF(){const playerId=document.getElementById("playerId").value.trim(),amount=Number(document.getElementById("amount").value),recipientEmail=document.getElementById("recipientEmail").value.trim(),productId=Number(selected.productId||selected.id);
  if(!/^[0-9A-Za-z_-]{4,40}$/.test(playerId))return msg("Antre yon Free Fire Player ID valab.",false,"modalMsg");if(!amount||amount<=0)return msg("Chwazi yon montan.",false,"modalMsg");
  if(!confirm(`Konfime Free Fire order pou $${amount.toFixed(2)}?`))return;const b=document.getElementById("buyBtn");b.disabled=true;b.innerText="Processing...";
- try{const d=await dlmApi("/reloadly/giftcards/order",{method:"POST",body:JSON.stringify({productId,quantity:1,unitPrice:amount,countryCode:country(selected),recipientEmail,additionalRequirements:{userId:playerId}})});msg(d.message||"Order la reyisi.",true,"modalMsg")}
+ try{const d=await dlmApi("/reloadly/giftcards/order",{method:"POST",body:JSON.stringify({productId,quantity:1,unitPrice:amount,countryCode:country(selected),recipientEmail,additionalRequirements:{userId:playerId}})});msg(d.message||"Order la reyisi.",true,"modalMsg");await syncDlmServiceBalance("serviceBalance")}
  catch(e){msg(e.message,false,"modalMsg");b.disabled=false;b.innerText="Continue"}}
 window.addEventListener("DOMContentLoaded",()=>setTimeout(loadFF,120));
 </script></body></html>

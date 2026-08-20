@@ -146,6 +146,38 @@ async function refreshDlmUser() {
   }
 }
 
+
+/* =========================
+   SERVICE BALANCE SYNC
+========================= */
+
+async function syncDlmServiceBalance(elementId = "serviceBalance") {
+  const element = document.getElementById(elementId);
+
+  if (!element) {
+    return null;
+  }
+
+  let user = getDlmUser();
+
+  if (user) {
+    element.innerText =
+      `$${Number(user.balance || 0).toFixed(2)} USD`;
+  }
+
+  try {
+    const fresh = await refreshDlmUser();
+
+    if (fresh) {
+      user = fresh;
+      element.innerText =
+        `$${Number(fresh.balance || 0).toFixed(2)} USD`;
+    }
+  } catch (error) {}
+
+  return user;
+}
+
 /* =========================
    PROTECT PAGES
 ========================= */
@@ -448,16 +480,16 @@ document.addEventListener(
 
         if (balanceAmount) {
           balanceAmount.innerText =
-            `${Number(
+            `$${Number(
               refreshedUser.balance || 0
-            ).toFixed(2)} HTG`;
+            ).toFixed(2)} USD`;
         }
 
         if (totalBalance) {
           totalBalance.innerText =
-            `${Number(
+            `$${Number(
               refreshedUser.balance || 0
-            ).toFixed(2)} HTG`;
+            ).toFixed(2)} USD`;
         }
 
         if (balanceSub) {
