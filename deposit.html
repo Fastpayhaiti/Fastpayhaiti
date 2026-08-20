@@ -338,68 +338,20 @@ textarea{
 }
 
 
-/* ===== DLM PAYMENT BRAND UPGRADE ===== */
-.method{
-  position:relative;
-  min-height:138px;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
-  transition:.2s ease;
-}
-.method:hover{transform:translateY(-1px)}
-.method .brand-head{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:12px;
-}
-.method .brand-logo{
-  width:52px;
-  height:52px;
-  border-radius:14px;
-  object-fit:contain;
-  background:#fff;
-  padding:5px;
-  flex:0 0 auto;
-}
-.method .brand-icon{
-  width:52px;
-  height:52px;
-  border-radius:14px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:24px;
-  background:#fff;
-  color:#111827;
-  flex:0 0 auto;
-}
-.method .brand-icon.cards{
-  gap:5px;
-  width:78px;
-  font-size:20px;
-}
-.method .brand-copy{min-width:0}
-.method .brand-copy strong{
-  display:block;
-  margin:0 0 4px;
-  font-size:16px;
-}
-.method .brand-copy small{
-  display:block;
-  color:#9299aa;
-  line-height:1.3;
-}
-.method[data-method="MonCash"]{background:linear-gradient(145deg,rgba(236,23,61,.15),rgba(255,255,255,.035))}
-.method[data-method="NatCash"]{background:linear-gradient(145deg,rgba(244,124,32,.15),rgba(255,255,255,.035))}
-.method[data-method="Bank"]{background:linear-gradient(145deg,rgba(38,132,255,.12),rgba(255,255,255,.035))}
-.method[data-method="Card"]{background:linear-gradient(145deg,rgba(0,112,186,.13),rgba(255,255,255,.035))}
-.method[data-method="MonCash"].active{border-color:#ef233c;box-shadow:0 0 0 1px rgba(239,35,60,.25) inset}
-.method[data-method="NatCash"].active{border-color:#f58220;box-shadow:0 0 0 1px rgba(245,130,32,.25) inset}
-.method[data-method="Bank"].active{border-color:#3b82f6;box-shadow:0 0 0 1px rgba(59,130,246,.25) inset}
-.method[data-method="Card"].active{border-color:#38bdf8;box-shadow:0 0 0 1px rgba(56,189,248,.25) inset}
+/* DLM Wallet branded payment tiles */
+.method{min-height:142px;padding:14px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:.2s ease}
+.method:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.16)}
+.method strong{margin:0;font-size:14px;font-weight:900;letter-spacing:.8px;text-transform:uppercase}
+.method small{display:none}
+.pay-logo{width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.24);overflow:hidden;font-weight:900}
+.pay-logo.moncash{background:#fff5ef;color:#e04422;font-size:13px;line-height:1.05}
+.pay-logo.moncash .tri{width:0;height:0;border-top:16px solid transparent;border-bottom:16px solid transparent;border-left:29px solid #e34825;position:relative;margin-right:2px}
+.pay-logo.moncash .tri:after{content:'MON';position:absolute;right:8px;top:-7px;color:#fff;font-size:8px;font-weight:900}
+.pay-logo.natcash{background:#ff7a18;color:white;font-size:14px;letter-spacing:-.5px}
+.pay-logo.bank{background:#eef2ff;color:#1f2b6c;font-size:25px}
+.pay-logo.paypal{background:#fff;gap:4px;font-size:22px}
+.pay-logo.paypal .pp{color:#173b80;font-weight:900;font-style:italic}.pay-logo.paypal .cardmark{color:#0877d1;font-size:17px}
+.method.active{box-shadow:0 0 0 1px rgba(89,103,255,.25),0 12px 30px rgba(47,60,255,.12)}
 
 </style>
 </head>
@@ -463,48 +415,43 @@ textarea{
 
     <div class="method-grid">
 
-      <button class="method active" data-method="MonCash" onclick="selectMethod(this)" type="button">
-        <div class="brand-head">
-          <img class="brand-logo" src="https://cdn.aptoide.com/imgs/d/6/f/d6fb107b85364c2fc2e2376995f3aed3_icon.jpg" alt="MonCash logo">
-          <div class="brand-copy">
-            <strong>MonCash</strong>
-            <small>Secure automatic payment</small>
-          </div>
-        </div>
+      <button
+        class="method active"
+        data-method="MonCash"
+        onclick="selectMethod(this)"
+        type="button"
+      >
+        <span class="pay-logo moncash"><span class="tri"></span></span><strong>MonCash</strong>
       </button>
 
-      <button class="method" data-method="NatCash" onclick="selectMethod(this)" type="button">
-        <div class="brand-head">
-          <img class="brand-logo" src="https://i.pinimg.com/564x/d1/44/96/d144965d8de439a0d8d6689b85fe4093.jpg" alt="NatCash logo">
-          <div class="brand-copy">
-            <strong>NatCash</strong>
-            <small>Manual verification</small>
-          </div>
-        </div>
+
+      <button
+        class="method"
+        data-method="NatCash"
+        onclick="selectMethod(this)"
+        type="button"
+      >
+        <span class="pay-logo natcash">natcash</span><strong>NatCash</strong>
       </button>
 
-      <button class="method" data-method="Bank" onclick="selectMethod(this)" type="button">
-        <div class="brand-head">
-          <div class="brand-icon"><i class="fa-solid fa-building-columns"></i></div>
-          <div class="brand-copy">
-            <strong>Bank Transfer</strong>
-            <small>USD / bank reference</small>
-          </div>
-        </div>
+
+      <button
+        class="method"
+        data-method="Bank"
+        onclick="selectMethod(this)"
+        type="button"
+      >
+        <span class="pay-logo bank"><i class="fa-solid fa-building-columns"></i></span><strong>Bank</strong>
       </button>
 
-      <button class="method" data-method="Card" onclick="selectMethod(this)" type="button">
-        <div class="brand-head">
-          <div class="brand-icon cards">
-            <i class="fa-brands fa-paypal" style="color:#0070ba"></i>
-            <i class="fa-brands fa-cc-visa" style="color:#1434cb"></i>
-            <i class="fa-brands fa-cc-mastercard" style="color:#eb001b"></i>
-          </div>
-          <div class="brand-copy">
-            <strong>Card / PayPal</strong>
-            <small>Visa · Mastercard · PayPal</small>
-          </div>
-        </div>
+
+      <button
+        class="method"
+        data-method="Card"
+        onclick="selectMethod(this)"
+        type="button"
+      >
+        <span class="pay-logo paypal"><span class="pp">P</span><span class="cardmark"><i class="fa-regular fa-credit-card"></i></span></span><strong>Card / PayPal</strong>
       </button>
 
     </div>
