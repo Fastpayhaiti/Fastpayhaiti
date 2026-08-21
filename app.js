@@ -277,7 +277,15 @@ async function requestDlmPinResetEmail() {
     msg.innerText = data.message || "Tcheke imel ou pou reset PIN lan.";
   } catch (error) {
     msg.style.color = "#ff8f98";
-    msg.innerText = error.message || "Pa rive voye email reset PIN lan.";
+    if (
+      String(error.message || "").toLowerCase().includes("email sekirite")
+    ) {
+      msg.innerText =
+        "Reset PIN pa email poko aktive. Admin dwe configure sèvis email sekirite a sou server la.";
+    } else {
+      msg.innerText =
+        error.message || "Pa rive voye email reset PIN lan.";
+    }
   } finally {
     button.disabled = false;
     button.innerText = "Forgot PIN?";
@@ -307,7 +315,14 @@ async function initDlmGlobalPinLock() {
     clearDlmPinUnlock();
     hideDlmPinLock();
 
+    const currentPath =
+      window.location.pathname.toLowerCase();
+
+    const onPinSetupPage =
+      currentPath.endsWith("/pin-setup.html");
+
     if (
+      !onPinSetupPage &&
       sessionStorage.getItem("dlm_pin_setup_dismissed") !== "1"
     ) {
       document.getElementById("dlmPinSetupPrompt")?.classList.add("show");
