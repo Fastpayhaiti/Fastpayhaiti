@@ -1,43 +1,95 @@
-<!doctype html><html lang="ht"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#05070c"><title>Login - DLM Wallet</title><style>
+<!doctype html>
+<html lang="ht">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05070c">
+<title>Login - DLM Wallet</title>
+<style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
-:root{
-  --bg:#05070c;
-  --panel:#10141d;
-  --line:rgba(255,255,255,.08);
-  --muted:#9299aa;
-  --primary:#5662ff;
-  --primary2:#7868ff;
-  --good:#57e28b;
-  --bad:#ff9099
-}
+:root{--bg:#05070c;--panel:#10131a;--line:rgba(255,255,255,.08);--muted:#9098ab;--p1:#5662ff;--p2:#7868ff}
 body{background:var(--bg);color:#fff;min-height:100vh}
-.app{max-width:430px;margin:auto;min-height:100vh;padding:20px 18px 90px}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.back{color:#fff;text-decoration:none;background:#151923;border:1px solid var(--line);padding:13px 16px;border-radius:15px}
-.avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--primary),var(--primary2));font-weight:900}
-.hero,.card{background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:16px}
-.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:800}
-.title{font-size:31px;font-weight:950;margin:7px 0 8px;letter-spacing:-.5px}
-.sub{color:var(--muted);font-size:13px;line-height:1.5}
-label{display:block;font-size:13px;font-weight:850;margin:12px 0 7px}
-.input{width:100%;padding:15px;border-radius:15px;border:1px solid var(--line);background:#111724;color:#fff;margin-bottom:12px;outline:0}
-.input:focus{border-color:var(--primary)}
-.pin-input{text-align:center;font-size:25px;font-weight:900;letter-spacing:12px;padding-left:12px}
-.btn{width:100%;padding:16px;border:0;border-radius:17px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;font-size:16px;font-weight:900;cursor:pointer}
-.btn.secondary{background:#171c27;border:1px solid var(--line)}
-.btn:disabled{opacity:.5}
-.msg{display:none;padding:13px;border-radius:14px;margin-bottom:13px;line-height:1.45}
-.msg.ok{display:block;background:rgba(34,197,94,.14);color:var(--good)}
-.msg.err{display:block;background:rgba(239,68,68,.14);color:var(--bad)}
-.option{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;border-radius:18px;background:#141925;border:1px solid var(--line);text-decoration:none;color:#fff;margin-top:10px}
-.option-left{display:flex;align-items:center;gap:12px}
-.option-icon{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:rgba(86,98,255,.12);color:#c4c8ff}
-.option b{display:block;font-size:14px}.option span{display:block;color:var(--muted);font-size:11px;margin-top:4px;line-height:1.4}
-.security-note{font-size:11px;color:var(--muted);line-height:1.5;margin-top:12px}
-.logo{width:64px;height:64px;border-radius:21px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#5662ff,#7868ff);font-size:25px;font-weight:950;margin-bottom:20px}</style></head><body>
-<div class="app"><div style="padding-top:45px"><div class="logo">D</div><div class="eyebrow">DLM Wallet</div><div class="title">Welcome back</div><div class="sub" style="margin-bottom:24px">Secure access to your wallet.</div>
-<div class="card"><div id="msg" class="msg"></div><label>Email</label><input class="input" id="email" type="email" autocomplete="email"><label>Password</label><input class="input" id="password" type="password" autocomplete="current-password"><button class="btn" id="btn" onclick="login()">Login</button><a href="forgot-password.html" style="display:block;text-align:center;margin-top:16px;color:#aab0ff;text-decoration:none;font-size:12px;font-weight:800">Forgot password?</a>
-<div style="text-align:center;margin-top:18px;font-size:13px;color:#9299aa;">Pa gen kont? <a href="register.html" style="color:#aab0ff;text-decoration:none;font-weight:800;">Create account</a></div></div></div></div>
-<script src="app.js"></script><script>
-async function login(){const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value,b=document.getElementById("btn");b.disabled=true;b.innerText="Signing in...";try{const data=await loginDlmUser(email,password);clearPinUnlock();if(data.user&&data.user.role==="admin"){location.replace("admin.html");return;}location.replace("dashboard.html")}catch(e){const m=document.getElementById("msg");m.className="msg err";m.innerText=e.message}finally{b.disabled=false;b.innerText="Login"}}
-</script></body></html>
+.app{width:min(430px,100%);margin:auto;padding:72px 20px 40px}
+.logo{width:72px;height:72px;border-radius:22px;display:grid;place-items:center;background:linear-gradient(135deg,var(--p1),var(--p2));font-size:30px;font-weight:950;margin-bottom:30px}
+.eyebrow{font-size:12px;font-weight:900;letter-spacing:.12em;color:#9ca4bb;margin-bottom:9px}
+h1{font-size:38px;font-weight:950;letter-spacing:-.04em;margin-bottom:10px}.sub{color:var(--muted);font-size:15px;margin-bottom:28px}
+.card{background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:25px;padding:22px}
+.msg{display:none;padding:13px 14px;border-radius:14px;margin-bottom:16px;background:rgba(239,68,68,.16);color:#ff9aa2;line-height:1.4}
+label{display:block;font-size:13px;font-weight:900;margin:13px 0 8px}
+input{width:100%;padding:16px;border-radius:16px;border:1px solid var(--line);background:#111724;color:#fff;font-size:16px;outline:none}
+input:focus{border-color:#6670ff;box-shadow:0 0 0 3px rgba(86,98,255,.12)}
+.btn{width:100%;margin-top:20px;padding:16px;border:0;border-radius:17px;background:linear-gradient(135deg,var(--p1),var(--p2));color:#fff;font-size:17px;font-weight:950}
+.btn:disabled{opacity:.55}.link{text-align:center;margin-top:17px}.link a{color:#aeb5ff;text-decoration:none;font-weight:850}.create{text-align:center;color:var(--muted);margin-top:25px}.create a{color:#aeb5ff;text-decoration:none;font-weight:900}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="logo">D</div>
+  <div class="eyebrow">DLM WALLET</div>
+  <h1>Welcome back</h1>
+  <div class="sub">Secure access to your wallet.</div>
+
+  <div class="card">
+    <div id="msg" class="msg"></div>
+
+    <label>Email</label>
+    <input id="email" type="email" autocomplete="email" placeholder="your@email.com">
+
+    <label>Password</label>
+    <input id="password" type="password" autocomplete="current-password" placeholder="Your password">
+
+    <button id="loginBtn" class="btn" type="button" onclick="doLogin()">Login</button>
+
+    <div class="link"><a href="forgot-password.html">Forgot password?</a></div>
+    <div class="create">Pa gen kont? <a href="register.html">Create account</a></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+function showLoginError(text){
+  const box=document.getElementById("msg");
+  box.style.display="block";
+  box.innerText=text;
+}
+
+async function doLogin(){
+  const email=document.getElementById("email").value.trim();
+  const password=document.getElementById("password").value;
+  const btn=document.getElementById("loginBtn");
+
+  document.getElementById("msg").style.display="none";
+
+  if(!email||!password){
+    showLoginError("Antre email ak modpas ou.");
+    return;
+  }
+
+  btn.disabled=true;
+  btn.innerText="Connecting...";
+
+  try{
+    clearDlmPinUnlock();
+    sessionStorage.removeItem("dlm_pin_setup_dismissed");
+
+    const data=await loginDlmUser(email,password);
+
+    if(data.user?.role==="admin"){
+      location.replace("admin.html");
+    }else{
+      location.replace("dashboard.html");
+    }
+  }catch(error){
+    showLoginError(error.message||"Koneksyon an pa reyisi.");
+  }finally{
+    btn.disabled=false;
+    btn.innerText="Login";
+  }
+}
+
+document.getElementById("password").addEventListener("keydown",e=>{
+  if(e.key==="Enter")doLogin();
+});
+</script>
+</body>
+</html>

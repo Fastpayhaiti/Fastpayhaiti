@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05070c">
 <title>Reset PIN - DLM Wallet</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#05070c;color:#fff;font-family:Inter,Arial,sans-serif;min-height:100vh;display:grid;place-items:center;padding:20px}
@@ -10,10 +11,9 @@
 .logo{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,#5662ff,#7868ff);font-weight:950;font-size:24px;margin-bottom:17px}
 h1{font-size:28px;margin:0 0 8px}.sub{color:#9299aa;font-size:13px;line-height:1.5;margin-bottom:19px}
 label{display:block;font-size:13px;font-weight:850;margin:12px 0 7px}
-input{width:100%;padding:16px;border-radius:16px;border:1px solid rgba(255,255,255,.1);background:#111724;color:#fff;font-size:19px;letter-spacing:.24em;text-align:center}
+input{width:100%;padding:16px;border-radius:16px;border:1px solid rgba(255,255,255,.1);background:#111724;color:#fff;font-size:20px;letter-spacing:.28em;text-align:center}
 button{width:100%;margin-top:15px;padding:16px;border:0;border-radius:17px;background:linear-gradient(135deg,#5662ff,#7868ff);color:#fff;font-size:16px;font-weight:900}
-.msg{margin-top:13px;font-size:13px;line-height:1.5}.ok{color:#5ee48b}.err{color:#ff8f98}
-a{color:#aeb5ff;text-decoration:none}
+.msg{margin-top:13px;font-size:13px;line-height:1.5}.ok{color:#5ee48b}.err{color:#ff8f98}a{color:#aeb5ff;text-decoration:none}
 </style>
 </head>
 <body>
@@ -31,7 +31,6 @@ a{color:#aeb5ff;text-decoration:none}
   <button id="btn" onclick="resetPin()">Reset PIN</button>
   <div id="msg" class="msg"></div>
 </div>
-
 <script>
 const API_BASE="https://fastpayhaiti.onrender.com";
 const token=new URLSearchParams(location.search).get("token")||"";
@@ -48,29 +47,11 @@ async function resetPin(){
   const msg=document.getElementById("msg");
   const btn=document.getElementById("btn");
 
-  msg.className="msg";
-  msg.innerText="";
+  if(!token){msg.className="msg err";msg.innerText="Lyen reset la pa valab.";return}
+  if(!/^\d{6}$/.test(p1)){msg.className="msg err";msg.innerText="PIN lan dwe gen 6 chif.";return}
+  if(p1!==p2){msg.className="msg err";msg.innerText="De PIN yo pa menm.";return}
 
-  if(!token){
-    msg.className="msg err";
-    msg.innerText="Lyen reset la pa valab.";
-    return;
-  }
-
-  if(!/^\d{6}$/.test(p1)){
-    msg.className="msg err";
-    msg.innerText="PIN lan dwe gen 6 chif.";
-    return;
-  }
-
-  if(p1!==p2){
-    msg.className="msg err";
-    msg.innerText="De PIN yo pa menm.";
-    return;
-  }
-
-  btn.disabled=true;
-  btn.innerText="Resetting...";
+  btn.disabled=true;btn.innerText="Resetting...";
 
   try{
     const r=await fetch(`${API_BASE}/pin/reset-email`,{
@@ -78,19 +59,15 @@ async function resetPin(){
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({token,newPin:p1})
     });
-
     const d=await r.json().catch(()=>({}));
-
     if(!r.ok)throw new Error(d.message||"Reset PIN echwe.");
 
     msg.className="msg ok";
     msg.innerHTML=(d.message||"PIN reset.")+' <a href="login.html">Konekte ankò</a>';
-  }catch(e){
-    msg.className="msg err";
-    msg.innerText=e.message;
+  }catch(error){
+    msg.className="msg err";msg.innerText=error.message;
   }finally{
-    btn.disabled=false;
-    btn.innerText="Reset PIN";
+    btn.disabled=false;btn.innerText="Reset PIN";
   }
 }
 </script>
