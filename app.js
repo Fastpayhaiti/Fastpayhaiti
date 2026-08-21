@@ -30,6 +30,7 @@ function saveDlmSession(data) {
     email: apiUser.email || "",
     phone: apiUser.phone || "",
     balance: Number(apiUser.balance || 0),
+    pinEnabled: Boolean(apiUser.pinEnabled),
     role: apiUser.role || "customer",
     status: apiUser.status || "Active"
   };
@@ -53,6 +54,8 @@ function clearDlmSession() {
   localStorage.removeItem("dlm_token");
   localStorage.removeItem("dlm_user");
   localStorage.removeItem("fastpay_user");
+  sessionStorage.removeItem("dlm_pin_token");
+  sessionStorage.removeItem("dlm_pin_unlocked");
 }
 
 /* =========================
@@ -71,6 +74,13 @@ async function dlmApi(path, options = {}) {
     headers.Authorization = `Bearer ${token}`;
   }
 
+  const pinToken =
+    sessionStorage.getItem("dlm_pin_token") || "";
+
+  if (pinToken) {
+    headers["X-DLM-PIN-Token"] = pinToken;
+  }
+
   const response = await fetch(`${DLM_API_BASE}${path}`, {
     ...options,
     headers
@@ -79,9 +89,15 @@ async function dlmApi(path, options = {}) {
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    throw new Error(
+    const error = new Error(
       data.message || "Demann lan echwe. Eseye ankò."
     );
+
+    error.status = response.status;
+    error.code = data.code || "";
+    error.data = data;
+
+    throw error;
   }
 
   return data;
@@ -148,35 +164,366 @@ async function refreshDlmUser() {
 
 
 /* =========================
-   SERVICE BALANCE SYNC
+   GLOBAL APP PIN LOCK
 ========================= */
 
-async function syncDlmServiceBalance(elementId = "serviceBalance") {
-  const element = document.getElementById(elementId);
+function getDlmPinToken() {
+  return sessionStorage.getItem("dlm_pin_token") || "";
+}
 
-  if (!element) {
-    return null;
+function clearDlmPinUnlock() {
+  sessionStorage.removeItem("dlm_pin_token");
+  sessionStorage.removeItem("dlm_pin_unlocked");
+}
+
+function isDlmPinUnlocked() {
+  return Boolean(
+    getDlmPinToken() &&
+    sessionStorage.getItem("dlm_pin_unlocked") === "1"
+  );
+}
+
+function ensureDlmPinLockStyles() {
+  if (document.getElementById("dlmPinLockStyles")) {
+    return;
   }
 
-  let user = getDlmUser();
+  const style = document.createElement("style");
+  style.id = "dlmPinLockStyles";
+  style.textContent = `
+    #dlmPinLock {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483647;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: rgba(3,5,10,.96);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
 
-  if (user) {
-    element.innerText =
-      `$${Number(user.balance || 0).toFixed(2)} USD`;
+    #dlmPinLock.show {
+      display: flex;
+    }
+
+    #dlmPinLock .dlm-pin-card {
+      width: min(390px, 100%);
+      background: #10141d;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 26px;
+      padding: 26px 20px 22px;
+      color: #fff;
+      box-shadow: 0 25px 80px rgba(0,0,0,.45);
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    #dlmPinLock .dlm-pin-logo {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 16px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      font-size: 23px;
+      font-weight: 950;
+      background: linear-gradient(135deg,#5662ff,#7868ff);
+    }
+
+    #dlmPinLock .dlm-pin-title {
+      text-align: center;
+      font-size: 25px;
+      font-weight: 950;
+      margin-bottom: 7px;
+    }
+
+    #dlmPinLock .dlm-pin-sub {
+      text-align: center;
+      color: #9299aa;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    #dlmPinLock .dlm-pin-input {
+      width: 100%;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      outline: none;
+      text-align: center;
+      letter-spacing: .45em;
+      font-size: 24px;
+      font-weight: 900;
+      color: #fff;
+      background: #111724;
+    }
+
+    #dlmPinLock .dlm-pin-input:focus {
+      border-color: #6670ff;
+      box-shadow: 0 0 0 3px rgba(86,98,255,.13);
+    }
+
+    #dlmPinLock .dlm-pin-btn {
+      width: 100%;
+      margin-top: 13px;
+      padding: 16px;
+      border: 0;
+      border-radius: 17px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 900;
+      background: linear-gradient(135deg,#5662ff,#7868ff);
+    }
+
+    #dlmPinLock .dlm-pin-btn:disabled {
+      opacity: .55;
+    }
+
+    #dlmPinLock .dlm-pin-msg {
+      min-height: 20px;
+      margin-top: 12px;
+      text-align: center;
+      color: #ff8f98;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    body.dlm-app-locked {
+      overflow: hidden !important;
+    }
+  `;
+
+  document.head.appendChild(style);
+}
+
+function ensureDlmPinLockDom() {
+  let root = document.getElementById("dlmPinLock");
+
+  if (root) {
+    return root;
   }
+
+  ensureDlmPinLockStyles();
+
+  root = document.createElement("div");
+  root.id = "dlmPinLock";
+  root.innerHTML = `
+    <div class="dlm-pin-card">
+      <div class="dlm-pin-logo">D</div>
+      <div class="dlm-pin-title">Debloke DLM Wallet</div>
+      <div class="dlm-pin-sub">
+        Antre PIN 6 chif ou yon sèl fwa pou itilize app la.
+      </div>
+
+      <input
+        id="dlmGlobalPinInput"
+        class="dlm-pin-input"
+        type="password"
+        inputmode="numeric"
+        autocomplete="off"
+        maxlength="6"
+        pattern="[0-9]*"
+        placeholder="••••••"
+      >
+
+      <button
+        id="dlmGlobalPinButton"
+        class="dlm-pin-btn"
+        type="button"
+      >
+        Unlock
+      </button>
+
+      <div
+        id="dlmGlobalPinMsg"
+        class="dlm-pin-msg"
+      ></div>
+    </div>
+  `;
+
+  document.body.appendChild(root);
+
+  const input =
+    document.getElementById("dlmGlobalPinInput");
+
+  const button =
+    document.getElementById("dlmGlobalPinButton");
+
+  input.addEventListener("input", () => {
+    input.value =
+      input.value.replace(/\D/g, "").slice(0, 6);
+
+    if (input.value.length === 6) {
+      document.getElementById("dlmGlobalPinMsg").innerText = "";
+    }
+  });
+
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      unlockDlmAppWithPin();
+    }
+  });
+
+  button.addEventListener(
+    "click",
+    unlockDlmAppWithPin
+  );
+
+  return root;
+}
+
+function showDlmPinLock(message = "") {
+  const root = ensureDlmPinLockDom();
+  const input =
+    document.getElementById("dlmGlobalPinInput");
+  const msg =
+    document.getElementById("dlmGlobalPinMsg");
+
+  root.classList.add("show");
+  document.body.classList.add("dlm-app-locked");
+
+  msg.innerText = message;
+  input.value = "";
+
+  setTimeout(() => {
+    input.focus();
+  }, 80);
+}
+
+function hideDlmPinLock() {
+  const root =
+    document.getElementById("dlmPinLock");
+
+  if (root) {
+    root.classList.remove("show");
+  }
+
+  document.body.classList.remove("dlm-app-locked");
+}
+
+async function unlockDlmAppWithPin() {
+  const input =
+    document.getElementById("dlmGlobalPinInput");
+
+  const button =
+    document.getElementById("dlmGlobalPinButton");
+
+  const msg =
+    document.getElementById("dlmGlobalPinMsg");
+
+  const pin = String(input?.value || "").trim();
+
+  if (!/^\d{6}$/.test(pin)) {
+    msg.innerText = "Antre PIN 6 chif ou.";
+    return;
+  }
+
+  button.disabled = true;
+  button.innerText = "Checking...";
+  msg.innerText = "";
 
   try {
-    const fresh = await refreshDlmUser();
+    const data = await dlmApi("/pin/verify", {
+      method: "POST",
+      body: JSON.stringify({ pin })
+    });
 
-    if (fresh) {
-      user = fresh;
-      element.innerText =
-        `$${Number(fresh.balance || 0).toFixed(2)} USD`;
+    if (!data.pinToken) {
+      throw new Error(
+        "Server la pa retounen PIN session token."
+      );
     }
+
+    sessionStorage.setItem(
+      "dlm_pin_token",
+      data.pinToken
+    );
+
+    sessionStorage.setItem(
+      "dlm_pin_unlocked",
+      "1"
+    );
+
+    hideDlmPinLock();
+  } catch (error) {
+    clearDlmPinUnlock();
+
+    msg.innerText =
+      error.message || "PIN pa kòrèk.";
+
+    input.value = "";
+    input.focus();
+  } finally {
+    button.disabled = false;
+    button.innerText = "Unlock";
+  }
+}
+
+async function initDlmGlobalPinLock() {
+  const user = getDlmUser();
+  const token = getDlmToken();
+
+  if (!user || !token) {
+    return;
+  }
+
+  let freshUser = user;
+
+  try {
+    const data = await dlmApi("/me");
+    freshUser = saveDlmSession({
+      token,
+      user: data.user
+    });
   } catch (error) {}
 
-  return user;
+  if (!freshUser?.pinEnabled) {
+    clearDlmPinUnlock();
+    hideDlmPinLock();
+    return;
+  }
+
+  if (!isDlmPinUnlocked()) {
+    showDlmPinLock();
+  }
 }
+
+/*
+  Sekirite app-lock:
+  depi app/site la ale nan background oswa kliyan chanje app/tab,
+  PIN session lan fèmen. Lè li retounen, PIN ap mande ankò.
+*/
+document.addEventListener(
+  "visibilitychange",
+  () => {
+    if (document.hidden) {
+      const user = getDlmUser();
+
+      if (user?.pinEnabled) {
+        clearDlmPinUnlock();
+      }
+    } else {
+      const path =
+        window.location.pathname.toLowerCase();
+
+      const isPublicPage =
+        path.endsWith("/login.html") ||
+        path.endsWith("/register.html") ||
+        path.endsWith("/index.html") ||
+        path === "/";
+
+      if (!isPublicPage) {
+        const user = getDlmUser();
+
+        if (user?.pinEnabled && !isDlmPinUnlocked()) {
+          showDlmPinLock();
+        }
+      }
+    }
+  }
+);
 
 /* =========================
    PROTECT PAGES
@@ -421,6 +768,8 @@ document.addEventListener(
       const refreshedUser =
         await refreshDlmUser();
 
+      await initDlmGlobalPinLock();
+
       if (refreshedUser) {
         const welcomeName =
           document.getElementById("welcomeName");
@@ -480,14 +829,14 @@ document.addEventListener(
 
         if (balanceAmount) {
           balanceAmount.innerText =
-            `$${Number(
+            `${Number(
               refreshedUser.balance || 0
             ).toFixed(2)} USD`;
         }
 
         if (totalBalance) {
           totalBalance.innerText =
-            `$${Number(
+            `${Number(
               refreshedUser.balance || 0
             ).toFixed(2)} USD`;
         }
